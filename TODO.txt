@@ -1,0 +1,3 @@
+TODO:
+	- Faire un document rappelant les objectifs de la simulation via Python
+	- Poursuivre développement
