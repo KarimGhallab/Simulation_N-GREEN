@@ -2,10 +2,11 @@
 
 from Tkinter import *
 from math import cos, sin, pi
-import thread
+from threading import Thread
 import time
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
+COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black"]
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
@@ -13,21 +14,20 @@ NOMBRE_SLOT = 15	#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
-NOMBRE_NOEUD = 3	#Le nombre de noeud du système
+NOMBRE_NOEUD = 5	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 
-VITESSE_MESSAGE = 0.011		#La vitesse de déplacement des messages
+COTE_MESSAGE = 2
+VITESSE_LATENCE_MESSAGE = 0.011		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
+
+TIC = 2000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 global controleur
 controleur = None
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
-def callback(event):
-	thread.start_new_thread(placer_message, (controleur, 0) )
-
-
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
@@ -41,7 +41,7 @@ def creer_canvas(fenetre):
 	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
 	
 	#Ajout d'un click listernet pour les tests
-	canvas.bind("<Button-1>", callback)
+	#canvas.bind("<Button-1>", callback)
 	
 	return canvas
 
@@ -83,44 +83,57 @@ def placer_noeuds(fenetre, canvas):
 	pas = NOMBRE_SLOT // NOMBRE_NOEUD
 	
 	for j in range(NOMBRE_NOEUD):
-		#Le rectangle
+		indice_slot_accessible = j*pas - 1
+		noeuds_modele[j] = Noeud(indice_slot_accessible, COULEURS_MESSAGE[j])
+		
 		x = milieu_x + cos(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
 		y = milieu_y - sin(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
-		noeuds_vue[j] = canvas.create_rectangle(x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEUR_NOEUD)
-		indice_slot_accessible = j*pas - 1
-		noeuds_modele[j] = Noeud(indice_slot_accessible)
+		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
 		
 		#le texte du rectangle
 		texte = canvas.create_text(x, y, text="N "+str(noeuds_vue[j]))
 	canvas.pack()
 	return noeuds_modele, noeuds_vue
 			
-	
-def placer_message_graphique(canvas, noeud_depart, slot_arrive):
-	
-	coordonnees = canvas.coords(noeud_depart)
+"""
+	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé
+"""
+def placer_message_graphique(canvas, depart, arrive, couleur_message):
+	coordonnees = canvas.coords(depart)
 	
 	depart_x = (coordonnees[0] + coordonnees[2])/2
 	depart_y = (coordonnees[1] + coordonnees[3])/2
 	
-	coordonnees = canvas.coords(slot_arrive)
+	coordonnees = canvas.coords(arrive)
 	
 	arrivee_x = (coordonnees[0] + coordonnees[2])/2
 	arrivee_y = (coordonnees[1] + coordonnees[3])/2
 	
 	#Le point est placé
-	message = canvas.create_rectangle(depart_x-2, depart_y-2, depart_x+2, depart_y+2, fill="deeppink")
-	canvas.pack()
+	message = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
 	
+	#On fait se déplacer le message
 	deplacer_vers(canvas, message, arrivee_x, arrivee_y)
+	controleur.canvas.update()
+	controleur.canvas.update_idletasks()
+	controleur.fenetre.update()
+	controleur.fenetre.update_idletasks()
 
 
-""" Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y """
+""" 
+	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
+"""
 def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
-	objet_x = canvas.coords(objet)[0]
-	objet_y = canvas.coords(objet)[1]
+	#Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours
+	objet_x = int(canvas.coords(objet)[0])
+	objet_y = int(canvas.coords(objet)[1])
 	
-	while objet_x != arrivee_x and objet_y != arrivee_y:
+	canvas.coords(objet, objet_x-COTE_MESSAGE, objet_y-COTE_MESSAGE, objet_x+COTE_MESSAGE, objet_y+COTE_MESSAGE)
+	
+	arrivee_x = int(arrivee_x)
+	arrivee_y = int(arrivee_y)
+	
+	while objet_x != arrivee_x or objet_y != arrivee_y:
 		if objet_x < arrivee_x:
 			canvas.move(objet, 1, 0)
 		elif objet_x > arrivee_x:
@@ -134,15 +147,18 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
 		canvas.pack()
-		time.sleep(VITESSE_MESSAGE)
+		time.sleep(VITESSE_LATENCE_MESSAGE)
 
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
-""" Représente un noeud dans le système, un noeuds peux stocker des messages """
+"""
+	Représente un noeud dans le système, un noeuds peux stocker des messages
+"""
 class Noeud:
-	def __init__(self, indice_slot_accessible):
+	def __init__(self, indice_slot_accessible, couleur):
 		self.nb_message = 0
 		self.indice_slot_accessible = indice_slot_accessible
+		self.couleur = couleur
 
 
 # # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
@@ -160,8 +176,12 @@ class Controleur:
 		self.noeuds_vue = noeuds_vue		#La représentation des noeuds dans le canvas
 		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
 		
-
+"""
+	Action de faire entrer un message d'un noeud jusqu'à son slot
+"""
 def placer_message(controleur, indice_noeud):
+	print "Placer"
+	
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	slot_modele = controleur.noeuds_modele[ indice_noeud ].indice_slot_accessible
 	erreur = False
@@ -177,17 +197,28 @@ def placer_message(controleur, indice_noeud):
 		noeud_graphique = controleur.noeuds_vue[ indice_noeud ]
 		indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_accessible
 		slot_graphique = controleur.slots_vue[indice_slot]
+		couleur_message = controleur.noeuds_modele[ indice_noeud ].couleur
 		
-		placer_message_graphique(canvas, noeud_graphique, slot_graphique)
+		placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
+		controleur.fenetre.update()
 		
 		noeud_vue = controleur.noeuds_vue[ indice_noeud ]
 		slot_vue = controleur.slots_vue[indice_slot]
 	else:
 		print message
 
+
 ###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
+"""
+	Effectue à un intervalle régulier le tic (Temps définis par la variable TIC)
+"""
+def effectuer_tic():
+	for i in range(NOMBRE_NOEUD):
+		t = Thread(target=placer_message, args=(controleur, i))
+		t.start()
+	controleur.fenetre.after(TIC, effectuer_tic)
 
 fenetre = creer_fenetre()
 canvas = creer_canvas(fenetre)
@@ -204,12 +235,7 @@ noeuds_vue = noeuds[1]
 controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
 
 """ Affichage des noeuds et de leurs slots respectifs """
-couleurs = ["", "", ""]
-for i in range( len( noeuds_modele ) ):
-	indice = controleur.noeuds_modele[i].indice_slot_accessible
-	noeud_vue = controleur.noeuds_vue[i]
-	slot_vue = controleur.slots_vue[indice]
-	print "Le noeud numéro : ", noeud_vue, " a accès au slot : ", slot_vue
 
 # On démarre la boucle Tkinter qui s'interompt quand on ferme la fenêtre
+fenetre.after(1000, effectuer_tic)
 fenetre.mainloop()
