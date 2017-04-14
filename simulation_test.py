@@ -10,11 +10,11 @@ COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple",
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
-NOMBRE_SLOT = 3	#Le nombre de slot du système
+NOMBRE_SLOT = 25	#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
-NOMBRE_NOEUD = 3	#Le nombre de noeud du système
+NOMBRE_NOEUD = 8	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
@@ -265,23 +265,7 @@ def rotation_message():
 	global controleur
 	print "Rotation\n"
 	
-	#if message != None and not message.a_bouge:		#Il y a un message dans le slot
-		#Change graphiquement le message de slot
-	"""milieu_x = COTE_CANVAS/2
-	milieu_y = COTE_CANVAS/2
-
-	destination_x = milieu_x + cos(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT
-	destination_y = milieu_y - sin(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT"""
-#		message.a_bouge = True
-
-	#Change le message de slot dans la mémoire
 	decaler_messages()
-		
-	#controleur.slots_modele[indice_slot].message = None
-	"""if indice_slot-1 < 0:
-		nouvelle_indice = len(controleur.slots_modele) -1
-	else:
-		nouvelle_indice = indice_slot-1"""
 		
 	for slot in controleur.slots_modele:
 		message = slot.message
@@ -297,14 +281,19 @@ def rotation_message():
 		if message != None:
 			message.a_bouge = False
 
-
+"""
+	Fait sortir du système un mesage
+"""
 def sortir_message(message):
 	global controleur
 	for slot in controleur.slots_modele:
 		if slot.message and slot.message.equals(message):
 			slot.message = None
+	""" Ajouter fonction de suppresion graphique """
 		
-		
+"""
+	Methode appelenar une methode recursif qui décale d'un slot les message du système
+"""
 def decaler_messages():
 	global controleur
 
@@ -312,7 +301,9 @@ def decaler_messages():
 	
 	decaler_messages2(0, 0, tempon, True)
 	
-	
+"""
+	Méthode récursif qui décale les messages du système
+"""
 def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 	global controleur
 	
@@ -357,7 +348,9 @@ def initialisation():
 		print "Message : ", message, " à l'indice : ", indice
 	controleur.fenetre.after(TIC, effectuer_tic )
 
-
+"""
+	Attend un TIC et effectue une rotation des messages
+"""
 def effectuer_tic():
 	global controleur
 	rotation_message()
