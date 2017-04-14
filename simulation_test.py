@@ -5,18 +5,21 @@ from math import cos, sin, pi
 import thread
 import time
 
-COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle sera déssiné les slots et les noeuds
+# # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
-NOMBRE_SLOT = 15
-COTE_SLOT = 15
-DISTANCE_SLOT = COTE_CANVAS/3
+COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
-NOMBRE_NOEUD = 3
-COTE_NOEUD = COTE_SLOT + 5
-DISTANCE_NOEUD = DISTANCE_SLOT + 50
-COULEUR_NOEUD = "CadetBlue3"
+NOMBRE_SLOT = 15	#Le nombre de slot du système
+COTE_SLOT = 15		#La hauteur/largeur d'un slot
+DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
-VITESSE_MESSAGE = 0.011
+NOMBRE_NOEUD = 3	#Le nombre de noeud du système
+COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
+DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
+COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
+
+VITESSE_MESSAGE = 0.011		#La vitesse de déplacement des messages
+
 global controleur
 controleur = None
 
