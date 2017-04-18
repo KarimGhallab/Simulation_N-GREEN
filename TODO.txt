@@ -1,3 +1,4 @@
 TODO:
-	- Faire un document rappelant les objectifs de la simulation via Python
 	- Poursuivre développement
+		- Ajout des envois de messages des noeuds via une loi de probabilite
+		- Ajouter l'attente d'envoi de message sur le noeud précédent
