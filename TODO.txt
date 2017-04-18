@@ -1,4 +1,5 @@
 TODO:
 	- Poursuivre développement
-		- Ajout des envois de messages des noeuds via une loi de probabilite
-		- Ajouter l'attente d'envoi de message sur le noeud précédent
+		- Ajouter l'attente d'envoi de message sur le noeud précédent (Problème de synchronisation)
+		- Ajouter des boutons pour pouvoir changer le nombre de slot, le nombre de noeud, la probabilité d'envoyer un message ...
+		- Ajouter les files d'attentes aux noeuds

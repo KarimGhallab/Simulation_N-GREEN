@@ -12,11 +12,11 @@ COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple",
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
-NOMBRE_SLOT = 6		#Le nombre de slot du système
+NOMBRE_SLOT = 25		#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
-NOMBRE_NOEUD = 4	#Le nombre de noeud du système
+NOMBRE_NOEUD = 8	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
@@ -397,6 +397,7 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 ###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
+
 """
 	Effectue à un intervalle régulier le tic (Temps définis par la variable TIC)
 """
