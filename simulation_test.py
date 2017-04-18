@@ -6,6 +6,7 @@ from threading import Thread
 import time
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
+
 COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black"]
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
@@ -20,9 +21,9 @@ DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'ax
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 
 COTE_MESSAGE = 2
-VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
+VITESSE_LATENCE_MESSAGE = 0.001		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
-TIC = 2000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
+TIC = 500	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 
 
@@ -30,7 +31,7 @@ TIC = 2000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
-	fenetre.title("Jason Statham")
+	fenetre.title("Jason Statham : <3")
 	
 	return fenetre
 
@@ -39,7 +40,7 @@ def creer_canvas(fenetre):
 	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS)
 	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
 	
-	#Ajout d'un click listernet pour les tests
+	#Ajout d'un click listener pour les tests
 	#canvas.bind("<Button-1>", callback)
 	
 	return canvas
@@ -143,15 +144,54 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 			canvas.move(objet, 0, 1)
 		elif objet_y > arrivee_y:
 			canvas.move(objet, 0, -1)
-		canvas.update()
 			
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
-		canvas.pack()
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
-def rotation_message(controleur):
-	pass
+"""
+	Fonction faisant sortir de l'interface un message
+"""
+def sortir_message_graphique(canvas, message):
+	#L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas
+	time.sleep(1)
+	
+	x = int(canvas.coords(message)[0])
+	y = int(canvas.coords(message)[1])
+	
+	#Mise en place des directions pour les abscisses et les ordonnées
+	if x > COTE_CANVAS/2:
+		direction_x = 1
+		objectif_x = COTE_CANVAS
+	elif x < COTE_CANVAS/2:
+		direction_x = -1
+		objectif_x = 0
+	else:
+		direction_x = 0
+		objectif_x = x
+	
+	if y > COTE_CANVAS/2 :
+		direction_y = 1
+		objectif_y = COTE_CANVAS
+	elif y < COTE_CANVAS/2:
+		direction_y = -1
+		objectif_y = 0
+	else:
+		direction_y = 0
+		objectif_y = y
+		
+	while x != objectif_x or y != objectif_y:
+		canvas.move(message, direction_x, direction_y)
+		x = int(canvas.coords(message)[0])
+		y = int(canvas.coords(message)[1])
+		
+		time.sleep(VITESSE_LATENCE_MESSAGE)
+		
+		#Si un bord du canvas est atteint on supprime le message du canvas
+		if x == 0 or x == COTE_CANVAS or y == 0 or y == COTE_CANVAS:
+			canvas.delete(message)
+			break
+
 
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
@@ -159,10 +199,11 @@ def rotation_message(controleur):
 	Représente un noeud dans le système, un noeuds peux stocker des messages
 """
 class Noeud:
-	def __init__(self, indice_slot_accessible, couleur):
+	def __init__(self, indice_slot_accessible, couleur, probabilite):
 		self.nb_message = 0
 		self.indice_slot_accessible = indice_slot_accessible
 		self.couleur = couleur
+		self.probabilite = probabilite
 
 class Slot:
 	def __init__(self, id, indice_noeud_accessible):
@@ -283,11 +324,14 @@ def sortir_message(message):
 	global controleur
 	for slot in controleur.slots_modele:
 		if slot.message and slot.message.equals(message):
+			#Faire sortir le message graphiquement
+			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
+			t.start()
 			slot.message = None
-	""" Ajouter fonction de suppresion graphique """
+	
 		
 """
-	Methode appelenar une methode recursif qui décale d'un slot les message du système
+	Methode appelant une methode recursif qui décale d'un slot les message du système
 """
 def decaler_messages():
 	global controleur
@@ -337,9 +381,6 @@ def initialisation():
 	for i in range(NOMBRE_NOEUD):
 		placer_message(i)
 		
-	for indice in range( len(controleur.slots_modele) ):
-		controleur.slots_modele[indice].message
-		message = controleur.slots_modele[indice].message
 	controleur.fenetre.after(TIC, effectuer_tic )
 
 """
