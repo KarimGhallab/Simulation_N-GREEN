@@ -245,8 +245,6 @@ def placer_message(indice_noeud):
 		id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
 		controleur.slots_modele[indice_slot].set_message(Message( id_message_graphique, indice_noeud) )
 		
-		print controleur.slots_modele[2]
-		
 		#Mise à jour de la distance
 		message_x = canvas.coords(id_message_graphique)[0]
 		message_y = canvas.coords(id_message_graphique)[1]
@@ -254,7 +252,8 @@ def placer_message(indice_noeud):
 		
 		noeud_vue = controleur.noeuds_vue[ indice_noeud ]
 		slot_vue = controleur.slots_vue[indice_slot]
-	else:
+	
+	else:	#Une erreur est survenue, on affiche un message
 		print message
 
 """
@@ -263,21 +262,17 @@ def placer_message(indice_noeud):
 """
 def rotation_message():
 	global controleur
-	print "Rotation\n"
 	
 	decaler_messages()
 		
 	for slot in controleur.slots_modele:
 		message = slot.message
 		if message and message.indice_noeud_emetteur == slot.indice_noeud_accessible:
-			print "Le message doit disparaitre : ", message
 			sortir_message(message)
 
-	print "Après rotation \n"
 	for indice in range( len(controleur.slots_modele) ):
 		controleur.slots_modele[indice].message
 		message = controleur.slots_modele[indice].message
-		print "Message : ", message, " à l'indice : ", indice
 		if message != None:
 			message.a_bouge = False
 
@@ -345,7 +340,6 @@ def initialisation():
 	for indice in range( len(controleur.slots_modele) ):
 		controleur.slots_modele[indice].message
 		message = controleur.slots_modele[indice].message
-		print "Message : ", message, " à l'indice : ", indice
 	controleur.fenetre.after(TIC, effectuer_tic )
 
 """
