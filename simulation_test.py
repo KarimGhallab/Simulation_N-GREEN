@@ -168,7 +168,7 @@ def placer_panel_gauche(fenetre):
 	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée'
 """	
 def placer_panel_bas(fenetre):
-	
+	pass
 	
 
 """ 
@@ -330,10 +330,10 @@ def reset():
 	global controleur
 	
 	controleur.continuer = False
-	controleur.canvas.destroy()
-	controleur.fenetre.after(1000, initialisation, (fenetre))
 	
-	#La méthode after permet ici de faire s'executer les threads en cours'
+	#La méthode after permet ici de faire s'executer les threads en cours
+	controleur.fenetre.after(1000, initialisation, (fenetre) )
+	
 
 	
 def commencer_rotation():
@@ -481,6 +481,10 @@ def callback():
 """
 def initialisation(fenetre):
 	global controleur
+	
+	#premier appel à la méthode
+	if controleur:
+		controleur.canvas.destroy()		#On détruit le canvas précedent
 	placer_panel_gauche(fenetre)
 	
 	#Mise en place du canvas et des données du controleur
@@ -516,6 +520,7 @@ def effectuer_tic():
 ###############################################################################
 
 global controleur
+controleur = None
 
 fenetre = creer_fenetre()
 
