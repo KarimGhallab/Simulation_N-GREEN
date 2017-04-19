@@ -14,16 +14,18 @@ COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple",
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
+global NOMBRE_SLOT
 NOMBRE_SLOT = 25		#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
+global NOMBRE_NOEUD
 NOMBRE_NOEUD = 8	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 
-COTE_MESSAGE = 2
+COTE_MESSAGE = 4
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
 LONGUEUR_BOUTON = COTE_CANVAS/60
@@ -31,13 +33,13 @@ LONGUEUR_ENTRY = COTE_CANVAS/100
 
 NOMBRE_LIGNE_CANVAS = 100
 
-
 CLE_ENTRY_SLOT = 1
-CLE_ENTRY_NOEUD = 1
-CLE_ENTRY_PROBA = 1
+CLE_ENTRY_NOEUD = 2
+CLE_ENTRY_PROBA = 3
 
 TIC = 1000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
+global PROBABILITE
 PROBABILITE = 0.33
 
 
@@ -173,35 +175,44 @@ def placer_panel_gauche(fenetre):
 	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée'
 """	
 def placer_panel_bas(fenetre):
-	global controleur
-	
 	nombre_slot = len( controleur.slots_modele )
 	nombre_noeud = len( controleur.noeuds_modele )
+	proba = controleur.noeuds_modele[0].probabilite
 	
-	#Les labels présentant les nombres de slots et de noeuds
+	#Les labels présentant les nombres de slots, de noeuds ainsi que la proba actuel
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
+	label_proba_actuelle = Label(fenetre, text = "Probabilité actuel : "+str(proba) )
 	
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
 	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
+	label_proba_actuelle.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
 	
 	#Les labels des entry pour un nouveau nombre de slot/noeud
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
+	label_nouvelle_proba = Label(fenetre, text = "Nouvelle valeur de la probabilité : ")
 	
 	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
 	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
+	label_nouvelle_proba.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
 	
 	#Les entry
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_proba = Entry(fenetre, width=LONGUEUR_ENTRY)
+	
+	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
+	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
+	controleur.entrys[CLE_ENTRY_PROBA] = entry_proba
 	
 	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
 	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
+	entry_proba.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
 	
 	#le bouton
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+3, column=4, sticky='E')
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+4, column=4, sticky='E')
 
 """ 
 	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
@@ -367,7 +378,6 @@ def reset():
 	#La méthode after permet ici de faire s'executer les threads en cours
 	controleur.fenetre.after(1000, initialisation, (fenetre) )
 	
-
 	
 def commencer_rotation():
 	global controleur
@@ -375,14 +385,30 @@ def commencer_rotation():
 	controleur.continuer = True
 	effectuer_tic()
 
+
 def arreter_rotation():
 	global controleur
 	controleur.continuer = False
 
+
 def modifier_configuration():
 	global controleur
+	global NOMBRE_NOEUD
+	global NOMBRE_SLOT
+	global PROBABILITE
 	
-	print "Modifier la configuration"
+	valeur_noeud = controleur.entrys[CLE_ENTRY_NOEUD].get()
+	valeur_slot = controleur.entrys[CLE_ENTRY_SLOT].get()
+	valeur_proba = controleur.entrys[CLE_ENTRY_PROBA].get()
+	
+	if valeur_noeud != "":
+		NOMBRE_NOEUD = int(valeur_noeud)
+	if valeur_slot != "":
+		NOMBRE_SLOT = int(valeur_slot)
+	if valeur_proba != "":
+		PROBABILITE = float(valeur_proba)
+	
+	initialisation(controleur.fenetre)
 	
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
@@ -507,9 +533,6 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 		controleur.slots_modele[indice_slot].message = message
 		
 # # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # # 
-
-def callback():
-	print "Jason Statham"
 
 """
 	Met en place le canvas
