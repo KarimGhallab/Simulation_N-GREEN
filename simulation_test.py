@@ -27,8 +27,9 @@ COTE_MESSAGE = 2
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
 LONGUEUR_BOUTON = COTE_CANVAS/60
+NOMBRE_LIGNE_CANVAS = 100
 
-TIC = 2000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
+TIC = 1000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 PROBABILITE = 0.33
 
@@ -49,7 +50,7 @@ def creer_canvas(fenetre):
 	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS)
 	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
 	
-	canvas.grid(row=0, column=1, rowspan=100)
+	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS)
 	
 	return canvas
 
@@ -131,29 +132,43 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 
 
 """
-	place sur la fenetre les differents boutons
+	place le panel gauche de la fenetre contenant les boutons:
+		- Start
+		- Stop
+		- Restart
 """
-def placer_bouton(fenetre):
-	replay = Image.open("./images/restart.png")
-	IMAGES.append( ImageTk.PhotoImage(replay) )
-	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ])
-	bouton_reset.grid(row=0)
-	label_restart = Label(fenetre, text="Recommencer")
-	label_restart.grid(row=1)
-	
+def placer_panel_gauche(fenetre):
 	play = Image.open("./images/play.png")
 	IMAGES.append( ImageTk.PhotoImage(play) )
 	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ])
-	bouton_play.grid(row=2)
+	bouton_play.grid(row=0)
 	label_play = Label(fenetre, text="Commencer/reprendre")
-	label_play.grid(row=3)
+	label_play.grid(row=1)
 	
 	stop = Image.open("./images/stop.png")
 	IMAGES.append( ImageTk.PhotoImage(stop) )
 	bouton_stop = Button(fenetre, command = arreter_rotation, image = IMAGES[ len(IMAGES) -1 ])
-	bouton_stop.grid(row=4)
+	bouton_stop.grid(row=2)
 	label_stop = Label(fenetre, text="Arrêter")
-	label_stop.grid(row=5)
+	label_stop.grid(row=3)
+	
+	replay = Image.open("./images/restart.png")
+	IMAGES.append( ImageTk.PhotoImage(replay) )
+	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_reset.grid(row=4)
+	label_restart = Label(fenetre, text="Recommencer")
+	label_restart.grid(row=5)
+	
+"""
+	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
+		- Le nombre de slot utilisé
+		- Le nombre de Noeud présent
+		- La probabilité unitaire des noeuds
+	Le panel contient aussi un bouton de validation des données
+	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée'
+"""	
+def placer_panel_bas(fenetre):
+	
 	
 
 """ 
@@ -314,9 +329,12 @@ class Controleur:
 def reset():
 	global controleur
 	
-	controleur.canvas.destroy()
-	initialisation(fenetre)
 	controleur.continuer = False
+	controleur.canvas.destroy()
+	controleur.fenetre.after(1000, initialisation, (fenetre))
+	
+	#La méthode after permet ici de faire s'executer les threads en cours'
+
 	
 def commencer_rotation():
 	global controleur
@@ -463,7 +481,7 @@ def callback():
 """
 def initialisation(fenetre):
 	global controleur
-	placer_bouton(fenetre)
+	placer_panel_gauche(fenetre)
 	
 	#Mise en place du canvas et des données du controleur
 	canvas = creer_canvas(fenetre)
@@ -479,12 +497,7 @@ def initialisation(fenetre):
 	slots_modele = noeuds[2]
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
-	
-	#On place les messages
-	"""for i in range(NOMBRE_NOEUD):
-		placer_message(i)"""
-		
-	#controleur.fenetre.after(TIC, effectuer_tic )
+
 
 """
 	Attend un TIC et effectue une rotation des messages
