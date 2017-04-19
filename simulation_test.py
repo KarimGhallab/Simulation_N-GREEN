@@ -4,13 +4,14 @@ from Tkinter import *
 from math import cos, sin, pi
 from threading import Thread
 from PIL import Image, ImageTk
+import tkMessageBox
 import time
 import random
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 IMAGES = []
 
-COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black"]
+COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "LightCoral"]
 
 COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
@@ -397,18 +398,46 @@ def modifier_configuration():
 	global NOMBRE_SLOT
 	global PROBABILITE
 	
+	
+	erreur = False
+	
 	valeur_noeud = controleur.entrys[CLE_ENTRY_NOEUD].get()
 	valeur_slot = controleur.entrys[CLE_ENTRY_SLOT].get()
 	valeur_proba = controleur.entrys[CLE_ENTRY_PROBA].get()
 	
 	if valeur_noeud != "":
-		NOMBRE_NOEUD = int(valeur_noeud)
+		valeur_noeud = int(valeur_noeud)
+		if valeur_noeud > len(COULEURS_MESSAGE):
+			message = "Désolé mais nous ne pouvons produire plus de "+str( len(COULEURS_MESSAGE) )+" noeuds.\nAfin de pouvoir produire plus de noeud, demander à l'esclave d'ajouter des couleurs dans le tableau de couleur"
+			tkMessageBox.showerror("Erreur nombre de noeud !", message)
+			erreur = True
+		elif valeur_noeud <= 0:
+			message = "Le nombre de noeud doit etre supérieur à 0"
+			tkMessageBox.showerror("Erreur nombre de noeud !", message)
+			erreur = True
+		else:
+			NOMBRE_NOEUD = valeur_noeud
+			
 	if valeur_slot != "":
-		NOMBRE_SLOT = int(valeur_slot)
+		valeur_slot = int(valeur_slot)
+		if valeur_slot <= 0:
+			message = "Le nombre de slot doit etre supérieur à 0"
+			tkMessageBox.showerror("Erreur nombre de noeud !", message)
+			erreur = True
+		else:
+			NOMBRE_SLOT = valeur_slot
+		
 	if valeur_proba != "":
-		PROBABILITE = float(valeur_proba)
-	
-	initialisation(controleur.fenetre)
+		valeur_proba = float(valeur_proba)
+		if valeur_proba > 1 or valeur_proba < 0:
+			message = "Une probabilité doit être forcément comprise dans l'intervalle ] 0;1 ["
+			tkMessageBox.showerror("Erreur probabilité !", message)
+			erreur = True
+		else:
+			PROBABILITE = valeur_proba
+	if not erreur:
+		controleur.fenetre.after(1000, initialisation, (fenetre) )
+		controleur.continuer = False
 	
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
