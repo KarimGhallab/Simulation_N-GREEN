@@ -27,7 +27,14 @@ COTE_MESSAGE = 2
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
 LONGUEUR_BOUTON = COTE_CANVAS/60
+LONGUEUR_ENTRY = COTE_CANVAS/100
+
 NOMBRE_LIGNE_CANVAS = 100
+
+
+CLE_ENTRY_SLOT = 1
+CLE_ENTRY_NOEUD = 1
+CLE_ENTRY_PROBA = 1
 
 TIC = 1000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -50,7 +57,7 @@ def creer_canvas(fenetre):
 	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS)
 	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
 	
-	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS)
+	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=4)
 	
 	return canvas
 
@@ -73,8 +80,7 @@ def placer_slots(fenetre, canvas):
 		
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
 		slots_modele[i-1] = Slot(i, None)
-		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]))
-	#canvas.pack()
+		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]) )
 	return slots_modele, slots_vue
 
 
@@ -104,7 +110,6 @@ def placer_noeuds(fenetre, canvas, slots_modele):
 		
 		#le texte du rectangle
 		texte = canvas.create_text(x, y, text="N "+str(noeuds_vue[j]))
-	#canvas.pack()
 	return noeuds_modele, noeuds_vue, slots_modele
 			
 """
@@ -168,8 +173,35 @@ def placer_panel_gauche(fenetre):
 	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée'
 """	
 def placer_panel_bas(fenetre):
-	pass
+	global controleur
 	
+	nombre_slot = len( controleur.slots_modele )
+	nombre_noeud = len( controleur.noeuds_modele )
+	
+	#Les labels présentant les nombres de slots et de noeuds
+	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
+	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
+	
+	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
+	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
+	
+	#Les labels des entry pour un nouveau nombre de slot/noeud
+	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
+	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
+	
+	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
+	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
+	
+	#Les entry
+	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
+	
+	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
+	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
+	
+	#le bouton
+	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+3, column=4, sticky='E')
 
 """ 
 	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
@@ -317,6 +349,7 @@ class Controleur:
 		self.noeuds_vue = noeuds_vue		#La représentation des noeuds dans le canvas
 		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
 		self.continuer = False		#Booléen indiquant s'il faut effectuer d'autres tics ou non
+		self.entrys = {}	#Un dictionnaire des entry de l'interface
 
 
 ###########################################################
@@ -345,7 +378,12 @@ def commencer_rotation():
 def arreter_rotation():
 	global controleur
 	controleur.continuer = False
-		
+
+def modifier_configuration():
+	global controleur
+	
+	print "Modifier la configuration"
+	
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
 """
@@ -405,10 +443,7 @@ def entrer_message():
 				faire_tirage = effectuer_tirage(noeud.probabilite)
 			
 				if faire_tirage:
-					print "Bon tirage !"
 					placer_message( slot.indice_noeud_accessible )
-				else:
-					print "Mauvais tirage..."
 """
 	Fait sortir du système un mesage
 """
@@ -484,8 +519,7 @@ def initialisation(fenetre):
 	
 	#premier appel à la méthode
 	if controleur:
-		controleur.canvas.destroy()		#On détruit le canvas précedent
-	placer_panel_gauche(fenetre)
+		controleur.canvas.destroy()		#On détruit le canvas précèdent
 	
 	#Mise en place du canvas et des données du controleur
 	canvas = creer_canvas(fenetre)
@@ -501,6 +535,9 @@ def initialisation(fenetre):
 	slots_modele = noeuds[2]
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
+	
+	placer_panel_gauche(fenetre)
+	placer_panel_bas(fenetre)
 
 
 """
