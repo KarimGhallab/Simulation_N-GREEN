@@ -3,10 +3,12 @@
 from Tkinter import *
 from math import cos, sin, pi
 from threading import Thread
+from PIL import Image, ImageTk
 import time
 import random
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
+IMAGES = []
 
 COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black"]
 
@@ -24,7 +26,9 @@ COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 COTE_MESSAGE = 2
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
-TIC = 750	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
+LONGUEUR_BOUTON = COTE_CANVAS/60
+
+TIC = 2000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 PROBABILITE = 0.33
 
@@ -34,17 +38,18 @@ PROBABILITE = 0.33
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
+	fenetre.grid_columnconfigure(0, weight=1)
 	fenetre.title("Jason Statham : <3")
 	
 	return fenetre
+
 
 def creer_canvas(fenetre):
 	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='AntiqueWhite3')
 	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS)
 	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
 	
-	#Ajout d'un click listener pour les tests
-	#canvas.bind("<Button-1>", callback)
+	canvas.grid(row=0, column=1, rowspan=100)
 	
 	return canvas
 
@@ -68,7 +73,7 @@ def placer_slots(fenetre, canvas):
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
 		slots_modele[i-1] = Slot(i, None)
 		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]))
-	canvas.pack()
+	#canvas.pack()
 	return slots_modele, slots_vue
 
 
@@ -98,7 +103,7 @@ def placer_noeuds(fenetre, canvas, slots_modele):
 		
 		#le texte du rectangle
 		texte = canvas.create_text(x, y, text="N "+str(noeuds_vue[j]))
-	canvas.pack()
+	#canvas.pack()
 	return noeuds_modele, noeuds_vue, slots_modele
 			
 """
@@ -124,6 +129,32 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 	
 	return message
 
+
+"""
+	place sur la fenetre les differents boutons
+"""
+def placer_bouton(fenetre):
+	replay = Image.open("./images/restart.png")
+	IMAGES.append( ImageTk.PhotoImage(replay) )
+	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_reset.grid(row=0)
+	label_restart = Label(fenetre, text="Recommencer")
+	label_restart.grid(row=1)
+	
+	play = Image.open("./images/play.png")
+	IMAGES.append( ImageTk.PhotoImage(play) )
+	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_play.grid(row=2)
+	label_play = Label(fenetre, text="Commencer/reprendre")
+	label_play.grid(row=3)
+	
+	stop = Image.open("./images/stop.png")
+	IMAGES.append( ImageTk.PhotoImage(stop) )
+	bouton_stop = Button(fenetre, command = arreter_rotation, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_stop.grid(row=4)
+	label_stop = Label(fenetre, text="Arrêter")
+	label_stop.grid(row=5)
+	
 
 """ 
 	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
@@ -223,28 +254,6 @@ class Slot:
 		else:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je possede un message"
 
-"""
-	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre
-"""			
-def effectuer_tirage(probabilite):
-	tirage = random.uniform(0, 1)
-	return tirage <= probabilite
-	
-
-# # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
-
-"""
-	Classe représentant le système que l'on souhaite modéliser dans sa globalité 
-	Elle fera l'intermédiaire entre le modèle et la vue
-"""
-class Controleur:
-	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele):
-		self.fenetre = fenetre
-		self.canvas = canvas
-		self.slots_vue = slots_vue		#La représentation des slots dans le canvas (un tableau de rectangle)
-		self.slots_modele = slots_modele		#Un tableau représentant les slots, chaque case dispose de deux etats si elle dispose ou non d'un message
-		self.noeuds_vue = noeuds_vue		#La représentation des noeuds dans le canvas
-		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
 
 """
 	Représente un message : contient à la fois les coordonées graphiques du messages, l'indice du slot auquel il appartient ainsi 		que l'emetteur du message
@@ -268,6 +277,56 @@ class Message:
 		
 	def equals(self, autre_message):
 		return self.id_message_graphique == autre_message.id_message_graphique
+
+		
+"""
+	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre
+"""			
+def effectuer_tirage(probabilite):
+	tirage = random.uniform(0, 1)
+	return tirage <= probabilite
+	
+
+# # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
+
+"""
+	Classe représentant le système que l'on souhaite modéliser dans sa globalité 
+	Elle fera l'intermédiaire entre le modèle et la vue
+"""
+class Controleur:
+	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele):
+		self.fenetre = fenetre
+		self.canvas = canvas
+		self.slots_vue = slots_vue		#La représentation des slots dans le canvas (un tableau de rectangle)
+		self.slots_modele = slots_modele		#Un tableau représentant les slots, chaque case dispose de deux etats si elle dispose ou non d'un message
+		self.noeuds_vue = noeuds_vue		#La représentation des noeuds dans le canvas
+		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
+		self.continuer = False		#Booléen indiquant s'il faut effectuer d'autres tics ou non
+
+
+###########################################################
+################ Les listeners des boutons ################
+###########################################################
+"""
+	Callback au bouton demandant un reset de l'application
+	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration
+"""
+def reset():
+	global controleur
+	
+	controleur.canvas.destroy()
+	initialisation(fenetre)
+	controleur.continuer = False
+	
+def commencer_rotation():
+	global controleur
+
+	controleur.continuer = True
+	effectuer_tic()
+
+def arreter_rotation():
+	global controleur
+	controleur.continuer = False
 		
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
@@ -394,19 +453,38 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 	else:
 		controleur.slots_modele[indice_slot].message = message
 		
-###############################################################################
-# # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
-###############################################################################
+# # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # # 
+
+def callback():
+	print "Jason Statham"
 
 """
-	Effectue à un intervalle régulier le tic (Temps définis par la variable TIC)
+	Met en place le canvas
 """
-def initialisation():
+def initialisation(fenetre):
 	global controleur
-	for i in range(NOMBRE_NOEUD):
-		placer_message(i)
+	placer_bouton(fenetre)
+	
+	#Mise en place du canvas et des données du controleur
+	canvas = creer_canvas(fenetre)
+
+	slots = placer_slots(fenetre, canvas)
+	slots_modele = slots[0]
+	slots_vue = slots[1]
+
+	noeuds = placer_noeuds(fenetre, canvas, slots_modele)
+
+	noeuds_modele = noeuds[0]
+	noeuds_vue = noeuds[1]
+	slots_modele = noeuds[2]
+
+	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
+	
+	#On place les messages
+	"""for i in range(NOMBRE_NOEUD):
+		placer_message(i)"""
 		
-	controleur.fenetre.after(TIC, effectuer_tic )
+	#controleur.fenetre.after(TIC, effectuer_tic )
 
 """
 	Attend un TIC et effectue une rotation des messages
@@ -415,29 +493,18 @@ def effectuer_tic():
 	global controleur
 	
 	rotation_message()
-	"""controleur.fenetre.update()
-	controleur.canvas.update()"""
 	
-	controleur.fenetre.after(TIC, effectuer_tic )
+	if controleur.continuer:
+		controleur.fenetre.after(TIC, effectuer_tic )
+
+
+###############################################################################
+# # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
+###############################################################################
 
 global controleur
+
 fenetre = creer_fenetre()
-canvas = creer_canvas(fenetre)
 
-slots = placer_slots(fenetre, canvas)
-slots_modele = slots[0]
-slots_vue = slots[1]
-
-noeuds = placer_noeuds(fenetre, canvas, slots_modele)
-
-noeuds_modele = noeuds[0]
-noeuds_vue = noeuds[1]
-slots_modele = noeuds[2]
-
-controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
-
-""" Affichage des noeuds et de leurs slots respectifs """
-
-# On démarre la boucle Tkinter qui s'interompt quand on ferme la fenêtre
-fenetre.after(1000, initialisation)
+fenetre.after(0, initialisation, (fenetre) )
 fenetre.mainloop()
