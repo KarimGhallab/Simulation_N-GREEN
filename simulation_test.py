@@ -34,7 +34,7 @@ COTE_MESSAGE = 4
 LONGUEUR_BOUTON = COTE_CANVAS/60
 LONGUEUR_ENTRY = COTE_CANVAS/100
 
-NOMBRE_LIGNE_CANVAS = 100
+NOMBRE_LIGNE_CANVAS = 50
 
 CLE_ENTRY_SLOT = 1
 CLE_ENTRY_NOEUD = 2
@@ -53,7 +53,6 @@ tache = None
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
-	fenetre.grid_columnconfigure(0, weight=1)
 	fenetre.title("Jason Statham : <3")
 	
 	return fenetre
@@ -148,6 +147,8 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 		- Start
 		- Stop
 		- Restart
+		- Augmenter vitesse
+		- Diminuer vitesse
 """
 def placer_panel_gauche(fenetre):
 	play = Image.open("./images/play.png")
@@ -174,14 +175,14 @@ def placer_panel_gauche(fenetre):
 	replay = Image.open("./images/vitesse_up.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
 	bouton_reset = Button(fenetre, text ="UP", command = augmenter_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
-	bouton_reset.grid(row=6)
+	bouton_reset.grid(row=7)
 	label_restart = Label(fenetre, text="Modifier vitesse")
-	label_restart.grid(row=7)
+	label_restart.grid(row=8)
 	
 	vitesse_down = Image.open("./images/vitesse_down.png")
 	IMAGES.append( ImageTk.PhotoImage(vitesse_down) )
 	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
-	bouton_down.grid(row=8)
+	bouton_down.grid(row=9)
 	
 	
 
