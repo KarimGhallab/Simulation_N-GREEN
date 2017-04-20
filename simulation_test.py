@@ -396,6 +396,9 @@ def commencer_rotation():
 
 def arreter_rotation():
 	global controleur
+		#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
+	if tache != None:
+		controleur.fenetre.after_cancel(tache)
 	controleur.continuer = False
 
 
@@ -495,6 +498,7 @@ def placer_message(indice_noeud):
 	else:	#Une erreur est survenue, on affiche un message
 		print message
 
+
 """
 	Exécute une rotation des messages dans l'anneau 
 
@@ -518,6 +522,7 @@ def entrer_message():
 			
 				if faire_tirage:
 					placer_message( slot.indice_noeud_accessible )
+
 """
 	Fait sortir du système un mesage
 """
@@ -531,12 +536,6 @@ def sortir_message():
 			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
 			t.start()
 			slot.message = None
-			"""for slot in controleur.slots_modele:
-				if slot.message and slot.message.equals(message):
-					#Faire sortir le message graphiquement
-					t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
-					t.start()
-					slot.message = None"""
 					
 			controleur.noeuds_modele[ message.indice_noeud_emetteur ].vient_de_sortir_message = True
 		elif slot.indice_noeud_accessible != None:
