@@ -149,21 +149,21 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 def placer_panel_gauche(fenetre):
 	play = Image.open("./images/play.png")
 	IMAGES.append( ImageTk.PhotoImage(play) )
-	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_play.grid(row=0)
 	label_play = Label(fenetre, text="Commencer/reprendre")
 	label_play.grid(row=1)
 	
 	stop = Image.open("./images/stop.png")
 	IMAGES.append( ImageTk.PhotoImage(stop) )
-	bouton_stop = Button(fenetre, command = arreter_rotation, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_stop = Button(fenetre, command = arreter_rotation, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_stop.grid(row=2)
 	label_stop = Label(fenetre, text="Arrêter")
 	label_stop.grid(row=3)
 	
 	replay = Image.open("./images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
-	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
@@ -606,12 +606,9 @@ def calculer_vitesse():
 	#Le résultat est en miliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde
 	pixel_par_seconde = (TIC/distance_max) / 1000
 	
-	print "Avant arrondi : "+str(pixel_par_seconde)
-	
 	arrondi = format(pixel_par_seconde, '.3f')
 	
 	VITESSE_LATENCE_MESSAGE = float(arrondi)
-	print "Vitesse à utiliser : "+str(VITESSE_LATENCE_MESSAGE)
 	
 # # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # # 
 
