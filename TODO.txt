@@ -1,7 +1,8 @@
 TODO:
 	- Poursuivre développement
-		- Ajouter l'attente d'envoi de message sur le noeud précédent (Problème de synchronisation)
 		- Ajouter des boutons pour pouvoir changer le nombre de slot, le nombre de noeud, la probabilité d'envoyer un message, la vitesse déplacement des messages ...
 		- Ajouter les files d'attentes aux noeuds
 		- Faire un prograpmme à part exécutant l'arrivé de message dans le terminal
 		- Générer une fonction qui initialise la vitesse des message et des TIC à partir de la distance entre les slots
+		- Réflechir à une notion de vitesse à afficher
+		- Revoir l'ugmentation/diminution de vitesse

@@ -9,11 +9,12 @@ import time
 import random
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
+
 IMAGES = []
 
 COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "LightCoral"]
 
-COTE_CANVAS = 600	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
+COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
 global NOMBRE_SLOT
 NOMBRE_SLOT = 25		#Le nombre de slot du système
@@ -46,7 +47,9 @@ PROBABILITE = 0.33
 
 global tache
 tache = None
+
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
+
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
@@ -412,18 +415,44 @@ def commencer_rotation():
 
 def arreter_rotation():
 	global controleur
-		#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
+	global tache
+	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	if tache != None:
 		controleur.fenetre.after_cancel(tache)
 	controleur.continuer = False
 
-
+"""
+	Augmente la vitesse de rotation
+"""
 def augmenter_vitesse():
-	print "Augmentation de la vitesse !"
+	global TIC
+	global tache
+	print tache
 
+	arreter_rotation()
+	if TIC - 100 >= 500:
+		TIC -= 100
+		calculer_vitesse()
+	
+		print "TIC : "+str(TIC)
+	
+		print "Latence ! "+str(VITESSE_LATENCE_MESSAGE)
+		#effectuer_tic()
 
+"""
+	Diminue la vitesse de rotation
+"""
 def diminuer_vitesse():
+	global TIC
+	
 	print "Diminution de la vitesse..."
+	arreter_rotation()
+	TIC += 100
+	calculer_vitesse()
+
+	print "TIC : "+str(TIC)
+
+	print "Latence ! "+str(VITESSE_LATENCE_MESSAGE)
 
 
 def modifier_configuration():
@@ -694,5 +723,5 @@ controleur = None
 
 fenetre = creer_fenetre()
 
-fenetre.after(0, initialisation, (fenetre) )
+initialisation(fenetre)
 fenetre.mainloop()
