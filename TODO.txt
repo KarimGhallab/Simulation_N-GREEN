@@ -4,4 +4,4 @@ TODO:
 		- Ajouter des boutons pour pouvoir changer le nombre de slot, le nombre de noeud, la probabilité d'envoyer un message, la vitesse déplacement des messages ...
 		- Ajouter les files d'attentes aux noeuds
 		- Faire un prograpmme à part exécutant l'arrivé de message dans le terminal
-		
+		- Générer une fonction qui initialise la vitesse des message et des TIC à partir de la distance entre les slots

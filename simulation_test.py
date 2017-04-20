@@ -26,8 +26,9 @@ COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 
+global VITESSE_LATENCE_MESSAGE
+VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
 COTE_MESSAGE = 4
-VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente entre chaque rafréchisement du canvas lors d'un déplacement
 
 LONGUEUR_BOUTON = COTE_CANVAS/60
 LONGUEUR_ENTRY = COTE_CANVAS/100
@@ -38,7 +39,7 @@ CLE_ENTRY_SLOT = 1
 CLE_ENTRY_NOEUD = 2
 CLE_ENTRY_PROBA = 3
 
-TIC = 1000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
+TIC = 500	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 global PROBABILITE
 PROBABILITE = 0.33
@@ -227,7 +228,7 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	
 	arrivee_x = int(arrivee_x)
 	arrivee_y = int(arrivee_y)
-	
+	cmpt = 0
 	while objet_x != arrivee_x or objet_y != arrivee_y:
 		if objet_x < arrivee_x:
 			canvas.move(objet, 1, 0)
@@ -237,17 +238,18 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 			canvas.move(objet, 0, 1)
 		elif objet_y > arrivee_y:
 			canvas.move(objet, 0, -1)
-			
+		cmpt += 1
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
 		time.sleep(VITESSE_LATENCE_MESSAGE)
+	#print "Nombre de déplacement : "+str(cmpt)
 
 """
 	Fonction faisant sortir de l'interface un message
 """
 def sortir_message_graphique(canvas, message):
 	#L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas
-	time.sleep(1)
+	time.sleep( float(TIC) / float(1000) )
 	
 	x = int(canvas.coords(message)[0])
 	y = int(canvas.coords(message)[1])
@@ -382,7 +384,7 @@ def reset():
 		controleur.fenetre.after_cancel(tache)
 		
 	#La méthode after permet ici de faire s'executer les threads en cours
-	controleur.fenetre.after(1000, initialisation, (fenetre) )
+	controleur.fenetre.after(TIC, initialisation, (fenetre) )
 	
 	
 def commencer_rotation():
@@ -581,7 +583,36 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 		controleur.slots_modele[indice_slot].message = message
 	else:
 		controleur.slots_modele[indice_slot].message = message
-		
+
+
+def calculer_vitesse():
+	#Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
+	#suffisament de temps pour finir de bouger les messages
+	matela_securite = 1.5
+	
+	milieu_x = COTE_CANVAS/2
+	milieu_y = COTE_CANVAS/2
+	
+	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_NOEUD
+	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_NOEUD
+	
+	x2 = milieu_x + cos(2*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
+	y2 = milieu_y - sin(2*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
+	
+	distance_max = max( abs(x1 - x2), abs(y1 - y2) ) * matela_securite
+	
+	global VITESSE_LATENCE_MESSAGE
+	
+	#Le résultat est en miliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde
+	pixel_par_seconde = (TIC/distance_max) / 1000
+	
+	print "Avant arrondi : "+str(pixel_par_seconde)
+	
+	arrondi = format(pixel_par_seconde, '.3f')
+	
+	VITESSE_LATENCE_MESSAGE = float(arrondi)
+	print "Vitesse à utiliser : "+str(VITESSE_LATENCE_MESSAGE)
+	
 # # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # # 
 
 """
@@ -608,6 +639,8 @@ def initialisation(fenetre):
 	slots_modele = noeuds[2]
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
+	
+	calculer_vitesse()
 	
 	placer_panel_gauche(fenetre)
 	placer_panel_bas(fenetre)
