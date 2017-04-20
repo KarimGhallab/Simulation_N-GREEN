@@ -43,8 +43,8 @@ TIC = 1000	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message
 global PROBABILITE
 PROBABILITE = 0.33
 
-
-
+global tache
+tache = None
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
@@ -92,7 +92,7 @@ def placer_slots(fenetre, canvas):
 	En indice 0 les noeuds du modele
 	En indice 1 les noeuds de la vue
 """
-def placer_noeuds(fenetre, canvas, slots_modele):
+def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	noeuds_vue = [None] * NOMBRE_NOEUD
 	noeuds_modele = [None] * NOMBRE_NOEUD
 	
@@ -373,18 +373,25 @@ class Controleur:
 """
 def reset():
 	global controleur
+	global tache
 	
 	controleur.continuer = False
 	
+	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
+	if tache != None:
+		controleur.fenetre.after_cancel(tache)
+		
 	#La méthode after permet ici de faire s'executer les threads en cours
 	controleur.fenetre.after(1000, initialisation, (fenetre) )
 	
 	
 def commencer_rotation():
 	global controleur
+	global tache
 
-	controleur.continuer = True
-	effectuer_tic()
+	if not controleur.continuer:
+		controleur.continuer = True
+		tache = controleur.fenetre.after(0, effectuer_tic)
 
 
 def arreter_rotation():
@@ -398,12 +405,15 @@ def modifier_configuration():
 	global NOMBRE_SLOT
 	global PROBABILITE
 	
+	tmp_noeud = NOMBRE_NOEUD
+	tmp_slot = NOMBRE_SLOT
+	tmp_proba = PROBABILITE
 	
 	erreur = False
 	
-	valeur_noeud = controleur.entrys[CLE_ENTRY_NOEUD].get()
-	valeur_slot = controleur.entrys[CLE_ENTRY_SLOT].get()
-	valeur_proba = controleur.entrys[CLE_ENTRY_PROBA].get()
+	valeur_noeud = controleur.entrys[ CLE_ENTRY_NOEUD ].get()
+	valeur_slot = controleur.entrys[ CLE_ENTRY_SLOT ].get()
+	valeur_proba = controleur.entrys[ CLE_ENTRY_PROBA ].get()
 	
 	if valeur_noeud != "":
 		valeur_noeud = int(valeur_noeud)
@@ -426,7 +436,12 @@ def modifier_configuration():
 			erreur = True
 		else:
 			NOMBRE_SLOT = valeur_slot
-		
+	
+	if valeur_noeud > valeur_slot:
+		message = "Le nombre de noeud ne peut être supérieur au nombre de slot"
+		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
+		erreur = True
+
 	if valeur_proba != "":
 		valeur_proba = float(valeur_proba)
 		if valeur_proba > 1 or valeur_proba < 0:
@@ -435,9 +450,13 @@ def modifier_configuration():
 			erreur = True
 		else:
 			PROBABILITE = valeur_proba
-	if not erreur:
-		controleur.fenetre.after(1000, initialisation, (fenetre) )
-		controleur.continuer = False
+	
+	if erreur:
+		NOMBRE_NOEUD = tmp_noeud
+		NOMBRE_SLOT = tmp_slot
+		PROBABILITE = tmp_proba
+	else:
+		reset()
 	
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
@@ -509,15 +528,18 @@ def sortir_message():
 		message = slot.message
 		
 		if message and message.indice_noeud_emetteur == slot.indice_noeud_accessible:
-			for slot in controleur.slots_modele:
+			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
+			t.start()
+			slot.message = None
+			"""for slot in controleur.slots_modele:
 				if slot.message and slot.message.equals(message):
 					#Faire sortir le message graphiquement
 					t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
 					t.start()
-					slot.message = None
+					slot.message = None"""
 					
 			controleur.noeuds_modele[ message.indice_noeud_emetteur ].vient_de_sortir_message = True
-		elif slot.indice_noeud_accessible:
+		elif slot.indice_noeud_accessible != None:
 			controleur.noeuds_modele[ slot.indice_noeud_accessible ].vient_de_sortir_message = False
 	
 		
@@ -580,7 +602,7 @@ def initialisation(fenetre):
 	slots_modele = slots[0]
 	slots_vue = slots[1]
 
-	noeuds = placer_noeuds(fenetre, canvas, slots_modele)
+	noeuds = placer_noeuds(fenetre, canvas, slots_modele, slots_vue)
 
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
@@ -597,11 +619,11 @@ def initialisation(fenetre):
 """
 def effectuer_tic():
 	global controleur
-	
+	global tache
 	rotation_message()
 	
 	if controleur.continuer:
-		controleur.fenetre.after(TIC, effectuer_tic )
+		tache = controleur.fenetre.after(TIC, effectuer_tic )
 
 
 ###############################################################################
