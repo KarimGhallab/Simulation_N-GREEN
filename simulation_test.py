@@ -168,6 +168,21 @@ def placer_panel_gauche(fenetre):
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
 	
+	replay = Image.open("./images/vitesse_up.png")
+	IMAGES.append( ImageTk.PhotoImage(replay) )
+	bouton_reset = Button(fenetre, text ="UP", command = augmenter_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
+	bouton_reset.grid(row=6)
+	label_restart = Label(fenetre, text="Modifier vitesse")
+	label_restart.grid(row=7)
+	
+	vitesse_down = Image.open("./images/vitesse_down.png")
+	IMAGES.append( ImageTk.PhotoImage(vitesse_down) )
+	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
+	bouton_down.grid(row=8)
+	
+	
+
+	
 """
 	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
 		- Le nombre de slot utilisé
@@ -386,7 +401,6 @@ def reset():
 	#La méthode after permet ici de faire s'executer les threads en cours
 	controleur.fenetre.after(TIC, initialisation, (fenetre) )
 	
-	
 def commencer_rotation():
 	global controleur
 	global tache
@@ -402,6 +416,14 @@ def arreter_rotation():
 	if tache != None:
 		controleur.fenetre.after_cancel(tache)
 	controleur.continuer = False
+
+
+def augmenter_vitesse():
+	print "Augmentation de la vitesse !"
+
+
+def diminuer_vitesse():
+	print "Diminution de la vitesse..."
 
 
 def modifier_configuration():
@@ -462,6 +484,7 @@ def modifier_configuration():
 		PROBABILITE = tmp_proba
 	else:
 		reset()
+
 	
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
@@ -525,6 +548,7 @@ def entrer_message():
 				if faire_tirage:
 					placer_message( slot.indice_noeud_accessible )
 
+
 """
 	Fait sortir du système un mesage
 """
@@ -553,6 +577,7 @@ def decaler_messages():
 	tempon = controleur.slots_modele[1].message
 	
 	decaler_messages2(0, 0, tempon, True)
+
 	
 """
 	Méthode récursive qui décale les messages du système
@@ -585,6 +610,10 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 		controleur.slots_modele[indice_slot].message = message
 
 
+"""
+	calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message
+	Le calcul prend en compte la distance à parcourir entre chaque déplacement
+"""
 def calculer_vitesse():
 	#Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
 	#suffisament de temps pour finir de bouger les messages
@@ -593,6 +622,7 @@ def calculer_vitesse():
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
 	
+	#Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots
 	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_NOEUD
 	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_NOEUD
 	
