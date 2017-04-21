@@ -40,7 +40,7 @@ CLE_ENTRY_SLOT = 1
 CLE_ENTRY_NOEUD = 2
 CLE_ENTRY_PROBA = 3
 
-TIC = 500	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
+TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
 global PROBABILITE
 PROBABILITE = 0.33
@@ -411,7 +411,7 @@ def commencer_rotation():
 
 	if not controleur.continuer:
 		controleur.continuer = True
-		tache = controleur.fenetre.after(0, effectuer_tic)
+		#tache = controleur.fenetre.after(0, effectuer_tic)
 
 
 def arreter_rotation():
@@ -419,7 +419,8 @@ def arreter_rotation():
 	global tache
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	if tache != None:
-		controleur.fenetre.after_cancel(tache)
+		pass
+		#controleur.fenetre.after_cancel(tache)
 	controleur.continuer = False
 
 """
@@ -430,15 +431,12 @@ def augmenter_vitesse():
 	global tache
 	print tache
 
-	arreter_rotation()
-	if TIC - 100 >= 500:
+	if TIC - 100 >= 600:
 		TIC -= 100
+		arreter_rotation()
 		calculer_vitesse()
-	
-		print "TIC : "+str(TIC)
-	
-		print "Latence ! "+str(VITESSE_LATENCE_MESSAGE)
-		#effectuer_tic()
+		commencer_rotation()
+		print "TIC : ", TIC
 
 """
 	Diminue la vitesse de rotation
@@ -446,16 +444,15 @@ def augmenter_vitesse():
 def diminuer_vitesse():
 	global TIC
 	
-	print "Diminution de la vitesse..."
 	arreter_rotation()
 	TIC += 100
 	calculer_vitesse()
+	commencer_rotation()
+	print "TIC : ", TIC
 
-	print "TIC : "+str(TIC)
-
-	print "Latence ! "+str(VITESSE_LATENCE_MESSAGE)
-
-
+"""
+	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas
+"""
 def modifier_configuration():
 	global controleur
 	global NOMBRE_NOEUD
@@ -494,7 +491,7 @@ def modifier_configuration():
 		else:
 			NOMBRE_SLOT = valeur_slot
 	
-	if valeur_noeud > valeur_slot:
+	if valeur_noeud != "" and valeur_slot != "" and valeur_noeud > valeur_slot:
 		message = "Le nombre de noeud ne peut être supérieur au nombre de slot"
 		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
 		erreur = True
@@ -515,7 +512,12 @@ def modifier_configuration():
 	else:
 		reset()
 
-	
+
+def arreter_appli():
+	arreter_rotation()
+	fenetre.destroy()
+
+
 """
 	Action de faire entrer un message d'un noeud jusqu'à son slot
 """
@@ -647,26 +649,26 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 def calculer_vitesse():
 	#Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
 	#suffisament de temps pour finir de bouger les messages
-	matela_securite = 1.5
+	matela_securite = 100
 	
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
 	
 	#Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots
-	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_NOEUD
-	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_NOEUD
+	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_SLOT
+	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_SLOT
 	
-	x2 = milieu_x + cos(2*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
-	y2 = milieu_y - sin(2*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
+	x2 = milieu_x + cos(2*pi/NOMBRE_SLOT) * DISTANCE_SLOT
+	y2 = milieu_y - sin(2*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 	
-	distance_max = max( abs(x1 - x2), abs(y1 - y2) ) * matela_securite
+	distance_max = max( abs(x1 - x2), abs(y1 - y2) ) #* matela_securite
 	
 	global VITESSE_LATENCE_MESSAGE
 	
 	#Le résultat est en miliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde
-	pixel_par_seconde = (TIC/distance_max) / 1000
+	pixel_par_seconde = (TIC/distance_max) / (1000*100)
 	
-	arrondi = format(pixel_par_seconde, '.3f')
+	arrondi = format(pixel_par_seconde, '.5f')
 	
 	VITESSE_LATENCE_MESSAGE = float(arrondi)
 	
@@ -701,6 +703,8 @@ def initialisation(fenetre):
 	
 	placer_panel_gauche(fenetre)
 	placer_panel_bas(fenetre)
+	
+	effectuer_tic()
 
 
 """
@@ -709,10 +713,9 @@ def initialisation(fenetre):
 def effectuer_tic():
 	global controleur
 	global tache
-	rotation_message()
-	
-	if controleur.continuer:
-		tache = controleur.fenetre.after(TIC, effectuer_tic )
+	if controleur.continuer == True:
+		rotation_message()
+	tache = controleur.fenetre.after(TIC, effectuer_tic )
 
 
 ###############################################################################
@@ -723,6 +726,7 @@ global controleur
 controleur = None
 
 fenetre = creer_fenetre()
+fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)	#Réagi à la demande d'un utilisateur de quitter l'application
 
 initialisation(fenetre)
 fenetre.mainloop()
