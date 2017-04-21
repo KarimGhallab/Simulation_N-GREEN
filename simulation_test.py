@@ -261,7 +261,13 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	objet_x = int(canvas.coords(objet)[0])
 	objet_y = int(canvas.coords(objet)[1])
 	
-	canvas.coords(objet, objet_x-COTE_MESSAGE, objet_y-COTE_MESSAGE, objet_x+COTE_MESSAGE, objet_y+COTE_MESSAGE)
+	#Calcule la taille de la forme de l'objet passé
+	x1 = canvas.coords(objet)[0]
+	x2 = canvas.coords(objet)[2]
+	
+	cote = abs(x1 - x2)/2
+	
+	canvas.coords(objet, objet_x - cote, objet_y - cote, objet_x + cote, objet_y + cote)
 	
 	arrivee_x = int(arrivee_x)
 	arrivee_y = int(arrivee_y)
@@ -340,14 +346,14 @@ class Noeud:
 class Slot:
 	def __init__(self, id, indice_noeud_accessible):
 		self.id = id
-		self.message = None
+		self.paquet_message = None	#Indique si le slot possede un paquet de message
 		self.indice_noeud_accessible = indice_noeud_accessible		#Si le slot ne peut accèder a aucun noeud, ce champs vaut None
 
-	def set_message(self, message):
-		self.message = message
+	def set_paquet_message(self, message):
+		self.paquet_message = message
 	
 	def __str__(self):
-		if self.message == None:
+		if self.paquet_message == None:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je ne possede pas de message"
 		else:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je possede un message"
@@ -357,13 +363,14 @@ class Slot:
 	Représente un message : contient à la fois les coordonées graphiques du messages, l'indice du slot auquel il appartient ainsi 		que l'emetteur du message
 """
 
-class Message:
+class PaquetMessage:
 	def __init__(self, id_message, indice_noeud_emetteur):
 		self.id_message_graphique = id_message
 		self.indice_noeud_emetteur = indice_noeud_emetteur
 		self.x = None
 		self.y = None
 		self.a_bouge = False	#Indique si le message à bougé graphiquement
+		self.taille = None	#La taille du paquet
 	
 	def update_position(self, nouveau_x, nouveau_y):
 		self.x = nouveau_x
@@ -570,12 +577,12 @@ def placer_message(indice_noeud):
 		
 		#Création du message
 		id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
-		controleur.slots_modele[indice_slot].set_message(Message( id_message_graphique, indice_noeud) )
+		controleur.slots_modele[indice_slot].set_paquet_message(PaquetMessage( id_message_graphique, indice_noeud) )
 		
 		#Mise à jour de la distance
 		message_x = canvas.coords(id_message_graphique)[0]
 		message_y = canvas.coords(id_message_graphique)[1]
-		controleur.slots_modele[indice_slot].message.update_position(message_x, message_y)
+		controleur.slots_modele[indice_slot].paquet_message.update_position(message_x, message_y)
 		
 	
 	else:	#Une erreur est survenue, on affiche un message
@@ -597,7 +604,7 @@ def entrer_message():
 	global controleur
 	#Fait entrer les messages selon un tirage
 	for slot in controleur.slots_modele:
-		if slot.indice_noeud_accessible != None and slot.message == None:	#Le slot peut recevoir un message
+		if slot.indice_noeud_accessible != None and slot.paquet_message == None:	#Le slot peut recevoir un message
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_accessible ]
 			if not noeud.vient_de_sortir_message:
 			
@@ -614,14 +621,14 @@ def sortir_message():
 	global controleur
 	#Fais sortir les messages qui repassent devant leur Noeud emetteur
 	for slot in controleur.slots_modele:
-		message = slot.message
+		paquet_message = slot.paquet_message
 		
-		if message and message.indice_noeud_emetteur == slot.indice_noeud_accessible:
-			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.message.id_message_graphique) )
+		if paquet_message and paquet_message.indice_noeud_emetteur == slot.indice_noeud_accessible:
+			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.paquet_message.id_message_graphique) )
 			t.start()
-			slot.message = None
+			slot.paquet_message = None
 					
-			controleur.noeuds_modele[ message.indice_noeud_emetteur ].vient_de_sortir_message = True
+			controleur.noeuds_modele[ paquet_message.indice_noeud_emetteur ].vient_de_sortir_message = True
 		elif slot.indice_noeud_accessible != None:
 			controleur.noeuds_modele[ slot.indice_noeud_accessible ].vient_de_sortir_message = False
 	
@@ -632,7 +639,7 @@ def sortir_message():
 def decaler_messages():
 	global controleur
 
-	tempon = controleur.slots_modele[1].message
+	tempon = controleur.slots_modele[1].paquet_message
 	
 	decaler_messages2(0, 0, tempon, True)
 
@@ -640,7 +647,7 @@ def decaler_messages():
 """
 	Méthode récursive qui décale les messages du système
 """
-def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
+def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel):
 	global controleur
 	
 	milieu_x = COTE_CANVAS/2
@@ -649,10 +656,23 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 	destination_x = milieu_x + cos(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 	destination_y = milieu_y - sin(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 	
-	msg = controleur.slots_modele[indice_slot].message
+	msg = controleur.slots_modele[indice_slot].paquet_message
 	if msg != None:
+		#On déplace le message
 		t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
 		t.start()
+		
+		if indice_slot -1 < 0:
+			indice_slot_suivant = len (controleur.slots_vue) - 1
+		else:
+			indice_slot_suivant = indice_slot - 1
+		
+		slot_graphique = controleur.slots_vue[ indice_slot ]
+		slot_graphique_suivant = controleur.slots_vue[ indice_slot_suivant ]
+		
+		#On déplace le slot
+		"""t = Thread(target=deplacer_vers, args=( controleur.canvas, slot_graphique, destination_x, destination_y ))
+		t.start()"""
 	
 	if indice_slot-1 < 0:
 		nouvelle_indice = len(controleur.slots_modele) -1
@@ -660,12 +680,12 @@ def decaler_messages2(premier_indice, indice_slot, message, premier_appel):
 		nouvelle_indice = indice_slot-1
 		
 	if indice_slot != premier_indice or premier_appel:
-		tempon = controleur.slots_modele[indice_slot].message
+		tempon = controleur.slots_modele[indice_slot].paquet_message
 		
 		decaler_messages2(premier_indice, nouvelle_indice, tempon, False)
-		controleur.slots_modele[indice_slot].message = message
+		controleur.slots_modele[indice_slot].paquet_message = paquet_message
 	else:
-		controleur.slots_modele[indice_slot].message = message
+		controleur.slots_modele[indice_slot].paquet_message = paquet_message
 
 
 """
