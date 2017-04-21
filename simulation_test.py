@@ -48,6 +48,9 @@ PROBABILITE = 0.33
 global tache
 tache = None
 
+global LABEL_TIC
+LABEL_TIC = None
+
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
 def creer_fenetre():
@@ -66,6 +69,7 @@ def creer_canvas(fenetre):
 	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=4)
 	
 	return canvas
+
 
 """
 	Place sur la toile les slots et renvoie un tableau contenant :
@@ -117,6 +121,7 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		#le texte du rectangle
 		texte = canvas.create_text(x, y, text="N "+str(noeuds_vue[j]))
 	return noeuds_modele, noeuds_vue, slots_modele
+
 			
 """
 	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé
@@ -183,8 +188,6 @@ def placer_panel_gauche(fenetre):
 	IMAGES.append( ImageTk.PhotoImage(vitesse_down) )
 	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_down.grid(row=9)
-	
-	
 
 	
 """
@@ -200,7 +203,7 @@ def placer_panel_bas(fenetre):
 	nombre_noeud = len( controleur.noeuds_modele )
 	proba = controleur.noeuds_modele[0].probabilite
 	
-	#Les labels présentant les nombres de slots, de noeuds ainsi que la proba actuel
+	#Les labels présentant les nombres de slots, de noeuds, la proba actuelle ainsi que le TIC en miliseconde
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
 	label_proba_actuelle = Label(fenetre, text = "Probabilité actuel : "+str(proba) )
@@ -208,6 +211,7 @@ def placer_panel_bas(fenetre):
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
 	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
 	label_proba_actuelle.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
+	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
 	
 	#Les labels des entry pour un nouveau nombre de slot/noeud
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
@@ -233,7 +237,21 @@ def placer_panel_bas(fenetre):
 	
 	#le bouton
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+4, column=4, sticky='E')
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+5, column=4, sticky='E')
+
+def update_label_TIC(fenetre, ligne, colonne):
+	global LABEL_TIC
+	
+	if LABEL_TIC != None:
+		LABEL_TIC.destroy()
+	
+	if TIC <= 600:
+		message = "TIC : "+str(TIC)+" millisecondes, on est au max !"
+	else:
+		message = "TIC : "+str(TIC)+" millisecondes"
+	LABEL_TIC = Label(fenetre, text = message)
+	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+4, column=1, sticky='W')
+
 
 """ 
 	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
@@ -247,7 +265,6 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	
 	arrivee_x = int(arrivee_x)
 	arrivee_y = int(arrivee_y)
-	cmpt = 0
 	while objet_x != arrivee_x or objet_y != arrivee_y:
 		if objet_x < arrivee_x:
 			canvas.move(objet, 1, 0)
@@ -257,11 +274,10 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 			canvas.move(objet, 0, 1)
 		elif objet_y > arrivee_y:
 			canvas.move(objet, 0, -1)
-		cmpt += 1
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
 		time.sleep(VITESSE_LATENCE_MESSAGE)
-	#print "Nombre de déplacement : "+str(cmpt)
+
 
 """
 	Fonction faisant sortir de l'interface un message
@@ -306,6 +322,7 @@ def sortir_message_graphique(canvas, message):
 			canvas.delete(message)
 			break
 
+
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
 """
@@ -318,6 +335,7 @@ class Noeud:
 		self.couleur = couleur
 		self.probabilite = probabilite
 		self.vient_de_sortir_message = False
+
 
 class Slot:
 	def __init__(self, id, indice_noeud_accessible):
@@ -388,6 +406,7 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
+
 """
 	Callback au bouton demandant un reset de l'application
 	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration
@@ -404,6 +423,7 @@ def reset():
 		
 	#La méthode after permet ici de faire s'executer les threads en cours
 	controleur.fenetre.after(TIC, initialisation, (fenetre) )
+
 	
 def commencer_rotation():
 	global controleur
@@ -411,32 +431,32 @@ def commencer_rotation():
 
 	if not controleur.continuer:
 		controleur.continuer = True
-		#tache = controleur.fenetre.after(0, effectuer_tic)
 
 
 def arreter_rotation():
 	global controleur
 	global tache
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
-	if tache != None:
-		pass
-		#controleur.fenetre.after_cancel(tache)
 	controleur.continuer = False
+
 
 """
 	Augmente la vitesse de rotation
 """
 def augmenter_vitesse():
 	global TIC
-	global tache
-	print tache
+	global LABEL_TIC
 
 	if TIC - 100 >= 600:
 		TIC -= 100
-		arreter_rotation()
-		calculer_vitesse()
-		commencer_rotation()
-		print "TIC : ", TIC
+		if controleur.continuer == True:
+			arreter_rotation()
+			calculer_vitesse()
+			commencer_rotation()
+		else:
+			calculer_vitesse()
+		update_label_TIC(controleur.fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
+
 
 """
 	Diminue la vitesse de rotation
@@ -444,11 +464,16 @@ def augmenter_vitesse():
 def diminuer_vitesse():
 	global TIC
 	
-	arreter_rotation()
 	TIC += 100
-	calculer_vitesse()
-	commencer_rotation()
-	print "TIC : ", TIC
+	if controleur.continuer == True:
+		arreter_rotation()
+		calculer_vitesse()
+		commencer_rotation()
+	else:
+		calculer_vitesse()
+		
+	update_label_TIC(controleur.fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
+
 
 """
 	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas
@@ -509,8 +534,9 @@ def modifier_configuration():
 		NOMBRE_NOEUD = tmp_noeud
 		NOMBRE_SLOT = tmp_slot
 		PROBABILITE = tmp_proba
-	else:
+	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		reset()
+		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
 
 
 def arreter_appli():
@@ -680,9 +706,9 @@ def calculer_vitesse():
 def initialisation(fenetre):
 	global controleur
 	
-	#premier appel à la méthode
-	if controleur:
-		controleur.canvas.destroy()		#On détruit le canvas précèdent
+	#On détruit tout les widgets de la fenêtre afin que celle-ci soit toute belle
+	for widget in fenetre.winfo_children():
+	    widget.destroy()
 	
 	#Mise en place du canvas et des données du controleur
 	canvas = creer_canvas(fenetre)
