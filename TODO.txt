@@ -1,4 +1,6 @@
 TODO:
 	- Poursuivre développement
-		- Ajouter les files d'attentes aux noeuds
-		- Faire un programme à part exécutant l'arrivé de message dans le terminal
+		- Ajouter l'hyper expo à la simulation
+		- Rédiger le cahier des charges (A rendre à la fin de la semaine)
+		- Commencer rédaction rapport de stage
+		- Envoyer un mail à Mme.Barbot par rapport à l'annexe technique.
