@@ -90,14 +90,18 @@ def placer_slots(fenetre, canvas):
 	#Le point du milieu
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
-	
+	print "################## PLACER SLOT #################"
 	for i in range(1, NOMBRE_SLOT+1):
 		nouveau_x = milieu_x + cos(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 		nouveau_y = milieu_y - sin(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 		
+		print " x : ", nouveau_x/DISTANCE_SLOT
+		print " y : ", nouveau_y/DISTANCE_SLOT
+		
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
 		slots_modele[i-1] = Slot(i, None)
 		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]) )
+	print "################## FIN PLACER SLOT #################"
 	return slots_modele, slots_vue
 
 
@@ -119,13 +123,35 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	pas = NOMBRE_SLOT // NOMBRE_NOEUD
 	
 	for j in range(NOMBRE_NOEUD):
-		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) )/2) - 1
+		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
 		noeuds_modele[j] = Noeud(indice_slot_accessible, COULEURS_MESSAGE[j], PROBABILITE)
 		
 		slots_modele[ indice_slot_accessible ].indice_noeud_accessible = j
+		#Formule de base
+		#x = milieu_x + cos(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
+		#y = milieu_y - sin(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
 		
-		x = ((milieu_x + cos(2*j*pas*pi / (NOMBRE_SLOT)) * DISTANCE_NOEUD) + (milieu_x + cos(2*(j+1)*pas*pi / (NOMBRE_SLOT)) * DISTANCE_NOEUD)) / 2
-		y = ((milieu_y - sin(2*j*pas*pi / (NOMBRE_SLOT)) * DISTANCE_NOEUD) + (milieu_y - sin(2*(j+1)*pas*pi / (NOMBRE_SLOT)) * DISTANCE_NOEUD)) / 2
+		"""x = (( milieu_x + cos(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD) + (milieu_x + cos(2*(j+1)*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD)) / 2
+		y = (( milieu_y - sin(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD) + (milieu_y - sin(2*(j+1)*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD)) / 2"""
+		
+		x_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[0] + COTE_SLOT
+		x_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[0] + COTE_SLOT
+		
+		y_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[1] + COTE_SLOT
+		y_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[1] + COTE_SLOT
+		
+		x = ( x_slot + x_slot_suivant ) / 2
+		y = ( y_slot + y_slot_suivant) / 2
+		if x < COTE_CANVAS/2:
+			x -= 40
+		elif x > COTE_CANVAS/2:
+			x += 40
+			
+		if y < COTE_CANVAS/2:
+			y -= 40
+		elif y > COTE_CANVAS/2:
+			y += 40
+			
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
 		
 		#le texte du rectangle
@@ -347,10 +373,9 @@ def sortir_message_graphique(canvas, message):
 	Représente un noeud dans le système, un noeuds peux stocker des messages
 """
 class Noeud:
-	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, probabilite):
+	def __init__(self, indice_slot_accessible, couleur, probabilite):
 		self.nb_message = 0
-		self.indice_slot_lecture = indice_slot_lecture
-		self.indice_slot_ecriture = indice_slot_ecriture
+		self.indice_slot_accessible = indice_slot_accessible
 		self.couleur = couleur
 		self.probabilite = probabilite
 		self.vient_de_sortir_message = False
