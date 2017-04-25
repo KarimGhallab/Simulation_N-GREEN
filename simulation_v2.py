@@ -38,7 +38,8 @@ NOMBRE_LIGNE_CANVAS = 50
 
 CLE_ENTRY_SLOT = 1		#La clé de l'entry du slot pour le dictionnaire des entrys
 CLE_ENTRY_NOEUD = 2		#La clé de l'entry du noeud pour le dictionnaire des entrys
-CLE_ENTRY_LAMBDA = 3		#La clé de l'entry de du lambda pour le dictionnaire des entrys
+CLE_ENTRY_LAMBDA = 3		#La clé de l'entry du lambda pour le dictionnaire des entrys
+CLE_ENTRY_LAMBDA_BURST = 4		#La clé de l'entry du lambda burst pour le dictionnaire des entrys
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -56,8 +57,8 @@ PROBABILITE_BURST = 0.01
 global LAMBDA 
 LAMBDA = 1
 
-global NOMBRE_MESSAGE_BURST
-NOMBRE_MESSAGE_BURST = 140
+global LAMBDA_BURST
+LAMBDA_BURST = 140
 
 LIMITE_NOMBRE_MESSAGE = 80
 
@@ -254,42 +255,50 @@ def placer_panel_bas(fenetre):
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
 	label_lambda_actuel = Label(fenetre, text = "Lambda actuel : "+str(LAMBDA) )
+	label_lambda_burst_actuel = Label(fenetre, text = "Lambda Burst : "+str(LAMBDA_BURST) )
 	
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
 	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
 	label_lambda_actuel.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
-	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
+	label_lambda_burst_actuel.grid(row=NOMBRE_LIGNE_CANVAS+4, column=1, sticky='W')
+	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+5, 1)
 	
 	#Les labels des entry pour un nouveau nombre de slot/noeud
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
 	label_nouveau_lambda = Label(fenetre, text = "Nouvelle valeur du lambda : ")
+	label_nouveau_lambda_burst = Label(fenetre, text = "Nouvelle valeur du lambda Burst : ")
 	
 	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
 	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
 	label_nouveau_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
+	label_nouveau_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=2, sticky='W')
 	
 	#Les entry
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_lambda_burst = Entry(fenetre, width=LONGUEUR_ENTRY)
 	
 	#Ajout d'un event
 	entry_slot.bind("<Key>", callback_validation_configuration)
 	entry_noeud.bind("<Key>", callback_validation_configuration)
 	entry_lambda.bind("<Key>", callback_validation_configuration)
+	entry_lambda_burst.bind("<Key>", callback_validation_configuration)
 	
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
 	controleur.entrys[CLE_ENTRY_LAMBDA] = entry_lambda
+	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
 	
 	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
 	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
 	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
+	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky='W')
 	
 	#le bouton
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+5, column=4, sticky='E')
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+6, column=4, sticky='E')
 
 
 """
@@ -306,7 +315,7 @@ def update_label_TIC(fenetre, ligne, colonne):
 	else:
 		message = "TIC : "+str(TIC)+" millisecondes"
 	LABEL_TIC = Label(fenetre, text = message)
-	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+4, column=1, sticky='W')
+	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+5, column=1, sticky='W')
 
 
 """ 
@@ -500,7 +509,7 @@ def effectuer_tirage(probabilite):
 """
 def hyper_expo():
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
-		return NOMBRE_MESSAGE_BURST
+		return LAMBDA_BURST
 	else:
 		u = random.uniform(0, 1)
 		return loi_de_poisson_naif(u)
@@ -631,6 +640,7 @@ def modifier_configuration():
 	global NOMBRE_NOEUD
 	global NOMBRE_SLOT
 	global LAMBDA
+	global LAMBDA_BURST
 	
 	tmp_noeud = NOMBRE_NOEUD
 	tmp_slot = NOMBRE_SLOT
@@ -642,7 +652,9 @@ def modifier_configuration():
 	valeur_noeud = controleur.entrys[ CLE_ENTRY_NOEUD ].get()
 	valeur_slot = controleur.entrys[ CLE_ENTRY_SLOT ].get()
 	valeur_lambda = controleur.entrys[ CLE_ENTRY_LAMBDA ].get()
+	valeur_lambda_burst = controleur.entrys[ CLE_ENTRY_LAMBDA_BURST ].get()
 	
+	#Recupération de la valeur du noeud
 	if valeur_noeud != "":
 		int_valeur_noeud = int(valeur_noeud)
 		if int_valeur_noeud > len(COULEURS_MESSAGE):
@@ -657,7 +669,8 @@ def modifier_configuration():
 			NOMBRE_NOEUD = int_valeur_noeud
 	else:
 		nb_champ_vide += 1
-			
+	
+	#Recupération de la valeur du slot
 	if valeur_slot != "":
 		int_valeur_slot = int(valeur_slot)
 		if int_valeur_slot <= 0:
@@ -673,17 +686,37 @@ def modifier_configuration():
 		message = "Il doit y avoir au minimum deux slots par noeud."
 		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
 		erreur = True
-
+	
+	#Recupération de la valeur du lambda
 	if valeur_lambda != "":
-		LAMBDA = int(valeur_lambda)
+		valeur_lambda = int(valeur_lambda)
+		if valeur_lambda <= 0:
+			message = "Le paramètre lambda doit être supérieur à zéro."
+			tkMessageBox.showerror("Erreur valeur lambda !", message)
+			erreur = True
+		else:
+			LAMBDA = valeur_lambda
 	else:
 		nb_champ_vide += 1
 	
-	if erreur or nb_champ_vide == 3:
+	#Recupération de la valeur du lambda burst
+	if valeur_lambda_burst != "":
+		valeur_lambda_burst = int(valeur_lambda_burst)
+		if valeur_lambda_burst <= 0:
+			message = "Le paramètre lambda doit être supérieur à zéro."
+			tkMessageBox.showerror("Erreur valeur lambda burst !", message)
+			erreur = True
+		else:
+			LAMBDA_BURST = valeur_lambda_burst
+	else:
+		nb_champ_vide += 1
+		
+	if erreur or nb_champ_vide == len(controleur.entrys):
 		NOMBRE_NOEUD = tmp_noeud
 		NOMBRE_SLOT = tmp_slot
 		LAMBDA = tmp_lambda
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
+		print "Avant reset val lambda burst: ", LAMBDA_BURST
 		reset()
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
 
@@ -855,7 +888,7 @@ def calculer_vitesse():
 	global VITESSE_LATENCE_MESSAGE
 	
 	#Le résultat est en milliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde
-	pixel_par_seconde = (TIC/distance_max) / (1000*100)
+	pixel_par_seconde = (TIC/distance_max) / (1000 * matela_securite)
 	
 	arrondi = format(pixel_par_seconde, '.5f')
 	
