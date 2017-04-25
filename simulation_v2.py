@@ -12,17 +12,17 @@ import random
 
 IMAGES = []
 
-COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "black", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "LightCoral"]
+COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "LightCoral", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "Black"]
 
 COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
 global NOMBRE_SLOT
-NOMBRE_SLOT = 10		#Le nombre de slot du système
+NOMBRE_SLOT = 25		#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
 global NOMBRE_NOEUD
-NOMBRE_NOEUD = 5	#Le nombre de noeud du système
+NOMBRE_NOEUD = 10	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
@@ -77,9 +77,9 @@ def creer_fenetre():
 	Créer un canvas avec une croix au centre et le place dans la fenetre.
 """
 def creer_canvas(fenetre):
-	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='AntiqueWhite3')
-	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS)
-	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2)
+	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#909090')
+	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
+	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
 	
 	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=4)
 	
@@ -163,13 +163,6 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		#le texte du rectangle
 		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
 	return noeuds_modele, noeuds_vue, slots_modele
-
-"""
-	Modifie la couleur du coutour d'un widget du canvas
-"""
-def modifier_couleur(canvas, objet, couleur):		
-	pass
-	objet.config(highlightbackground=couleur)
 
 
 """
@@ -703,7 +696,7 @@ def modifier_configuration():
 	if valeur_lambda_burst != "":
 		valeur_lambda_burst = int(valeur_lambda_burst)
 		if valeur_lambda_burst <= 0:
-			message = "Le paramètre lambda doit être supérieur à zéro."
+			message = "Le paramètre lambda burst doit être supérieur à zéro."
 			tkMessageBox.showerror("Erreur valeur lambda burst !", message)
 			erreur = True
 		else:
