@@ -17,12 +17,12 @@ COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple",
 COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
 global NOMBRE_SLOT
-NOMBRE_SLOT = 25		#Le nombre de slot du système
+NOMBRE_SLOT = 10		#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
 global NOMBRE_NOEUD
-NOMBRE_NOEUD = 8	#Le nombre de noeud du système
+NOMBRE_NOEUD = 5	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
@@ -32,7 +32,7 @@ VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque dé
 COTE_MESSAGE = 4
 
 LONGUEUR_BOUTON = COTE_CANVAS/60
-LONGUEUR_ENTRY = COTE_CANVAS/100
+LONGUEUR_ENTRY = COTE_CANVAS/60
 
 NOMBRE_LIGNE_CANVAS = 50
 
@@ -56,7 +56,7 @@ TEXTS_NOEUDS = None
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 """
-	Créer une fenetre Tkinter avec son titre
+	Créer une fenetre Tkinter avec son titre.
 """
 def creer_fenetre():
 	# On crée une fenêtre, racine de notre interface
@@ -66,7 +66,7 @@ def creer_fenetre():
 	return fenetre
 
 """
-	Créer un canvas avec une croix au centre et le place dans la fenetre
+	Créer un canvas avec une croix au centre et le place dans la fenetre.
 """
 def creer_canvas(fenetre):
 	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='AntiqueWhite3')
@@ -81,7 +81,7 @@ def creer_canvas(fenetre):
 """
 	Place sur la toile les slots et renvoie un tableau contenant :
 	En indice 0 les slots du modele
-	En indice 1 les slots de la vue
+	En indice 1 les slots de la vue.
 """
 def placer_slots(fenetre, canvas):
 	slots_vue = [None] * NOMBRE_SLOT	#Tableau qui contiendra les rectangles représentant les slots du modèle
@@ -90,25 +90,20 @@ def placer_slots(fenetre, canvas):
 	#Le point du milieu
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
-	print "################## PLACER SLOT #################"
 	for i in range(1, NOMBRE_SLOT+1):
 		nouveau_x = milieu_x + cos(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 		nouveau_y = milieu_y - sin(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
 		
-		print " x : ", nouveau_x/DISTANCE_SLOT
-		print " y : ", nouveau_y/DISTANCE_SLOT
-		
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
-		slots_modele[i-1] = Slot(i, None)
+		slots_modele[i-1] = Slot(i, None, None)
 		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]) )
-	print "################## FIN PLACER SLOT #################"
 	return slots_modele, slots_vue
 
 
 """
 	Place sur la toile les noeuds et renvoie un tableau contenant :
 	En indice 0 les noeuds du modele
-	En indice 1 les noeuds de la vue
+	En indice 1 les noeuds de la vue.
 """
 def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	global TEXTS_NOEUDS
@@ -124,22 +119,19 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	
 	for j in range(NOMBRE_NOEUD):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
-		noeuds_modele[j] = Noeud(indice_slot_accessible, COULEURS_MESSAGE[j], PROBABILITE)
+		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], PROBABILITE)
 		
-		slots_modele[ indice_slot_accessible ].indice_noeud_accessible = j
-		#Formule de base
-		#x = milieu_x + cos(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
-		#y = milieu_y - sin(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD
+		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
+		slots_modele[ indice_slot_accessible-1 ].indice_noeud_ecriture = j
 		
-		"""x = (( milieu_x + cos(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD) + (milieu_x + cos(2*(j+1)*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD)) / 2
-		y = (( milieu_y - sin(2*j*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD) + (milieu_y - sin(2*(j+1)*pas*pi/NOMBRE_SLOT) * DISTANCE_NOEUD)) / 2"""
-		
+		#Récupération des slots dont dépendent la position du noeud
 		x_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[0] + COTE_SLOT
 		x_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[0] + COTE_SLOT
 		
 		y_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[1] + COTE_SLOT
 		y_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[1] + COTE_SLOT
 		
+		#Calcule de la position du noeud
 		x = ( x_slot + x_slot_suivant ) / 2
 		y = ( y_slot + y_slot_suivant) / 2
 		if x < COTE_CANVAS/2:
@@ -160,7 +152,7 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 
 			
 """
-	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé
+	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.
 """
 def placer_message_graphique(canvas, depart, arrive, couleur_message):
 	coordonnees = canvas.coords(depart)
@@ -189,7 +181,7 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 		- Stop
 		- Restart
 		- Augmenter vitesse
-		- Diminuer vitesse
+		- Diminuer vitesse.
 """
 def placer_panel_gauche(fenetre):
 	play = Image.open("./images/play.png")
@@ -231,8 +223,8 @@ def placer_panel_gauche(fenetre):
 		- Le nombre de slot utilisé
 		- Le nombre de Noeud présent
 		- La probabilité unitaire des noeuds
-	Le panel contient aussi un bouton de validation des données
-	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée'
+	Le panel contient aussi un bouton de validation des données.
+	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
 """	
 def placer_panel_bas(fenetre):
 	nombre_slot = len( controleur.slots_modele )
@@ -277,7 +269,7 @@ def placer_panel_bas(fenetre):
 
 
 """
-	Met a jour le label du panel bas affichant le TCI en millisecondes
+	Met a jour le label du panel bas affichant le TCI en millisecondes.
 """
 def update_label_TIC(fenetre, ligne, colonne):
 	global LABEL_TIC
@@ -294,7 +286,7 @@ def update_label_TIC(fenetre, ligne, colonne):
 
 
 """ 
-	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y
+	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y.
 """
 def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	#Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours
@@ -324,7 +316,7 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 
 
 """
-	Fonction faisant sortir de l'interface un message
+	Fonction faisant sortir de l'interface un message.
 """
 def sortir_message_graphique(canvas, message):
 	#L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas
@@ -370,26 +362,26 @@ def sortir_message_graphique(canvas, message):
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
 """
-	Représente un noeud dans le système, un noeuds peux stocker des messages
+	Représente un noeud dans le système, un noeuds peux stocker des messages.
 """
 class Noeud:
-	def __init__(self, indice_slot_accessible, couleur, probabilite):
+	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, probabilite):
 		self.nb_message = 0
-		self.indice_slot_accessible = indice_slot_accessible
+		self.indice_slot_lecture = indice_slot_lecture
+		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
 		self.probabilite = probabilite
-		self.vient_de_sortir_message = False
 
 
 	"""
-		renvoie l'équalité entres deux noeuds
+		renvoie l'équalité entres deux noeuds.
 	"""
 	def equals(self, autre_noeud):
 		return self.couleur == autre_noeud.couleur
 
 	
 	"""
-		Met a jour le text affichant le nombre de message en attente dans le noeud
+		Met a jour le text affichant le nombre de message en attente dans le noeud.
 	"""
 	def update_file_noeud_graphique(self):
 		global controleur
@@ -410,17 +402,21 @@ class Noeud:
 	
 		TEXTS_NOEUDS[indice_noeud] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_message) )
 		
+	def __str__(self):
+		return str(self.couleur)
+		
 """
-	Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède
+	Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
 """
 class Slot:
-	def __init__(self, id, indice_noeud_accessible):
+	def __init__(self, id, indice_noeud_lecture, indice_noeud_ecriture):
 		self.id = id
 		self.paquet_message = None	#Indique si le slot possede un paquet de message
-		self.indice_noeud_accessible = indice_noeud_accessible		#Si le slot ne peut accèder a aucun noeud, ce champs vaut None
+		self.indice_noeud_lecture = indice_noeud_lecture		#Si le slot ne peut accèder a aucun noeud, ce champs vaut None
+		self.indice_noeud_ecriture = indice_noeud_ecriture
 
 	"""
-		Renvoie le slot sous forme de chaine de caractères
+		Renvoie le slot sous forme de chaine de caractères.
 	"""	
 	def __str__(self):
 		if self.paquet_message == None:
@@ -431,7 +427,7 @@ class Slot:
 
 """
 	Représente un paquet de message : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, 
-	l'id du paquet le représentant graphiquement ainsi que la taille du paquet
+	l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
 """
 
 class PaquetMessage:
@@ -444,7 +440,7 @@ class PaquetMessage:
 	
 	
 	"""
-		Met a jour la position graphique du message
+		Met a jour la position graphique du message.
 	"""
 	def update_position(self, nouveau_x, nouveau_y):
 		self.x = nouveau_x
@@ -452,7 +448,7 @@ class PaquetMessage:
 	
 	
 	"""
-		Renvoie le paquet sous forme de chaine de caractères
+		Renvoie le paquet sous forme de chaine de caractères.
 	"""
 	def __str__(self):
 		global controleur
@@ -460,14 +456,14 @@ class PaquetMessage:
 	
 	
 	"""
-		Retourne l'equalité entre deux messages
+		Retourne l'equalité entre deux messages.
 	"""	
 	def equals(self, autre_message):
 		return self.id_message_graphique == autre_message.id_message_graphique
 
 		
 """
-	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre
+	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.
 """			
 def effectuer_tirage(probabilite):
 	tirage = random.uniform(0, 1)
@@ -478,7 +474,7 @@ def effectuer_tirage(probabilite):
 
 """
 	Classe représentant le système que l'on souhaite modéliser dans sa globalité 
-	Elle fera l'intermédiaire entre le modèle et la vue
+	Elle fera l'intermédiaire entre le modèle et la vue.
 """
 class Controleur:
 	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele):
@@ -498,7 +494,7 @@ class Controleur:
 
 """
 	Callback au bouton demandant un reset de l'application
-	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration
+	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
 """
 def reset():
 	global controleur
@@ -514,7 +510,7 @@ def reset():
 	controleur.fenetre.after(TIC, initialisation, (fenetre) )
 
 """
-	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement
+	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
 """
 def commencer_rotation():
 	global controleur
@@ -525,7 +521,7 @@ def commencer_rotation():
 
 
 """
-	Arrête la rotaion. Méthode appeler lors d'un clique sur le bouton de fin
+	Arrête la rotaion. Méthode appeler lors d'un clique sur le bouton de fin.
 """
 def arreter_rotation():
 	global controleur
@@ -535,7 +531,7 @@ def arreter_rotation():
 
 
 """
-	Augmente la vitesse de rotation
+	Augmente la vitesse de rotation.
 """
 def augmenter_vitesse():
 	global TIC
@@ -553,7 +549,7 @@ def augmenter_vitesse():
 
 
 """
-	Diminue la vitesse de rotation
+	Diminue la vitesse de rotation.
 """
 def diminuer_vitesse():
 	global TIC
@@ -570,7 +566,7 @@ def diminuer_vitesse():
 
 
 """
-	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas
+	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas.
 """
 def modifier_configuration():
 	global controleur
@@ -633,7 +629,7 @@ def modifier_configuration():
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
 
 """
-	Stop l'appli en faisant attention aux thread restants
+	Stop l'appli en faisant attention aux thread restants.
 """
 def arreter_appli():
 	arreter_rotation()
@@ -641,12 +637,12 @@ def arreter_appli():
 
 
 """
-	Action de faire entrer un message d'un noeud jusqu'à son slot
+	Action de faire entrer un message d'un noeud jusqu'à son slot.
 """
 def placer_message(indice_noeud):
 	global controleur
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
-	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_accessible
+	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
 	slot_modele = controleur.slots_modele[ indice_slot ]
 	
 	message = ""
@@ -679,8 +675,7 @@ def placer_message(indice_noeud):
 
 
 """
-	Exécute une rotation des messages dans l'anneau 
-
+	Exécute une rotation des messages dans l'anneau.
 """
 def rotation_message():
 	global controleur
@@ -691,33 +686,33 @@ def rotation_message():
 
 """
 	Fait entrer dans l'anneau des messages.
-	Ici les arrivées de messages sont géré par des proba et des files d'attentes
+	Ici les arrivées de messages sont géré par des proba et des files d'attentes.
 """
 #Version avec les files d'attentes et les proba
 def entrer_message():
 	global controleur
-	#Fait entrer les messages selon un tirage
-	for slot in controleur.slots_modele:
-		if slot.indice_noeud_accessible != None:	#Le slot peut recevoir un message
-			noeud = controleur.noeuds_modele[ slot.indice_noeud_accessible ]
-			if not noeud.vient_de_sortir_message:
-			
-				faire_tirage = effectuer_tirage(noeud.probabilite)
-			
-				if faire_tirage:	#Un message arrive
-					noeud.nb_message += 1
-					if slot.paquet_message == None:		#Le slot peut recevoir un message
-						noeud.nb_message -= 1
-						placer_message( slot.indice_noeud_accessible )
-						
-				elif noeud.nb_message > 0 and slot.paquet_message == None:
+	
+	for i in range (NOMBRE_SLOT):		#Parcours des slots de l'anneau
+		slot = controleur.slots_modele[i]
+		if slot.indice_noeud_ecriture != None:	#Le slot est un sslot d'ecriture
+			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
+	
+			faire_tirage = effectuer_tirage(noeud.probabilite)
+	
+			if faire_tirage:	#Un message arrive
+				noeud.nb_message += 1
+				if slot.paquet_message == None:		#Le slot peut recevoir un message
 					noeud.nb_message -= 1
-					placer_message( slot.indice_noeud_accessible )
-				noeud.update_file_noeud_graphique()
+					placer_message( slot.indice_noeud_ecriture )
+				
+			elif noeud.nb_message > 0 and slot.paquet_message == None:
+				noeud.nb_message -= 1
+				placer_message( slot.indice_noeud_ecriture )
+			noeud.update_file_noeud_graphique()
 
 
 """
-	Fait sortir du système un mesage
+	Fait sortir du système un mesage.
 """
 def sortir_message():
 	global controleur
@@ -725,18 +720,14 @@ def sortir_message():
 	for slot in controleur.slots_modele:
 		paquet_message = slot.paquet_message
 		
-		if paquet_message and paquet_message.indice_noeud_emetteur == slot.indice_noeud_accessible:
+		if paquet_message and slot.indice_noeud_lecture != None and paquet_message.indice_noeud_emetteur == slot.indice_noeud_lecture:
 			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.paquet_message.id_message_graphique) )
 			t.start()
 			slot.paquet_message = None
-					
-			controleur.noeuds_modele[ paquet_message.indice_noeud_emetteur ].vient_de_sortir_message = True
-		elif slot.indice_noeud_accessible != None:
-			controleur.noeuds_modele[ slot.indice_noeud_accessible ].vient_de_sortir_message = False
-	
-		
+
+
 """
-	Methode appelant une methode récursive qui décale d'un slot les message du système
+	Methode appelant une methode récursive qui décale d'un slot les message du système.
 """
 def decaler_messages():
 	global controleur
@@ -747,7 +738,7 @@ def decaler_messages():
 
 	
 """
-	Méthode récursive qui décale les messages du système
+	Méthode récursive qui décale les messages de l'anneau.
 """
 def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel):
 	global controleur
@@ -772,9 +763,6 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 		slot_graphique = controleur.slots_vue[ indice_slot ]
 		slot_graphique_suivant = controleur.slots_vue[ indice_slot_suivant ]
 		
-		#On déplace le slot
-		"""t = Thread(target=deplacer_vers, args=( controleur.canvas, slot_graphique, destination_x, destination_y ))
-		t.start()"""
 	
 	if indice_slot-1 < 0:
 		nouvelle_indice = len(controleur.slots_modele) -1
@@ -792,7 +780,7 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 
 """
 	calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message
-	Le calcul prend en compte la distance à parcourir entre chaque déplacement
+	Le calcul prend en compte la distance à parcourir entre chaque déplacement.
 """
 def calculer_vitesse():
 	#Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
@@ -823,7 +811,7 @@ def calculer_vitesse():
 # # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # # 
 
 """
-	Met en place le canvas
+	Met en place le canvas.
 """
 def initialisation(fenetre):
 	global controleur
@@ -856,7 +844,7 @@ def initialisation(fenetre):
 
 
 """
-	Attend un TIC et effectue une rotation des messages
+	Attend un TIC et effectue une rotation des messages.
 """
 def effectuer_tic():
 	global controleur
@@ -865,6 +853,13 @@ def effectuer_tic():
 		rotation_message()
 	tache = controleur.fenetre.after(TIC, effectuer_tic )
 
+def afficher_message_anneau():
+	global controleur
+	for i in range (NOMBRE_SLOT):
+		if controleur.slots_modele[i].paquet_message == None:
+			print "Le slot ", controleur.slots_vue[i], " ne contient pas de message"
+		else:
+			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
 
 ###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
