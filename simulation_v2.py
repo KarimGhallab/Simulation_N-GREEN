@@ -255,6 +255,11 @@ def placer_panel_bas(fenetre):
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_proba = Entry(fenetre, width=LONGUEUR_ENTRY)
 	
+	#Ajout d'un event
+	entry_slot.bind("<Key>", callback_validation_configuration)
+	entry_noeud.bind("<Key>", callback_validation_configuration)
+	entry_proba.bind("<Key>", callback_validation_configuration)
+	
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
 	controleur.entrys[CLE_ENTRY_PROBA] = entry_proba
@@ -491,6 +496,13 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
+"""
+
+"""
+def callback_validation_configuration(event):
+	if event.char == '\r':		#Le bouton entrée
+		modifier_configuration()
+
 
 """
 	Callback au bouton demandant un reset de l'application
@@ -577,6 +589,7 @@ def modifier_configuration():
 	tmp_noeud = NOMBRE_NOEUD
 	tmp_slot = NOMBRE_SLOT
 	tmp_proba = PROBABILITE
+	nb_champ_vide = 0
 	
 	erreur = False
 	
@@ -596,6 +609,8 @@ def modifier_configuration():
 			erreur = True
 		else:
 			NOMBRE_NOEUD = valeur_noeud
+	else:
+		nb_champ_vide += 1
 			
 	if valeur_slot != "":
 		valeur_slot = int(valeur_slot)
@@ -605,6 +620,8 @@ def modifier_configuration():
 			erreur = True
 		else:
 			NOMBRE_SLOT = valeur_slot
+	else:
+		nb_champ_vide += 1
 	
 	if valeur_noeud != "" and valeur_slot != "" and valeur_noeud > valeur_slot:
 		message = "Le nombre de noeud ne peut être supérieur au nombre de slot"
@@ -619,8 +636,10 @@ def modifier_configuration():
 			erreur = True
 		else:
 			PROBABILITE = valeur_proba
+	else:
+		nb_champ_vide += 1
 	
-	if erreur:
+	if erreur or nb_champ_vide == 3:
 		NOMBRE_NOEUD = tmp_noeud
 		NOMBRE_SLOT = tmp_slot
 		PROBABILITE = tmp_proba
