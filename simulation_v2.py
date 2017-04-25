@@ -1,7 +1,7 @@
 #coding: utf8
 
 from Tkinter import *
-from math import cos, sin, pi
+from math import cos, sin, pi, exp
 from threading import Thread
 from PIL import Image, ImageTk
 import tkMessageBox
@@ -36,14 +36,11 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 
 NOMBRE_LIGNE_CANVAS = 50
 
-CLE_ENTRY_SLOT = 1
-CLE_ENTRY_NOEUD = 2
-CLE_ENTRY_PROBA = 3
+CLE_ENTRY_SLOT = 1		#La clé de l'entry du slot pour le dictionnaire des entrys
+CLE_ENTRY_NOEUD = 2		#La clé de l'entry du noeud pour le dictionnaire des entrys
+CLE_ENTRY_LAMBDA = 3		#La clé de l'entry de du lambda pour le dictionnaire des entrys
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
-
-global PROBABILITE
-PROBABILITE = 0.33
 
 global tache
 tache = None
@@ -53,6 +50,16 @@ LABEL_TIC = None
 
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
+
+#Les variables pour l'hyper exponentielle
+PROBABILITE_BURST = 0.01
+global LAMBDA 
+LAMBDA = 1
+
+global NOMBRE_MESSAGE_BURST
+NOMBRE_MESSAGE_BURST = 140
+
+LIMITE_NOMBRE_MESSAGE = 80
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 """
@@ -96,7 +103,7 @@ def placer_slots(fenetre, canvas):
 		
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
 		slots_modele[i-1] = Slot(i, None, None)
-		texte = canvas.create_text(nouveau_x, nouveau_y, text="S "+str(slots_vue[i-1]) )
+		texte = canvas.create_text(nouveau_x, nouveau_y)
 	return slots_modele, slots_vue
 
 
@@ -119,10 +126,16 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	
 	for j in range(NOMBRE_NOEUD):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
-		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], PROBABILITE)
+		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j])
 		
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible-1 ].indice_noeud_ecriture = j
+		
+		#Modification des couleur des slots
+		couleur = noeuds_modele[j].couleur
+		canvas.itemconfig(slots_vue[indice_slot_accessible], outline=couleur)
+		canvas.itemconfig(slots_vue[indice_slot_accessible-1], outline=couleur)
+		
 		
 		#Récupération des slots dont dépendent la position du noeud
 		x_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[0] + COTE_SLOT
@@ -150,7 +163,14 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
 	return noeuds_modele, noeuds_vue, slots_modele
 
-			
+"""
+	Modifie la couleur du coutour d'un widget du canvas
+"""
+def modifier_couleur(canvas, objet, couleur):		
+	pass
+	objet.config(highlightbackground=couleur)
+
+
 """
 	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.
 """
@@ -220,53 +240,52 @@ def placer_panel_gauche(fenetre):
 	
 """
 	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
-		- Le nombre de slot utilisé
-		- Le nombre de Noeud présent
-		- La probabilité unitaire des noeuds
+		- Le nombre de slot utilisé.
+		- Le nombre de Noeud présent.
+		- Le lambda actuellement utilisé.
 	Le panel contient aussi un bouton de validation des données.
 	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
 """	
 def placer_panel_bas(fenetre):
 	nombre_slot = len( controleur.slots_modele )
 	nombre_noeud = len( controleur.noeuds_modele )
-	proba = controleur.noeuds_modele[0].probabilite
 	
-	#Les labels présentant les nombres de slots, de noeuds, la proba actuelle ainsi que le TIC en milliseconde
+	#Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
-	label_proba_actuelle = Label(fenetre, text = "Probabilité actuel : "+str(proba) )
+	label_lambda_actuel = Label(fenetre, text = "Lambda actuel : "+str(LAMBDA) )
 	
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
 	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
-	label_proba_actuelle.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
+	label_lambda_actuel.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
 	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
 	
 	#Les labels des entry pour un nouveau nombre de slot/noeud
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
-	label_nouvelle_proba = Label(fenetre, text = "Nouvelle valeur de la probabilité : ")
+	label_nouveau_lambda = Label(fenetre, text = "Nouvelle valeur du lambda : ")
 	
 	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
 	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
-	label_nouvelle_proba.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
+	label_nouveau_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
 	
 	#Les entry
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
-	entry_proba = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_lambda = Entry(fenetre, width=LONGUEUR_ENTRY)
 	
 	#Ajout d'un event
 	entry_slot.bind("<Key>", callback_validation_configuration)
 	entry_noeud.bind("<Key>", callback_validation_configuration)
-	entry_proba.bind("<Key>", callback_validation_configuration)
+	entry_lambda.bind("<Key>", callback_validation_configuration)
 	
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
-	controleur.entrys[CLE_ENTRY_PROBA] = entry_proba
+	controleur.entrys[CLE_ENTRY_LAMBDA] = entry_lambda
 	
 	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
 	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
-	entry_proba.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
+	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
 	
 	#le bouton
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
@@ -370,12 +389,11 @@ def sortir_message_graphique(canvas, message):
 	Représente un noeud dans le système, un noeuds peux stocker des messages.
 """
 class Noeud:
-	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, probabilite):
+	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur):
 		self.nb_message = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
-		self.probabilite = probabilite
 
 
 	"""
@@ -466,6 +484,9 @@ class PaquetMessage:
 	def equals(self, autre_message):
 		return self.id_message_graphique == autre_message.id_message_graphique
 
+###########################################################
+############ Partie tirage/hyper exponentielle ############
+###########################################################
 		
 """
 	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.
@@ -473,8 +494,31 @@ class PaquetMessage:
 def effectuer_tirage(probabilite):
 	tirage = random.uniform(0, 1)
 	return tirage <= probabilite
-	
 
+"""
+	Réalise le tirage selon l'hyper exponentielle.
+"""
+def hyper_expo():
+	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
+		return NOMBRE_MESSAGE_BURST
+	else:
+		u = random.uniform(0, 1)
+		return loi_de_poisson_naif(u)
+
+"""
+	Calcule le nombre de message Best Effort transmis par un noeud.
+"""
+def loi_de_poisson_naif(u):
+	p = exp (- LAMBDA)
+	x = 0
+	f = p
+	while (u > f):
+		x += 1
+		p = p*LAMBDA/x
+		f += p
+	return x
+	
+	
 # # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
 
 """
@@ -491,6 +535,7 @@ class Controleur:
 		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
 		self.continuer = False		#Booléen indiquant s'il faut effectuer d'autres tics ou non
 		self.entrys = {}	#Un dictionnaire des entry de l'interface
+		self.nb_tic = 0
 
 
 ###########################################################
@@ -513,6 +558,7 @@ def reset():
 	global tache
 	
 	controleur.continuer = False
+	controleur.nb_tic = 0
 	
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	if tache != None:
@@ -584,18 +630,18 @@ def modifier_configuration():
 	global controleur
 	global NOMBRE_NOEUD
 	global NOMBRE_SLOT
-	global PROBABILITE
+	global LAMBDA
 	
 	tmp_noeud = NOMBRE_NOEUD
 	tmp_slot = NOMBRE_SLOT
-	tmp_proba = PROBABILITE
+	tmp_lambda = LAMBDA
 	nb_champ_vide = 0
 	
 	erreur = False
 	
 	valeur_noeud = controleur.entrys[ CLE_ENTRY_NOEUD ].get()
 	valeur_slot = controleur.entrys[ CLE_ENTRY_SLOT ].get()
-	valeur_proba = controleur.entrys[ CLE_ENTRY_PROBA ].get()
+	valeur_lambda = controleur.entrys[ CLE_ENTRY_LAMBDA ].get()
 	
 	if valeur_noeud != "":
 		int_valeur_noeud = int(valeur_noeud)
@@ -623,27 +669,20 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 	
-	print float(valeur_noeud) / float(valeur_slot)
 	if valeur_noeud != "" and valeur_slot != "" and float(valeur_noeud) / float(valeur_slot) > 0.5:
 		message = "Il doit y avoir au minimum deux slots par noeud."
 		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
 		erreur = True
 
-	if valeur_proba != "":
-		valeur_proba = float(valeur_proba)
-		if valeur_proba > 1 or valeur_proba < 0:
-			message = "Une probabilité doit être forcément comprise dans l'intervalle ] 0;1 [."
-			tkMessageBox.showerror("Erreur probabilité !", message)
-			erreur = True
-		else:
-			PROBABILITE = valeur_proba
+	if valeur_lambda != "":
+		LAMBDA = int(valeur_lambda)
 	else:
 		nb_champ_vide += 1
 	
 	if erreur or nb_champ_vide == 3:
 		NOMBRE_NOEUD = tmp_noeud
 		NOMBRE_SLOT = tmp_slot
-		PROBABILITE = tmp_proba
+		LAMBDA = tmp_lambda
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		reset()
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
@@ -706,7 +745,7 @@ def rotation_message():
 
 """
 	Fait entrer dans l'anneau des messages.
-	Ici les arrivées de messages sont géré par des proba et des files d'attentes.
+	Ici les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
 """
 def entrer_message():
 	global controleur
@@ -716,16 +755,11 @@ def entrer_message():
 		if slot.indice_noeud_ecriture != None:	#Le slot est un sslot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 	
-			faire_tirage = effectuer_tirage(noeud.probabilite)
+			nb_message = hyper_expo()
 	
-			if faire_tirage:	#Un message arrive
-				noeud.nb_message += 1
-				if slot.paquet_message == None:		#Le slot peut recevoir un message
-					noeud.nb_message -= 1
-					placer_message( slot.indice_noeud_ecriture )
-				
-			elif noeud.nb_message > 0 and slot.paquet_message == None:
-				noeud.nb_message -= 1
+			noeud.nb_message += nb_message
+			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE:		#Le slot peut recevoir un message
+				noeud.nb_message -= LIMITE_NOMBRE_MESSAGE
 				placer_message( slot.indice_noeud_ecriture )
 			noeud.update_file_noeud_graphique()
 
@@ -868,10 +902,16 @@ def initialisation(fenetre):
 def effectuer_tic():
 	global controleur
 	global tache
+	
 	if controleur.continuer == True:
+		controleur.nb_tic += 1
+		print "Nombre de TIC : ", controleur.nb_tic
 		rotation_message()
 	tache = controleur.fenetre.after(TIC, effectuer_tic )
 
+"""
+	Affiche l'état des slots de l'anneau.
+"""
 def afficher_message_anneau():
 	global controleur
 	for i in range (NOMBRE_SLOT):
@@ -879,6 +919,7 @@ def afficher_message_anneau():
 			print "Le slot ", controleur.slots_vue[i], " ne contient pas de message"
 		else:
 			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
+
 
 ###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
