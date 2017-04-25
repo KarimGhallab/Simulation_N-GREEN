@@ -1,10 +1,6 @@
 TODO:
 	- Poursuivre développement
 		- Ajouter l'hyper expo à la simulation.
-		- Rédiger le cahier des charges (A rendre à la fin de la semaine).
-		- Commencer rédaction rapport de stage.
-		- Envoyer un mail à Mme.Barbot par rapport à l'annexe technique.
-		- Corriger BUG d'envoi des messages (ceci ne s'envoi pas tjrs lorsqu'ils en ont la possibilité).
-		- Ajouter bouton entré pour valider un changement de configuration.
-		- Demander à Maël si la simulation doit gèrer le cas ou un slot est accessible par un noeud en lecture et par un autre en écriture.
-		- Demander à Maël le logo N-GREEN.
+		- Demander à Maël pour l'hyper expo quelle doit etre la taille du tableau à l'initialisation en fonction de LAMBDA.
+		
+	- Commencer rédaction rapport de stage.

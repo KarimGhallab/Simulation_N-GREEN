@@ -598,40 +598,41 @@ def modifier_configuration():
 	valeur_proba = controleur.entrys[ CLE_ENTRY_PROBA ].get()
 	
 	if valeur_noeud != "":
-		valeur_noeud = int(valeur_noeud)
-		if valeur_noeud > len(COULEURS_MESSAGE):
-			message = "Désolé mais nous ne pouvons produire plus de "+str( len(COULEURS_MESSAGE) )+" noeuds.\nAfin de pouvoir produire plus de noeud, demander à l'esclave d'ajouter des couleurs dans le tableau de couleur"
+		int_valeur_noeud = int(valeur_noeud)
+		if int_valeur_noeud > len(COULEURS_MESSAGE):
+			message = "Désolé mais nous ne pouvons produire plus de "+str( len(COULEURS_MESSAGE) )+" noeuds.\nAfin de pouvoir produire plus de noeud, demander à l'esclave d'ajouter des couleurs dans le tableau de couleur."
 			tkMessageBox.showerror("Erreur nombre de noeud !", message)
 			erreur = True
-		elif valeur_noeud <= 0:
-			message = "Le nombre de noeud doit etre supérieur à 0"
+		elif int_valeur_noeud <= 0:
+			message = "Le nombre de noeud doit etre supérieur à 0."
 			tkMessageBox.showerror("Erreur nombre de noeud !", message)
 			erreur = True
 		else:
-			NOMBRE_NOEUD = valeur_noeud
+			NOMBRE_NOEUD = int_valeur_noeud
 	else:
 		nb_champ_vide += 1
 			
 	if valeur_slot != "":
-		valeur_slot = int(valeur_slot)
-		if valeur_slot <= 0:
-			message = "Le nombre de slot doit etre supérieur à 0"
+		int_valeur_slot = int(valeur_slot)
+		if int_valeur_slot <= 0:
+			message = "Le nombre de slot doit etre supérieur à 0."
 			tkMessageBox.showerror("Erreur nombre de noeud !", message)
 			erreur = True
 		else:
-			NOMBRE_SLOT = valeur_slot
+			NOMBRE_SLOT = int_valeur_slot
 	else:
 		nb_champ_vide += 1
 	
-	if valeur_noeud != "" and valeur_slot != "" and valeur_noeud > valeur_slot:
-		message = "Le nombre de noeud ne peut être supérieur au nombre de slot"
+	print float(valeur_noeud) / float(valeur_slot)
+	if valeur_noeud != "" and valeur_slot != "" and float(valeur_noeud) / float(valeur_slot) > 0.5:
+		message = "Il doit y avoir au minimum deux slots par noeud."
 		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
 		erreur = True
 
 	if valeur_proba != "":
 		valeur_proba = float(valeur_proba)
 		if valeur_proba > 1 or valeur_proba < 0:
-			message = "Une probabilité doit être forcément comprise dans l'intervalle ] 0;1 ["
+			message = "Une probabilité doit être forcément comprise dans l'intervalle ] 0;1 [."
 			tkMessageBox.showerror("Erreur probabilité !", message)
 			erreur = True
 		else:
@@ -707,7 +708,6 @@ def rotation_message():
 	Fait entrer dans l'anneau des messages.
 	Ici les arrivées de messages sont géré par des proba et des files d'attentes.
 """
-#Version avec les files d'attentes et les proba
 def entrer_message():
 	global controleur
 	
