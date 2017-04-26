@@ -127,7 +127,15 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	
 	for j in range(NOMBRE_NOEUD):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
-		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j])
+		
+		periode = int(random.uniform(10, 40))	#La période se situe entre 10 et 40 TIC
+		
+		if j == 0 or j == NOMBRE_NOEUD-1:	#L'anneau doit contenir deux noeuds n'étant liés avec aucunes antennes
+			nb_antenne = 0
+		else:
+			nb_antenne = int(random.uniform(1, 5))	#Au maximum 5 antennes
+			
+		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], nb_antenne, periode)
 		
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible-1 ].indice_noeud_ecriture = j
@@ -325,8 +333,8 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	
 	canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
 	
-	arrivee_x = int(arrivee_x)
-	arrivee_y = int(arrivee_y)
+	arrivee_x = int(arrivee_x) - COTE_MESSAGE
+	arrivee_y = int(arrivee_y) - COTE_MESSAGE
 	while objet_x != arrivee_x or objet_y != arrivee_y:
 		if objet_x < arrivee_x:
 			canvas.move(objet, 1, 0)
@@ -338,6 +346,7 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 			canvas.move(objet, 0, -1)
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
+			
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
 
@@ -391,11 +400,13 @@ def sortir_message_graphique(canvas, message):
 	Représente un noeud dans le système, un noeuds peux stocker des messages.
 """
 class Noeud:
-	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur):
+	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, periode):
 		self.nb_message = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
+		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeuds
+		self.periode = periode		#La période selon laquelle le noeud recoit des messages des antennes
 
 
 	"""
@@ -454,7 +465,6 @@ class Slot:
 	Représente un paquet de message : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, 
 	l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
 """
-
 class PaquetMessage:
 	def __init__(self, id_message, indice_noeud_emetteur):
 		self.id_message_graphique = id_message
@@ -486,6 +496,7 @@ class PaquetMessage:
 	def equals(self, autre_message):
 		return self.id_message_graphique == autre_message.id_message_graphique
 
+
 ###########################################################
 ############ Partie tirage/hyper exponentielle ############
 ###########################################################
@@ -497,6 +508,7 @@ def effectuer_tirage(probabilite):
 	tirage = random.uniform(0, 1)
 	return tirage <= probabilite
 
+
 """
 	Réalise le tirage selon l'hyper exponentielle.
 """
@@ -506,6 +518,7 @@ def hyper_expo():
 	else:
 		u = random.uniform(0, 1)
 		return loi_de_poisson_naif(u)
+
 
 """
 	Calcule le nombre de message Best Effort transmis par un noeud.
@@ -778,10 +791,14 @@ def entrer_message():
 	
 	for i in range (NOMBRE_SLOT):		#Parcours des slots de l'anneau
 		slot = controleur.slots_modele[i]
-		if slot.indice_noeud_ecriture != None:	#Le slot est un sslot d'ecriture
+		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
-	
-			nb_message = hyper_expo()
+			
+			#Le slot affiche si c'est sa période de réception de message provenant des antennes
+			if controleur.nb_tic % noeud.periode == 0:
+				print "C'est le moment ! Periode du noeud : ", noeud.periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
+			
+			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 	
 			noeud.nb_message += nb_message
 			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE:		#Le slot peut recevoir un message
