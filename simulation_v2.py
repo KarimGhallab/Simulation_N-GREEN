@@ -7,10 +7,12 @@ from PIL import Image, ImageTk
 import tkMessageBox
 import time
 import random
+import sys
 
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
 IMAGES = []
+global IMAGE_JASON
 
 COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "LightCoral", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "Black"]
 
@@ -51,6 +53,8 @@ LABEL_TIC = None
 
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
+
+STATHAM_MODE = False
 
 #Les variables pour l'hyper exponentielle
 PROBABILITE_BURST = 0.01
@@ -188,13 +192,15 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 	arrivee_y = (coordonnees[1] + coordonnees[3])/2
 	
 	#Le point est placé
-	message = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
-	
+	if not STATHAM_MODE:
+		objet = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
+	else:
+		objet = canvas.create_image(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, image=IMAGE_JASON)
 	#On fait se déplacer le message
-	t = Thread(target=deplacer_vers, args=(canvas, message, arrivee_x, arrivee_y))
+	t = Thread(target=deplacer_vers, args=(canvas, objet, arrivee_x, arrivee_y))
 	t.start()
 	
-	return message
+	return objet
 
 
 """
@@ -328,10 +334,11 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 	objet_y = int(canvas.coords(objet)[1])
 	
 	#Calcule la taille de la forme de l'objet passé
-	x1 = canvas.coords(objet)[0]
-	x2 = canvas.coords(objet)[2]
 	
-	canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
+	if not STATHAM_MODE:
+		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
+	else:
+		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE)
 	
 	arrivee_x = int(arrivee_x) - COTE_MESSAGE
 	arrivee_y = int(arrivee_y) - COTE_MESSAGE
@@ -911,6 +918,7 @@ def calculer_vitesse():
 """
 def initialisation(fenetre):
 	global controleur
+	global IMAGE_JASON
 	
 	#On détruit tout les widgets de la fenêtre afin que celle-ci soit toute belle
 	for widget in fenetre.winfo_children():
@@ -918,7 +926,8 @@ def initialisation(fenetre):
 	
 	#Mise en place du canvas et des données du controleur
 	canvas = creer_canvas(fenetre)
-
+	IMAGE_JASON = PhotoImage(file="./images/jason_statham.png")
+	
 	slots = placer_slots(fenetre, canvas)
 	slots_modele = slots[0]
 	slots_vue = slots[1]
@@ -967,6 +976,13 @@ def afficher_message_anneau():
 ###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
+
+if len(sys.argv) > 1:	#Un argument à été donnée
+	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE"]
+	
+	if str(sys.argv[1]) in valeur_pour_statham:	#On active le STATHAM MDOE !!!
+		print "On active le STATHAM MDOE !!!"
+		STATHAM_MODE = True
 
 global controleur
 controleur = None
