@@ -1,14 +1,13 @@
 #coding: utf8
-
-from Tkinter import *
-from math import cos, sin, pi, exp
-from threading import Thread
-from PIL import Image, ImageTk
 import tkMessageBox
 import time
 import random
 import sys
 
+from Tkinter import *
+from math import cos, sin, pi, exp
+from threading import Thread
+from PIL import Image, ImageTk
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
 IMAGES = []
@@ -87,8 +86,10 @@ def creer_fenetre():
 """
 def creer_canvas(fenetre):
 	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#909090')
-	ligne1 = canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
-	ligne2 = canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
+
+	#Création de la croix au centre du canvas
+	canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
+	canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
 
 	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=4)
 
@@ -113,7 +114,7 @@ def placer_slots(fenetre, canvas):
 
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
 		slots_modele[i-1] = Slot(i, None, None)
-		texte = canvas.create_text(nouveau_x, nouveau_y)
+		canvas.create_text(nouveau_x, nouveau_y)
 	return slots_modele, slots_vue
 
 
@@ -128,9 +129,6 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	noeuds_vue = [None] * NOMBRE_NOEUD
 	noeuds_modele = [None] * NOMBRE_NOEUD
 	TEXTS_NOEUDS = [None] * NOMBRE_NOEUD
-
-	milieu_x = COTE_CANVAS/2
-	milieu_y = COTE_CANVAS/2
 
 	pas = NOMBRE_SLOT // NOMBRE_NOEUD
 
@@ -891,15 +889,6 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 		t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
 		t.start()
 
-		if indice_slot -1 < 0:
-			indice_slot_suivant = len (controleur.slots_vue) - 1
-		else:
-			indice_slot_suivant = indice_slot - 1
-
-		slot_graphique = controleur.slots_vue[ indice_slot ]
-		slot_graphique_suivant = controleur.slots_vue[ indice_slot_suivant ]
-
-
 	if indice_slot-1 < 0:
 		nouvelle_indice = len(controleur.slots_modele) -1
 	else:
@@ -1013,7 +1002,7 @@ def afficher_message_anneau():
 if len(sys.argv) == 2:	#Un argument à été donnée
 	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE", "True", "true", "TRUE"]
 
-	if str(sys.argv[1]) in valeur_pour_statham:	#On active le STATHAM MDOE !!!
+	if str(sys.argv[1]) in valeur_pour_statham:		#On active le STATHAM MDOE !!!
 		print "On active le STATHAM MDOE !!!"
 		STATHAM_MODE = True
 
