@@ -350,11 +350,13 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 
 	if not STATHAM_MODE:
 		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
+		arrivee_x = int(arrivee_x) - COTE_MESSAGE
+		arrivee_y = int(arrivee_y) - COTE_MESSAGE
 	else:
-		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE)
+		canvas.coords(objet, objet_x, objet_y)
+		arrivee_x = int(arrivee_x) + COTE_SLOT/8		#L'image ne se place pas de la meme manière qu'un rectangle
+		arrivee_y = int(arrivee_y) + COTE_SLOT/8		#Il faut donc réajuster son point d'arrivé.
 
-	arrivee_x = int(arrivee_x) - COTE_MESSAGE
-	arrivee_y = int(arrivee_y) - COTE_MESSAGE
 	while objet_x != arrivee_x or objet_y != arrivee_y:
 		if objet_x < arrivee_x:
 			canvas.move(objet, 1, 0)
