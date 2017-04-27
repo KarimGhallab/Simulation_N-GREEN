@@ -42,6 +42,7 @@ CLE_ENTRY_SLOT = 1		#La clé de l'entry du slot pour le dictionnaire des entrys
 CLE_ENTRY_NOEUD = 2		#La clé de l'entry du noeud pour le dictionnaire des entrys
 CLE_ENTRY_LAMBDA = 3		#La clé de l'entry du lambda pour le dictionnaire des entrys
 CLE_ENTRY_LAMBDA_BURST = 4		#La clé de l'entry du lambda burst pour le dictionnaire des entrys
+CLE_ENTRY_LIMITE_MESSAGE = 5	#La clé de l'entry du lambda burst pour le dictionnaire des entrys
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -66,6 +67,8 @@ global LAMBDA_BURST
 LAMBDA_BURST = 140
 
 LIMITE_NOMBRE_MESSAGE_MAX = 80
+
+global LIMITE_NOMBRE_MESSAGE_MIN
 LIMITE_NOMBRE_MESSAGE_MIN = 60
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
@@ -265,49 +268,57 @@ def placer_panel_bas(fenetre):
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
 	label_lambda_actuel = Label(fenetre, text = "Lambda actuel : "+str(LAMBDA) )
 	label_lambda_burst_actuel = Label(fenetre, text = "Lambda Burst : "+str(LAMBDA_BURST) )
+	label_limite_taille_message_min = Label(fenetre, text = "Nombre de message minimum : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
 	
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
 	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
 	label_lambda_actuel.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
 	label_lambda_burst_actuel.grid(row=NOMBRE_LIGNE_CANVAS+4, column=1, sticky='W')
-	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+5, 1)
+	label_limite_taille_message_min.grid(row=NOMBRE_LIGNE_CANVAS+5, column=1, sticky='W')
+	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+6, 1)
 	
 	#Les labels des entry pour un nouveau nombre de slot/noeud
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
 	label_nouveau_lambda = Label(fenetre, text = "Nouvelle valeur du lambda : ")
 	label_nouveau_lambda_burst = Label(fenetre, text = "Nouvelle valeur du lambda Burst : ")
+	label_nouvelle_limite = Label(fenetre, text = "Nouvelle valeur pour le nombre de message minimum : ")
 	
 	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
 	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
 	label_nouveau_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
 	label_nouveau_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=2, sticky='W')
+	label_nouvelle_limite.grid(row=NOMBRE_LIGNE_CANVAS+5, column=2, sticky='W')
 	
 	#Les entry
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda_burst = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_limite_message = Entry(fenetre, width=LONGUEUR_ENTRY)
 	
 	#Ajout d'un event
 	entry_slot.bind("<Key>", callback_validation_configuration)
 	entry_noeud.bind("<Key>", callback_validation_configuration)
 	entry_lambda.bind("<Key>", callback_validation_configuration)
 	entry_lambda_burst.bind("<Key>", callback_validation_configuration)
+	entry_limite_message.bind("<Key>", callback_validation_configuration)
 	
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
 	controleur.entrys[CLE_ENTRY_LAMBDA] = entry_lambda
 	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
+	controleur.entrys[CLE_ENTRY_LIMITE_MESSAGE] = entry_limite_message
 	
 	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
 	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
 	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
 	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky='W')
+	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky='W')
 	
 	#le bouton
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+6, column=4, sticky='E')
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+7, column=4, sticky='E')
 
 
 """
@@ -324,7 +335,7 @@ def update_label_TIC(fenetre, ligne, colonne):
 	else:
 		message = "TIC : "+str(TIC)+" millisecondes"
 	LABEL_TIC = Label(fenetre, text = message)
-	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+5, column=1, sticky='W')
+	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
 
 
 """ 
@@ -565,8 +576,9 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
-"""
 
+"""
+	Gére les inputs au clavier d'un utilisteur lorsqu'il saisie une nouvelle configuration pour l'anneau
 """
 def callback_validation_configuration(event):
 	if event.char == '\r':		#Le bouton entrée
@@ -656,10 +668,12 @@ def modifier_configuration():
 	global NOMBRE_SLOT
 	global LAMBDA
 	global LAMBDA_BURST
+	global LIMITE_NOMBRE_MESSAGE_MIN
 	
 	tmp_noeud = NOMBRE_NOEUD
 	tmp_slot = NOMBRE_SLOT
 	tmp_lambda = LAMBDA
+	tmp_limite_message = LIMITE_NOMBRE_MESSAGE_MIN
 	nb_champ_vide = 0
 	
 	erreur = False
@@ -668,6 +682,7 @@ def modifier_configuration():
 	valeur_slot = controleur.entrys[ CLE_ENTRY_SLOT ].get()
 	valeur_lambda = controleur.entrys[ CLE_ENTRY_LAMBDA ].get()
 	valeur_lambda_burst = controleur.entrys[ CLE_ENTRY_LAMBDA_BURST ].get()
+	valeur_limite_message = controleur.entrys[ CLE_ENTRY_LIMITE_MESSAGE ].get()
 	
 	#Recupération de la valeur du noeud
 	if valeur_noeud != "":
@@ -725,13 +740,24 @@ def modifier_configuration():
 			LAMBDA_BURST = valeur_lambda_burst
 	else:
 		nb_champ_vide += 1
-		
+	
+	if valeur_limite_message != "":
+		valeur_limite_message = int(valeur_limite_message)
+		if valeur_lambda_burst <= 0 or valeur_limite_message > LIMITE_NOMBRE_MESSAGE_MAX:
+			message = "Le nombre de message minimum doit être positif est inférieur à la limite maximum (ici 80)."
+			tkMessageBox.showerror("Erreur Limite di nombre de message minimum !", message)
+			erreur = True
+		else:
+			LIMITE_NOMBRE_MESSAGE_MIN = valeur_limite_message
+	else:
+		nb_champ_vide += 1
+	
 	if erreur or nb_champ_vide == len(controleur.entrys):
 		NOMBRE_NOEUD = tmp_noeud
 		NOMBRE_SLOT = tmp_slot
 		LAMBDA = tmp_lambda
+		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
-		print "Avant reset val lambda burst: ", LAMBDA_BURST
 		reset()
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
 
@@ -804,7 +830,7 @@ def entrer_message():
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 			
 			#Le slot affiche si c'est sa période de réception de message provenant des antennes
-			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:
+			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
 				print "C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
 			
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
