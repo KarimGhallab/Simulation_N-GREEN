@@ -54,6 +54,7 @@ LABEL_TIC = None
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
 
+PERIODE_MESSAGE_ANTENNE = 100
 STATHAM_MODE = False
 
 #Les variables pour l'hyper exponentielle
@@ -64,7 +65,8 @@ LAMBDA = 1
 global LAMBDA_BURST
 LAMBDA_BURST = 140
 
-LIMITE_NOMBRE_MESSAGE = 80
+LIMITE_NOMBRE_MESSAGE_MAX = 80
+LIMITE_NOMBRE_MESSAGE_MIN = 60
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 """
@@ -132,14 +134,14 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	for j in range(NOMBRE_NOEUD):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
 		
-		periode = int(random.uniform(10, 40))	#La période se situe entre 10 et 40 TIC
+		debut_periode = int(random.uniform(0, 99))	#Le décalage entre chaque récéption de message émis par les antennes
 		
 		if j == 0 or j == NOMBRE_NOEUD-1:	#L'anneau doit contenir deux noeuds n'étant liés avec aucunes antennes
 			nb_antenne = 0
 		else:
 			nb_antenne = int(random.uniform(1, 5))	#Au maximum 5 antennes
 			
-		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], nb_antenne, periode)
+		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], nb_antenne, debut_periode)
 		
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible-1 ].indice_noeud_ecriture = j
@@ -407,13 +409,13 @@ def sortir_message_graphique(canvas, message):
 	Représente un noeud dans le système, un noeuds peux stocker des messages.
 """
 class Noeud:
-	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, periode):
+	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, debut_periode):
 		self.nb_message = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeuds
-		self.periode = periode		#La période selon laquelle le noeud recoit des messages des antennes
+		self.debut_periode = debut_periode		#Le décalage selon lequel le noeud recoit des messages des antennes
 
 
 	"""
@@ -802,14 +804,17 @@ def entrer_message():
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 			
 			#Le slot affiche si c'est sa période de réception de message provenant des antennes
-			if controleur.nb_tic % noeud.periode == 0:
-				print "C'est le moment ! Periode du noeud : ", noeud.periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
+			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:
+				print "C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
 			
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 	
 			noeud.nb_message += nb_message
-			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE:		#Le slot peut recevoir un message
-				noeud.nb_message -= LIMITE_NOMBRE_MESSAGE
+			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut enenvoyer un
+				if noeud.nb_message >= 80:
+					noeud.nb_message -= LIMITE_NOMBRE_MESSAGE_MAX
+				else:		#Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud
+					noeud.nb_message = 0 
 				placer_message( slot.indice_noeud_ecriture )
 			noeud.update_file_noeud_graphique()
 
@@ -977,8 +982,8 @@ def afficher_message_anneau():
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
 
-if len(sys.argv) > 1:	#Un argument à été donnée
-	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE"]
+if len(sys.argv) == 2:	#Un argument à été donnée
+	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE", "True", "true", "TRUE"]
 	
 	if str(sys.argv[1]) in valeur_pour_statham:	#On active le STATHAM MDOE !!!
 		print "On active le STATHAM MDOE !!!"
@@ -988,7 +993,7 @@ global controleur
 controleur = None
 
 fenetre = creer_fenetre()
-fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)	#Réagi à la demande d'un utilisateur de quitter l'application
+fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagi à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 initialisation(fenetre)
 fenetre.mainloop()
