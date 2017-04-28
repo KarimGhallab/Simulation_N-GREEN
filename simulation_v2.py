@@ -4,14 +4,13 @@ import time
 import random
 import sys
 
-from Tkinter import *
+from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
 from math import cos, sin, pi, exp
 from threading import Thread
 from PIL import Image, ImageTk
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
 IMAGES = []
-global IMAGE_JASON
 
 COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "LightCoral", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "Black"]
 
@@ -890,7 +889,7 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 		t.start()
 
 	if indice_slot-1 < 0:
-		nouvelle_indice = len(controleur.slots_modele) -1
+		nouvelle_indice = len(controleur.slots_modele) - 1
 	else:
 		nouvelle_indice = indice_slot-1
 
