@@ -83,7 +83,11 @@ def creer_fenetre():
 
 	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
-	fenetre.title("Jason Statham : <3")
+	if STATHAM_MODE:
+		titre = "Jason Statham : <3"
+	else:
+		titre = "Simulation N-GREEN"
+	fenetre.title(titre)
 
 	return fenetre
 
