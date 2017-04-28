@@ -3,21 +3,33 @@ from __future__ import division
 import random
 from math import factorial, exp
 
-"""Classe représentant un événement """
 class Evenement:
+	"""
+		Classe représentant un événement
+	"""
 	def __init__(self, nom, probabilite):
+		"""
+			Constructeur d'un événement.
+			Il faut spécifier le nom de l'evenement et sa probabilité.
+		"""
 		self.nom = nom		#Le nom de l'événement
 		self.probabilite = probabilite		#La probabilité qu'a l'evt de se réaliser
 		self.compteur = 0		#Le nombre de fois que l'événement s'est réalisé
 		self.pourcentage_realisation = 0
 
 	def __str__(self):
+		"""
+			Renvoie l'événement sous forme d'une chaine de caractère.
+		"""
 		return "Nom de l'événement : "+self.nom+".\nProbabilité de l'événement : "+str(self.probabilite)+".\nNombre de réalisation de l'événement : "+str(self.compteur)+"\nTaux de réalisation de l'événement : "+str(self.pourcentage_realisation)+"\n\n"
 
 
-""" Vérifie que la somme des probabilités présentes dans un tableau est égal à 1 """
 #Déconseilée d'utilisation les nombres sont des flotants, donc python peut éffectuer des arrondis ceux qui faussera le résulat final
 def verifier_somme_proba(evenements):
+	"""
+		Vérifie que la somme des probabilités présentes dans un tableau est égal à 1
+	"""
+	
 	somme = 0
 	for evt in evenements:
 		somme += evt.probabilite
@@ -38,13 +50,13 @@ def effectuer_tirages(k, evenements):
 		print "Variable aléatoire : ", tirage
 		somme_proba = 0
 		j = 0
-		
+
 		#Tant que la somme des proba est inférieure à la proba du tirage
 		while somme_proba < tirage:
 			somme_proba += evenements[j].probabilite
 			j += 1
 		evenements[j-1].compteur += 1
-	
+
 	#Affichage des résultas
 	for evt in evenements:
 		evt.pourcentage_realisation = (evt.compteur / nombre_tirage)
@@ -71,7 +83,7 @@ def loi_de_poisson(lamb, k):
 	print "La probabilite qu'un événement avec une moyenne de réalisation de "+str(lamb)+" se déroule "+str(k)+" fois est de "+str(nb_occurence)
 
 
-###############################################################################		
+###############################################################################
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
 

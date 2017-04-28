@@ -1,9 +1,9 @@
-"""@package simulation.v2.py
+#coding: utf8
+"""
 	Ce script permet de réaliser une simulation d'un anneau en réseau dans le cadre du projet N-GREEN.
 	Auteur : Ghallab Karim
 """
 
-#coding: utf8
 import tkMessageBox
 import time
 import random
@@ -119,11 +119,13 @@ def placer_slots(fenetre, canvas):
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
 	for i in range(1, NOMBRE_SLOT+1):
-		nouveau_x = milieu_x + cos(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
-		nouveau_y = milieu_y - sin(2*i*pi/NOMBRE_SLOT) * DISTANCE_SLOT
+		val_cos = cos(2*i*pi/NOMBRE_SLOT)
+		val_sin = sin(2*i*pi/NOMBRE_SLOT)
+		nouveau_x = milieu_x + val_cos * DISTANCE_SLOT
+		nouveau_y = milieu_y - val_sin * DISTANCE_SLOT
 
 		slots_vue[i-1] = canvas.create_rectangle(nouveau_x - COTE_SLOT, nouveau_y - COTE_SLOT, nouveau_x + COTE_SLOT, nouveau_y + COTE_SLOT)
-		slots_modele[i-1] = Slot(i, None, None)
+		slots_modele[i-1] = Slot(i, None, None, val_cos, val_sin)
 		canvas.create_text(nouveau_x, nouveau_y)
 	return slots_modele, slots_vue
 
@@ -157,33 +159,26 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], nb_antenne, debut_periode)
 
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
-		slots_modele[ indice_slot_accessible-1 ].indice_noeud_ecriture = j
+		slots_modele[ indice_slot_accessible -1 ].indice_noeud_ecriture = j
 
 		#Modification des couleur des slots
 		couleur = noeuds_modele[j].couleur
 		canvas.itemconfig(slots_vue[indice_slot_accessible], outline=couleur)
 		canvas.itemconfig(slots_vue[indice_slot_accessible-1], outline=couleur)
 
-
-		#Récupération des slots dont dépendent la position du noeud
-		x_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[0] + COTE_SLOT
-		x_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[0] + COTE_SLOT
-
-		y_slot = canvas.coords( slots_vue[ indice_slot_accessible ] )[1] + COTE_SLOT
-		y_slot_suivant = canvas.coords( slots_vue[ indice_slot_accessible -1] )[1] + COTE_SLOT
-
 		#Calcule de la position du noeud
-		x = ( x_slot + x_slot_suivant ) / 2
-		y = ( y_slot + y_slot_suivant) / 2
-		if x < COTE_CANVAS/2:
-			x -= 40
-		elif x > COTE_CANVAS/2:
-			x += 40
+		milieu_x = COTE_CANVAS/2
+		milieu_y = COTE_CANVAS/2
 
-		if y < COTE_CANVAS/2:
-			y -= 40
-		elif y > COTE_CANVAS/2:
-			y += 40
+		#Calcule de l'abscisse du noeud en fonction de la position du slot
+		x1 = milieu_x + slots_modele [ indice_slot_accessible ].val_cos * DISTANCE_NOEUD
+		x2 = milieu_x + slots_modele [ indice_slot_accessible -1 ].val_cos * DISTANCE_NOEUD
+		x = (x1 + x2) / 2
+
+		#Calcule de l'ordonné du noeud en fonction de la position du slot
+		y1 = milieu_y - slots_modele [ indice_slot_accessible ].val_sin * DISTANCE_NOEUD
+		y2 = milieu_y - slots_modele [ indice_slot_accessible -1 ].val_sin * DISTANCE_NOEUD
+		y = (y1 + y2) / 2
 
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
 
@@ -500,11 +495,13 @@ class Slot:
 	"""
 		Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
 	"""
-	def __init__(self, id, indice_noeud_lecture, indice_noeud_ecriture):
+	def __init__(self, id, indice_noeud_lecture, indice_noeud_ecriture, val_cos, val_sin):
 		self.id = id
 		self.paquet_message = None	#Indique si le slot possede un paquet de message
 		self.indice_noeud_lecture = indice_noeud_lecture		#Si le slot ne peut accèder a aucun noeud, ce champs vaut None
 		self.indice_noeud_ecriture = indice_noeud_ecriture
+		self.val_cos = val_cos
+		self.val_sin = val_sin
 
 	"""
 		Renvoie le slot sous forme de chaine de caractères.
@@ -1061,9 +1058,7 @@ def afficher_message_anneau():
 			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
 
 
-
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
-
 
 if len(sys.argv) == 2:	#Un argument à été donnée
 	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE", "True", "true", "TRUE"]
