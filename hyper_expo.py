@@ -12,14 +12,20 @@ LAMBDA = 1
 TAILLE_TABLEAU = 10
 global TABLEAU_POISSON
 
-
 def effectuer_tirage(probabilite):
+	"""
+		Effectue un tirage et renvoie un booléen indiquant si ce tirage est compris dans la probabilité.
+	"""
+
 	tirage = random.uniform(0, 1)
 	print "Tirage : " ,tirage
 	return tirage <= probabilite
 
-
 def hyper_expo():
+	"""
+		Fonction principal simulant l'hyper exponentielle.
+	"""
+
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
 		print "Burst !\nOn envoie : ", NOMBRE_MESSAGE_BURST, " messages."
 	else:
@@ -29,6 +35,10 @@ def hyper_expo():
 
 
 def loi_de_poisson_naif(u):
+	"""
+		Calcule naif du résultat d'une loi de poisson.
+	"""
+
 	p = exp (- LAMBDA)
 	x = 0
 	f = p
@@ -40,6 +50,10 @@ def loi_de_poisson_naif(u):
 
 
 def loi_de_poisson_opti(u):
+	"""
+		Calcule optimisé du résultat d'une loi de poisson.
+	"""
+
 	#Initialisation des variables
 	initialiser_tableau()
 
@@ -65,7 +79,12 @@ def loi_de_poisson_opti(u):
 
 	return x
 
+
 def initialiser_tableau():
+	"""
+		Initialise le tableau avec les résultats de le loi de poisson.
+		Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
+	"""
 	global TABLEAU_POISSON
 	TABLEAU_POISSON = [0] * TAILLE_TABLEAU
 
@@ -78,6 +97,12 @@ def initialiser_tableau():
 
 
 def afficher_tableau():
+	"""
+		Affiche un tableau sous la forme :
+			Indice :
+			Valeur :
+	"""
+
 	for i in range(TAILLE_TABLEAU):
 		print "Indice : ", i
 		print "valeur : ", TABLEAU_POISSON[i], "\n"

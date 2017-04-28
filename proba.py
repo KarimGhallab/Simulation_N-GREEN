@@ -9,7 +9,7 @@ from math import factorial, exp
 
 class Evenement:
 	"""
-		Classe représentant un événement
+		Classe représentant un événement.
 	"""
 
 	def __init__(self, nom, probabilite):
@@ -34,7 +34,7 @@ class Evenement:
 #Déconseilée d'utilisation les nombres sont des flotants, donc python peut éffectuer des arrondis ceux qui faussera le résulat final
 def verifier_somme_proba(evenements):
 	"""
-		Vérifie que la somme des probabilités présentes dans un tableau est égal à 1
+		Vérifie que la somme des probabilités présentes dans un tableau est égal à 1.
 	"""
 
 	somme = 0
@@ -93,7 +93,7 @@ def generer_evenements(n):
 
 def loi_de_poisson(lamb, k):
 	"""
-		Effectue une loi de poisson en fonction des paramètres lamb (Lambda) et k
+		Effectue une loi de poisson en fonction des paramètres lamb (Lambda) et k.
 	"""
 
 	nb_occurence = ( lamb**k / factorial(k) )*exp(-lamb)
@@ -104,13 +104,11 @@ def loi_de_poisson(lamb, k):
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 ###############################################################################
 
-""" Ensemble d'événements """
+# Mon ensemble d'événement
 p1 = Evenement("P1", 0.35)
 p2 = Evenement("P2", 0.25)
 p3 = Evenement("P2", 0.1)
 p4 = Evenement("P2", 0.3)
-
-#evts = [ p1, p2, p3, p4 ]
 
 nombre_tirage = input("Combien de tirage voulez-vous ?\n")
 

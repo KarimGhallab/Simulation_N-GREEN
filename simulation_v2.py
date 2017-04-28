@@ -1,7 +1,7 @@
 #coding: utf8
 """
 	Ce script permet de réaliser une simulation d'un anneau en réseau dans le cadre du projet N-GREEN.
-	Auteur : Ghallab Karim
+	Auteur : Ghallab Karim.
 """
 
 import tkMessageBox
