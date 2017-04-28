@@ -1,24 +1,21 @@
 var indexSectionsWithContent =
 {
-  0: "_acdehilmnprsu",
+  0: "_cenpsu",
   1: "cenps",
-  2: "s",
-  3: "_acdehilmprsu"
+  2: "_eu"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "namespaces",
-  3: "functions"
+  2: "functions"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Namespaces",
-  3: "Functions"
+  2: "Functions"
 };
 

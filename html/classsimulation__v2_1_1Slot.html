@@ -38,7 +38,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
-      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -81,7 +80,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="namespacesimulation__v2.html">simulation_v2</a></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1Slot.html">Slot</a></li>  </ul>
+<li class="navelem"><b>simulation_v2</b></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1Slot.html">Slot</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -96,9 +95,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a31270a3b31e2536435b9b247f0888dea"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31270a3b31e2536435b9b247f0888dea"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, id, indice_noeud_lecture, indice_noeud_ecriture)</td></tr>
-<tr class="separator:a31270a3b31e2536435b9b247f0888dea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc962de07087e4783ed23fd048cf5a97"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acc962de07087e4783ed23fd048cf5a97"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, id, indice_noeud_lecture, indice_noeud_ecriture, val_cos, val_sin)</td></tr>
+<tr class="separator:acc962de07087e4783ed23fd048cf5a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9efb27289d81250c819805f660d68ff4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9efb27289d81250c819805f660d68ff4"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><b>__str__</b> (self)</td></tr>
 <tr class="separator:a9efb27289d81250c819805f660d68ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,6 +116,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab8bb24759b6a0e0a53701558d91441bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab8bb24759b6a0e0a53701558d91441bc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>indice_noeud_ecriture</b></td></tr>
 <tr class="separator:ab8bb24759b6a0e0a53701558d91441bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40b5335837b3a3f44ef1253a0fc4a7d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a40b5335837b3a3f44ef1253a0fc4a7d6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>val_cos</b></td></tr>
+<tr class="separator:a40b5335837b3a3f44ef1253a0fc4a7d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a585436b336005434401062035e4a609e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a585436b336005434401062035e4a609e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>val_sin</b></td></tr>
+<tr class="separator:a585436b336005434401062035e4a609e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">    Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
