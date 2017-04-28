@@ -1071,7 +1071,7 @@ global controleur
 controleur = None
 
 fenetre = creer_fenetre()
-fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagi à la demande d'un utilisateur de quitter l'application via la croix graphique
+fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 initialisation(fenetre)
 fenetre.mainloop()
