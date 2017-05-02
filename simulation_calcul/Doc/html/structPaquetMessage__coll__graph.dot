@@ -4,5 +4,5 @@ digraph "PaquetMessage"
   node [fontname="Helvetica",fontsize="10",shape=record];
   Node1 [label="PaquetMessage",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black"];
   Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" messages" ,fontname="Helvetica"];
-  Node2 [label="Messages",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structMessages.html"];
+  Node2 [label="Messages",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structMessages.html",tooltip="Structure représentant un groupe de message arrivant dans le noeud. Un groupe de message à une taille..."];
 }

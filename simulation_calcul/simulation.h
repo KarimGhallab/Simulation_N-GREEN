@@ -12,7 +12,7 @@
 //////////////////////////////////////////////////
 
 /*! \struct Messages.
- * Structure représentant un groupe de message arrivant dans le noeud.
+ * \brief Structure représentant un groupe de message arrivant dans le noeud.
  * Un groupe de message à une taille ainsi qu'un TIC d'arrivé dans le noeud.
  */
 struct Messages
@@ -22,7 +22,7 @@ struct Messages
 };
 typedef struct Messages Messages;
 
-/*! \struct PaquetMessages
+/*! \struct PaquetMessage
  * \brief Structure représentant un paquet de message curculant dans les slots.
  * Cette structure contient un indice du noeud emetteur du paquet, un nombre de message, et un tableau des différents messages.
  */
