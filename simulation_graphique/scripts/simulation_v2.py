@@ -14,6 +14,7 @@ from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
 from math import cos, sin, pi, exp
 from threading import Thread
 from PIL import Image, ImageTk
+from collections import deque
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
 IMAGES = []
@@ -65,7 +66,7 @@ STATHAM_MODE = False
 #Les variables pour l'hyper exponentielle
 PROBABILITE_BURST = 0.01
 global LAMBDA
-LAMBDA = 1
+LAMBDA = 10
 
 global LAMBDA_BURST
 LAMBDA_BURST = 140
@@ -454,6 +455,10 @@ class Noeud:
 		self.couleur = couleur
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeuds
 		self.debut_periode = debut_periode		#Le décalage selon lequel le noeud recoit des messages des antennes
+		self.messages = deque()		#File FIFO contenant les TIC d'arrivé des messages
+		self.attente_max = 0		#Le temps d'attente maximal dans le noeud
+		self.nb_message_total = 0
+		self.attente_totale = 0
 
 
 	def equals(self, autre_noeud):
@@ -462,6 +467,11 @@ class Noeud:
 		"""
 
 		return self.couleur == autre_noeud.couleur
+
+
+	def ajouter_message(self, message):
+		self.messages.append(message)
+		self.nb_message_total += 1
 
 
 	def update_file_noeud_graphique(self):
@@ -495,6 +505,15 @@ class Noeud:
 
 		return str(self.couleur)
 
+	def update_attente(self):
+		"""
+			Met à jour le temps d'attente des messages du noeud.
+		"""
+
+		for message in self.messages:
+			self.attente_totale += 1
+
+
 class Slot:
 
 	"""
@@ -520,19 +539,22 @@ class Slot:
 
 class PaquetMessage:
 	"""
-		Représente un paquet de message : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
+		Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
 		l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
+		Il contient aussi un tableau contenant les messages du paquet.
 	"""
-	def __init__(self, id_message, indice_noeud_emetteur):
+	def __init__(self, id_message, indice_noeud_emetteur, taille, messages):
 		"""
 			Le constructeur d'un paquet de message.
 			Il prend en paramètre l'id du message graphique et l'indice du noeud emetteur.
 		"""
+
 		self.id_message_graphique = id_message
 		self.indice_noeud_emetteur = indice_noeud_emetteur
 		self.x = None
 		self.y = None
 		self.taille = None	#La taille du paquet
+		self.messages = messages
 
 
 	def update_position(self, nouveau_x, nouveau_y):
@@ -559,6 +581,11 @@ class PaquetMessage:
 		"""
 
 		return self.id_message_graphique == autre_message.id_message_graphique
+
+
+class MessageN:
+	def __init__(self, TIC_arrive):
+		self.TIC_arrive = TIC_arrive
 
 
 ###########################################################
@@ -678,6 +705,8 @@ def arreter_rotation():
 	global tache
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	controleur.continuer = False
+	for noeud in controleur.noeuds_modele:
+		print "Noeud "+str(noeud)+" Attente moyenne : "+str( float(noeud.attente_totale) / float(noeud.nb_message_total) )+" Attente max : "+str(noeud.attente_max)
 
 
 def augmenter_vitesse():
@@ -825,19 +854,20 @@ def modifier_configuration():
 """
 def arreter_appli():
 	arreter_rotation()
+	for noeud in controleur.noeuds_modele:
+		print "Noeud "+str(noeud)+" Attente moyenne : "+str(noeud.attente_totale/noeud.nb_message_total)+" Attente max : "+str(noeud.attente_max)
 	fenetre.destroy()
 
 
-def placer_message(indice_noeud):
+def placer_message(indice_noeud, messages):
 	"""
-		Action de faire entrer un message d'un noeud jusqu'à son slot.
+		Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.
 	"""
 
 	global controleur
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
 	slot_modele = controleur.slots_modele[ indice_slot ]
-
 	message = ""
 	erreur = False
 	if slot_modele == 1:
@@ -855,13 +885,21 @@ def placer_message(indice_noeud):
 
 		#Création du message
 		id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
-		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud)
+		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), messages)
 
 		#Mise à jour de la distance
 		message_x = canvas.coords(id_message_graphique)[0]
 		message_y = canvas.coords(id_message_graphique)[1]
 		controleur.slots_modele[indice_slot].paquet_message.update_position(message_x, message_y)
 
+		#Met à jour les temps d'attentes du noeud qui envoi le message
+		for message in messages:
+			if message != None:
+				temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
+				if temps_attente_message > noeud_modele.attente_max:
+					print "Changement du temps max pour le noeud : "+str(noeud_modele)+" Affectation de la valeur : "+str(temps_attente_message)
+					noeud_modele.attente_max = temps_attente_message
+				noeud_modele.attente_totale += temps_attente_message
 
 	else:	#Une erreur est survenue, on affiche un message
 		print message
@@ -875,6 +913,7 @@ def rotation_message():
 	decaler_messages()
 	sortir_message()
 	entrer_message()
+	arreter_rotation()
 
 
 def entrer_message():
@@ -896,13 +935,26 @@ def entrer_message():
 
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
+			#On ajoute au noeud le tic d'arrivé des messages
+			for i in range(nb_message):
+					noeud.ajouter_message( MessageN(controleur.nb_tic) )
+
 			noeud.nb_message += nb_message
 			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut enenvoyer un
 				if noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MAX:
+					#On enleve les messages du noeud
+					messages = [None] * LIMITE_NOMBRE_MESSAGE_MAX
+					for i in range(LIMITE_NOMBRE_MESSAGE_MAX):
+						messages.append( noeud.messages.popleft() )
+
 					noeud.nb_message -= LIMITE_NOMBRE_MESSAGE_MAX
 				else:		#Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud
+					#On enleve les messages du noeud
+					messages = [None] * noeud.nb_message
+					for i in range(noeud.nb_message):
+							messages.append( noeud.messages.popleft() )
 					noeud.nb_message = 0
-				placer_message( slot.indice_noeud_ecriture )
+				placer_message( slot.indice_noeud_ecriture, messages )
 			noeud.update_file_noeud_graphique()
 
 
@@ -1047,7 +1099,12 @@ def effectuer_tic():
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
 		print "Nombre de TIC : ", controleur.nb_tic
+
 		rotation_message()
+
+		for noeud in controleur.noeuds_modele:
+			noeud.update_attente()
+
 	tache = controleur.fenetre.after(TIC, effectuer_tic )
 
 def afficher_message_anneau():

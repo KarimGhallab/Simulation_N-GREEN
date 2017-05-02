@@ -1,9 +1,21 @@
 /*!
  * \file simulation.h
+ * \brief Header du fichier principal exécutant la simulation.
  */
 
+/*! \def NOMBRE_TIC
+ * \brief Représente le nombre de TIC sur lequel portera la simulation.
+ */
  #define NOMBRE_TIC 10		//Le nombre de TIC à effectuer.
+
+ /*! \def NOMBRE_SLOT
+  * \brief Indique le nombre de slot de l'anneau.
+  */
  #define NOMBRE_SLOT 10		//Le nombre de slot dans l'anneau.
+
+ /*! \def NOMBRE_NOEUD
+  * \brief Indique le nombre de noeud de l'anneau.
+  */
  #define NOMBRE_NOEUD 5	//Le nombre de noeud dans l'anneau.
 
 

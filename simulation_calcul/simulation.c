@@ -3,10 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-/* Déclaration des structures */
-
-/* Déclaration des fonctions */
-
 /*	 M A I N 	 */
 int main ()
 {
