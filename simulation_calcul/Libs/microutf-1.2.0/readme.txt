@@ -1,1 +1,0 @@
-For documentation see microutf8.h.
