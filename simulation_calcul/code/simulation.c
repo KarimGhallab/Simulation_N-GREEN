@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-/*	 M A I N 	 */
 int main ()
 {
 	int nombre_tic_restant = NOMBRE_TIC;

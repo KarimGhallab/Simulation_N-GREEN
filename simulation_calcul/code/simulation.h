@@ -93,7 +93,7 @@ void afficher_slots( Slot slots[] );
 void initialiser_slots( Slot slots[] );
 
 /*! \fn void afficher_noeuds( Noeud noeuds[] )
-* \brief Initialise les noeuds de l'anneau et modifie en conséquence les indice en écriture/lécture des slots.
+* \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
 * \param noeuds[] Le tableau des noeuds à initialiser.
 * \param noeuds[] Le tableau des slots à modifier.
 */
