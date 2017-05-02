@@ -1,0 +1,121 @@
+\hypertarget{simulation_8h}{}\section{simulation.\+h File Reference}
+\label{simulation_8h}\index{simulation.\+h@{simulation.\+h}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structMessages}{Messages}
+\item 
+struct \hyperlink{structPaquetMessage}{Paquet\+Message}
+\item 
+struct \hyperlink{structNoeud}{Noeud}
+\begin{DoxyCompactList}\small\item\em Structure représentant un \hyperlink{structNoeud}{Noeud} de l\textquotesingle{}anneau. Elle contient un nombre de message, les indices des slots avec lesquels le noeud peut intéragir, ainsi que le nombre d\textquotesingle{}antenne liée au noeud et le décalage avec laquelle le noeud doit recevoir un message de ses antennes. \end{DoxyCompactList}\item 
+struct \hyperlink{structSlot}{Slot}
+\begin{DoxyCompactList}\small\item\em Structure représentant un slot dans l\textquotesingle{}anneau. Un \hyperlink{structSlot}{Slot} est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s\textquotesingle{}il y en a un. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define {\bfseries N\+O\+M\+B\+R\+E\+\_\+\+T\+IC}~10\hypertarget{simulation_8h_a92f9adbf8d155f054444fd73a0d0a387}{}\label{simulation_8h_a92f9adbf8d155f054444fd73a0d0a387}
+
+\item 
+\#define {\bfseries N\+O\+M\+B\+R\+E\+\_\+\+S\+L\+OT}~10\hypertarget{simulation_8h_a3eae939bfa01e60b044095ff3ff7bbc4}{}\label{simulation_8h_a3eae939bfa01e60b044095ff3ff7bbc4}
+
+\item 
+\#define {\bfseries N\+O\+M\+B\+R\+E\+\_\+\+N\+O\+E\+UD}~5\hypertarget{simulation_8h_a9c5c87ea2b279e31b47b9c36ea28411e}{}\label{simulation_8h_a9c5c87ea2b279e31b47b9c36ea28411e}
+
+\end{DoxyCompactItemize}
+\subsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+typedef struct \hyperlink{structMessages}{Messages} {\bfseries Messages}\hypertarget{simulation_8h_a6c6ed1cfb854026b6a79ca756868e457}{}\label{simulation_8h_a6c6ed1cfb854026b6a79ca756868e457}
+
+\item 
+typedef struct \hyperlink{structPaquetMessage}{Paquet\+Message} {\bfseries Paquet\+Message}\hypertarget{simulation_8h_af4337ddab97d44850cf81fa5960c6727}{}\label{simulation_8h_af4337ddab97d44850cf81fa5960c6727}
+
+\item 
+typedef struct \hyperlink{structNoeud}{Noeud} {\bfseries Noeud}\hypertarget{simulation_8h_a8e9241b13e33c89b710a91795150ede0}{}\label{simulation_8h_a8e9241b13e33c89b710a91795150ede0}
+
+\item 
+typedef struct \hyperlink{structSlot}{Slot} {\bfseries Slot}\hypertarget{simulation_8h_a53a7732cbcfa53c991fea8e0686ea79b}{}\label{simulation_8h_a53a7732cbcfa53c991fea8e0686ea79b}
+
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{simulation_8h_a6aafa3bf1e80a1850c4550ffa9f59785}{afficher\+\_\+slots} (\hyperlink{structSlot}{Slot} slots\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Initialise les slots de l\textquotesingle{}anneau. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8h_a81fcd19d5e1ce40fd3d694be4bdc1f46}{initialiser\+\_\+slots} (\hyperlink{structSlot}{Slot} slots\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Affiche les slots de l\textquotesingle{}anneau. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8h_ae71eeea32697179d8d1fb7f40a28c2c3}{afficher\+\_\+noeuds} (\hyperlink{structNoeud}{Noeud} noeuds\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Initialise les noeuds de l\textquotesingle{}anneau et modifie en conséquence les indice en écriture/lécture des slots. \end{DoxyCompactList}\item 
+void \hyperlink{simulation_8h_a52f5c8adf7d01725c2588ed65c7568ab}{initialiser\+\_\+noeuds} (\hyperlink{structNoeud}{Noeud} noeuds\mbox{[}$\,$\mbox{]}, \hyperlink{structSlot}{Slot} slots\mbox{[}$\,$\mbox{]})
+\begin{DoxyCompactList}\small\item\em Affiche les noeuds de l\textquotesingle{}anneau. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\index{simulation.\+h@{simulation.\+h}!afficher\+\_\+noeuds@{afficher\+\_\+noeuds}}
+\index{afficher\+\_\+noeuds@{afficher\+\_\+noeuds}!simulation.\+h@{simulation.\+h}}
+\subsubsection[{\texorpdfstring{afficher\+\_\+noeuds(\+Noeud noeuds[])}{afficher_noeuds(Noeud noeuds[])}}]{\setlength{\rightskip}{0pt plus 5cm}void afficher\+\_\+noeuds (
+\begin{DoxyParamCaption}
+\item[{{\bf Noeud}}]{noeuds\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{simulation_8h_ae71eeea32697179d8d1fb7f40a28c2c3}{}\label{simulation_8h_ae71eeea32697179d8d1fb7f40a28c2c3}
+
+
+Initialise les noeuds de l\textquotesingle{}anneau et modifie en conséquence les indice en écriture/lécture des slots. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em noeuds\mbox{[}$\,$\mbox{]}} & Le tableau des noeuds à initialiser. \\
+\hline
+{\em noeuds\mbox{[}$\,$\mbox{]}} & Le tableau des slots à modifier. \\
+\hline
+\end{DoxyParams}
+\index{simulation.\+h@{simulation.\+h}!afficher\+\_\+slots@{afficher\+\_\+slots}}
+\index{afficher\+\_\+slots@{afficher\+\_\+slots}!simulation.\+h@{simulation.\+h}}
+\subsubsection[{\texorpdfstring{afficher\+\_\+slots(\+Slot slots[])}{afficher_slots(Slot slots[])}}]{\setlength{\rightskip}{0pt plus 5cm}void afficher\+\_\+slots (
+\begin{DoxyParamCaption}
+\item[{{\bf Slot}}]{slots\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{simulation_8h_a6aafa3bf1e80a1850c4550ffa9f59785}{}\label{simulation_8h_a6aafa3bf1e80a1850c4550ffa9f59785}
+
+
+Initialise les slots de l\textquotesingle{}anneau. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em slots\mbox{[}$\,$\mbox{]}} & Le tableau des slots à initialiser. \\
+\hline
+\end{DoxyParams}
+\index{simulation.\+h@{simulation.\+h}!initialiser\+\_\+noeuds@{initialiser\+\_\+noeuds}}
+\index{initialiser\+\_\+noeuds@{initialiser\+\_\+noeuds}!simulation.\+h@{simulation.\+h}}
+\subsubsection[{\texorpdfstring{initialiser\+\_\+noeuds(\+Noeud noeuds[], Slot slots[])}{initialiser_noeuds(Noeud noeuds[], Slot slots[])}}]{\setlength{\rightskip}{0pt plus 5cm}void initialiser\+\_\+noeuds (
+\begin{DoxyParamCaption}
+\item[{{\bf Noeud}}]{noeuds\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf Slot}}]{slots\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{simulation_8h_a52f5c8adf7d01725c2588ed65c7568ab}{}\label{simulation_8h_a52f5c8adf7d01725c2588ed65c7568ab}
+
+
+Affiche les noeuds de l\textquotesingle{}anneau. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em noeuds\mbox{[}$\,$\mbox{]}} & Les noeuds à afficher. \\
+\hline
+\end{DoxyParams}
+\index{simulation.\+h@{simulation.\+h}!initialiser\+\_\+slots@{initialiser\+\_\+slots}}
+\index{initialiser\+\_\+slots@{initialiser\+\_\+slots}!simulation.\+h@{simulation.\+h}}
+\subsubsection[{\texorpdfstring{initialiser\+\_\+slots(\+Slot slots[])}{initialiser_slots(Slot slots[])}}]{\setlength{\rightskip}{0pt plus 5cm}void initialiser\+\_\+slots (
+\begin{DoxyParamCaption}
+\item[{{\bf Slot}}]{slots\mbox{[}$\,$\mbox{]}}
+\end{DoxyParamCaption}
+)}\hypertarget{simulation_8h_a81fcd19d5e1ce40fd3d694be4bdc1f46}{}\label{simulation_8h_a81fcd19d5e1ce40fd3d694be4bdc1f46}
+
+
+Affiche les slots de l\textquotesingle{}anneau. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em slots\mbox{[}$\,$\mbox{]}} & Les slots à afficher. \\
+\hline
+\end{DoxyParams}
