@@ -32,7 +32,6 @@ global NOMBRE_NOEUD
 NOMBRE_NOEUD = 10	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
-COULEUR_NOEUD = "CadetBlue3"	#La couleur graphique d'un noeud
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
@@ -187,6 +186,7 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		y = (y1 + y2) / 2
 
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
+		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click)
 
 		#le texte du rectangle
 		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
@@ -230,35 +230,35 @@ def placer_panel_gauche(fenetre):
 			- Diminuer vitesse.
 	"""
 
-	play = Image.open("./images/play.png")
+	play = Image.open("../images/play.png")
 	IMAGES.append( ImageTk.PhotoImage(play) )
 	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_play.grid(row=0)
 	label_play = Label(fenetre, text="Commencer/reprendre")
 	label_play.grid(row=1)
 
-	stop = Image.open("./images/stop.png")
+	stop = Image.open("../images/stop.png")
 	IMAGES.append( ImageTk.PhotoImage(stop) )
 	bouton_stop = Button(fenetre, command = arreter_rotation, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_stop.grid(row=2)
 	label_stop = Label(fenetre, text="Arrêter")
 	label_stop.grid(row=3)
 
-	replay = Image.open("./images/restart.png")
+	replay = Image.open("../images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
 	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
 
-	replay = Image.open("./images/vitesse_up.png")
+	replay = Image.open("../images/vitesse_up.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
 	bouton_reset = Button(fenetre, text ="UP", command = augmenter_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=7)
 	label_restart = Label(fenetre, text="Modifier vitesse")
 	label_restart.grid(row=8)
 
-	vitesse_down = Image.open("./images/vitesse_down.png")
+	vitesse_down = Image.open("../images/vitesse_down.png")
 	IMAGES.append( ImageTk.PhotoImage(vitesse_down) )
 	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_down.grid(row=9)
@@ -655,6 +655,45 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
+def callback_click(event):
+	"""
+		Fonction callback du click sur un noeud.
+	"""
+
+	etat_continuer = controleur.continuer	#L'état de l'anneau
+
+	id_objet = event.widget.find_closest(event.x, event.y)
+	id_objet = int( id_objet[0] )
+
+	#On récupére le noeud sur lequel l'utilisateur à cliqué
+	i = 0
+	while i < NOMBRE_NOEUD -1 and controleur.noeuds_vue[i] != id_objet:
+		print i
+		controleur.noeuds_vue[i]
+		i += 1
+
+	if controleur.noeuds_vue[i] == id_objet:	#On a trouvé le noeud !
+		arreter_rotation()
+		if controleur.noeuds_modele[i].nb_message_total > 0:
+			#Récupération des valeurs
+			attente_moyenne = float(controleur.noeuds_modele[i].attente_totale) / float(controleur.noeuds_modele[i].nb_message_total)
+			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
+			attente_max = controleur.noeuds_modele[i].attente_max
+
+			if attente_moyenne_arrondie > 0 and attente_max > 0:
+				message = "Nombre de message : "+str( controleur.noeuds_modele[i].nb_message )
+				message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)
+				message += "\nAttente maximale des messages : "+str(attente_max)+"."
+			else:
+				message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
+
+		else:
+			message = "Ce noeud n'a encore reçu aucun message."
+		titre = str( controleur.noeuds_modele[i] )
+
+		if tkMessageBox.showinfo(titre, message) and etat_continuer == True:
+			commencer_rotation()
+
 
 def callback_validation_configuration(event):
 	"""
@@ -702,11 +741,8 @@ def arreter_rotation():
 	"""
 
 	global controleur
-	global tache
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	controleur.continuer = False
-	for noeud in controleur.noeuds_modele:
-		print "Noeud "+str(noeud)+" Attente moyenne : "+str( float(noeud.attente_totale) / float(noeud.nb_message_total) )+" Attente max : "+str(noeud.attente_max)
 
 
 def augmenter_vitesse():
@@ -854,8 +890,7 @@ def modifier_configuration():
 """
 def arreter_appli():
 	arreter_rotation()
-	for noeud in controleur.noeuds_modele:
-		print "Noeud "+str(noeud)+" Attente moyenne : "+str(noeud.attente_totale/noeud.nb_message_total)+" Attente max : "+str(noeud.attente_max)
+	afficher_stat_noeud()
 	fenetre.destroy()
 
 
@@ -897,7 +932,6 @@ def placer_message(indice_noeud, messages):
 			if message != None:
 				temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
 				if temps_attente_message > noeud_modele.attente_max:
-					print "Changement du temps max pour le noeud : "+str(noeud_modele)+" Affectation de la valeur : "+str(temps_attente_message)
 					noeud_modele.attente_max = temps_attente_message
 				noeud_modele.attente_totale += temps_attente_message
 
@@ -913,7 +947,6 @@ def rotation_message():
 	decaler_messages()
 	sortir_message()
 	entrer_message()
-	arreter_rotation()
 
 
 def entrer_message():
@@ -1066,7 +1099,7 @@ def initialisation(fenetre):
 
 	#Mise en place du canvas et des données du controleur
 	canvas = creer_canvas(fenetre)
-	IMAGE_JASON = PhotoImage(file="./images/jason_statham.png")
+	IMAGE_JASON = PhotoImage(file="../images/jason_statham.png")
 
 	slots = placer_slots(fenetre, canvas)
 	slots_modele = slots[0]
@@ -1118,6 +1151,19 @@ def afficher_message_anneau():
 			print "Le slot ", controleur.slots_vue[i], " ne contient pas de message"
 		else:
 			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
+
+
+def afficher_stat_noeud():
+	"""
+		Affiche les statistiques liés aux temps d'attente des noeuds.
+	"""
+
+	global controleur
+	for noeud in controleur.noeuds_modele:
+		if noeud.nb_message_total != 0:
+			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
+			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
+			print "Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)
 
 
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
