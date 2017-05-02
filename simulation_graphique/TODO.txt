@@ -1,0 +1,9 @@
+TODO:
+	- Poursuivre développement
+		- Ajouter l'hyper expo à la simulation.
+		- Demander à Maël pour l'hyper expo quelle doit être la taille du tableau à l'initialisation en fonction de LAMBDA.
+		- Demander à Maël la fonction/profession de Yann Strozecki.
+		- Implémenter une limite minimal de message.
+		- Afficher le temps d'attente maximal des paquets de message pour chaque noeud.
+
+	- Commencer rédaction rapport de stage.
