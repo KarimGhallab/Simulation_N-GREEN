@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['messages',['Messages',['../structMessages.html',1,'']]]
+  ['linkedlist',['LinkedList',['../structLinkedList.html',1,'']]],
+  ['listechainee',['ListeChainee',['../structListeChainee.html',1,'']]]
 ];

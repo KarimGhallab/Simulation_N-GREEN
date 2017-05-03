@@ -3,6 +3,11 @@
  * \brief Header du fichier principal exécutant la simulation.
  */
 
+ #include<stdio.h>
+ #include <stdlib.h>
+ #include <time.h>
+
+
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
@@ -59,7 +64,12 @@ struct Noeud
 	int indice_slot_ecriture;
 	int nb_antenne;		//Indique le nombre d'antenne auquel est lié le noeuds
 	int debut_periode;		//Le décalage selon lequel le noeud recoit des messages des antennes
+	//LinkedList messages = deque()		//File FIFO contenant les TIC d'arrivé des messages
+	int attente_max;		//Le temps d'attente maximal dans le noeud
+	int nb_message_total;	//Le nombre de message ayant transité dans le noeud
+	int attente_totale;		//Le temps d'attente total des messages
 };
+
 typedef struct Noeud Noeud;
 
 /*! \struct Slot
@@ -75,6 +85,8 @@ struct Slot
 	int indice_noeud_ecriture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1
 };
 typedef struct Slot Slot;
+
+
 
 //////////////////////////////////////////////////
 ///////////////// Les fonctions /////////////////
@@ -104,3 +116,64 @@ void afficher_noeuds( Noeud noeuds[] );
 * \param noeuds[] Les noeuds à afficher.
 */
 void initialiser_noeuds( Noeud noeuds[], Slot slots[] );
+
+void initialiser_slots( Slot slots[] )
+{
+	int cpt = 0;
+	for (cpt=0; cpt<NOMBRE_SLOT; cpt++)
+	{
+		Slot tmp = {cpt, 0, -1, -1};
+		slots[cpt] = tmp;
+	}
+}
+
+void afficher_slots( Slot slots[] )
+{
+	int i;
+	printf("Les slots de l'anneau\n");
+	for (i = 0; i < NOMBRE_SLOT; i++)
+	{
+		printf("Indice du tableau : %d     Id du noeud : %d    Il contient un paquet : %d    Indice en lecture : %d    Indice en écriture : %d\n", i, slots[i].id, slots[i].paquet_message == 1, slots[i].indice_noeud_lecture, slots[i].indice_noeud_ecriture);
+	}
+}
+
+void initialiser_noeuds( Noeud noeuds[], Slot slots[] )
+{
+	time_t t;
+	srand((unsigned) time(&t));		//Initialise le générateur de nombre aléatoire
+
+	int pas = NOMBRE_SLOT / NOMBRE_NOEUD;
+	int nombre_antenne;
+	int j;
+	for (j=0; j<NOMBRE_NOEUD; j++)
+	{
+		/* Génére le nombre d'antenne pour le noeud courant */
+		if ( (j == 0) || (j == NOMBRE_NOEUD -1) )
+				nombre_antenne = 0;
+		else
+				nombre_antenne = ( rand() % 4 ) +1;	//Génére un entier entre 1 et 5
+		int debut_periode = rand() % 99;
+
+		int indice_slot_lecture = (( (j*pas) + ((j+1)*pas) ) / 2) - 1;
+		int indice_slot_ecriture = indice_slot_lecture - 1;
+		if (indice_slot_ecriture < 0)
+				indice_slot_ecriture = NOMBRE_SLOT -1;
+
+		Noeud tmp = {j, 0, indice_slot_lecture, indice_slot_ecriture, nombre_antenne, debut_periode, 0, 0, 0};
+		noeuds[j] = tmp;
+
+		/* Met à jour les indices des slots */
+		slots[ indice_slot_lecture ].indice_noeud_lecture = j;
+		slots[ indice_slot_ecriture ].indice_noeud_ecriture = j;
+	}
+}
+
+void afficher_noeuds( Noeud noeuds[] )
+{
+	printf("Les neouds de l'anneau\n");
+	int i;
+	for (i = 0; i < NOMBRE_NOEUD; i++)
+	{
+		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Nombre d'antenne : %d    Décalage : %d\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].nb_antenne, noeuds[i].debut_periode);
+	}
+}

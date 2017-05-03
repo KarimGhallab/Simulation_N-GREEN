@@ -1,0 +1,145 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/*!
+ * \file ListeChainee.h
+ * \brief Fichier contenant la structure représentant une liste chainée ainsi que les fonctions pour l'utilisé comme une FIFO.
+ */
+
+
+ /*! \struct Maillon.
+  * \brief Structure représentant Maillon de la liste chainée.
+  * Elle contient un tic d'arrivé et un pointeur sur le maillon suivant.
+  */
+ typedef struct Maillon Maillon;
+ struct Maillon
+ {
+ 	int tic_arrive;
+ 	Maillon *suivant;
+ };
+
+
+ /*! \struct LinkedList.
+  * \brief Structure représentant une liste chainée.
+  * Elle contient un pointeur sur le premier maillon de la liste.
+  */
+struct ListeChainee
+{
+	Maillon *premier;
+};
+
+typedef struct ListeChainee ListeChainee;
+
+
+/*! \fn ListeChainee *creer_Liste_chainee()
+   \brief Constructeur d'une liste chainée.
+   \return un pointeur sur le premier élement de la liste.
+*/
+ListeChainee *creer_Liste_chainee()
+{
+    ListeChainee *liste = (ListeChainee *) malloc( sizeof(liste) );
+    //Maillon *premier = (Maillon *) malloc( sizeof(*premier) );
+
+
+    liste->premier = NULL;
+
+    return liste;
+}
+
+
+/*! \fn void inserer_fin( ListeChainee *liste, int tic_arrive )
+   \brief Insère en fin de liste un nouveau maillon.
+   \param liste : La liste chainée sur laquelle on souhaite ajouter l'élément.
+   \param tic_arrive : La valeur de l'élément.
+*/
+void inserer_fin(ListeChainee *liste, int tic_arrive)
+{
+    /* Création du nouvel élément */
+    Maillon *nouveau = (Maillon *) malloc( sizeof(*nouveau) );
+
+	nouveau->tic_arrive = tic_arrive;
+	nouveau->suivant = NULL;
+
+    /* Insertion de l'élément à la fin de la liste */
+	Maillon *courant = liste->premier;
+
+	//Exception si la liste est vide
+	if (courant == NULL)
+		liste->premier = nouveau;
+	else
+	{
+		while (courant->suivant != NULL)
+		{
+			courant = courant->suivant;
+		}
+		/* Sortie de la boucle, courant est le dernier élément */
+		courant->suivant = nouveau;
+	}
+}
+
+
+/*! \fn void supprimer_premier( ListeChainee *liste )
+   \brief Supprime le premier élément de la liste.
+   \param liste : La liste chainée pour laquelle nous souhaitons supprimer le premier maillon.
+*/
+void supprimer_premier(ListeChainee *liste)
+{
+	/* La liste contient un premier élément */
+	if (liste->premier == NULL)
+	{
+		printf("La liste est vide");
+	}
+	if (liste->premier != NULL)
+    {
+		printf("Il y a un élément\n");
+        Maillon *aSupprimer = liste->premier;
+        liste->premier = aSupprimer->suivant;
+		if (liste->premier == NULL)
+			printf("Le premier devient null\n");
+        free(aSupprimer);
+    }
+	else
+	{
+		printf("liste vide\n");
+	}
+}
+
+
+/*! \fn int liste_est_vide(ListeChainee *liste)
+   \brief Indique si une liste est vide ou non.
+   \param liste : la liste chainée.
+   \return 1 Si la liste est vide, 0 si elle contient au moins un élément.
+*/
+int liste_est_vide(ListeChainee *liste)
+{
+	Maillon *premier = liste->premier;
+	if (premier == NULL)
+		return 1;
+	else
+		return 0;
+}
+
+
+/*! \fn void afficher_liste( ListeChainee *liste )
+   \brief Affiche une liste chainée.
+   \param liste : La liste chainée que nous souhaitons afficher.
+*/
+void afficher_liste(ListeChainee *liste)
+{
+	if (liste_est_vide(liste) == 0)
+	{
+		Maillon *courant = liste->premier;
+		int compteur = 0;
+		while (courant->suivant != NULL)
+		{
+			printf("Indice de la chaine : %d; Valeur du maillon : %d\n", compteur, courant->tic_arrive);
+			courant = courant->suivant;
+			compteur++;
+		}
+		printf("Indice de la chaine : %d; Valeur du maillon : %d\n", compteur, courant->tic_arrive);
+	}
+	else
+	{
+		printf("la liste est vide\n");
+	}
+}

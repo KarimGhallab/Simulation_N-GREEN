@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['slot',['Slot',['../structSlot.html',1,'']]]
+  ['paquetmessage',['PaquetMessage',['../structPaquetMessage.html',1,'']]]
 ];
