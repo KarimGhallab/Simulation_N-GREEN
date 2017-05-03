@@ -1,6 +1,4 @@
 #include "./simulation.h"
-#include "./ListeChainee.h"
-#include "./hyper_expo.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -18,7 +16,8 @@ int main ()
 
 	while (nombre_tic_restant > 0)
 	{
-		printf("%d\n", effectuer_tirage(0.5) );
+		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant );
+		printf("\n############################\n");
 		nombre_tic_restant--;
 	}
 	return 0;

@@ -96,6 +96,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
 <code>#include &lt;stdlib.h&gt;</code><br />
 <code>#include &lt;time.h&gt;</code><br />
+<code>#include &quot;<a class="el" href="ListeChainee_8h_source.html">./ListeChainee.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="hyper__expo_8h_source.html">./hyper_expo.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
 <div class="dyncontent">
@@ -135,6 +137,18 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9c5c87ea2b279e31b47b9c36ea28411e">NOMBRE_NOEUD</a>&#160;&#160;&#160;5</td></tr>
 <tr class="memdesc:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de noeud de l'anneau. <br /></td></tr>
 <tr class="separator:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3a92c0c3d4878d475633f969fe0b8ca9">PERIODE_MESSAGE_ANTENNE</a>&#160;&#160;&#160;100</td></tr>
+<tr class="memdesc:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique la période selon laquelle les antennes enverront des messages aux noeuds. <br /></td></tr>
+<tr class="separator:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82181bbae9aab8300e30ac606b68b3fc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a82181bbae9aab8300e30ac606b68b3fc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a82181bbae9aab8300e30ac606b68b3fc">LIMITE_NOMBRE_MESSAGE_MIN</a>&#160;&#160;&#160;60</td></tr>
+<tr class="memdesc:a82181bbae9aab8300e30ac606b68b3fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">La limite minimale avant un envoi de message depuis un noeud. <br /></td></tr>
+<tr class="separator:a82181bbae9aab8300e30ac606b68b3fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3afe421e20484e4c8524fcdefdc44783"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3afe421e20484e4c8524fcdefdc44783"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3afe421e20484e4c8524fcdefdc44783">LIMITE_NOMBRE_MESSAGE_MAX</a>&#160;&#160;&#160;80</td></tr>
+<tr class="memdesc:a3afe421e20484e4c8524fcdefdc44783"><td class="mdescLeft">&#160;</td><td class="mdescRight">La limite maximale avant un envoi de message depuis un noeud. <br /></td></tr>
+<tr class="separator:a3afe421e20484e4c8524fcdefdc44783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -165,6 +179,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a52f5c8adf7d01725c2588ed65c7568ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a52f5c8adf7d01725c2588ed65c7568ab">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> noeuds[], <a class="el" href="structSlot.html">Slot</a> slots[])</td></tr>
 <tr class="memdesc:a52f5c8adf7d01725c2588ed65c7568ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les noeuds de l'anneau.  <a href="#a52f5c8adf7d01725c2588ed65c7568ab">More...</a><br /></td></tr>
 <tr class="separator:a52f5c8adf7d01725c2588ed65c7568ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b4c208274502168b9c129f67f07186c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4b4c208274502168b9c129f67f07186c">entrer_messages</a> (<a class="el" href="structSlot.html">Slot</a> slots[], <a class="el" href="structNoeud.html">Noeud</a> noeuds[], int tic)</td></tr>
+<tr class="memdesc:a4b4c208274502168b9c129f67f07186c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.  <a href="#a4b4c208274502168b9c129f67f07186c">More...</a><br /></td></tr>
+<tr class="separator:a4b4c208274502168b9c129f67f07186c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal exécutant la simulation. </p>
@@ -212,6 +229,48 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">slots[]</td><td>Le tableau des slots à initialiser. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4b4c208274502168b9c129f67f07186c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void entrer_messages </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a>&#160;</td>
+          <td class="paramname"><em>slots</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a>&#160;</td>
+          <td class="paramname"><em>noeuds</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">noeuds[]</td><td>Les noeuds qui recevront les messages. </td></tr>
+    <tr><td class="paramname">slots[]</td><td>Les slots qui recevront les messages des noeuds. </td></tr>
+    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
   </table>
   </dd>
 </dl>

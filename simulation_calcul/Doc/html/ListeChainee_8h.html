@@ -101,6 +101,13 @@ Include dependency graph for ListeChainee.h:</div>
 <map name="ListeChainee_8h" id="ListeChainee_8h">
 </map>
 </div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="ListeChainee_8h__dep__incl.png" border="0" usemap="#ListeChainee_8hdep" alt=""/></div>
+<map name="ListeChainee_8hdep" id="ListeChainee_8hdep">
+</map>
+</div>
 </div>
 <p><a href="ListeChainee_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -110,6 +117,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant <a class="el" href="structMaillon.html" title="Structure représentant Maillon de la liste chainée. Elle contient un tic d&#39;arrivé et un pointeur sur ...">Maillon</a> de la liste chainée. Elle contient un tic d'arrivé et un pointeur sur le maillon suivant.  <a href="structMaillon.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structListeChainee.html">ListeChainee</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant une liste chainée. Elle contient un pointeur sur le premier maillon de la liste.  <a href="structListeChainee.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -129,9 +137,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a3fcc8e82d4c92f1d3e48bcdf856924a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ListeChainee_8h.html#a3fcc8e82d4c92f1d3e48bcdf856924a8">inserer_fin</a> (<a class="el" href="structListeChainee.html">ListeChainee</a> *liste, int tic_arrive)</td></tr>
 <tr class="memdesc:a3fcc8e82d4c92f1d3e48bcdf856924a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Insère en fin de liste un nouveau maillon.  <a href="#a3fcc8e82d4c92f1d3e48bcdf856924a8">More...</a><br /></td></tr>
 <tr class="separator:a3fcc8e82d4c92f1d3e48bcdf856924a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01b81e56b03122254fac1748327c5e36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ListeChainee_8h.html#a01b81e56b03122254fac1748327c5e36">supprimer_premier</a> (<a class="el" href="structListeChainee.html">ListeChainee</a> *liste)</td></tr>
-<tr class="memdesc:a01b81e56b03122254fac1748327c5e36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime le premier élément de la liste.  <a href="#a01b81e56b03122254fac1748327c5e36">More...</a><br /></td></tr>
-<tr class="separator:a01b81e56b03122254fac1748327c5e36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a535ecc5ac2bf30b9452d50ffdcbb18c8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ListeChainee_8h.html#a535ecc5ac2bf30b9452d50ffdcbb18c8">supprimer_premier</a> (<a class="el" href="structListeChainee.html">ListeChainee</a> *liste)</td></tr>
+<tr class="memdesc:a535ecc5ac2bf30b9452d50ffdcbb18c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime le premier élément de la liste et renvoie sa valeur.  <a href="#a535ecc5ac2bf30b9452d50ffdcbb18c8">More...</a><br /></td></tr>
+<tr class="separator:a535ecc5ac2bf30b9452d50ffdcbb18c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:affffe7b0504ff7c013eccc9c41db365a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="ListeChainee_8h.html#affffe7b0504ff7c013eccc9c41db365a">liste_est_vide</a> (<a class="el" href="structListeChainee.html">ListeChainee</a> *liste)</td></tr>
 <tr class="memdesc:affffe7b0504ff7c013eccc9c41db365a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique si une liste est vide ou non.  <a href="#affffe7b0504ff7c013eccc9c41db365a">More...</a><br /></td></tr>
 <tr class="separator:affffe7b0504ff7c013eccc9c41db365a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,12 +252,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="a01b81e56b03122254fac1748327c5e36"></a>
+<a class="anchor" id="a535ecc5ac2bf30b9452d50ffdcbb18c8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void supprimer_premier </td>
+          <td class="memname">int supprimer_premier </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structListeChainee.html">ListeChainee</a> *&#160;</td>
           <td class="paramname"><em>liste</em></td><td>)</td>
@@ -258,7 +266,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Supprime le premier élément de la liste. </p>
+<p>Supprime le premier élément de la liste et renvoie sa valeur. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">liste</td><td>: La liste chainée pour laquelle nous souhaitons supprimer le premier maillon. </td></tr>

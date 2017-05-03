@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 /*!
  * \file hyper_expo.h
@@ -23,7 +24,7 @@
 /*! \def LAMBDA
  * \brief Représente le facteur lambda de la loi de poisson.
  */
-#define LAMBDA 1
+#define LAMBDA 10
 
 
 /*! \def TAILLE_TABLEAU
@@ -32,8 +33,6 @@
 #define TAILLE_TABLEAU 10
 
 extern int DECALAGE = 0;
-
-extern int TABLEAU_POISSON[TAILLE_TABLEAU];
 
 
 /*! \fn int effectuer_tirage(float probabilite)
@@ -64,17 +63,18 @@ int loi_de_poisson_naif(float u);
 /*! \fn int loi_de_poisson_opti(float u)
    \brief Calcule optimisé du résultat d'une loi de poisson.
    \param u : Variable aléatoire.
+   \param tableau_poisson : Le tableau contenant les valeurs de la loi de poisson.
    \return Le résultat de la loi de poisson.
 */
-int loi_de_poisson_opti(float u);
+int loi_de_poisson_opti(float u, double tableau_poisson[]);
 
 
-/*! \fn void initialiser_tableau(double TABLEAU_POISSON[] );
+/*! \fn void initialiser_tableau(double tableau_poisson[] );
    \brief Initialise le tableau avec les résultats de le loi de poisson.
 	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
-   \param TABLEAU_POISSON[] : le tableau à initialiser.
+   \param tableau_poisson[] : le tableau à initialiser.
 */
-void initialiser_tableau(double TABLEAU_POISSON[] );
+void initialiser_tableau(double tableau_poisson[] );
 
 
 /*! \fn int hyper_expo()
@@ -92,9 +92,9 @@ int effectuer_tirage(float probabilite)
 
 float generer_aleatoire(float borne_min, float borne_max)
 {
-	srand(DECALAGE);
+	srand(clock() + DECALAGE);		//Met en place le générateur en fonction du temps et d'un décalage.
 	DECALAGE++;
-	float tirage = ((float)rand() / RAND_MAX * borne_max) + borne_min;
+	float tirage = ((float)rand() / RAND_MAX * (borne_max - borne_min) ) + borne_min;
 	return tirage;
 }
 
@@ -112,20 +112,20 @@ int loi_de_poisson_naif(float u)
 	return x;
 }
 
-int loi_de_poisson_opti(float u)
+int loi_de_poisson_opti(float u, double tableau_poisson[] )
 {
 	//Initialisation des variables
-	//initialiser_tableau()
+	initialiser_tableau( tableau_poisson );
 
 	int maxi = TAILLE_TABLEAU;
-	double maxF = TABLEAU_POISSON[ TAILLE_TABLEAU -1];
+	double maxF = tableau_poisson[ TAILLE_TABLEAU -1];
 	double maxP = maxF;
 
 	int x;
 	if (u <= maxF)		//On peut trouver la valeur à l'aide du tableau
 	{
 		x = 0;
-		while (u > TABLEAU_POISSON[x])
+		while (u > tableau_poisson[x])
 		{
 			x++;
 		}
@@ -146,16 +146,16 @@ int loi_de_poisson_opti(float u)
 	return x;
 }
 
-void initialiser_tableau(double TABLEAU_POISSON[] )
+void initialiser_tableau(double tableau_poisson[] )
 {
-	TABLEAU_POISSON[0] = exp(-LAMBDA);
-	double p = TABLEAU_POISSON[0];
+	tableau_poisson[0] = exp(-LAMBDA);
+	double p = tableau_poisson[0];
 
 	int i;
 	for (i=0; i<TAILLE_TABLEAU; i++)
 	{
 		p = p*LAMBDA/i;
-		TABLEAU_POISSON[i] = TABLEAU_POISSON[i-1]+p;
+		tableau_poisson[i] = tableau_poisson[i-1]+p;
 	}
 }
 
@@ -169,7 +169,9 @@ int hyper_expo()
 	else
 	{
 		float u = generer_aleatoire(0, 1.0f);
+		//double tableau_poisson[TAILLE_TABLEAU];
 		int nb_message = loi_de_poisson_naif(u);
+		//int nb_message = loi_de_poisson_opti(u, tableau_poisson);
 		printf ("Resultat loi de poisson via l'algo naif : %d",nb_message);
 		return nb_message;
 	}

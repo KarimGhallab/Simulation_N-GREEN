@@ -7,22 +7,21 @@
  */
 
 
- /*! \struct Maillon.
-  * \brief Structure représentant Maillon de la liste chainée.
-  * Elle contient un tic d'arrivé et un pointeur sur le maillon suivant.
-  */
- typedef struct Maillon Maillon;
- struct Maillon
- {
- 	int tic_arrive;
- 	Maillon *suivant;
- };
+/*! \struct Maillon.
+ * \brief Structure représentant Maillon de la liste chainée.
+ * Elle contient un tic d'arrivé et un pointeur sur le maillon suivant.
+ */
+typedef struct Maillon Maillon;
+struct Maillon
+{
+	int tic_arrive;
+	Maillon *suivant;
+};
 
-
- /*! \struct LinkedList.
-  * \brief Structure représentant une liste chainée.
-  * Elle contient un pointeur sur le premier maillon de la liste.
-  */
+/*! \struct ListeChainee.
+ * \brief Structure représentant une liste chainée.
+ * Elle contient un pointeur sur le premier maillon de la liste.
+ */
 struct ListeChainee
 {
 	Maillon *premier;
@@ -78,29 +77,25 @@ void inserer_fin(ListeChainee *liste, int tic_arrive)
 }
 
 
-/*! \fn void supprimer_premier( ListeChainee *liste )
-   \brief Supprime le premier élément de la liste.
+/*! \fn int supprimer_premier( ListeChainee *liste )
+   \brief Supprime le premier élément de la liste et renvoie sa valeur.
    \param liste : La liste chainée pour laquelle nous souhaitons supprimer le premier maillon.
 */
-void supprimer_premier(ListeChainee *liste)
+int supprimer_premier(ListeChainee *liste)
 {
 	/* La liste contient un premier élément */
-	if (liste->premier == NULL)
-	{
-		printf("La liste est vide");
-	}
 	if (liste->premier != NULL)
     {
-		printf("Il y a un élément\n");
         Maillon *aSupprimer = liste->premier;
+		int tic = aSupprimer->tic_arrive;
         liste->premier = aSupprimer->suivant;
-		if (liste->premier == NULL)
-			printf("Le premier devient null\n");
         free(aSupprimer);
+		return tic;
     }
 	else
 	{
 		printf("liste vide\n");
+		return -1;
 	}
 }
 
