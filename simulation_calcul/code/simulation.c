@@ -17,6 +17,10 @@ int main ()
 	while (nombre_tic_restant > 0)
 	{
 		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant );
+		afficher_slots(slots);
+		printf("\n\n");
+		afficher_noeuds(noeuds);
+		printf("\n\n");
 		printf("\n############################\n");
 		nombre_tic_restant--;
 	}

@@ -62,7 +62,7 @@ struct PaquetMessage
 {
 	int indice_noeud_emetteur;
 	int nombre_messages;
-	Messages messages[80];		//Un slot ne peut contenir plus de 80 messages
+	int messages[80];		//Un slot ne peut contenir plus de 80 messages (Un message contient uniquement son tic d'arrivé)
 };
 typedef struct PaquetMessage PaquetMessage;
 
@@ -95,7 +95,8 @@ typedef struct Noeud Noeud;
 struct Slot
 {
 	int id;
-	int paquet_message;		//Indique si le slot possede un paquet de message ()
+	int contient_message;
+	PaquetMessage paquet_message;		//Indique si le slot possede un paquet de message ()
 	int indice_noeud_lecture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1
 	int indice_noeud_ecriture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1
 };
@@ -140,13 +141,25 @@ void initialiser_noeuds( Noeud noeuds[], Slot slots[] );
 */
 void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
 
+/*! void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot slot, int nombre_message, int messages[], int tic )
+* \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
+* \param noeud Le noeud qui transmet le paquet.
+* \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
+* \param slot Le slot qui recevra le paquet de message.
+* \param nombre_message Le nombre de message qui doit etre transmis.
+* \param messages Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
+* \param tic le tic actuel de l'anneau.
+*/
+//void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot slot, int nombre_message, int messages[], int tic );
+
 
 void initialiser_slots( Slot slots[] )
 {
 	int cpt = 0;
 	for (cpt=0; cpt<NOMBRE_SLOT; cpt++)
 	{
-		Slot tmp = {cpt, 0, -1, -1};
+		Slot tmp;
+		tmp.id = cpt; tmp.indice_noeud_lecture = -1; tmp.indice_noeud_ecriture = -1; tmp.contient_message = 0;
 		slots[cpt] = tmp;
 	}
 }
@@ -157,7 +170,8 @@ void afficher_slots( Slot slots[] )
 	printf("Les slots de l'anneau\n");
 	for (i = 0; i < NOMBRE_SLOT; i++)
 	{
-		printf("Indice du tableau : %d     Id du noeud : %d    Il contient un paquet : %d    Indice en lecture : %d    Indice en écriture : %d\n", i, slots[i].id, slots[i].paquet_message == 1, slots[i].indice_noeud_lecture, slots[i].indice_noeud_ecriture);
+		printf("%d\n", slots[i].contient_message);
+		printf("Indice du tableau : %d     Id du noeud : %d    Il contient un paquet : %d    Indice en lecture : %d    Indice en écriture : %d\n", i, slots[i].id, slots[i].contient_message == 1, slots[i].indice_noeud_lecture, slots[i].indice_noeud_ecriture);
 	}
 }
 
@@ -199,8 +213,32 @@ void afficher_noeuds( Noeud noeuds[] )
 	int i;
 	for (i = 0; i < NOMBRE_NOEUD; i++)
 	{
-		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Nombre d'antenne : %d    Décalage : %d\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].nb_antenne, noeuds[i].debut_periode);
+		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Nombre d'antenne : %d    Décalage : %d    Attente max : %d    nb message total : %d    attente total : %d\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].nb_antenne, noeuds[i].debut_periode, noeuds[i].attente_max, noeuds[i].nb_message_total, noeuds[i].attente_totale);
 	}
+}
+
+void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
+{
+	PaquetMessage paquet;
+	paquet.indice_noeud_emetteur = indice_noeud_emetteur;
+	paquet.nombre_messages = nombre_message;
+
+	/* Affecte le tableau de message */
+	/* Met à jour les temps d'attentes du noeud qui envoi le message */
+	int i;
+	for (i=0; i<nombre_message; i++)
+	{
+		paquet.messages[i] = messages[i];
+
+		int temps_attente_message = tic - paquet.messages[i];
+		if (temps_attente_message > noeud.attente_max)
+			noeud.attente_max = temps_attente_message;
+
+		noeud.attente_totale += temps_attente_message;
+	}
+	slot->paquet_message = paquet;
+	printf("yuyu\n");
+	slot->contient_message = 1;
 }
 
 void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
@@ -215,10 +253,10 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
 
 			//Le slot affiche si c'est sa période de réception de message provenant des antennes
 			if (tic % PERIODE_MESSAGE_ANTENNE == noeuds[ slots[i].indice_noeud_ecriture ].debut_periode)	//C'est la periode du noeud, il reçoit un message de ses antennes
-				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.", noeud.debut_periode, noeud.nb_antenne);
+				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud.debut_periode, noeud.nb_antenne);
 
 			int nb_message = hyper_expo();
-			printf("Le noeud %d reçois %d messages\n", noeuds[ slots[i].indice_noeud_ecriture ].id, nb_message);
+			printf("Le noeud %d recois %d messages\n", noeud.id, nb_message);
 
 			//On ajoute au noeud le tic d'arrivé des messages
 			int j;
@@ -226,10 +264,10 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
 				inserer_fin(noeuds[ slots[i].indice_noeud_ecriture ].messages, tic);
 
 			noeuds[ slots[i].indice_noeud_ecriture ].nb_message += nb_message;
+			noeuds[ slots[i].indice_noeud_ecriture ].nb_message_total += nb_message;
 
-			if ( (slots[i].paquet_message == 0) && (noeuds[ slots[i].indice_noeud_ecriture ].nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
+			if ( ( slots[i].contient_message == 0) && (noeuds[ slots[i].indice_noeud_ecriture ].nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
 			{
-				printf("Envoie de message possible\n");
 				int k;
 				if (noeuds[ slots[i].indice_noeud_ecriture ].nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
 				{
@@ -239,6 +277,7 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
 						messages[k] = supprimer_premier(noeuds[ slots[i].indice_noeud_ecriture ].messages);
 
 					noeuds[ slots[i].indice_noeud_ecriture ].nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
+					placer_message( noeuds[ slots[i].indice_noeud_ecriture ], slots[i].indice_noeud_ecriture, &(slots[ noeud.indice_slot_ecriture ]), nb_message, messages, tic );
 				}
 				else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
 				{
@@ -248,9 +287,9 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
 						messages[k] = supprimer_premier(noeuds[ slots[i].indice_noeud_ecriture ].messages);
 
 					noeuds[ slots[i].indice_noeud_ecriture ].nb_message = 0;
-				//placer_message( noeud, messages );
+					placer_message( noeuds[ slots[i].indice_noeud_ecriture ], slots[i].indice_noeud_ecriture, &(slots[ noeud.indice_slot_ecriture ]), nb_message, messages, tic );
+					printf("Le noeud %d envoi un message vers le slot %d\n", noeuds[ slots[i].indice_noeud_ecriture ].id, slots[ noeud.indice_slot_ecriture ].id);
 				}
-				printf("A la fin du tic, le noeud %d contient %d messages\n", noeuds[ slots[i].indice_noeud_ecriture ].id, noeuds[ slots[i].indice_noeud_ecriture ].nb_message);
 			}
 		}
 	}

@@ -171,7 +171,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:a6aafa3bf1e80a1850c4550ffa9f59785"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les slots de l'anneau.  <a href="#a6aafa3bf1e80a1850c4550ffa9f59785">More...</a><br /></td></tr>
 <tr class="separator:a6aafa3bf1e80a1850c4550ffa9f59785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81fcd19d5e1ce40fd3d694be4bdc1f46"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a81fcd19d5e1ce40fd3d694be4bdc1f46">initialiser_slots</a> (<a class="el" href="structSlot.html">Slot</a> slots[])</td></tr>
-<tr class="memdesc:a81fcd19d5e1ce40fd3d694be4bdc1f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les slots de l'anneau.  <a href="#a81fcd19d5e1ce40fd3d694be4bdc1f46">More...</a><br /></td></tr>
+<tr class="memdesc:a81fcd19d5e1ce40fd3d694be4bdc1f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a81fcd19d5e1ce40fd3d694be4bdc1f46">More...</a><br /></td></tr>
 <tr class="separator:a81fcd19d5e1ce40fd3d694be4bdc1f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae71eeea32697179d8d1fb7f40a28c2c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae71eeea32697179d8d1fb7f40a28c2c3">afficher_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> noeuds[])</td></tr>
 <tr class="memdesc:ae71eeea32697179d8d1fb7f40a28c2c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#ae71eeea32697179d8d1fb7f40a28c2c3">More...</a><br /></td></tr>
@@ -182,6 +182,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a4b4c208274502168b9c129f67f07186c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4b4c208274502168b9c129f67f07186c">entrer_messages</a> (<a class="el" href="structSlot.html">Slot</a> slots[], <a class="el" href="structNoeud.html">Noeud</a> noeuds[], int tic)</td></tr>
 <tr class="memdesc:a4b4c208274502168b9c129f67f07186c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.  <a href="#a4b4c208274502168b9c129f67f07186c">More...</a><br /></td></tr>
 <tr class="separator:a4b4c208274502168b9c129f67f07186c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87407dfb0f21a989d6710bb753526d74"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87407dfb0f21a989d6710bb753526d74"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<a class="el" href="structNoeud.html">Noeud</a> noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic)</td></tr>
+<tr class="separator:a87407dfb0f21a989d6710bb753526d74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal exécutant la simulation. </p>
@@ -325,9 +328,16 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Affiche les slots de l'anneau. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
+<p>Affiche les slots de l'anneau.</p>
+<p>void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot slot, int nombre_message, int messages[], int tic ) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">noeud</td><td>Le noeud qui transmet le paquet. </td></tr>
+    <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
+    <tr><td class="paramname">slot</td><td>Le slot qui recevra le paquet de message. </td></tr>
+    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
+    <tr><td class="paramname">messages</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
+    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau.</td></tr>
     <tr><td class="paramname">slots[]</td><td>Les slots à afficher. </td></tr>
   </table>
   </dd>

@@ -86,7 +86,6 @@ int hyper_expo();
 int effectuer_tirage(float probabilite)
 {
 	float tirage = generer_aleatoire(0, 1.0f);
-	printf("tirage %f\n", tirage);
 	return tirage <= probabilite;
 }
 
@@ -172,7 +171,6 @@ int hyper_expo()
 		//double tableau_poisson[TAILLE_TABLEAU];
 		int nb_message = loi_de_poisson_naif(u);
 		//int nb_message = loi_de_poisson_opti(u, tableau_poisson);
-		printf ("Resultat loi de poisson via l'algo naif : %d",nb_message);
 		return nb_message;
 	}
 }
