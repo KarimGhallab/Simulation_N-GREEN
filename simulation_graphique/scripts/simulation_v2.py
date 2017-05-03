@@ -59,6 +59,9 @@ LABEL_TIC = None
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
 
+global DICT_TEXTES_NOEUDS
+DICT_TEXTES_NOEUDS = {}
+
 PERIODE_MESSAGE_ANTENNE = 100
 STATHAM_MODE = False
 
@@ -144,6 +147,7 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	"""
 
 	global TEXTS_NOEUDS
+	global DICT_TEXTES_NOEUDS
 
 	noeuds_vue = [None] * NOMBRE_NOEUD
 	noeuds_modele = [None] * NOMBRE_NOEUD
@@ -186,10 +190,14 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		y = (y1 + y2) / 2
 
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
-		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click)
+		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click_noeud)
 
 		#le texte du rectangle
 		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
+		canvas.tag_bind(TEXTS_NOEUDS[j], "<Button-1>", callback_click_texte)
+
+		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[j] ] = noeuds_modele[j]
+
 	return noeuds_modele, noeuds_vue, slots_modele
 
 
@@ -480,6 +488,8 @@ class Noeud:
 		"""
 
 		global controleur
+		global TEXTS_NOEUDS
+		global DICT_TEXTES_NOEUDS
 
 		for i in range (len (controleur.noeuds_modele) ):
 			if self.equals(controleur.noeuds_modele[i] ):
@@ -496,6 +506,9 @@ class Noeud:
 		controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud])
 
 		TEXTS_NOEUDS[indice_noeud] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_message) )
+		controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud], "<Button-1>", callback_click_texte)
+
+		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud] ] = controleur.noeuds_modele [indice_noeud]
 
 
 	def __str__(self):
@@ -655,7 +668,7 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
-def callback_click(event):
+def callback_click_noeud(event):
 	"""
 		Fonction callback du click sur un noeud.
 	"""
@@ -668,32 +681,55 @@ def callback_click(event):
 	#On récupére le noeud sur lequel l'utilisateur à cliqué
 	i = 0
 	while i < NOMBRE_NOEUD -1 and controleur.noeuds_vue[i] != id_objet:
-		print i
 		controleur.noeuds_vue[i]
 		i += 1
 
 	if controleur.noeuds_vue[i] == id_objet:	#On a trouvé le noeud !
-		arreter_rotation()
-		if controleur.noeuds_modele[i].nb_message_total > 0:
-			#Récupération des valeurs
-			attente_moyenne = float(controleur.noeuds_modele[i].attente_totale) / float(controleur.noeuds_modele[i].nb_message_total)
-			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
-			attente_max = controleur.noeuds_modele[i].attente_max
+		afficher_dialogue_noeud( controleur.noeuds_modele[i], etat_continuer )
 
-			if attente_moyenne_arrondie > 0 and attente_max > 0:
-				message = "Nombre de message : "+str( controleur.noeuds_modele[i].nb_message )
-				message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)
-				message += "\nAttente maximale des messages : "+str(attente_max)+"."
-			else:
-				message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
 
+def callback_click_texte(event):
+	"""
+		Fonction callback d'un clique sur le texte d'un noeud
+	"""
+
+	etat_continuer = controleur.continuer	#L'état de l'anneau
+
+	id_objet = event.widget.find_closest(event.x, event.y)
+	id_objet = int( id_objet[0] )
+
+	#On récupére le noeud sur lequel est situé le texte
+	noeud = DICT_TEXTES_NOEUDS [id_objet]
+
+	if noeud != None:
+		afficher_dialogue_noeud( noeud, etat_continuer )
+
+
+def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
+	"""
+		Affiche une boîte de dialogue avec les informations du noeud.
+	"""
+	arreter_rotation()
+	if noeud.nb_message_total > 0:
+		#Récupération des valeurs
+		attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
+		attente_moyenne_arrondie = format(attente_moyenne, '.2f')
+		attente_max = noeud.attente_max
+
+		if attente_moyenne_arrondie > 0 and attente_max > 0:
+			message = "Nombre de message : "+str( noeud.nb_message )
+			message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)
+			message += "\nAttente maximale des messages : "+str(attente_max)+"."
 		else:
-			message = "Ce noeud n'a encore reçu aucun message."
-		titre = str( controleur.noeuds_modele[i] )
+			message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
 
-		if tkMessageBox.showinfo(titre, message) and etat_continuer == True:
-			commencer_rotation()
+	else:
+		message = "Ce noeud n'a encore reçu aucun message."
+	titre = str(noeud)
 
+	#Si l'anneau était en marche, on reprend le mouvement une fois que l'utilisateur a cliqué sur le bouton de la boite de dîalogue
+	if tkMessageBox.showinfo(titre, message) and etat_mouvement_anneau == True:
+		commencer_rotation()
 
 def callback_validation_configuration(event):
 	"""
@@ -884,6 +920,7 @@ def modifier_configuration():
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		reset()
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
+
 
 """
 	Stop l'appli en faisant attention aux thread restants.
