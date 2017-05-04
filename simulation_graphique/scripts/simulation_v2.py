@@ -9,6 +9,7 @@ import tkMessageBox
 import time
 import random
 import sys
+import os
 
 from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
 from math import cos, sin, pi, exp
@@ -709,7 +710,9 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 	"""
 		Affiche une boîte de dialogue avec les informations du noeud.
 	"""
-	arreter_rotation()
+	if etat_mouvement_anneau == True:
+		arreter_rotation()
+
 	if noeud.nb_message_total > 0:
 		#Récupération des valeurs
 		attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
@@ -752,6 +755,9 @@ def reset():
 	controleur.continuer = False
 	controleur.nb_tic = 0
 
+	#Clear la console python (Pour Linux uniquement)
+	os.system("clear")
+
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	if tache != None:
 		controleur.fenetre.after_cancel(tache)
@@ -777,6 +783,8 @@ def arreter_rotation():
 	"""
 
 	global controleur
+
+	afficher_stat_noeud()
 	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
 	controleur.continuer = False
 
@@ -1196,11 +1204,14 @@ def afficher_stat_noeud():
 	"""
 
 	global controleur
+
+	print "\n######### STATS #######"
 	for noeud in controleur.noeuds_modele:
 		if noeud.nb_message_total != 0:
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
 			print "Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)
+	print ""
 
 
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
