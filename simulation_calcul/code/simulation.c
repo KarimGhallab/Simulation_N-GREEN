@@ -14,14 +14,33 @@ int main ()
 	initialiser_slots(slots);
 	initialiser_noeuds(noeuds, slots);
 
+	printf("Etat initial\n");
+	afficher_slots(slots);
+
+	printf("Premier décalage\n");
+	decaler_slots(slots);
+	afficher_slots(slots);
+
+	printf("Second décalage\n");
+	decaler_slots(slots);
+	afficher_slots(slots);
+
+	printf("Troisième décalage\n");
+	decaler_slots(slots);
+	afficher_slots(slots);
+
+	printf("Quatrième décalage\n");
+	decaler_slots(slots);
+	afficher_slots(slots);
+
 	while (nombre_tic_restant > 0)
 	{
-		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant );
+		/*entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant );
 		afficher_slots(slots);
 		printf("\n\n");
 		afficher_noeuds(noeuds);
 		printf("\n\n");
-		printf("\n############################\n");
+		printf("\n############################\n");*/
 		nombre_tic_restant--;
 	}
 	return 0;

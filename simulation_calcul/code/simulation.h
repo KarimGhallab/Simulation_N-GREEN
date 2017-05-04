@@ -141,16 +141,22 @@ void initialiser_noeuds( Noeud noeuds[], Slot slots[] );
 */
 void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
 
-/*! void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot slot, int nombre_message, int messages[], int tic )
+/*! \fn void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
 * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
 * \param noeud Le noeud qui transmet le paquet.
 * \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
-* \param slot Le slot qui recevra le paquet de message.
+* \param *slot Un pointeur sur le slot qui recevra le paquet de message.
 * \param nombre_message Le nombre de message qui doit etre transmis.
 * \param messages Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
 * \param tic le tic actuel de l'anneau.
 */
-//void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot slot, int nombre_message, int messages[], int tic );
+void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic );
+
+/*! \fn void decaler_slots( Slot slots[] )
+* \brief Décale les slots dans l'anneau (décalage vers la gauche).
+* \param slots[] Le tableau des messages à décaler.
+*/
+void decaler_slots( Slot slots[] );
 
 
 void initialiser_slots( Slot slots[] )
@@ -291,6 +297,26 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic )
 					printf("Le noeud %d envoi un message vers le slot %d\n", noeuds[ slots[i].indice_noeud_ecriture ].id, slots[ noeud.indice_slot_ecriture ].id);
 				}
 			}
+		}
+	}
+}
+
+void decaler_slots( Slot slots[] )
+{
+	int i;
+	Slot tmp = slots[ NOMBRE_SLOT-1 ];
+	/* Boucle sur le tableau de la fin vers l'avant derniere case */
+	for (i=NOMBRE_SLOT-1; i>=0; i--)
+	{
+		if (i -1 < 0)	//Il faut échanger le premier est le dernier élement
+		{
+			slots[ NOMBRE_SLOT-1 ] = tmp;
+		}
+		else
+		{
+			Slot tmp_bis = slots[i-1];
+			slots[i-1] = tmp;
+			tmp = tmp_bis;
 		}
 	}
 }
