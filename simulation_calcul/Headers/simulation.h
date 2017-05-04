@@ -41,6 +41,10 @@
 ///////////////// Les structures /////////////////
 //////////////////////////////////////////////////
 
+/*! \struct PaquetMessage
+ * \brief Structure représentant un paquet de message curculant dans les slots.
+ * Cette structure contient un indice du noeud emetteur du paquet, un nombre de message, et un tableau des différents messages.
+ */
 struct PaquetMessage
 {
 	int indice_noeud_emetteur;
