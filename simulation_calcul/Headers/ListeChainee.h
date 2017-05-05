@@ -60,4 +60,8 @@ int liste_est_vide(ListeChainee *liste);
 */
 void afficher_liste(ListeChainee *liste);
 
+/*! \fn void vider_liste(ListeChainee *liste)
+   \brief Vide une liste chainée et libère l'espace mémoire.
+   \param liste : La liste chainée a vider.
+*/
 void vider_liste(ListeChainee *liste);

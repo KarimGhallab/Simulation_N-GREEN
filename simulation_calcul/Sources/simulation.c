@@ -200,6 +200,7 @@ void sortir_messages( Slot *slots[] )
 void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 {
 	int i;
+	/* Libère la mémoire prise par les slots et leur paquet de message */
 	for (i=0; i<NOMBRE_SLOT; i++)
 	{
 		if (slots[i]->contient_message == 1)
