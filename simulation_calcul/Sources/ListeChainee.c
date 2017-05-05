@@ -9,6 +9,7 @@ ListeChainee *creer_Liste_chainee()
 
 
     liste->premier = NULL;
+	liste->dernier = NULL;
 
     return liste;
 }
@@ -27,20 +28,22 @@ void inserer_fin(ListeChainee *liste, int tic_arrive)
 	nouveau->tic_arrive = tic_arrive;
 	nouveau->suivant = NULL;
 
-    /* Insertion de l'élément à la fin de la liste */
-	Maillon *courant = liste->premier;
-
 	//Exception si la liste est vide
-	if (courant == NULL)
-		liste->premier = nouveau;
+	if ( liste_est_vide(liste) == 1 )
+	{
+			liste->premier = nouveau;
+			liste->dernier = nouveau;
+	}
 	else
 	{
-		while (courant->suivant != NULL)
-		{
-			courant = courant->suivant;
-		}
-		/* Sortie de la boucle, courant est le dernier élément */
+		// On récupère l'actuel dernier de la liste
+		Maillon *courant = liste->dernier;
+
+		//Son suivant devient le nouveau maillon
 		courant->suivant = nouveau;
+
+		//Le nouveau dernier maillon de la liste devient le nouveau
+		liste->dernier = nouveau;
 	}
 }
 

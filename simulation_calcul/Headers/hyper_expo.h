@@ -19,7 +19,7 @@
 /*! \def LAMBDA
  * \brief Représente le facteur lambda de la loi de poisson.
  */
-#define LAMBDA 10
+#define LAMBDA 20
 
 
 /*! \def TAILLE_TABLEAU

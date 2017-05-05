@@ -112,7 +112,7 @@ Include dependency graph for simulation.h:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPaquetMessage.html">PaquetMessage</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un paquet de message curculant dans les slots. Cette structure contient un indice du noeud emetteur du paquet, un nombre de message, et un tableau des différents messages.  <a href="structPaquetMessage.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un paquet de message curculant dans les slots. Cette structure contient l'indice du noeud emetteur du paquet, le nombre de message, et un tableau des différents messages.  <a href="structPaquetMessage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNoeud.html">Noeud</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un <a class="el" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot...">Noeud</a> de l'anneau. Elle contient un nombre de message, les indices des slots avec lesquels le noeud peut intéragir, ainsi que le nombre d'antenne liée au noeud et le décalage avec laquelle le noeud doit recevoir un message de ses antennes.  <a href="structNoeud.html#details">More...</a><br /></td></tr>
@@ -124,15 +124,15 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;10</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;20</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3eae939bfa01e60b044095ff3ff7bbc4">NOMBRE_SLOT</a>&#160;&#160;&#160;10</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3eae939bfa01e60b044095ff3ff7bbc4">NOMBRE_SLOT</a>&#160;&#160;&#160;6</td></tr>
 <tr class="memdesc:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de slot de l'anneau. <br /></td></tr>
 <tr class="separator:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c5c87ea2b279e31b47b9c36ea28411e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9c5c87ea2b279e31b47b9c36ea28411e">NOMBRE_NOEUD</a>&#160;&#160;&#160;5</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9c5c87ea2b279e31b47b9c36ea28411e">NOMBRE_NOEUD</a>&#160;&#160;&#160;3</td></tr>
 <tr class="memdesc:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de noeud de l'anneau. <br /></td></tr>
 <tr class="separator:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -183,6 +183,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<
 <tr class="memitem:aeaac1bb77b031279f7a28069810283b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aeaac1bb77b031279f7a28069810283b3">decaler_messages</a> (<a class="el" href="structSlot.html">Slot</a> slots[])</td></tr>
 <tr class="memdesc:aeaac1bb77b031279f7a28069810283b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).  <a href="#aeaac1bb77b031279f7a28069810283b3">More...</a><br /></td></tr>
 <tr class="separator:aeaac1bb77b031279f7a28069810283b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9a8c11e0d6166143050f4acf9139f10"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af9a8c11e0d6166143050f4acf9139f10">sortir_messages</a> (<a class="el" href="structSlot.html">Slot</a> slots[])</td></tr>
+<tr class="memdesc:af9a8c11e0d6166143050f4acf9139f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.  <a href="#af9a8c11e0d6166143050f4acf9139f10">More...</a><br /></td></tr>
+<tr class="separator:af9a8c11e0d6166143050f4acf9139f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -354,6 +357,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">slots[]</td><td>Les slots à afficher. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af9a8c11e0d6166143050f4acf9139f10"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void sortir_messages </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a>&#160;</td>
+          <td class="paramname"><em>slots</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">slots[]</td><td>Le tableau des slots. </td></tr>
   </table>
   </dd>
 </dl>

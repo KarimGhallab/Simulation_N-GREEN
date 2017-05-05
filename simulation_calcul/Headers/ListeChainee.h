@@ -17,11 +17,12 @@ struct Maillon
 
 /*! \struct ListeChainee.
  * \brief Structure représentant une liste chainée.
- * Elle contient un pointeur sur le premier maillon de la liste.
+ * Elle contient un pointeur sur le premier maillon de la liste et un autre sur le dernier.
  */
 struct ListeChainee
 {
 	Maillon *premier;
+	Maillon *dernier;
 };
 
 typedef struct ListeChainee ListeChainee;

@@ -10,17 +10,17 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 10
+#define NOMBRE_TIC 20
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
  */
-#define NOMBRE_SLOT 10
+#define NOMBRE_SLOT 6
 
 /*! \def NOMBRE_NOEUD
  * \brief Indique le nombre de noeud de l'anneau.
  */
-#define NOMBRE_NOEUD 5
+#define NOMBRE_NOEUD 3
 
 /*! \def PERIODE_MESSAGE_ANTENNE
   * \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -43,7 +43,7 @@
 
 /*! \struct PaquetMessage
  * \brief Structure représentant un paquet de message curculant dans les slots.
- * Cette structure contient un indice du noeud emetteur du paquet, un nombre de message, et un tableau des différents messages.
+ * Cette structure contient l'indice du noeud emetteur du paquet, le nombre de message, et un tableau des différents messages.
  */
 struct PaquetMessage
 {
@@ -83,7 +83,7 @@ struct Slot
 {
 	int id;
 	int contient_message;		//Indique si le slot contient un message.
-	PaquetMessage paquet_message;		//Le pquet de message du slot.
+	PaquetMessage *paquet_message;		//Le pquet de message du slot.
 	int indice_noeud_lecture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1.
 	int indice_noeud_ecriture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1.
 };
@@ -143,3 +143,9 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
  * \param slots[] Le tableau des slots dans lequelle on décale les messages à décaler.
  */
 void decaler_messages( Slot slots[] );
+
+/*! \fn void sortir_messages( Slot slots[] )
+* \brief Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.
+* \param slots[] Le tableau des slots.
+*/
+void sortir_messages( Slot slots[] );

@@ -83,10 +83,7 @@ void initialiser_tableau(double tableau_poisson[] )
 int hyper_expo()
 {
 	if (effectuer_tirage(PROBABILITE_BURST) == 1)		//Le tirage est tombé sur la faible proba
-	{
-		printf ("\n################# Burst ! On envoie %d messages #################\n", NOMBRE_MESSAGE_BURST);
 		return NOMBRE_MESSAGE_BURST;
-	}
 	else
 	{
 		float u = generer_aleatoire(0, 1.0f);
