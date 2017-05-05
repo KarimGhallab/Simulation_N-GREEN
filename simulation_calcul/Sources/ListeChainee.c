@@ -4,7 +4,7 @@
 
 ListeChainee *creer_Liste_chainee()
 {
-    ListeChainee *liste = (ListeChainee *) malloc( sizeof(liste) );
+    ListeChainee *liste = (ListeChainee *) malloc( sizeof(ListeChainee) );
     //Maillon *premier = (Maillon *) malloc( sizeof(*premier) );
 
 
@@ -23,7 +23,7 @@ ListeChainee *creer_Liste_chainee()
 void inserer_fin(ListeChainee *liste, int tic_arrive)
 {
     /* Création du nouvel élément */
-    Maillon *nouveau = (Maillon *) malloc( sizeof(*nouveau) );
+    Maillon *nouveau = (Maillon *) malloc( sizeof(Maillon) );
 
 	nouveau->tic_arrive = tic_arrive;
 	nouveau->suivant = NULL;
@@ -108,4 +108,13 @@ void afficher_liste(ListeChainee *liste)
 	{
 		printf("la liste est vide\n");
 	}
+}
+
+void vider_liste(ListeChainee *liste)
+{
+	while ( liste_est_vide(liste) == 0)
+	{
+		supprimer_premier(liste);
+	}
+	free(liste);
 }

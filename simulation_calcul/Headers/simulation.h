@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 20
+#define NOMBRE_TIC 20	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -94,38 +94,38 @@ typedef struct Slot Slot;
 ///////////////// Les fonctions /////////////////
 //////////////////////////////////////////////////
 
-/*! \fn void afficher_slots( Slot slots[] )
- * \brief Initialise les slots de l'anneau.
- * \param slots[] Le tableau des slots à initialiser.
- */
-void afficher_slots( Slot slots[] );
-
-/*! \fn void initialiser_slots( Slot slots[] )
- * \brief Affiche les slots de l'anneau.
- * \param slots[] Les slots à afficher.
- */
-void initialiser_slots( Slot slots[] );
-
-/*! \fn void afficher_noeuds( Noeud noeuds[] )
+/*! \fn void afficher_slots( Slot *slots[] )
  * \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
- * \param noeuds[] Le tableau des noeuds à initialiser.
- * \param noeuds[] Le tableau des slots à modifier.
+ * \param *slots[] Un tableau de pointeur qui contiendra les adresses des slots initialisés.
  */
-void afficher_noeuds( Noeud noeuds[] );
+void afficher_slots( Slot *slots[] );
+
+/*! \fn void initialiser_slots( Slot *slots[] )
+ * \brief Initialise les slots de l'anneau.
+ * \param *slots[] Un tableau de pointeur sur les slots à initialiser.
+ */
+void initialiser_slots( Slot *slots[] );
+
+/*! \fn void afficher_noeuds( Noeud *noeuds[] )
+ * \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
+ * \param *noeuds[] Un tableau de pointeur qui contiendra les adresses des noeuds initialisés.
+ */
+void afficher_noeuds( Noeud *noeuds[] );
 
 /*! \fn void initialiser_noeuds( Noeud noeuds[], Slot slots[] )
- * \brief Affiche les noeuds de l'anneau.
- * \param noeuds[] Les noeuds à afficher.
+ * \brief Initialise les noeuds de l'anneau.
+ * \param *noeuds[] Un tableau de pointeur sur les noeuds à initialiser.
+ * \param *slots[] Un tableau de pointeur vers les slots à modifier.
  */
-void initialiser_noeuds( Noeud noeuds[], Slot slots[] );
+void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
 
 /*! \fn void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
- * \param noeuds[] Les noeuds qui recevront les messages.
- * \param slots[] Les slots qui recevront les messages des noeuds.
+ * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
+ * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
  * \param tic le tic actuel de l'anneau.
  */
-void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
+void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic );
 
 /*! \fn void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
  * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
@@ -138,14 +138,21 @@ void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
  */
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic );
 
-/*! \fn void decaler_messages( Slot slots[] )
+/*! \fn void decaler_messages( Slot *slots[] )
  * \brief Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).
- * \param slots[] Le tableau des slots dans lequelle on décale les messages à décaler.
+ * \param *slots[] Le tableau de pointeur sur les slots pour lequelles on décale les messages.
  */
-void decaler_messages( Slot slots[] );
+void decaler_messages( Slot *slots[] );
 
 /*! \fn void sortir_messages( Slot slots[] )
 * \brief Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.
-* \param slots[] Le tableau des slots.
+* \param *slots[] Le tableau de pinteur sur les slots.
 */
-void sortir_messages( Slot slots[] );
+void sortir_messages( Slot *slots[] );
+
+/*! \fn void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
+* \brief Libère la mémoire prise durant l'exécution du programme.
+* \param *slots[] L'espace mémoire des slots à libérer.
+* \param *noeuds[] L'espace mémoire des noeuds à libérer.
+*/
+void liberer_memoire( Slot *slots[], Noeud *noeuds[] );

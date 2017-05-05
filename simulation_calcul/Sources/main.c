@@ -13,8 +13,8 @@ int main ()
 	printf("Nombre de noeud de l'anneau : %d\n\n", NOMBRE_NOEUD);
 
 	/* Initialisation des slots et noeuds de l'anneau. */
-	Slot slots[ NOMBRE_SLOT ];
-	Noeud noeuds[ NOMBRE_NOEUD ];
+	Slot *slots[ NOMBRE_SLOT ];
+	Noeud *noeuds[ NOMBRE_NOEUD ];
 	initialiser_slots(slots);
 	initialiser_noeuds(noeuds, slots);
 
@@ -40,8 +40,10 @@ int main ()
 		nombre_tic_restant--;
 	}
 	time(&fin);
-	printf("%ld : %ld", debut, fin);
 	total = ( fin - debut );
-	printf("Temps total pris par le CPU: %ld secondes\n", total);
+	printf("Temps total pris :  %ld secondes\n", total);
+
+	liberer_memoire(slots, noeuds);
+
 	return (0);
 }

@@ -59,3 +59,5 @@ int liste_est_vide(ListeChainee *liste);
    \param liste : La liste chainée que nous souhaitons afficher.
 */
 void afficher_liste(ListeChainee *liste);
+
+void vider_liste(ListeChainee *liste);
