@@ -94,7 +94,8 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud.debut_periode, noeud.nb_antenne);*/
 
 			int nb_message = hyper_expo();
-			printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
+			//int nb_message = 20;
+			//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
 
 			//On ajoute au noeud le tic d'arrivé des messages
 			int j;
@@ -134,7 +135,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
 {
-	printf("Le noeud %d envoie un message\n", noeud->id);
+	//printf("Le noeud %d envoie un message\n", noeud->id);
 	PaquetMessage *paquet = (PaquetMessage *) malloc( sizeof(PaquetMessage) );
 	paquet->indice_noeud_emetteur = indice_noeud_emetteur;
 	paquet->nombre_messages = nombre_message;

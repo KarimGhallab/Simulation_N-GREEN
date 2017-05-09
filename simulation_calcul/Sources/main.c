@@ -18,11 +18,11 @@ int main ()
 	initialiser_slots(slots);
 	initialiser_noeuds(noeuds, slots);
 
-	printf("Etat initial des slots\n");
+	/*printf("Etat initial des slots\n");
 	afficher_slots(slots);
 
 	printf("Etat initial des noeuds\n");
-	afficher_noeuds(noeuds);
+	afficher_noeuds(noeuds);*/
 
 	while (nombre_tic_restant > 0)
 	{
@@ -37,6 +37,8 @@ int main ()
 		printf("\n\n");
 
 		printf("\n############################\n");*/
+
+
 		nombre_tic_restant--;
 	}
 	time(&fin);

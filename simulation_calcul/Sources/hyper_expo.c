@@ -12,9 +12,9 @@ int effectuer_tirage(float probabilite)
 
 float generer_aleatoire(float borne_min, float borne_max)
 {
-	static int DECALAGE = 0;
+	/*static int DECALAGE = 0;
 	srand(clock() + DECALAGE);		//Met en place le générateur en fonction du temps et d'un décalage.
-	DECALAGE++;
+	DECALAGE++;*/
 	float tirage = ((float)rand() / RAND_MAX * (borne_max - borne_min) ) + borne_min;
 	return tirage;
 }

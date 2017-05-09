@@ -10,17 +10,17 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 20	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
  */
-#define NOMBRE_SLOT 6
+#define NOMBRE_SLOT 25
 
 /*! \def NOMBRE_NOEUD
  * \brief Indique le nombre de noeud de l'anneau.
  */
-#define NOMBRE_NOEUD 3
+#define NOMBRE_NOEUD 10
 
 /*! \def PERIODE_MESSAGE_ANTENNE
   * \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
