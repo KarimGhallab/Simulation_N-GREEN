@@ -172,14 +172,14 @@ Functions</h2></td></tr>
 <tr class="memitem:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3dc0d36f4ecc105fdc9967841b5950c9">afficher_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
 <tr class="memdesc:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#a3dc0d36f4ecc105fdc9967841b5950c9">More...</a><br /></td></tr>
 <tr class="separator:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a22f51bbb69e4da2051a14182902efb61"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_noeuds</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
+<tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a22f51bbb69e4da2051a14182902efb61">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
+<tr class="memdesc:a22f51bbb69e4da2051a14182902efb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a22f51bbb69e4da2051a14182902efb61">More...</a><br /></td></tr>
 <tr class="separator:a22f51bbb69e4da2051a14182902efb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b669c059df222d44eb83f6a14a73e71"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4b669c059df222d44eb83f6a14a73e71"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
+<tr class="memitem:a4b669c059df222d44eb83f6a14a73e71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4b669c059df222d44eb83f6a14a73e71">entrer_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
+<tr class="memdesc:a4b669c059df222d44eb83f6a14a73e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.  <a href="#a4b669c059df222d44eb83f6a14a73e71">More...</a><br /></td></tr>
 <tr class="separator:a4b669c059df222d44eb83f6a14a73e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabeb29f3214181b7defc84c14333f981"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabeb29f3214181b7defc84c14333f981"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic)</td></tr>
+<tr class="memitem:aabeb29f3214181b7defc84c14333f981"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aabeb29f3214181b7defc84c14333f981">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic)</td></tr>
+<tr class="memdesc:aabeb29f3214181b7defc84c14333f981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#aabeb29f3214181b7defc84c14333f981">More...</a><br /></td></tr>
 <tr class="separator:aabeb29f3214181b7defc84c14333f981"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa235047801949844b4fccda141537d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa235047801949844b4fccda141537d6c">decaler_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:aa235047801949844b4fccda141537d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).  <a href="#aa235047801949844b4fccda141537d6c">More...</a><br /></td></tr>
@@ -303,6 +303,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
+<a class="anchor" id="a4b669c059df222d44eb83f6a14a73e71"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void entrer_messages </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
+          <td class="paramname"><em>slots</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeuds</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur sur les slots qui recevront les messages des noeuds. </td></tr>
+    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur sur les noeuds qui recevront les messages. </td></tr>
+    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a515032b7ce967dd7ea5c84e67ffceaff"></a>
 <div class="memitem">
 <div class="memproto">
@@ -332,6 +374,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   <table class="params">
     <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
     <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes moyens. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a22f51bbb69e4da2051a14182902efb61"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initialiser_noeuds </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeuds</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
+          <td class="paramname"><em>slots</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise les noeuds de l'anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur sur les noeuds à initialiser. </td></tr>
+    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur vers les slots à modifier. </td></tr>
   </table>
   </dd>
 </dl>
@@ -391,6 +468,69 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   <table class="params">
     <tr><td class="paramname">*slots[]</td><td>L'espace mémoire des slots à libérer. </td></tr>
     <tr><td class="paramname">*noeuds[]</td><td>L'espace mémoire des noeuds à libérer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aabeb29f3214181b7defc84c14333f981"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void placer_message </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indice_noeud_emetteur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
+          <td class="paramname"><em>slot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>messages</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
+<p>void <a class="el" href="simulation_8h.html#aabeb29f3214181b7defc84c14333f981" title="Transmet un paquet de message d&#39;un noeud vers son slot d&#39;écriture. ">placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
+    <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
+    <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
+    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
+    <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
+    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
   </table>
   </dd>
 </dl>

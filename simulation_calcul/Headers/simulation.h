@@ -112,28 +112,28 @@ void initialiser_slots( Slot *slots[] );
  */
 void afficher_noeuds( Noeud *noeuds[] );
 
-/*! \fn void initialiser_noeuds( Noeud noeuds[], Slot slots[] )
+/*! \fn void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] )
  * \brief Initialise les noeuds de l'anneau.
  * \param *noeuds[] Un tableau de pointeur sur les noeuds à initialiser.
  * \param *slots[] Un tableau de pointeur vers les slots à modifier.
  */
 void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
 
-/*! \fn void entrer_messages( Slot slots[], Noeud noeuds[], int tic );
+/*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
- * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
  * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
+ * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
  * \param tic le tic actuel de l'anneau.
  */
 void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic );
 
-/*! \fn void placer_message( Noeud noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
+/*! void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
  * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
  * \param *noeud Un pointeur vers le noeud qui transmet le paquet.
  * \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
  * \param *slot Un pointeur sur le slot qui recevra le paquet de message.
  * \param nombre_message Le nombre de message qui doit etre transmis.
- * \param messages Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
+ * \param messages[] Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
  * \param tic le tic actuel de l'anneau.
  */
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic );
