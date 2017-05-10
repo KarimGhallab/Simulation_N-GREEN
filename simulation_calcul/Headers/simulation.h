@@ -10,14 +10,14 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 100000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
  */
 #define NOMBRE_SLOT 25
 
-/*! \def NOMBRE_NOEUD
+/*! \def NOMBRE_NOEUDS
  * \brief Indique le nombre de noeud de l'anneau.
  */
 #define NOMBRE_NOEUD 10
@@ -68,8 +68,8 @@ struct Noeud
 	int debut_periode;		//Le décalage selon lequel le noeud recoit des messages des antennes
 	ListeChainee *messages;		//File FIFO contenant les TIC d'arrivé des messages
 	int attente_max;		//Le temps d'attente maximal dans le noeud
-	int nb_message_total;	//Le nombre de message ayant transité dans le noeud
-	int attente_totale;		//Le temps d'attente total des messages
+	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
+	double attente_totale;		//Le temps d'attente total des messages
 };
 
 typedef struct Noeud Noeud;
@@ -156,3 +156,28 @@ void sortir_messages( Slot *slots[] );
 * \param *noeuds[] L'espace mémoire des noeuds à libérer.
 */
 void liberer_memoire( Slot *slots[], Noeud *noeuds[] );
+
+/*! \fn void get_temps_attente_max( Noeud *noeuds[], int resultats[] )
+* \brief Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.
+* \param *noeuds[] Les noeuds de l'anneau.
+* \param resultats[] Le tableau qui contiendra les temps d'attentes maximums.
+*/
+void get_temps_attente_max( Noeud *noeuds[], double resultats[] );
+
+/*! \fn void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
+* \brief Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.
+* \param *noeuds[] Les noeuds de l'anneau.
+* \param resultats[] Le tableau qui contiendra les temps d'attentes moyens.
+*/
+void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] );
+
+/*! \fn void ecrire_etat_noeud( Noeud *noeuds[] )
+* \brief Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.
+* \param *noeuds[] Les noeuds de l'anneau.
+*/
+void ecrire_etat_noeud( Noeud *noeuds[] );
+
+/*! \fn void afficher_graphique_attente()
+* \brief Affiche via Gnuplot un graphique avec les données du fichier 'attente.dat'.
+*/
+void afficher_graphique_attente();

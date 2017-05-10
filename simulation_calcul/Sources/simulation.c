@@ -76,7 +76,7 @@ void afficher_noeuds( Noeud *noeuds[] )
 		//Version complete
 		//printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Nombre d'antenne : %d    Décalage : %d    Attente max : %d    nb message total : %d    attente total : %d\n\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].nb_antenne, noeuds[i].debut_periode, noeuds[i].attente_max, noeuds[i].nb_message_total, noeuds[i].attente_totale);
 		//version courte
-		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Attente max : %d    nb message total : %d    attente total : %d\n\n", i, noeuds[i]->id, noeuds[i]->nb_message, noeuds[i]->indice_slot_lecture, noeuds[i]->indice_slot_ecriture, noeuds[i]->attente_max, noeuds[i]->nb_message_total, noeuds[i]->attente_totale);
+		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Attente max : %d    nb message total : %lf    attente total : %lf\n\n", i, noeuds[i]->id, noeuds[i]->nb_message, noeuds[i]->indice_slot_lecture, noeuds[i]->indice_slot_ecriture, noeuds[i]->attente_max, noeuds[i]->nb_message_total, noeuds[i]->attente_totale);
 	}
 }
 
@@ -206,16 +206,59 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 	{
 		if (slots[i]->contient_message == 1)
 		{
-			free(slots[i]->paquet_message);
+			free( slots[i]->paquet_message );
 		}
-		free(slots[i]);
+		free( slots[i] );
 	}
 
 	/* Libère la mémoire prise par les noeuds et leurs liste chainees */
 	for (i=0; i<NOMBRE_NOEUD; i++)
 	{
 		vider_liste( noeuds[i]->messages );
-		free(noeuds[i]);
+		free( noeuds[i] );
 	}
 
+}
+
+void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
+{
+	int i = 0;
+	for (i=0; i<NOMBRE_NOEUD; i++)
+		resultats[i] = noeuds[i]->attente_max;
+}
+
+void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
+{
+	int i = 0;
+	for (i=0; i<NOMBRE_NOEUD; i++)
+		resultats[i] = noeuds[i]->attente_totale/noeuds[i]->nb_message_total;
+}
+
+void ecrire_etat_noeud( Noeud *noeuds[] )
+{
+	/* Récupère les données à ecrire */
+	double attente_max[ NOMBRE_NOEUD ];
+	double attente_moyenne[ NOMBRE_NOEUD ];
+
+	get_temps_attente_max(noeuds, attente_max);
+	get_temps_attente_moyen(noeuds, attente_moyenne);
+
+	FILE *f = fopen("attente.csv", "w");
+	fprintf(f, "numero_noeud,type_attente,TIC\n");
+
+	int i;
+
+	/* Les deux tableaux font la même taille (celle du nommbre de noeud dans l'anneau) */
+	for (i=0; i<NOMBRE_NOEUD; i++)
+	{
+		fprintf(f, "%d,max,%lf\n", i, attente_max[i]);
+		fprintf(f, "%d,moyenne,%lf\n", i, attente_moyenne[i]);
+	}
+	fclose(f);
+}
+
+void afficher_graphique_attente()
+{
+	system("R -f attente.txt");
+	system("evince Rplots.pdf");
 }
