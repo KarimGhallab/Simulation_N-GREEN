@@ -1,0 +1,4 @@
+<map id="Noeud" name="Noeud">
+<area shape="rect" id="node2" href="$structListeChainee.html" title="Structure représentant une liste chainée. Elle contient un pointeur sur le premier maillon de la list..." alt="" coords="5,109,104,136"/>
+<area shape="rect" id="node3" href="$structMaillon.html" title="Structure représentant Maillon de la liste chainée. Elle contient un tic d&#39;arrivé et un pointeur sur ..." alt="" coords="23,5,86,32"/>
+</map>

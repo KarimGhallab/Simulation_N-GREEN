@@ -178,6 +178,6 @@ void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] );
 void ecrire_etat_noeud( Noeud *noeuds[] );
 
 /*! \fn void afficher_graphique_attente()
-* \brief Affiche via Gnuplot un graphique avec les données du fichier 'attente.dat'.
+* \brief Affiche via R un graphique avec les données du fichier 'attente.csv'.
 */
 void afficher_graphique_attente();

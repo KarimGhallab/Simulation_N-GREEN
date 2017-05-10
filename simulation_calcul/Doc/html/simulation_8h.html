@@ -104,6 +104,8 @@ Include dependency graph for simulation.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="simulation_8h__incl.png" border="0" usemap="#Headers_2simulation_8h" alt=""/></div>
 <map name="Headers_2simulation_8h" id="Headers_2simulation_8h">
+<area shape="rect" id="node2" href="ListeChainee_8h.html" title="Header du fichier contenant la structure représentant une liste chainée ainsi que les fonctions pour ..." alt="" coords="5,80,123,107"/>
+<area shape="rect" id="node3" href="hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="147,80,255,107"/>
 </map>
 </div>
 </div>
@@ -124,16 +126,15 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;20	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3eae939bfa01e60b044095ff3ff7bbc4">NOMBRE_SLOT</a>&#160;&#160;&#160;6</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3eae939bfa01e60b044095ff3ff7bbc4">NOMBRE_SLOT</a>&#160;&#160;&#160;25</td></tr>
 <tr class="memdesc:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de slot de l'anneau. <br /></td></tr>
 <tr class="separator:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c5c87ea2b279e31b47b9c36ea28411e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9c5c87ea2b279e31b47b9c36ea28411e">NOMBRE_NOEUD</a>&#160;&#160;&#160;3</td></tr>
-<tr class="memdesc:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de noeud de l'anneau. <br /></td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOMBRE_NOEUD</b>&#160;&#160;&#160;10</td></tr>
 <tr class="separator:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3a92c0c3d4878d475633f969fe0b8ca9">PERIODE_MESSAGE_ANTENNE</a>&#160;&#160;&#160;100</td></tr>
@@ -189,6 +190,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sortir_messages</b> (
 <tr class="memitem:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad4b7eddbc6ff492e5a9a3f191ff54945">liberer_memoire</a> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
 <tr class="memdesc:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère la mémoire prise durant l'exécution du programme.  <a href="#ad4b7eddbc6ff492e5a9a3f191ff54945">More...</a><br /></td></tr>
 <tr class="separator:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a855dd0aff229849ec157ff7c1d66c1d4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>get_temps_attente_max</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
+<tr class="separator:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a515032b7ce967dd7ea5c84e67ffceaff">get_temps_attente_moyen</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
+<tr class="memdesc:a515032b7ce967dd7ea5c84e67ffceaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.  <a href="#a515032b7ce967dd7ea5c84e67ffceaff">More...</a><br /></td></tr>
+<tr class="separator:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a270887baaba2e0edd794548bcf6c8948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a270887baaba2e0edd794548bcf6c8948">ecrire_etat_noeud</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
+<tr class="memdesc:a270887baaba2e0edd794548bcf6c8948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.  <a href="#a270887baaba2e0edd794548bcf6c8948">More...</a><br /></td></tr>
+<tr class="separator:a270887baaba2e0edd794548bcf6c8948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18cbdb1fa67d4ff01a703e9f1e4d27a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
+<tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
+<tr class="separator:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -259,6 +273,65 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>sortir_messages</b> (
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*slots[]</td><td>Le tableau de pointeur sur les slots pour lequelles on décale les messages. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a270887baaba2e0edd794548bcf6c8948"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_etat_noeud </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeuds</em>[]</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a515032b7ce967dd7ea5c84e67ffceaff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void get_temps_attente_moyen </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeuds</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>resultats</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
+    <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes moyens. </td></tr>
   </table>
   </dd>
 </dl>
