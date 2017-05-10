@@ -144,9 +144,9 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
  */
 void decaler_messages( Slot *slots[] );
 
-/*! \fn void sortir_messages( Slot slots[] )
+/*! \fn void sortir_messages( Slot *slots[] )
 * \brief Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.
-* \param *slots[] Le tableau de pinteur sur les slots.
+* \param *slots[] Le tableau de pointeur sur les slots.
 */
 void sortir_messages( Slot *slots[] );
 
@@ -157,7 +157,7 @@ void sortir_messages( Slot *slots[] );
 */
 void liberer_memoire( Slot *slots[], Noeud *noeuds[] );
 
-/*! \fn void get_temps_attente_max( Noeud *noeuds[], int resultats[] )
+/*! \fn void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
 * \brief Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.
 * \param *noeuds[] Les noeuds de l'anneau.
 * \param resultats[] Le tableau qui contiendra les temps d'attentes maximums.
