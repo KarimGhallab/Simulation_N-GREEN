@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 #include "../Headers/simulation.h"
 
@@ -236,6 +237,8 @@ void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
 
 void ecrire_etat_noeud( Noeud *noeuds[] )
 {
+	static int numero_fichier = 1;
+
 	/* Récupère les données à ecrire */
 	double attente_max[ NOMBRE_NOEUD ];
 	double attente_moyenne[ NOMBRE_NOEUD ];
@@ -243,7 +246,20 @@ void ecrire_etat_noeud( Noeud *noeuds[] )
 	get_temps_attente_max(noeuds, attente_max);
 	get_temps_attente_moyen(noeuds, attente_moyenne);
 
-	FILE *f = fopen("attente.csv", "w");
+	/* Création du nom du fichier csv */
+	char *debut_nom_fichier = "../R/attente";
+	char buffer[3];
+	char chemin_fichier[20];
+
+	strcpy(chemin_fichier, debut_nom_fichier);
+
+	sprintf(buffer, "%d", numero_fichier);
+	strcat(chemin_fichier, buffer);
+	strcat(chemin_fichier, ".csv");
+
+	/* Ouverture du fichier */
+	FILE *f = fopen(chemin_fichier, "w");
+
 	fprintf(f, "numero_noeud,type_attente,TIC\n");
 
 	int i;
@@ -255,10 +271,14 @@ void ecrire_etat_noeud( Noeud *noeuds[] )
 		fprintf(f, "%d,moyenne,%lf\n", i, attente_moyenne[i]);
 	}
 	fclose(f);
+
+	numero_fichier++;
 }
 
 void afficher_graphique_attente()
 {
-	system("R -f attente.txt");
-	system("evince Rplots.pdf");
+	/* Lance le prgramme R qui crée un PDF avec le graphique avant de l'ouvrir avec evince */
+	system("R -f ../R/attente.R");
+	system("evince ../R/Rplots.pdf &");
+
 }

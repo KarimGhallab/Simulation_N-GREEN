@@ -102,27 +102,27 @@ void afficher_slots( Slot *slots[] );
 
 /*! \fn void initialiser_slots( Slot *slots[] )
  * \brief Initialise les slots de l'anneau.
- * \param *slots[] Un tableau de pointeur sur les slots à initialiser.
+ * \param *slots[] Un tableau de pointeur des slots à afficher.
  */
 void initialiser_slots( Slot *slots[] );
 
 /*! \fn void afficher_noeuds( Noeud *noeuds[] )
  * \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
- * \param *noeuds[] Un tableau de pointeur qui contiendra les adresses des noeuds initialisés.
+ * \param *noeuds[] Un tableau de pointeur qui contiendra les adresses des slots initialisés.
  */
 void afficher_noeuds( Noeud *noeuds[] );
 
 /*! \fn void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] )
  * \brief Initialise les noeuds de l'anneau.
- * \param *noeuds[] Un tableau de pointeur sur les noeuds à initialiser.
- * \param *slots[] Un tableau de pointeur vers les slots à modifier.
+ * \param *noeuds[] Un tableau de pointeur des noeuds à initialiser.
+ * \param *slots[] Un tableau de pointeur des slots à modifier.
  */
 void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
 
 /*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
- * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
  * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
+ * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
  * \param tic le tic actuel de l'anneau.
  */
 void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic );

@@ -1,4 +1,0 @@
-library(ggplot2)
-donnees = read.csv("attente.csv")
-ggplot(donnees, aes(factor(numero_noeud), TIC, fill = type_attente) ) +
-geom_bar(stat="identity", position = "dodge")
