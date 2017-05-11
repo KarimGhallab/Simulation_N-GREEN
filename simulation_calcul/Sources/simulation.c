@@ -219,6 +219,8 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
+
+	/* Fermeture des files descriptor ouverts */
 	close(0);
 	close(1);
 	close(2);
@@ -250,7 +252,7 @@ void ecrire_etat_noeud( Noeud *noeuds[], int tic)
 	get_temps_attente_moyen(noeuds, attente_moyenne);
 
 	/* Création du nom du fichier csv */
-	char *debut_nom_fichier = "attente";
+	char *debut_nom_fichier = "./csv/attente";
 	char buffer[3];
 	char chemin_fichier[20];
 
@@ -280,6 +282,6 @@ void afficher_graphique_attente()
 {
 	/* Lance le prgramme R qui crée un PDF avec le graphique avant de l'ouvrir avec evince */
 	system("R -f attente.R > /tmp/out.txt");
-	system("evince attente.pdf &");
+	//system("evince attente.pdf & > /tmp/out.txt");
 
 }
