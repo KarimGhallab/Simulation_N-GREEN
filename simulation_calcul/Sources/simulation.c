@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include<unistd.h>
 
 #include "../Headers/simulation.h"
 
@@ -60,7 +61,7 @@ void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] )
 		noeuds[j]->debut_periode = debut_periode;
 		noeuds[j]->attente_max = 0; noeuds[j]->nb_message_total = 0; noeuds[j]->attente_totale = 0;
 
-		noeuds[j]->messages = creer_Liste_chainee();
+		noeuds[j]->file_messages = creer_file();
 
 		/* Met à jour les indices des slots */
 		slots[ indice_slot_lecture ]->indice_noeud_lecture = j;
@@ -101,7 +102,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 			//On ajoute au noeud le tic d'arrivé des messages
 			int j;
 			for (j=0; j<nb_message; j++)
-				inserer_fin(noeuds[ slots[i]->indice_noeud_ecriture ]->messages, tic);
+				ajouter_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages, tic );
 
 			noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message += nb_message;
 			noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message_total += nb_message;
@@ -114,7 +115,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 					/* On enleve les messages du noeud */
 					int messages [ LIMITE_NOMBRE_MESSAGE_MAX ];
 					for (k=0; k<LIMITE_NOMBRE_MESSAGE_MAX; k++)
-						messages[k] = supprimer_premier(noeuds[ slots[i]->indice_noeud_ecriture ]->messages);
+						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
 					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
@@ -124,7 +125,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 					//On enleve les messages du noeud
 					int messages [ noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message ];
 					for (k=0; k<noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message; k++)
-						messages[k] = supprimer_premier(noeuds[ slots[i]->indice_noeud_ecriture ]->messages);
+						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
 					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message, messages, tic );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message = 0;
@@ -215,10 +216,12 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 	/* Libère la mémoire prise par les noeuds et leurs liste chainees */
 	for (i=0; i<NOMBRE_NOEUD; i++)
 	{
-		vider_liste( noeuds[i]->messages );
+		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
-
+	close(0);
+	close(1);
+	close(2);
 }
 
 void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
@@ -235,7 +238,7 @@ void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
 		resultats[i] = noeuds[i]->attente_totale/noeuds[i]->nb_message_total;
 }
 
-void ecrire_etat_noeud( Noeud *noeuds[] )
+void ecrire_etat_noeud( Noeud *noeuds[], int tic)
 {
 	static int numero_fichier = 1;
 
@@ -247,28 +250,26 @@ void ecrire_etat_noeud( Noeud *noeuds[] )
 	get_temps_attente_moyen(noeuds, attente_moyenne);
 
 	/* Création du nom du fichier csv */
-	char *debut_nom_fichier = "../R/attente";
+	char *debut_nom_fichier = "attente";
 	char buffer[3];
 	char chemin_fichier[20];
 
 	strcpy(chemin_fichier, debut_nom_fichier);
-
 	sprintf(buffer, "%d", numero_fichier);
 	strcat(chemin_fichier, buffer);
 	strcat(chemin_fichier, ".csv");
 
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
-
-	fprintf(f, "numero_noeud,type_attente,TIC\n");
+	fprintf(f, "numero_noeud,type_attente,TIC,TIC_actuel\n");
 
 	int i;
 
 	/* Les deux tableaux font la même taille (celle du nommbre de noeud dans l'anneau) */
 	for (i=0; i<NOMBRE_NOEUD; i++)
 	{
-		fprintf(f, "%d,max,%lf\n", i, attente_max[i]);
-		fprintf(f, "%d,moyenne,%lf\n", i, attente_moyenne[i]);
+		fprintf(f, "%d,max,%lf,%d\n", i, attente_max[i], tic);
+		fprintf(f, "%d,moyenne,%lf,%d\n", i, attente_moyenne[i], tic);
 	}
 	fclose(f);
 
@@ -278,7 +279,7 @@ void ecrire_etat_noeud( Noeud *noeuds[] )
 void afficher_graphique_attente()
 {
 	/* Lance le prgramme R qui crée un PDF avec le graphique avant de l'ouvrir avec evince */
-	system("R -f ../R/attente.R");
-	system("evince ../R/Rplots.pdf &");
+	system("R -f attente.R > /tmp/out.txt");
+	system("evince attente.pdf &");
 
 }

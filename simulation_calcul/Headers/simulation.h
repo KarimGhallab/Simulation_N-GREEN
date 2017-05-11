@@ -1,4 +1,5 @@
-#include "./ListeChainee.h"
+//#include "./ListeChainee.h"
+#include "./File.h"
 #include "./hyper_expo.h"
 
 /*!
@@ -66,7 +67,7 @@ struct Noeud
 	int indice_slot_ecriture;
 	int nb_antenne;		//Indique le nombre d'antenne auquel est lié le noeuds
 	int debut_periode;		//Le décalage selon lequel le noeud recoit des messages des antennes
-	ListeChainee *messages;		//File FIFO contenant les TIC d'arrivé des messages
+	File *file_messages;		//File FIFO contenant les TIC d'arrivé des messages
 	int attente_max;		//Le temps d'attente maximal dans le noeud
 	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
@@ -174,8 +175,9 @@ void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] );
 /*! \fn void ecrire_etat_noeud( Noeud *noeuds[] )
 * \brief Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.
 * \param *noeuds[] Les noeuds de l'anneau.
+* \param tic Le tic actuel de l'anneau.
 */
-void ecrire_etat_noeud( Noeud *noeuds[] );
+void ecrire_etat_noeud( Noeud *noeuds[], int tic );
 
 /*! \fn void afficher_graphique_attente()
 * \brief Affiche via R un graphique avec les données du fichier 'attente.csv'.

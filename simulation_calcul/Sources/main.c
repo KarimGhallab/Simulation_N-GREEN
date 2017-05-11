@@ -45,8 +45,7 @@ int main ()
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau :  %ld secondes\n", total);
 
-	ecrire_etat_noeud(noeuds);
-	ecrire_etat_noeud(noeuds);
+	ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
 	afficher_graphique_attente();
 
 	liberer_memoire(slots, noeuds);
