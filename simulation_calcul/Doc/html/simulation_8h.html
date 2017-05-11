@@ -97,15 +97,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Header du fichier principal contenant les fonctions et structures necessaires au main.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &quot;<a class="el" href="ListeChainee_8h_source.html">./ListeChainee.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="File_8h_source.html">./File.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hyper__expo_8h_source.html">./hyper_expo.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="simulation_8h__incl.png" border="0" usemap="#Headers_2simulation_8h" alt=""/></div>
 <map name="Headers_2simulation_8h" id="Headers_2simulation_8h">
-<area shape="rect" id="node2" href="ListeChainee_8h.html" title="Header du fichier contenant la structure représentant une liste chainée ainsi que les fonctions pour ..." alt="" coords="5,80,123,107"/>
-<area shape="rect" id="node3" href="hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="147,80,255,107"/>
+<area shape="rect" id="node2" href="File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" href="hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="92,80,200,107"/>
 </map>
 </div>
 </div>
@@ -196,9 +196,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a515032b7ce967dd7ea5c84e67ffceaff">get_temps_attente_moyen</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
 <tr class="memdesc:a515032b7ce967dd7ea5c84e67ffceaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.  <a href="#a515032b7ce967dd7ea5c84e67ffceaff">More...</a><br /></td></tr>
 <tr class="separator:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a270887baaba2e0edd794548bcf6c8948"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a270887baaba2e0edd794548bcf6c8948">ecrire_etat_noeud</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
-<tr class="memdesc:a270887baaba2e0edd794548bcf6c8948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.  <a href="#a270887baaba2e0edd794548bcf6c8948">More...</a><br /></td></tr>
-<tr class="separator:a270887baaba2e0edd794548bcf6c8948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac47b78397e31a5a7f4e1cb2ca9a7f6f9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_etat_noeud</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
+<tr class="separator:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18cbdb1fa67d4ff01a703e9f1e4d27a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
 <tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
@@ -224,7 +224,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur qui contiendra les adresses des noeuds initialisés. </td></tr>
+    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur qui contiendra les adresses des slots initialisés. </td></tr>
   </table>
   </dd>
 </dl>
@@ -279,30 +279,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a270887baaba2e0edd794548bcf6c8948"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ecrire_etat_noeud </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a4b669c059df222d44eb83f6a14a73e71"></a>
 <div class="memitem">
 <div class="memproto">
@@ -336,8 +312,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur sur les slots qui recevront les messages des noeuds. </td></tr>
     <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur sur les noeuds qui recevront les messages. </td></tr>
+    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur sur les slots qui recevront les messages des noeuds. </td></tr>
     <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
   </table>
   </dd>
@@ -442,8 +418,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Initialise les noeuds de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur sur les noeuds à initialiser. </td></tr>
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur vers les slots à modifier. </td></tr>
+    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur des noeuds à initialiser. </td></tr>
+    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur des slots à modifier. </td></tr>
   </table>
   </dd>
 </dl>
@@ -467,7 +443,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Initialise les slots de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur sur les slots à initialiser. </td></tr>
+    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur des slots à afficher. </td></tr>
   </table>
   </dd>
 </dl>
