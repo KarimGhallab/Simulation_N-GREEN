@@ -2,9 +2,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
-int main ()
+int main ( int argc, char *argv[] )
 {
+	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "pdf") == 0 ) || ( strcmp(argv[1], "PDF") == 0 ) ) );
+
+	/* Mise en place de la structure des fichiers necessaire à la sauvegarde des données */
+	supprimer_ancien_csv();
+
+	FILE *f = NULL;
+	if (generer_pdf == 1)
+		f = setup_fichier_attente_message();
+
 	time_t debut, fin, total;
 	time(&debut);
 
@@ -26,7 +36,7 @@ int main ()
 
 	while (nombre_tic_restant > 0)
 	{
-		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant );
+		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, f );
 		decaler_messages(slots);
 		sortir_messages(slots);
 
@@ -38,15 +48,24 @@ int main ()
 
 		printf("\n############################\n");*/
 
-
 		nombre_tic_restant--;
 	}
 	time(&fin);
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau :  %ld secondes\n", total);
 
-	ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
-	afficher_graphique_attente();
+	if (f != NULL)
+		fclose(f);
+
+	/* On génére les fichiers CSV restant, on génére les PDF via les cript R et on ouvre ces PDF avec evince */
+	if (generer_pdf == 1)
+	{
+		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
+		printf("Génération des fichiers PDF...\n");
+		generer_PDF();
+		printf("Ouverture des fichiers PDF...\n");
+		afficher_PDF();
+	}
 
 	liberer_memoire(slots, noeuds);
 

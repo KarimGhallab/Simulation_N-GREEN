@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include<unistd.h>
+#include <unistd.h>
+#include <dirent.h>
 
 #include "../Headers/simulation.h"
 
@@ -82,7 +83,7 @@ void afficher_noeuds( Noeud *noeuds[] )
 	}
 }
 
-void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
+void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 {
 	int i;
 	for (i=0; i< NOMBRE_SLOT; i++)
@@ -117,7 +118,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 					for (k=0; k<LIMITE_NOMBRE_MESSAGE_MAX; k++)
 						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
-					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic );
+					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, f );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
 				}
 				else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
@@ -127,7 +128,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 					for (k=0; k<noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message; k++)
 						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
-					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message, messages, tic );
+					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message, messages, tic, f );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message = 0;
 				}
 			}
@@ -135,7 +136,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
 	}
 }
 
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, FILE *f )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
 	PaquetMessage *paquet = (PaquetMessage *) malloc( sizeof(PaquetMessage) );
@@ -145,11 +146,13 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoi le message */
 	int i;
+	int temps_attente[ nombre_message ];
 	for (i=0; i<nombre_message; i++)
 	{
 		paquet->messages[i] = messages[i];
 
 		int temps_attente_message = tic - paquet->messages[i];
+		temps_attente[i] = temps_attente_message;
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
 
@@ -157,6 +160,9 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	}
 	slot->paquet_message = paquet;
 	slot->contient_message = 1;
+
+	/* Ecrit dans un fichier les temps d'attente des messages */
+	ecrire_attente_message(f, temps_attente, nombre_message, indice_noeud_emetteur);
 }
 
 void decaler_messages( Slot *slots[] )
@@ -240,6 +246,28 @@ void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
 		resultats[i] = noeuds[i]->attente_totale/noeuds[i]->nb_message_total;
 }
 
+void supprimer_ancien_csv()
+{
+	DIR *repertoire;
+	struct dirent *dir;
+
+	repertoire = opendir("../CSV/");	//On ouvre le répertoire des fichiers csv
+	if (repertoire)		//Le repertoire s'est ouvert avec succès
+	{
+		//On supprime tout les fichiers csv
+		while ( (dir = readdir(repertoire) ) != NULL)
+		{
+			char chemin_fichier[30] = "../CSV/";
+			strcat(chemin_fichier, dir->d_name);
+			FILE *f = fopen(chemin_fichier, "r");
+
+			if (f != NULL)
+				remove(chemin_fichier);
+		}
+		closedir(repertoire);
+	}
+}
+
 void ecrire_etat_noeud( Noeud *noeuds[], int tic)
 {
 	static int numero_fichier = 1;
@@ -252,7 +280,7 @@ void ecrire_etat_noeud( Noeud *noeuds[], int tic)
 	get_temps_attente_moyen(noeuds, attente_moyenne);
 
 	/* Création du nom du fichier csv */
-	char *debut_nom_fichier = "./csv/attente";
+	char *debut_nom_fichier = "../CSV/attente";
 	char buffer[3];
 	char chemin_fichier[20];
 
@@ -278,10 +306,76 @@ void ecrire_etat_noeud( Noeud *noeuds[], int tic)
 	numero_fichier++;
 }
 
-void afficher_graphique_attente()
+void generer_PDF()
 {
-	/* Lance le prgramme R qui crée un PDF avec le graphique avant de l'ouvrir avec evince */
-	system("R -f attente.R > /tmp/out.txt");
-	//system("evince attente.pdf & > /tmp/out.txt");
+	DIR *repertoire;
+	struct dirent *dir;
 
+	repertoire = opendir("../Scripts_R/");	//On ouvre le répertoire des scripts R
+	if (repertoire)		//Le repertoire s'est ouvert avec succès
+	{
+		//On execute tous les scripts R
+		while ( (dir = readdir(repertoire) ) != NULL)
+		{
+			if (( strcmp(dir->d_name, ".") != 0 ) && ( strcmp(dir->d_name, "..") != 0 ) )
+			{
+				char commande[100] = "R -f ";
+
+				char chemin_fichier[30] = "../Scripts_R/";
+
+				strcat(chemin_fichier, dir->d_name);
+				strcat(commande, chemin_fichier);
+				strcat(commande, " > /tmp/out.txt");
+
+				/* La commande est prête ! On peut l'exécuter ! */
+				system(commande);
+			}
+		}
+	}
+}
+
+void afficher_PDF()
+{
+	DIR *repertoire;
+	struct dirent *dir;
+
+	repertoire = opendir("../PDF/");	//On ouvre le répertoire des scripts R
+	if (repertoire)		//Le repertoire s'est ouvert avec succès
+	{
+		//On lance evince avex tous les fichiers PDF
+		while ( (dir = readdir(repertoire) ) != NULL)
+		{
+			if (( strcmp(dir->d_name, ".") != 0 ) && ( strcmp(dir->d_name, "..") != 0 ) )
+			{
+				char commande[100] = "evince ";
+
+				char chemin_fichier[50] = "../PDF/";
+
+				strcat(chemin_fichier, dir->d_name);
+				strcat(commande, chemin_fichier);
+				strcat(commande, " &");
+
+				/* La commande est prête ! On peut l'exécuter ! */
+				system(commande);
+			}
+		}
+	}
+}
+
+void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)
+{
+	if (f != NULL)
+	{
+		int i;
+		for (i=0; i<taille_tableau; i++)
+			fprintf(f, "%d,%d\n", noeud_emetteur, tics[i]);
+	}
+}
+
+FILE* setup_fichier_attente_message()
+{
+	char *nom_fichier = "../CSV/attentes_messages.csv";
+	FILE *f = fopen(nom_fichier, "w");	//Ouvre un fichier, si le fichier existe déjà, son contenu est ecrasé
+	fprintf(f, "Noeud,TIC_attente\n");
+	return f;
 }

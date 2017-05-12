@@ -1,6 +1,6 @@
-//#include "./ListeChainee.h"
 #include "./File.h"
 #include "./hyper_expo.h"
+#include <stdio.h>
 
 /*!
  * \file simulation.h
@@ -124,9 +124,10 @@ void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
  * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
  * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
- * \param tic le tic actuel de l'anneau.
+ * \param tic Le tic actuel de l'anneau.
+ * \param *f Le fichier ou ecrire les temps d'attentes des messages.
  */
-void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic );
+void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f );
 
 /*! void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
  * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
@@ -135,9 +136,10 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic );
  * \param *slot Un pointeur sur le slot qui recevra le paquet de message.
  * \param nombre_message Le nombre de message qui doit etre transmis.
  * \param messages[] Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
- * \param tic le tic actuel de l'anneau.
+ * \param tic Le tic actuel de l'anneau.
+ * \param *f Le fichier ou ecrire les temps d'attentes des messages.
  */
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic );
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, FILE *f );
 
 /*! \fn void decaler_messages( Slot *slots[] )
  * \brief Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).
@@ -172,6 +174,11 @@ void get_temps_attente_max( Noeud *noeuds[], double resultats[] );
 */
 void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] );
 
+/*! fn void supprimer_ancien_csv()
+   \brief Supprime les fichiers present dans le répertoire des fichiers csv du projet.
+*/
+void supprimer_ancien_csv();
+
 /*! \fn void ecrire_etat_noeud( Noeud *noeuds[] )
 * \brief Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.
 * \param *noeuds[] Les noeuds de l'anneau.
@@ -183,3 +190,32 @@ void ecrire_etat_noeud( Noeud *noeuds[], int tic );
 * \brief Affiche via R un graphique avec les données du fichier 'attente.csv'.
 */
 void afficher_graphique_attente();
+
+/*! fn void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)
+   \brief Ecrit les tics dans un fichiers csv passé en paramètre.
+   \param *f Le fichier csv dans lequelle on ecrit.
+   \param tics Les tics à écrire dans le fichier.
+   \param taille_tableau La taille du tableau des tics.
+   \param noeud_emetteur Le noeuds emetteur des tics.
+   \pre Le fichier csv doit existé et etre ouvert.
+*/
+void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur);
+
+/*! fn FILE* setup_fichier_attente_message()
+   \brief Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau.
+    Si le fichier existe déja, son contenu est éffacé.
+   \return Un pointeur sur le fichier ouvert.
+*/
+FILE* setup_fichier_attente_message();
+
+/*! fn void generer_PDF()
+   \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV
+   \pre la simulation à généré des fichiers CSV.
+*/
+void generer_PDF();
+
+/*! fn void afficher_PDF()
+   \brief Lance le programme evince avec les fichiers PDF générés durant la simulation
+   \pre la simulation à généré des fichiers CSV.
+*/
+void afficher_PDF();
