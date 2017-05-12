@@ -6,6 +6,7 @@
 #include <dirent.h>
 
 #include "../Headers/simulation.h"
+#include "../Headers/hyper_expo.h"
 
 void initialiser_slots( Slot *slots[] )
 {

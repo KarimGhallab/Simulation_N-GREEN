@@ -36,6 +36,7 @@ int main ( int argc, char *argv[] )
 	/*printf("Etat initial des slots\n");
 	afficher_slots(slots);
 
+
 	printf("Etat initial des noeuds\n");
 	afficher_noeuds(noeuds);*/
 
@@ -66,8 +67,10 @@ int main ( int argc, char *argv[] )
 	if (generer_pdf == 1)
 	{
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
+
 		printf("Libération de la mémoire\n");
 		liberer_memoire(slots, noeuds);
+
 		printf("Génération des fichiers PDF...\n");
 		generer_PDF();
 		printf("Ouverture des fichiers PDF...\n");
