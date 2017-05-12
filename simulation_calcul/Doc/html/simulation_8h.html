@@ -99,6 +99,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="File_8h_source.html">./File.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="hyper__expo_8h_source.html">./hyper_expo.h</a>&quot;</code><br />
+<code>#include &lt;stdio.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
 <div class="dyncontent">
@@ -126,7 +127,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
@@ -175,12 +176,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a22f51bbb69e4da2051a14182902efb61">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:a22f51bbb69e4da2051a14182902efb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a22f51bbb69e4da2051a14182902efb61">More...</a><br /></td></tr>
 <tr class="separator:a22f51bbb69e4da2051a14182902efb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b669c059df222d44eb83f6a14a73e71"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4b669c059df222d44eb83f6a14a73e71">entrer_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
-<tr class="memdesc:a4b669c059df222d44eb83f6a14a73e71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.  <a href="#a4b669c059df222d44eb83f6a14a73e71">More...</a><br /></td></tr>
-<tr class="separator:a4b669c059df222d44eb83f6a14a73e71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabeb29f3214181b7defc84c14333f981"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aabeb29f3214181b7defc84c14333f981">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic)</td></tr>
-<tr class="memdesc:aabeb29f3214181b7defc84c14333f981"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#aabeb29f3214181b7defc84c14333f981">More...</a><br /></td></tr>
-<tr class="separator:aabeb29f3214181b7defc84c14333f981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a690edc4d8a9004ceea2d11843252c69f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a690edc4d8a9004ceea2d11843252c69f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic, FILE *f)</td></tr>
+<tr class="separator:a690edc4d8a9004ceea2d11843252c69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03957f77ac11159532a907a9a49adb4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a03957f77ac11159532a907a9a49adb4c">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, FILE *f)</td></tr>
+<tr class="memdesc:a03957f77ac11159532a907a9a49adb4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a03957f77ac11159532a907a9a49adb4c">More...</a><br /></td></tr>
+<tr class="separator:a03957f77ac11159532a907a9a49adb4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa235047801949844b4fccda141537d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa235047801949844b4fccda141537d6c">decaler_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:aa235047801949844b4fccda141537d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).  <a href="#aa235047801949844b4fccda141537d6c">More...</a><br /></td></tr>
 <tr class="separator:aa235047801949844b4fccda141537d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +197,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a515032b7ce967dd7ea5c84e67ffceaff">get_temps_attente_moyen</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
 <tr class="memdesc:a515032b7ce967dd7ea5c84e67ffceaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.  <a href="#a515032b7ce967dd7ea5c84e67ffceaff">More...</a><br /></td></tr>
 <tr class="separator:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
+<tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet.  <a href="#ae7fe52eac0ad0cea2ca8cff602a81b1f">More...</a><br /></td></tr>
+<tr class="separator:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac47b78397e31a5a7f4e1cb2ca9a7f6f9"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_etat_noeud</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
 <tr class="separator:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,6 +207,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_etat_noeud</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
 <tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
 <tr class="separator:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a48c948791fc7b8b9ef5c8e2f3d7b9675">ecrire_attente_message</a> (FILE *f, int tics[], int taille_tableau, int noeud_emetteur)</td></tr>
+<tr class="memdesc:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les tics dans un fichiers csv passé en paramètre.  <a href="#a48c948791fc7b8b9ef5c8e2f3d7b9675">More...</a><br /></td></tr>
+<tr class="separator:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8c0bd7f998b9c2f17bcefa7d8582d05a">setup_fichier_attente_message</a> ()</td></tr>
+<tr class="memdesc:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé.  <a href="#a8c0bd7f998b9c2f17bcefa7d8582d05a">More...</a><br /></td></tr>
+<tr class="separator:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b21ebb07498720f0395cd8db524aebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd">generer_PDF</a> ()</td></tr>
+<tr class="memdesc:a1b21ebb07498720f0395cd8db524aebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a1b21ebb07498720f0395cd8db524aebd">More...</a><br /></td></tr>
+<tr class="separator:a1b21ebb07498720f0395cd8db524aebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13efb593322c36c90914cebce13f12f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a13efb593322c36c90914cebce13f12f1">afficher_PDF</a> ()</td></tr>
+<tr class="memdesc:a13efb593322c36c90914cebce13f12f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance le programme evince avec les fichiers PDF générés durant la simulation.  <a href="#a13efb593322c36c90914cebce13f12f1">More...</a><br /></td></tr>
+<tr class="separator:a13efb593322c36c90914cebce13f12f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -228,6 +244,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a13efb593322c36c90914cebce13f12f1"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficher_PDF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lance le programme evince avec les fichiers PDF générés durant la simulation. </p>
+<p>fn void <a class="el" href="simulation_8h.html#a13efb593322c36c90914cebce13f12f1" title="Lance le programme evince avec les fichiers PDF générés durant la simulation. ">afficher_PDF()</a> </p><dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
 
 </div>
 </div>
@@ -279,27 +313,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a4b669c059df222d44eb83f6a14a73e71"></a>
+<a class="anchor" id="a48c948791fc7b8b9ef5c8e2f3d7b9675"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void entrer_messages </td>
+          <td class="memname">void ecrire_attente_message </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[], </td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>f</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em>&#160;</td>
+          <td class="paramname"><em>tics</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>noeud_emetteur</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -309,15 +349,35 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
       </table>
 </div><div class="memdoc">
 
-<p>Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Ecrit les tics dans un fichiers csv passé en paramètre. </p>
+<p>fn void <a class="el" href="simulation_8h.html#a48c948791fc7b8b9ef5c8e2f3d7b9675" title="Ecrit les tics dans un fichiers csv passé en paramètre. ">ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur sur les noeuds qui recevront les messages. </td></tr>
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur sur les slots qui recevront les messages des noeuds. </td></tr>
-    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
+    <tr><td class="paramname">*f</td><td>Le fichier csv dans lequelle on ecrit. </td></tr>
+    <tr><td class="paramname">tics</td><td>Les tics à écrire dans le fichier. </td></tr>
+    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des tics. </td></tr>
+    <tr><td class="paramname">noeud_emetteur</td><td>Le noeuds emetteur des tics. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section pre"><dt>Precondition</dt><dd>Le fichier csv doit existé et etre ouvert. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a1b21ebb07498720f0395cd8db524aebd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void generer_PDF </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Lance les scripts R afin de générer les PDF à partir des fichiers CSV. </p>
+<p>fn void <a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd" title="Lance les scripts R afin de générer les PDF à partir des fichiers CSV. ">generer_PDF()</a> </p><dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
 
 </div>
 </div>
@@ -485,7 +545,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="aabeb29f3214181b7defc84c14333f981"></a>
+<a class="anchor" id="a03957f77ac11159532a907a9a49adb4c"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -523,7 +583,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em>&#160;</td>
+          <td class="paramname"><em>tic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FILE *&#160;</td>
+          <td class="paramname"><em>f</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -534,17 +600,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
-<p>void <a class="el" href="simulation_8h.html#aabeb29f3214181b7defc84c14333f981" title="Transmet un paquet de message d&#39;un noeud vers son slot d&#39;écriture. ">placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<p>void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic ) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
     <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
     <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
     <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
     <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
-    <tr><td class="paramname">tic</td><td>le tic actuel de l'anneau. </td></tr>
+    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
+    <tr><td class="paramname">*f</td><td>Le fichier ou ecrire les temps d'attentes des messages. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="a8c0bd7f998b9c2f17bcefa7d8582d05a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE* setup_fichier_attente_message </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé. </p>
+<p>fn FILE* <a class="el" href="simulation_8h.html#a8c0bd7f998b9c2f17bcefa7d8582d05a" title="Créé et ouvre le fichier csv qui contiendra la liste des temps d&#39;attentes de tout les messages de l&#39;a...">setup_fichier_attente_message()</a> </p><dl class="section return"><dt>Returns</dt><dd>Un pointeur sur le fichier ouvert. </dd></dl>
 
 </div>
 </div>
@@ -569,6 +654,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="ae7fe52eac0ad0cea2ca8cff602a81b1f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void supprimer_ancien_csv </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Supprime les fichiers present dans le répertoire des fichiers csv du projet. </p>
+<p>fn void <a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f" title="Supprime les fichiers present dans le répertoire des fichiers csv du projet. ">supprimer_ancien_csv()</a> </p>
 
 </div>
 </div>

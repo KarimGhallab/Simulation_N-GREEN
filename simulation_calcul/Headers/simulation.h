@@ -11,7 +11,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 100000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.

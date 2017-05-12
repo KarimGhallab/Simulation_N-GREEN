@@ -262,7 +262,10 @@ void supprimer_ancien_csv()
 			FILE *f = fopen(chemin_fichier, "r");
 
 			if (f != NULL)
+			{
+				fclose(f);
 				remove(chemin_fichier);
+			}
 		}
 		closedir(repertoire);
 	}
@@ -331,6 +334,7 @@ void generer_PDF()
 				system(commande);
 			}
 		}
+		closedir(repertoire);
 	}
 }
 
@@ -359,6 +363,7 @@ void afficher_PDF()
 				system(commande);
 			}
 		}
+		closedir(repertoire);
 	}
 }
 
