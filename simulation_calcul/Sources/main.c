@@ -7,6 +7,11 @@
 int main ( int argc, char *argv[] )
 {
 	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "pdf") == 0 ) || ( strcmp(argv[1], "PDF") == 0 ) ) );
+	if ( (generer_pdf == 1) && (NOMBRE_TIC >= 500000) )
+	{
+		generer_pdf = 0;
+		printf("Le nombre de Tic est trop élevé pour faire la génération des fichiers PDF. L'ordinateur ne le supportera pas !\n");
+	}
 
 	/* Mise en place de la structure des fichiers necessaire à la sauvegarde des données */
 	supprimer_ancien_csv();
@@ -61,13 +66,18 @@ int main ( int argc, char *argv[] )
 	if (generer_pdf == 1)
 	{
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
+		printf("Libération de la mémoire\n");
+		liberer_memoire(slots, noeuds);
 		printf("Génération des fichiers PDF...\n");
 		generer_PDF();
 		printf("Ouverture des fichiers PDF...\n");
 		afficher_PDF();
 	}
-
-	liberer_memoire(slots, noeuds);
+	else
+	{
+		printf("Libération de la mémoire");
+		liberer_memoire(slots, noeuds);
+	}
 
 	return (0);
 }
