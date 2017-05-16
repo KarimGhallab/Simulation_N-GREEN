@@ -6,7 +6,8 @@
 
 int main ( int argc, char *argv[] )
 {
-	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "pdf") == 0 ) || ( strcmp(argv[1], "PDF") == 0 ) ) );
+	/* Gestion de la génération ou de la non-génération du PDF */
+	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "-pdf") == 0 ) || ( strcmp(argv[1], "-PDF") == 0 ) ) );
 	if ( (generer_pdf == 1) && (NOMBRE_TIC >= 500000) )
 	{
 		generer_pdf = 0;
@@ -44,14 +45,17 @@ int main ( int argc, char *argv[] )
 
 	int interval = nombre_tic_restant / saut_interval;
 	int cmp = 1;
-
+	int pourcentage;
 	while (nombre_tic_restant > 0)
 	{
+		/* Gestion de la barre de chargement */
 		if (nombre_tic_restant % interval == 0)
 		{
 			char chargement[ saut_interval +3 ];
 			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
-			//printf("%d\n%s\n\n", cmp, chargement);
+			pourcentage = (cmp/(float)saut_interval) *100;
+			printf("\r%s %d%%", chargement, pourcentage);
+			fflush(stdout);
 			cmp++;
 		}
 		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, f );
@@ -68,6 +72,7 @@ int main ( int argc, char *argv[] )
 
 		nombre_tic_restant--;
 	}
+	printf("\n\n");
 	time(&fin);
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau :  %ld secondes\n", total);

@@ -84,6 +84,19 @@ void afficher_noeuds( Noeud *noeuds[] )
 	}
 }
 
+TableauDynamique* initialiser_tableau_dynamique()
+{
+	TableauDynamique *td = (TableauDynamique *) malloc( sizeof(TableauDynamique) );
+	td->taille_tableau = TAILLE_INITIALE_TABLEAU;
+	td->taille_utilisee = 0;
+	return td;
+}
+
+TableauDynamique* ajouter_valeur(TableauDynamique *td, int valeur)
+{
+	return NULL;
+}
+
 void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 {
 	Noeud *noeud;	//Le noeud courant
@@ -149,7 +162,7 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoi le message */
 	int i; int temps_attente[ nombre_message ]; int temps_attente_message;
-	
+
 	for (i=0; i<nombre_message; i++)
 	{
 		paquet->messages[i] = messages[i];
@@ -401,7 +414,7 @@ void initialiser_barre_chargement(char *chargement, int taille_tableau, int nomb
 	//printf("Taille du tableau : %d, Nombre de chargement : %d\n", taille_tableau, nombre_chargement);
 	int i;
 	for(i=1; i<=nombre_chargement;i++)
-		chargement[i] = '#';
+		chargement[i] = '=';
 	if (i < taille_tableau -1)
 	{
 		for(i=nombre_chargement; i<taille_tableau-1;i++)
@@ -410,5 +423,4 @@ void initialiser_barre_chargement(char *chargement, int taille_tableau, int nomb
 				chargement[i] = ' ';
 		}
 	}
-	printf("%s\n", chargement);
 }

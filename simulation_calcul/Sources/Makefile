@@ -17,10 +17,10 @@ callgrind: clear compil
 	kcachegrind &
 
 memcheck_pdf: clear compil
-	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat PDF
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat -PDF
 
 callgrind_pdf: clear compil
-	valgrind --tool=callgrind --dump-instr=yes --simulate-cache=yes --collect-jumps=yes ./resultat PDF
+	valgrind --tool=callgrind --dump-instr=yes --simulate-cache=yes --collect-jumps=yes ./resultat -PDF
 	kcachegrind &
 
 
