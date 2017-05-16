@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 50000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -40,7 +40,8 @@
 /*! \def TAILLE_INITIALE_TABLEAU
  * \brief La taille initiale du tableau de la structure TableauDynamique.
  */
-#define TAILLE_INITIALE_TABLEAU 1000000
+//#define TAILLE_INITIALE_TABLEAU 1000000
+#define TAILLE_INITIALE_TABLEAU 10
 
 //////////////////////////////////////////////////
 ///////////////// Les structures /////////////////
@@ -98,7 +99,7 @@ struct TableauDynamique
 {
 	int taille_tableau;
 	int taille_utilisee;
-	int tableau[TAILLE_INITIALE_TABLEAU];
+	int *tableau;
 };
 typedef struct TableauDynamique TableauDynamique;
 
@@ -137,13 +138,19 @@ void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
  */
 TableauDynamique* initialiser_tableau_dynamique();
 
-/*! \fn TableauDynamique* ajouter_valeur(TableauDynamique *td, valeur);
- * \brief Ajoute une valeur au tableau dynamique
+/*! \fn TableauDynamique* ajouter_valeur( TableauDynamique *td, valeur );
+ * \brief Ajoute une valeur au tableau dynamique.
+ *  La taille du tableau peut etre réallouer si necessaire.
  * \param *td Le tableau auquel on souhaite ajouter la valeur.
  * \param valeur La valeur à ajouter.
- * \return Un pointeur sur le tableau dynamique.
  */
-TableauDynamique* ajouter_valeur(TableauDynamique *td, int valeur);
+void ajouter_valeur( TableauDynamique *td, int valeur );
+
+/*! \fn void afficher_tableau_dynamique(TableauDynamique *td)
+ * \brief Affiche un tableau dynamique.
+ * \param *td Un pointeur sur le tableau dynamique à afficher.
+ */
+void afficher_tableau_dynamique( TableauDynamique *td );
 
 /*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
