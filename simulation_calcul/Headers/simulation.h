@@ -62,7 +62,6 @@ typedef struct PaquetMessage PaquetMessage;
  * \brief Structure représentant un Noeud de l'anneau.
  * Elle contient un nombre de message, les indices des slots avec lesquels le noeud peut intéragir, ainsi que le nombre d'antenne liée au noeud et le décalage avec laquelle le noeud doit recevoir un message de ses antennes.
  */
-
 struct Noeud
 {
 	int id;
@@ -83,7 +82,6 @@ typedef struct Noeud Noeud;
  * \brief Structure représentant un slot dans l'anneau.
  * Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s'il y en a un.
  */
-
 struct Slot
 {
 	int id;
@@ -94,6 +92,10 @@ struct Slot
 };
 typedef struct Slot Slot;
 
+/*! \struct TableauDynamique
+ * \brief Structure représentant tableau de taille dynamique.
+ * Un tableau dynamique contient un tableau d'entier, une taille de tableau (dynamique), ainsi qu'une taille de tableau utilisée.
+ */
 struct TableauDynamique
 {
 	int taille_tableau;

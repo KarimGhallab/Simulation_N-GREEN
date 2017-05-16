@@ -1,4 +1,7 @@
 var searchData=
 [
-  ['vider_5fliste',['vider_liste',['../ListeChainee_8h.html#a7188d141c2882ad7c12fe684ec427d53',1,'ListeChainee.h']]]
+  ['setup_5ffichier_5fattente_5fmessage',['setup_fichier_attente_message',['../simulation_8h.html#a795b00ff2f536ff54b0fc05907efb280',1,'simulation.h']]],
+  ['sortir_5fmessages',['sortir_messages',['../simulation_8h.html#acde6cacdd5b5dbb0ec9f142fec20c787',1,'simulation.h']]],
+  ['supprimer_5fancien_5fcsv',['supprimer_ancien_csv',['../simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f',1,'simulation.h']]],
+  ['supprimer_5fmessage',['supprimer_message',['../File_8h.html#a9dceb45dd4742f2bd7c32f728f2ba48a',1,'File.h']]]
 ];

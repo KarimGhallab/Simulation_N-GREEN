@@ -98,7 +98,6 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Header du fichier principal contenant les fonctions et structures necessaires au main.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="File_8h_source.html">./File.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="hyper__expo_8h_source.html">./hyper_expo.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
@@ -106,7 +105,6 @@ Include dependency graph for simulation.h:</div>
 <div class="center"><img src="simulation_8h__incl.png" border="0" usemap="#Headers_2simulation_8h" alt=""/></div>
 <map name="Headers_2simulation_8h" id="Headers_2simulation_8h">
 <area shape="rect" id="node2" href="File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="5,80,68,107"/>
-<area shape="rect" id="node3" href="hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="92,80,200,107"/>
 </map>
 </div>
 </div>
@@ -123,11 +121,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSlot.html">Slot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un slot dans l'anneau. Un <a class="el" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. ">Slot</a> est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s'il y en a un.  <a href="structSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTableauDynamique.html">TableauDynamique</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d'entier, une taille de tableau (dynamique), ainsi qu'une taille de tableau utilisée.  <a href="structTableauDynamique.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;500000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;10 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
@@ -149,6 +150,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3afe421e20484e4c8524fcdefdc44783">LIMITE_NOMBRE_MESSAGE_MAX</a>&#160;&#160;&#160;80</td></tr>
 <tr class="memdesc:a3afe421e20484e4c8524fcdefdc44783"><td class="mdescLeft">&#160;</td><td class="mdescRight">La limite maximale avant un envoi de message depuis un noeud. <br /></td></tr>
 <tr class="separator:a3afe421e20484e4c8524fcdefdc44783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac19385f9370b43821f046a53ebca3076"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac19385f9370b43821f046a53ebca3076"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ac19385f9370b43821f046a53ebca3076">TAILLE_INITIALE_TABLEAU</a>&#160;&#160;&#160;1000</td></tr>
+<tr class="memdesc:ac19385f9370b43821f046a53ebca3076"><td class="mdescLeft">&#160;</td><td class="mdescRight">La taille initiale du tableau de la structure <a class="el" href="structTableauDynamique.html" title="Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d&#39;entier...">TableauDynamique</a>. <br /></td></tr>
+<tr class="separator:ac19385f9370b43821f046a53ebca3076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -161,6 +166,9 @@ typedef struct <a class="el" href="structNoeud.html">Noeud</a>&#160;</td><td cla
 <tr class="memitem:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53a7732cbcfa53c991fea8e0686ea79b"></a>
 typedef struct <a class="el" href="structSlot.html">Slot</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Slot</b></td></tr>
 <tr class="separator:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a225db2b42fe84d7ad33f569f34faf530"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a225db2b42fe84d7ad33f569f34faf530"></a>
+typedef struct <a class="el" href="structTableauDynamique.html">TableauDynamique</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TableauDynamique</b></td></tr>
+<tr class="separator:a225db2b42fe84d7ad33f569f34faf530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -176,21 +184,30 @@ Functions</h2></td></tr>
 <tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a22f51bbb69e4da2051a14182902efb61">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:a22f51bbb69e4da2051a14182902efb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a22f51bbb69e4da2051a14182902efb61">More...</a><br /></td></tr>
 <tr class="separator:a22f51bbb69e4da2051a14182902efb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a690edc4d8a9004ceea2d11843252c69f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a690edc4d8a9004ceea2d11843252c69f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic, FILE *f)</td></tr>
-<tr class="separator:a690edc4d8a9004ceea2d11843252c69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03957f77ac11159532a907a9a49adb4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a03957f77ac11159532a907a9a49adb4c">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, FILE *f)</td></tr>
-<tr class="memdesc:a03957f77ac11159532a907a9a49adb4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a03957f77ac11159532a907a9a49adb4c">More...</a><br /></td></tr>
-<tr class="separator:a03957f77ac11159532a907a9a49adb4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a706bee5134f513e1a7baa333858ec634"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a706bee5134f513e1a7baa333858ec634"></a>
+<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_tableau_dynamique</b> ()</td></tr>
+<tr class="separator:a706bee5134f513e1a7baa333858ec634"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec2a09033fe1247ca9cfeb2b0e0587e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec2a09033fe1247ca9cfeb2b0e0587e8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ajouter_valeur</b> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td, int valeur)</td></tr>
+<tr class="separator:aec2a09033fe1247ca9cfeb2b0e0587e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a391333882c7f1fc06b20a189be22a5c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a391333882c7f1fc06b20a189be22a5c6">afficher_tableau_dynamique</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="memdesc:a391333882c7f1fc06b20a189be22a5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un tableau dynamique.  <a href="#a391333882c7f1fc06b20a189be22a5c6">More...</a><br /></td></tr>
+<tr class="separator:a391333882c7f1fc06b20a189be22a5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a345e4f539d0e69cee4a57f174ba5f8"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="separator:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3274e625465e1330068b4b75475ca8fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3274e625465e1330068b4b75475ca8fe">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="memdesc:a3274e625465e1330068b4b75475ca8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a3274e625465e1330068b4b75475ca8fe">More...</a><br /></td></tr>
+<tr class="separator:a3274e625465e1330068b4b75475ca8fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa235047801949844b4fccda141537d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa235047801949844b4fccda141537d6c">decaler_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:aa235047801949844b4fccda141537d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).  <a href="#aa235047801949844b4fccda141537d6c">More...</a><br /></td></tr>
 <tr class="separator:aa235047801949844b4fccda141537d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#acde6cacdd5b5dbb0ec9f142fec20c787">sortir_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.  <a href="#acde6cacdd5b5dbb0ec9f142fec20c787">More...</a><br /></td></tr>
 <tr class="separator:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad4b7eddbc6ff492e5a9a3f191ff54945">liberer_memoire</a> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
-<tr class="memdesc:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère la mémoire prise durant l'exécution du programme.  <a href="#ad4b7eddbc6ff492e5a9a3f191ff54945">More...</a><br /></td></tr>
-<tr class="separator:ad4b7eddbc6ff492e5a9a3f191ff54945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae20f06af19598e7cb21bcc90fe54a732"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae20f06af19598e7cb21bcc90fe54a732"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>liberer_memoire</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="separator:ae20f06af19598e7cb21bcc90fe54a732"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a855dd0aff229849ec157ff7c1d66c1d4">get_temps_attente_max</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
 <tr class="memdesc:a855dd0aff229849ec157ff7c1d66c1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.  <a href="#a855dd0aff229849ec157ff7c1d66c1d4">More...</a><br /></td></tr>
 <tr class="separator:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,15 +227,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <tr class="memitem:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a48c948791fc7b8b9ef5c8e2f3d7b9675">ecrire_attente_message</a> (FILE *f, int tics[], int taille_tableau, int noeud_emetteur)</td></tr>
 <tr class="memdesc:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les tics dans un fichiers csv passé en paramètre.  <a href="#a48c948791fc7b8b9ef5c8e2f3d7b9675">More...</a><br /></td></tr>
 <tr class="separator:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8c0bd7f998b9c2f17bcefa7d8582d05a">setup_fichier_attente_message</a> ()</td></tr>
-<tr class="memdesc:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé.  <a href="#a8c0bd7f998b9c2f17bcefa7d8582d05a">More...</a><br /></td></tr>
-<tr class="separator:a8c0bd7f998b9c2f17bcefa7d8582d05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a795b00ff2f536ff54b0fc05907efb280"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a795b00ff2f536ff54b0fc05907efb280">setup_fichier_attente_message</a> (int tic)</td></tr>
+<tr class="memdesc:a795b00ff2f536ff54b0fc05907efb280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé.  <a href="#a795b00ff2f536ff54b0fc05907efb280">More...</a><br /></td></tr>
+<tr class="separator:a795b00ff2f536ff54b0fc05907efb280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b21ebb07498720f0395cd8db524aebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd">generer_PDF</a> ()</td></tr>
 <tr class="memdesc:a1b21ebb07498720f0395cd8db524aebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a1b21ebb07498720f0395cd8db524aebd">More...</a><br /></td></tr>
 <tr class="separator:a1b21ebb07498720f0395cd8db524aebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13efb593322c36c90914cebce13f12f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a13efb593322c36c90914cebce13f12f1">afficher_PDF</a> ()</td></tr>
 <tr class="memdesc:a13efb593322c36c90914cebce13f12f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance le programme evince avec les fichiers PDF générés durant la simulation.  <a href="#a13efb593322c36c90914cebce13f12f1">More...</a><br /></td></tr>
 <tr class="separator:a13efb593322c36c90914cebce13f12f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865cbfe3373c1d77e686b13e8965efa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8">fermer_fichier_std</a> ()</td></tr>
+<tr class="memdesc:a865cbfe3373c1d77e686b13e8965efa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ferme les fichiers stdin, stdout et stderr.  <a href="#a865cbfe3373c1d77e686b13e8965efa8">More...</a><br /></td></tr>
+<tr class="separator:a865cbfe3373c1d77e686b13e8965efa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2a0d15652276a900eba1357af09bc2b4">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
+<tr class="memdesc:a2a0d15652276a900eba1357af09bc2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a2a0d15652276a900eba1357af09bc2b4">More...</a><br /></td></tr>
+<tr class="separator:a2a0d15652276a900eba1357af09bc2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae01549942dcddb2afbcc22827ed65c30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae01549942dcddb2afbcc22827ed65c30">ecrire_quantile_message</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="memdesc:ae01549942dcddb2afbcc22827ed65c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.  <a href="#ae01549942dcddb2afbcc22827ed65c30">More...</a><br /></td></tr>
+<tr class="separator:ae01549942dcddb2afbcc22827ed65c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -283,6 +309,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur qui contiendra les adresses des slots initialisés. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a391333882c7f1fc06b20a189be22a5c6"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficher_tableau_dynamique </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
+          <td class="paramname"><em>td</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche un tableau dynamique. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*td</td><td>Un pointeur sur le tableau dynamique à afficher. </td></tr>
   </table>
   </dd>
 </dl>
@@ -360,6 +410,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   </dd>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd>Le fichier csv doit existé et etre ouvert. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae01549942dcddb2afbcc22827ed65c30"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_quantile_message </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
+          <td class="paramname"><em>td</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages. </p>
+<p>fn void <a class="el" href="simulation_8h.html#ae01549942dcddb2afbcc22827ed65c30" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages. ">ecrire_quantile_message(TableauDynamique *td)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*td</td><td>Un pointeur vers le tableau dynamique contenant les temps d'attentes. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a865cbfe3373c1d77e686b13e8965efa8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void fermer_fichier_std </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ferme les fichiers stdin, stdout et stderr. </p>
+<p>fn void <a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8" title="Ferme les fichiers stdin, stdout et stderr. ">fermer_fichier_std()</a> </p>
 
 </div>
 </div>
@@ -451,6 +543,47 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
+<a class="anchor" id="a2a0d15652276a900eba1357af09bc2b4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initialiser_barre_chargement </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>chargement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_chargement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation. </p>
+<p>fn void initialiser_barre_chargement(char *chargement, int taille_tableau) </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*chargement</td><td>La chaine de caractères à initialiser. </td></tr>
+    <tr><td class="paramname">nombre_chargement</td><td>Le nombre de caractère à mettre dans la chaine. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a22f51bbb69e4da2051a14182902efb61"></a>
 <div class="memitem">
 <div class="memproto">
@@ -510,42 +643,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="ad4b7eddbc6ff492e5a9a3f191ff54945"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void liberer_memoire </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Libère la mémoire prise durant l'exécution du programme. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>L'espace mémoire des slots à libérer. </td></tr>
-    <tr><td class="paramname">*noeuds[]</td><td>L'espace mémoire des noeuds à libérer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a03957f77ac11159532a907a9a49adb4c"></a>
+<a class="anchor" id="a3274e625465e1330068b4b75475ca8fe"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -588,8 +686,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>f</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
+          <td class="paramname"><em>td</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -615,21 +713,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a8c0bd7f998b9c2f17bcefa7d8582d05a"></a>
+<a class="anchor" id="a795b00ff2f536ff54b0fc05907efb280"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">FILE* setup_fichier_attente_message </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé. </p>
-<p>fn FILE* <a class="el" href="simulation_8h.html#a8c0bd7f998b9c2f17bcefa7d8582d05a" title="Créé et ouvre le fichier csv qui contiendra la liste des temps d&#39;attentes de tout les messages de l&#39;a...">setup_fichier_attente_message()</a> </p><dl class="section return"><dt>Returns</dt><dd>Un pointeur sur le fichier ouvert. </dd></dl>
+<p>fn FILE* <a class="el" href="simulation_8h.html#a795b00ff2f536ff54b0fc05907efb280" title="Créé et ouvre le fichier csv qui contiendra la liste des temps d&#39;attentes de tout les messages de l&#39;a...">setup_fichier_attente_message()</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tic</td><td>Le nombre de tic de la simulation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Un pointeur sur le fichier ouvert. </dd></dl>
 
 </div>
 </div>

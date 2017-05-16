@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['initialiser_5fnoeuds',['initialiser_noeuds',['../simulation_8h.html#a22f51bbb69e4da2051a14182902efb61',1,'simulation.h']]],
-  ['initialiser_5fslots',['initialiser_slots',['../simulation_8h.html#a6a7eb510d814b46b36629cd3aedd2c87',1,'simulation.h']]],
-  ['initialiser_5ftableau',['initialiser_tableau',['../hyper__expo_8h.html#ae457618edd975e9f389d2be0c6c7dfa7',1,'hyper_expo.h']]]
+  ['hyper_5fexpo',['hyper_expo',['../hyper__expo_8h.html#ae017b78aee2eaf6663e7908e800c34cc',1,'hyper_expo.h']]]
 ];
