@@ -13,6 +13,10 @@ int main ( int argc, char *argv[] )
 		generer_pdf = 0;
 		printf("Le nombre de Tic est trop élevé pour faire la génération des fichiers PDF. L'ordinateur ne le supportera pas !\n");
 	}
+	/* Affichage des paramètres de la simulation */
+	printf("Nombre de TIC de la simulation : %d\n", NOMBRE_TIC);
+	printf("Nombre de slot de l'anneau : %d\n", NOMBRE_SLOT);
+	printf("Nombre de noeud de l'anneau : %d\n\n", NOMBRE_NOEUD);
 
 	/* Mise en place de la structure des fichiers necessaire à la sauvegarde des données */
 	supprimer_ancien_csv();
@@ -25,15 +29,13 @@ int main ( int argc, char *argv[] )
 	time(&debut);
 
 	int nombre_tic_restant = NOMBRE_TIC;
-	printf("Nombre de TIC de la simulation : %d\n", NOMBRE_TIC);
-	printf("Nombre de slot de l'anneau : %d\n", NOMBRE_SLOT);
-	printf("Nombre de noeud de l'anneau : %d\n\n", NOMBRE_NOEUD);
 
 	/* Initialisation des slots et noeuds de l'anneau. */
 	Slot *slots[ NOMBRE_SLOT ];
 	Noeud *noeuds[ NOMBRE_NOEUD ];
 	initialiser_slots(slots);
 	initialiser_noeuds(noeuds, slots);
+	TableauDynamique *td = initialiser_tableau_dynamique();
 
 	/*printf("Etat initial des slots\n");
 	afficher_slots(slots);
@@ -41,15 +43,15 @@ int main ( int argc, char *argv[] )
 
 	printf("Etat initial des noeuds\n");
 	afficher_noeuds(noeuds);*/
-	int saut_interval = 40;
 
+	/*int saut_interval = 40;
 	int interval = nombre_tic_restant / saut_interval;
 	int cmp = 1;
-	int pourcentage;
+	int pourcentage;*/
 	while (nombre_tic_restant > 0)
 	{
 	/* Gestion de la barre de chargement */
-		if (nombre_tic_restant % interval == 0)
+		/*if (nombre_tic_restant % interval == 0)
 		{
 			char chargement[ saut_interval +3 ];
 			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
@@ -57,8 +59,8 @@ int main ( int argc, char *argv[] )
 			printf("\r%s %d%%", chargement, pourcentage);
 			fflush(stdout);
 			cmp++;
-		}
-		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, f );
+		}*/
+		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, td );
 		decaler_messages(slots);
 		sortir_messages(slots);
 
@@ -76,14 +78,12 @@ int main ( int argc, char *argv[] )
 	time(&fin);
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau :  %ld secondes\n", total);
-
+	afficher_tableau_dynamique(td);
+	ecrire_quantile_message(td);
 	if (f != NULL)
 		fclose(f);
 
-	/* On génére les fichiers CSV restant, on génére les PDF via les cript R et on ouvre ces PDF avec evince */
-	TableauDynamique *td = initialiser_tableau_dynamique();
-
-	if (generer_pdf == 1)
+	if (generer_pdf == 1)	//On génére les fichiers CSV restants, on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
 	{
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
 

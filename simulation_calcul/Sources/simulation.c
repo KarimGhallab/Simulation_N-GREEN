@@ -109,7 +109,6 @@ void ajouter_valeur( TableauDynamique *td, int valeur )
 {
 	if (td->taille_utilisee+1 > td->taille_tableau)		//Il faut réallouer l'espace du tableau
 	{
-		printf("Limite atteinte, On double la taille du tableau\n");
 		td->tableau = (int * ) realloc(td->tableau, (2 * td->taille_tableau) * sizeof(int) );
 		td->taille_tableau = td->taille_tableau * 2;
 	}
@@ -117,7 +116,7 @@ void ajouter_valeur( TableauDynamique *td, int valeur )
 	td->taille_utilisee++;
 }
 
-void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
+void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, TableauDynamique *td )
 {
 	Noeud *noeud;	//Le noeud courant
 	int nb_message;		//Le nombre de message envoyé par le noeud courant
@@ -154,7 +153,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 					for (k=0; k<LIMITE_NOMBRE_MESSAGE_MAX; k++)
 						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
-					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, f );
+					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
 				}
 				else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
@@ -164,7 +163,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 					for (k=0; k<nb_messages_noeud; k++)
 						messages[k] = supprimer_message( noeud->file_messages );
 
-					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], noeud->nb_message, messages, tic, f );
+					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], noeud->nb_message, messages, tic, td );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message = 0;
 				}
 			}
@@ -172,7 +171,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 	}
 }
 
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, FILE *f )
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
 	PaquetMessage *paquet = (PaquetMessage *) malloc( sizeof(PaquetMessage) );
@@ -181,14 +180,14 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 
 	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoi le message */
-	int i; int temps_attente[ nombre_message ]; int temps_attente_message;
+	int i; int temps_attente_message;
 
 	for (i=0; i<nombre_message; i++)
 	{
 		paquet->messages[i] = messages[i];
 
 		temps_attente_message = tic - paquet->messages[i];
-		temps_attente[i] = temps_attente_message;
+		ajouter_valeur(td, temps_attente_message);
 
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
@@ -199,7 +198,6 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	slot->contient_message = 1;
 
 	/* Ecrit dans un fichier les temps d'attente des messages */
-	ecrire_attente_message(f, temps_attente, nombre_message, indice_noeud_emetteur);
 }
 
 void decaler_messages( Slot *slots[] )
@@ -262,7 +260,7 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[], TableauDynamique *td )
 		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
-	
+
 	/* Libération de l'espace mémoire pris par le tableau dynamique */
 	free(td->tableau);
 	free(td);
@@ -447,4 +445,41 @@ void initialiser_barre_chargement(char *chargement, int taille_tableau, int nomb
 				chargement[i] = ' ';
 		}
 	}
+}
+
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a - *(int*)b );
+}
+
+void ecrire_quantile_message(TableauDynamique *td)
+{
+	printf("Tableau avant trie\n");
+	afficher_tableau_dynamique(td);
+
+	/* Trie du tableau */
+	int *tableau = td->tableau;
+	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
+
+	printf("Tableau après trie\n");
+	afficher_tableau_dynamique(td);
+
+	int interval = NOMBRE_TIC / 10;
+	int borne_superieure = interval;
+	int i;
+	int j = 0;
+	int *quantiles = (int *)calloc(10, sizeof(int));
+
+	printf("Génération des quantiles\n");
+	for (i=0; i<td->taille_utilisee; i++)
+	{
+		if (tableau[i] > borne_superieure)
+		{
+			j++;
+			borne_superieure += interval;
+		}
+		quantiles[j]++;
+	}
+	for (i=0; i<interval*10; i++)
+		printf("%d ", quantiles[i]);
 }

@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 50000	/* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 10 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -40,8 +40,7 @@
 /*! \def TAILLE_INITIALE_TABLEAU
  * \brief La taille initiale du tableau de la structure TableauDynamique.
  */
-//#define TAILLE_INITIALE_TABLEAU 1000000
-#define TAILLE_INITIALE_TABLEAU 10
+#define TAILLE_INITIALE_TABLEAU 1000
 
 //////////////////////////////////////////////////
 ///////////////// Les structures /////////////////
@@ -159,7 +158,7 @@ void afficher_tableau_dynamique( TableauDynamique *td );
  * \param tic Le tic actuel de l'anneau.
  * \param *f Le fichier ou ecrire les temps d'attentes des messages.
  */
-void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f );
+void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, TableauDynamique *td );
 
 /*! void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
  * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
@@ -171,7 +170,7 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f );
  * \param tic Le tic actuel de l'anneau.
  * \param *f Le fichier ou ecrire les temps d'attentes des messages.
  */
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, FILE *f );
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td );
 
 /*! \fn void decaler_messages( Slot *slots[] )
  * \brief Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).
@@ -265,3 +264,9 @@ void fermer_fichier_std();
    \param nombre_chargement Le nombre de caractère à mettre dans la chaine.
  */
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
+
+/*! fn void ecrire_quantile_message(TableauDynamique *td)
+   \brief Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.
+   \param *td Un pointeur vers le tableau dynamique contenant les temps d'attentes.
+ */
+void ecrire_quantile_message(TableauDynamique *td);
