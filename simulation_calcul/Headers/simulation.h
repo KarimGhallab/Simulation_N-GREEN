@@ -189,8 +189,9 @@ void sortir_messages( Slot *slots[] );
 * \brief Libère la mémoire prise durant l'exécution du programme.
 * \param *slots[] L'espace mémoire des slots à libérer.
 * \param *noeuds[] L'espace mémoire des noeuds à libérer.
+* \param *td L'espace mémoire du tableau dynamique à libérer.
 */
-void liberer_memoire( Slot *slots[], Noeud *noeuds[] );
+void liberer_memoire( Slot *slots[], Noeud *noeuds[], TableauDynamique *td );
 
 /*! \fn void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
 * \brief Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.

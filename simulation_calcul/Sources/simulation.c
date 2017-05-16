@@ -243,7 +243,7 @@ void sortir_messages( Slot *slots[] )
 	}
 }
 
-void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
+void liberer_memoire( Slot *slots[], Noeud *noeuds[], TableauDynamique *td )
 {
 	int i;
 	/* Libère la mémoire prise par les slots et leur paquet de message */
@@ -262,6 +262,10 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
+	
+	/* Libération de l'espace mémoire pris par le tableau dynamique */
+	free(td->tableau);
+	free(td);
 }
 
 void fermer_fichier_std()

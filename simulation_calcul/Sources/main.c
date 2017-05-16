@@ -46,10 +46,10 @@ int main ( int argc, char *argv[] )
 	int interval = nombre_tic_restant / saut_interval;
 	int cmp = 1;
 	int pourcentage;
-/*	while (nombre_tic_restant > 0)
+	while (nombre_tic_restant > 0)
 	{
-		/* Gestion de la barre de chargement */
-		/*if (nombre_tic_restant % interval == 0)
+	/* Gestion de la barre de chargement */
+		if (nombre_tic_restant % interval == 0)
 		{
 			char chargement[ saut_interval +3 ];
 			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
@@ -70,7 +70,7 @@ int main ( int argc, char *argv[] )
 
 		printf("\n############################\n");*/
 
-		/*nombre_tic_restant--;
+		nombre_tic_restant--;
 	}
 	printf("\n\n");
 	time(&fin);
@@ -82,14 +82,13 @@ int main ( int argc, char *argv[] )
 
 	/* On génére les fichiers CSV restant, on génére les PDF via les cript R et on ouvre ces PDF avec evince */
 	TableauDynamique *td = initialiser_tableau_dynamique();
-	afficher_tableau_dynamique(td);
-	
+
 	if (generer_pdf == 1)
 	{
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
 
 		printf("Libération de la mémoire...\n");
-		liberer_memoire(slots, noeuds);
+		liberer_memoire(slots, noeuds, td);
 
 		printf("Génération des fichiers PDF...\n");
 		fermer_fichier_std();
@@ -99,7 +98,7 @@ int main ( int argc, char *argv[] )
 	else
 	{
 		printf("Libération de la mémoire...\n");
-		liberer_memoire(slots, noeuds);
+		liberer_memoire(slots, noeuds, td);
 		printf("Mémoire libérée !\n");
 	}
 	return (0);
