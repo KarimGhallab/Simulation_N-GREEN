@@ -86,50 +86,52 @@ void afficher_noeuds( Noeud *noeuds[] )
 
 void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, FILE *f )
 {
+	Noeud *noeud;	//Le noeud courant
+	int nb_message;		//Le nombre de message envoyé par le noeud courant
+	int messages[80];	//Un tableau des messages qu'envoi le noeud courant
 	int i;
 	for (i=0; i< NOMBRE_SLOT; i++)
 	{
 		if (slots[i]->indice_noeud_ecriture != -1)	//Le slot est un slot d'ecriture
 		{
-			Noeud *noeud = noeuds[ slots[i]->indice_noeud_ecriture ];
+			noeud = noeuds[ slots[i]->indice_noeud_ecriture ];
 
 			//Le slot affiche si c'est sa période de réception de message provenant des antennes
 			/*if (tic % PERIODE_MESSAGE_ANTENNE == noeuds[ slots[i].indice_noeud_ecriture ].debut_periode)	//C'est la periode du noeud, il reçoit un message de ses antennes
 				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud.debut_periode, noeud.nb_antenne);*/
 
-			int nb_message = hyper_expo();
+			nb_message = hyper_expo();
 			//int nb_message = 20;
 			//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
 
 			//On ajoute au noeud le tic d'arrivé des messages
 			int j;
 			for (j=0; j<nb_message; j++)
-				ajouter_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages, tic );
+				ajouter_message( noeud->file_messages, tic );
 
-			noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message += nb_message;
-			noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message_total += nb_message;
+			noeud->nb_message += nb_message;
+			noeud->nb_message_total += nb_message;
 
-			if ( ( slots[i]->contient_message == 0) && (noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
+			if ( ( slots[i]->contient_message == 0) && (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
 			{
 				int k;
-				if (noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
+				if (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
 				{
 					/* On enleve les messages du noeud */
-					int messages [ LIMITE_NOMBRE_MESSAGE_MAX ];
 					for (k=0; k<LIMITE_NOMBRE_MESSAGE_MAX; k++)
 						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
 
-					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, f );
+					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, f );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
 				}
 				else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
 				{
 					//On enleve les messages du noeud
-					int messages [ noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message ];
-					for (k=0; k<noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message; k++)
-						messages[k] = supprimer_message( noeuds[ slots[i]->indice_noeud_ecriture ]->file_messages );
+					int nb_messages_noeud = noeud->nb_message;
+					for (k=0; k<nb_messages_noeud; k++)
+						messages[k] = supprimer_message( noeud->file_messages );
 
-					placer_message( noeuds[ slots[i]->indice_noeud_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->id, slots[ noeud->indice_slot_ecriture ], noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message, messages, tic, f );
+					placer_message( noeud, noeud->id, slots[ noeud->indice_slot_ecriture ], noeud->nb_message, messages, tic, f );
 					noeuds[ slots[i]->indice_noeud_ecriture ]->nb_message = 0;
 				}
 			}
@@ -146,14 +148,15 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 
 	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoi le message */
-	int i;
-	int temps_attente[ nombre_message ];
+	int i; int temps_attente[ nombre_message ]; int temps_attente_message;
+	
 	for (i=0; i<nombre_message; i++)
 	{
 		paquet->messages[i] = messages[i];
 
-		int temps_attente_message = tic - paquet->messages[i];
+		temps_attente_message = tic - paquet->messages[i];
 		temps_attente[i] = temps_attente_message;
+
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
 
@@ -226,12 +229,15 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
 		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
+}
 
-	/* Fermeture des files descriptor ouverts */
+void fermer_fichier_std()
+{
 	close(0);
 	close(1);
 	close(2);
 }
+
 
 void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
 {
@@ -378,10 +384,31 @@ void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_e
 	}
 }
 
-FILE* setup_fichier_attente_message()
+FILE* setup_fichier_attente_message(int tic)
 {
 	char *nom_fichier = "../CSV/attentes_messages.csv";
 	FILE *f = fopen(nom_fichier, "w");	//Ouvre un fichier, si le fichier existe déjà, son contenu est ecrasé
-	fprintf(f, "Noeud,TIC_attente\n");
+	fprintf(f, "Noeud,TIC_attente,%d\n", tic);
 	return f;
+}
+
+void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement)
+{
+	chargement[0] = '[';
+	chargement[taille_tableau-1] = ']';
+	chargement[taille_tableau] = '\0';
+
+	//printf("Taille du tableau : %d, Nombre de chargement : %d\n", taille_tableau, nombre_chargement);
+	int i;
+	for(i=1; i<=nombre_chargement;i++)
+		chargement[i] = '#';
+	if (i < taille_tableau -1)
+	{
+		for(i=nombre_chargement; i<taille_tableau-1;i++)
+		{
+			if (i != taille_tableau -1)
+				chargement[i] = ' ';
+		}
+	}
+	printf("%s\n", chargement);
 }

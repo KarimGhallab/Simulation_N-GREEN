@@ -6,7 +6,7 @@
 
 int effectuer_tirage(float probabilite)
 {
-	float tirage = generer_aleatoire(0, 1.0f);
+	float tirage = generer_aleatoire(0, 1.00f);
 	return tirage <= probabilite;
 }
 

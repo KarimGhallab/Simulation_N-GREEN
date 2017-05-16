@@ -89,6 +89,13 @@ struct Slot
 };
 typedef struct Slot Slot;
 
+struct TableauDynamique
+{
+	int taille_tableau;
+	int tableau[];
+	int taille_utilisee;
+};
+typedef struct TableauDynamique TableauDynamique;
 
 //////////////////////////////////////////////////
 ///////////////// Les fonctions /////////////////
@@ -118,6 +125,12 @@ void afficher_noeuds( Noeud *noeuds[] );
  * \param *slots[] Un tableau de pointeur des slots à modifier.
  */
 void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
+
+/*! \fn void initialiser_tableau(TableauDynamique td)
+ * \brief Initialise un tableau dynamique.
+ * \return TableauDynamique* Un pointeur vers tableau dynamique.
+ */
+TableauDynamique* initialiser_tableau_dynamique();
 
 /*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
@@ -203,9 +216,10 @@ void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_e
 /*! fn FILE* setup_fichier_attente_message()
    \brief Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau.
     Si le fichier existe déja, son contenu est éffacé.
+   \param tic Le nombre de tic de la simulation.
    \return Un pointeur sur le fichier ouvert.
 */
-FILE* setup_fichier_attente_message();
+FILE* setup_fichier_attente_message(int tic);
 
 /*! fn void generer_PDF()
    \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV
@@ -218,3 +232,15 @@ void generer_PDF();
    \pre la simulation à généré des fichiers CSV.
 */
 void afficher_PDF();
+
+/*! fn void fermer_fichier_std()
+   \brief Ferme les fichiers stdin, stdout et stderr.
+*/
+void fermer_fichier_std();
+
+/*! fn void initialiser_barre_chargement(char *chargement, int taille_tableau)
+   \brief Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.
+   \param *chargement La chaine de caractères à initialiser.
+   \param nombre_chargement Le nombre de caractère à mettre dans la chaine.
+ */
+void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);

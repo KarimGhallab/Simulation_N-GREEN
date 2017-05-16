@@ -8,8 +8,12 @@ pdf("../PDF/repartition_attente_message.pdf")
 
 donnees = read.csv(chemin_fichier)
 
-donnees
+nombre_tic_str = colnames(donnees)[3]	#Le nombre de tic de la simulation
+taille_texte = nchar(nombre_tic_str) 	#La taille du texte du nombre de tic
+nombre_tic = substring(nombre_tic_str, 2, taille_texte)		#Enleve le 'X' devant l'entête
 
+texte_info = paste("Fait à partir d'une simulation de", nombre_tic)
+texte_info = paste(texte_info, "tics")
 
 titre = "Répartition des temps d'attentes des messages"
 
@@ -20,6 +24,7 @@ scale_x_continuous(labels = comma) +
 labs(fill = "Nombre d'occurence", labels = comma) +
 xlab("Nombre de TIC") +
 ylab("Nombre de message") +
+labs(caption = texte_info) +
 ggtitle(titre)
 
 

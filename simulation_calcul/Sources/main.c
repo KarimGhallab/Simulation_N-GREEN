@@ -18,12 +18,13 @@ int main ( int argc, char *argv[] )
 
 	FILE *f = NULL;
 	if (generer_pdf == 1)
-		f = setup_fichier_attente_message();
+		f = setup_fichier_attente_message(NOMBRE_TIC);
 
 	time_t debut, fin, total;
 	time(&debut);
 
 	int nombre_tic_restant = NOMBRE_TIC;
+	printf("Nombre de TIC de la simulation : %d\n", NOMBRE_TIC);
 	printf("Nombre de slot de l'anneau : %d\n", NOMBRE_SLOT);
 	printf("Nombre de noeud de l'anneau : %d\n\n", NOMBRE_NOEUD);
 
@@ -39,9 +40,20 @@ int main ( int argc, char *argv[] )
 
 	printf("Etat initial des noeuds\n");
 	afficher_noeuds(noeuds);*/
+	int saut_interval = 40;
+
+	int interval = nombre_tic_restant / saut_interval;
+	int cmp = 1;
 
 	while (nombre_tic_restant > 0)
 	{
+		if (nombre_tic_restant % interval == 0)
+		{
+			char chargement[ saut_interval +3 ];
+			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
+			//printf("%d\n%s\n\n", cmp, chargement);
+			cmp++;
+		}
 		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, f );
 		decaler_messages(slots);
 		sortir_messages(slots);
@@ -68,19 +80,19 @@ int main ( int argc, char *argv[] )
 	{
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
 
-		printf("Libération de la mémoire\n");
+		printf("Libération de la mémoire...\n");
 		liberer_memoire(slots, noeuds);
 
 		printf("Génération des fichiers PDF...\n");
+		fermer_fichier_std();
 		generer_PDF();
-		printf("Ouverture des fichiers PDF...\n");
 		afficher_PDF();
 	}
 	else
 	{
-		printf("Libération de la mémoire");
+		printf("Libération de la mémoire...\n");
 		liberer_memoire(slots, noeuds);
+		printf("Mémoire libérée !\n");
 	}
-
 	return (0);
 }
