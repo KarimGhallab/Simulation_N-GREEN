@@ -128,7 +128,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;10 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
@@ -224,12 +224,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_etat_noeud</b>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
 <tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
 <tr class="separator:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a48c948791fc7b8b9ef5c8e2f3d7b9675">ecrire_attente_message</a> (FILE *f, int tics[], int taille_tableau, int noeud_emetteur)</td></tr>
-<tr class="memdesc:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les tics dans un fichiers csv passé en paramètre.  <a href="#a48c948791fc7b8b9ef5c8e2f3d7b9675">More...</a><br /></td></tr>
-<tr class="separator:a48c948791fc7b8b9ef5c8e2f3d7b9675"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a795b00ff2f536ff54b0fc05907efb280"><td class="memItemLeft" align="right" valign="top">FILE *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a795b00ff2f536ff54b0fc05907efb280">setup_fichier_attente_message</a> (int tic)</td></tr>
-<tr class="memdesc:a795b00ff2f536ff54b0fc05907efb280"><td class="mdescLeft">&#160;</td><td class="mdescRight">Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé.  <a href="#a795b00ff2f536ff54b0fc05907efb280">More...</a><br /></td></tr>
-<tr class="separator:a795b00ff2f536ff54b0fc05907efb280"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b21ebb07498720f0395cd8db524aebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd">generer_PDF</a> ()</td></tr>
 <tr class="memdesc:a1b21ebb07498720f0395cd8db524aebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a1b21ebb07498720f0395cd8db524aebd">More...</a><br /></td></tr>
 <tr class="separator:a1b21ebb07498720f0395cd8db524aebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -242,9 +236,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2a0d15652276a900eba1357af09bc2b4">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
 <tr class="memdesc:a2a0d15652276a900eba1357af09bc2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a2a0d15652276a900eba1357af09bc2b4">More...</a><br /></td></tr>
 <tr class="separator:a2a0d15652276a900eba1357af09bc2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae01549942dcddb2afbcc22827ed65c30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae01549942dcddb2afbcc22827ed65c30">ecrire_quantile_message</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="memdesc:ae01549942dcddb2afbcc22827ed65c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.  <a href="#ae01549942dcddb2afbcc22827ed65c30">More...</a><br /></td></tr>
-<tr class="separator:ae01549942dcddb2afbcc22827ed65c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ab1ce4057e6b112a9ddce5911dad22ab0">ecrire_repartition_attentes</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="memdesc:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.  <a href="#ab1ce4057e6b112a9ddce5911dad22ab0">More...</a><br /></td></tr>
+<tr class="separator:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9bdb3fbf67285d0d82fe1c1d55062cf7">ecrire_attente_message</a> (double quantiles[], int taille_tableau, int interval)</td></tr>
+<tr class="memdesc:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.  <a href="#a9bdb3fbf67285d0d82fe1c1d55062cf7">More...</a><br /></td></tr>
+<tr class="separator:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -363,21 +360,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a48c948791fc7b8b9ef5c8e2f3d7b9675"></a>
+<a class="anchor" id="a9bdb3fbf67285d0d82fe1c1d55062cf7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void ecrire_attente_message </td>
           <td>(</td>
-          <td class="paramtype">FILE *&#160;</td>
-          <td class="paramname"><em>f</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tics</em>[], </td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>quantiles</em>[], </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -389,7 +380,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>noeud_emetteur</em>&#160;</td>
+          <td class="paramname"><em>interval</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -399,26 +390,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
       </table>
 </div><div class="memdoc">
 
-<p>Ecrit les tics dans un fichiers csv passé en paramètre. </p>
-<p>fn void <a class="el" href="simulation_8h.html#a48c948791fc7b8b9ef5c8e2f3d7b9675" title="Ecrit les tics dans un fichiers csv passé en paramètre. ">ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV. </p>
+<p>fn void ecrire_attente_message(int quantiles[], int taille_tableau) </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*f</td><td>Le fichier csv dans lequelle on ecrit. </td></tr>
-    <tr><td class="paramname">tics</td><td>Les tics à écrire dans le fichier. </td></tr>
-    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des tics. </td></tr>
-    <tr><td class="paramname">noeud_emetteur</td><td>Le noeuds emetteur des tics. </td></tr>
+    <tr><td class="paramname">quantiles[]</td><td>Les quantiles à écrire dans le fichier. </td></tr>
+    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
+    <tr><td class="paramname">interval</td><td>L'interval en nombre de tic entre chaque quantile. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section pre"><dt>Precondition</dt><dd>Le fichier csv doit existé et etre ouvert. </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="ae01549942dcddb2afbcc22827ed65c30"></a>
+<a class="anchor" id="ab1ce4057e6b112a9ddce5911dad22ab0"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ecrire_quantile_message </td>
+          <td class="memname">void ecrire_repartition_attentes </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
           <td class="paramname"><em>td</em></td><td>)</td>
@@ -428,7 +417,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages. </p>
-<p>fn void <a class="el" href="simulation_8h.html#ae01549942dcddb2afbcc22827ed65c30" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages. ">ecrire_quantile_message(TableauDynamique *td)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<p>fn void <a class="el" href="simulation_8h.html#ab1ce4057e6b112a9ddce5911dad22ab0" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages. ">ecrire_repartition_attentes(TableauDynamique *td)</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*td</td><td>Un pointeur vers le tableau dynamique contenant les temps d'attentes. </td></tr>
   </table>
@@ -710,31 +699,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a class="anchor" id="a795b00ff2f536ff54b0fc05907efb280"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">FILE* setup_fichier_attente_message </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau. Si le fichier existe déja, son contenu est éffacé. </p>
-<p>fn FILE* <a class="el" href="simulation_8h.html#a795b00ff2f536ff54b0fc05907efb280" title="Créé et ouvre le fichier csv qui contiendra la liste des temps d&#39;attentes de tout les messages de l&#39;a...">setup_fichier_attente_message()</a> </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tic</td><td>Le nombre de tic de la simulation. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Un pointeur sur le fichier ouvert. </dd></dl>
 
 </div>
 </div>
