@@ -1,4 +1,5 @@
 #include "./File.h"
+#include "./TableauDynamique.h"
 #include <stdio.h>
 
 /*!
@@ -6,11 +7,10 @@
  * \brief Header du fichier principal contenant les fonctions et structures necessaires au main.
  */
 
-
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 1000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 80000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -36,11 +36,6 @@
  * \brief La limite maximale avant un envoi de message depuis un noeud.
  */
 #define LIMITE_NOMBRE_MESSAGE_MAX 80
-
-/*! \def TAILLE_INITIALE_TABLEAU
- * \brief La taille initiale du tableau de la structure TableauDynamique.
- */
-#define TAILLE_INITIALE_TABLEAU 1000
 
 //////////////////////////////////////////////////
 ///////////////// Les structures /////////////////
@@ -92,18 +87,6 @@ struct Slot
 };
 typedef struct Slot Slot;
 
-/*! \struct TableauDynamique
- * \brief Structure représentant tableau de taille dynamique.
- * Un tableau dynamique contient un tableau d'entier, une taille de tableau (dynamique), ainsi qu'une taille de tableau utilisée.
- */
-struct TableauDynamique
-{
-	int taille_tableau;
-	int taille_utilisee;
-	int *tableau;
-};
-typedef struct TableauDynamique TableauDynamique;
-
 //////////////////////////////////////////////////
 ///////////////// Les fonctions /////////////////
 //////////////////////////////////////////////////
@@ -132,26 +115,6 @@ void afficher_noeuds( Noeud *noeuds[] );
  * \param *slots[] Un tableau de pointeur des slots à modifier.
  */
 void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
-
-/*! \fn void initialiser_tableau(TableauDynamique td)
- * \brief Initialise un tableau dynamique.
- * \return TableauDynamique* Un pointeur vers tableau dynamique.
- */
-TableauDynamique* initialiser_tableau_dynamique();
-
-/*! \fn TableauDynamique* ajouter_valeur( TableauDynamique *td, valeur );
- * \brief Ajoute une valeur au tableau dynamique.
- *  La taille du tableau peut etre réallouer si necessaire.
- * \param *td Le tableau auquel on souhaite ajouter la valeur.
- * \param valeur La valeur à ajouter.
- */
-void ajouter_valeur( TableauDynamique *td, int valeur );
-
-/*! \fn void afficher_tableau_dynamique(TableauDynamique *td)
- * \brief Affiche un tableau dynamique.
- * \param *td Un pointeur sur le tableau dynamique à afficher.
- */
-void afficher_tableau_dynamique( TableauDynamique *td );
 
 /*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
  * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.

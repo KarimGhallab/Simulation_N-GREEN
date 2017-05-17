@@ -1,4 +1,5 @@
 compilateur = gcc
+debugger = gdb
 
 CFLAGS = -g -Wall -c -Og
 LFLAGS = -Wall -o
@@ -8,6 +9,9 @@ all: compil clear
 
 pdf: compil clear
 	./resultat -PDF
+
+debug: compil clear
+	$(debugger) ./resultat
 
 memcheck: compil clear
 	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat
@@ -24,10 +28,10 @@ callgrind_pdf: compil clear
 	kcachegrind &
 
 
-compil: hyper_expo.o simulation.o File.o main.o
+compil: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
 	#$(compilateur) $(LFLAGS) resultat hyper_expo.o simulation.o File.o main.o
 	#clear
-	gcc -Wall hyper_expo.c simulation.c File.c main.c -o resultat -g
+	gcc -Wall TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat -g
 
 
 hyper_expo.o: hyper_expo.c
@@ -38,6 +42,9 @@ simulation.o: simulation.c
 
 File.o: File.c
 	$(compilateur) $(CFLAGS) File.c
+
+TableauDynamique.o: TableauDynamique.c
+	$(compilateur) $(CFLAGS) TableauDynamique.c
 
 main.o: main.c
 	$(compilateur) $(CFLAGS) main.c

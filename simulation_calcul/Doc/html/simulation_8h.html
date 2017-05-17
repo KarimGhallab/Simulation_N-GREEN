@@ -98,6 +98,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Header du fichier principal contenant les fonctions et structures necessaires au main.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="File_8h_source.html">./File.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="TableauDynamique_8h_source.html">./TableauDynamique.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
@@ -105,6 +106,7 @@ Include dependency graph for simulation.h:</div>
 <div class="center"><img src="simulation_8h__incl.png" border="0" usemap="#Headers_2simulation_8h" alt=""/></div>
 <map name="Headers_2simulation_8h" id="Headers_2simulation_8h">
 <area shape="rect" id="node2" href="File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="5,80,68,107"/>
+<area shape="rect" id="node3" href="TableauDynamique_8h.html" title="Header du fichier de la strcture de tableau dynamique. " alt="" coords="92,80,245,107"/>
 </map>
 </div>
 </div>
@@ -121,14 +123,11 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSlot.html">Slot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un slot dans l'anneau. Un <a class="el" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. ">Slot</a> est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s'il y en a un.  <a href="structSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structTableauDynamique.html">TableauDynamique</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d'entier, une taille de tableau (dynamique), ainsi qu'une taille de tableau utilisée.  <a href="structTableauDynamique.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;80000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
@@ -150,10 +149,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3afe421e20484e4c8524fcdefdc44783">LIMITE_NOMBRE_MESSAGE_MAX</a>&#160;&#160;&#160;80</td></tr>
 <tr class="memdesc:a3afe421e20484e4c8524fcdefdc44783"><td class="mdescLeft">&#160;</td><td class="mdescRight">La limite maximale avant un envoi de message depuis un noeud. <br /></td></tr>
 <tr class="separator:a3afe421e20484e4c8524fcdefdc44783"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac19385f9370b43821f046a53ebca3076"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac19385f9370b43821f046a53ebca3076"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ac19385f9370b43821f046a53ebca3076">TAILLE_INITIALE_TABLEAU</a>&#160;&#160;&#160;1000</td></tr>
-<tr class="memdesc:ac19385f9370b43821f046a53ebca3076"><td class="mdescLeft">&#160;</td><td class="mdescRight">La taille initiale du tableau de la structure <a class="el" href="structTableauDynamique.html" title="Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d&#39;entier...">TableauDynamique</a>. <br /></td></tr>
-<tr class="separator:ac19385f9370b43821f046a53ebca3076"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -166,9 +161,6 @@ typedef struct <a class="el" href="structNoeud.html">Noeud</a>&#160;</td><td cla
 <tr class="memitem:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53a7732cbcfa53c991fea8e0686ea79b"></a>
 typedef struct <a class="el" href="structSlot.html">Slot</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Slot</b></td></tr>
 <tr class="separator:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a225db2b42fe84d7ad33f569f34faf530"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a225db2b42fe84d7ad33f569f34faf530"></a>
-typedef struct <a class="el" href="structTableauDynamique.html">TableauDynamique</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TableauDynamique</b></td></tr>
-<tr class="separator:a225db2b42fe84d7ad33f569f34faf530"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -184,15 +176,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a22f51bbb69e4da2051a14182902efb61">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:a22f51bbb69e4da2051a14182902efb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a22f51bbb69e4da2051a14182902efb61">More...</a><br /></td></tr>
 <tr class="separator:a22f51bbb69e4da2051a14182902efb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a706bee5134f513e1a7baa333858ec634"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a706bee5134f513e1a7baa333858ec634"></a>
-<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_tableau_dynamique</b> ()</td></tr>
-<tr class="separator:a706bee5134f513e1a7baa333858ec634"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec2a09033fe1247ca9cfeb2b0e0587e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec2a09033fe1247ca9cfeb2b0e0587e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ajouter_valeur</b> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td, int valeur)</td></tr>
-<tr class="separator:aec2a09033fe1247ca9cfeb2b0e0587e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a391333882c7f1fc06b20a189be22a5c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a391333882c7f1fc06b20a189be22a5c6">afficher_tableau_dynamique</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="memdesc:a391333882c7f1fc06b20a189be22a5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche un tableau dynamique.  <a href="#a391333882c7f1fc06b20a189be22a5c6">More...</a><br /></td></tr>
-<tr class="separator:a391333882c7f1fc06b20a189be22a5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a345e4f539d0e69cee4a57f174ba5f8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
 <tr class="separator:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,30 +289,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur qui contiendra les adresses des slots initialisés. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a391333882c7f1fc06b20a189be22a5c6"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void afficher_tableau_dynamique </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
-          <td class="paramname"><em>td</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Affiche un tableau dynamique. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*td</td><td>Un pointeur sur le tableau dynamique à afficher. </td></tr>
   </table>
   </dd>
 </dl>

@@ -84,38 +84,6 @@ void afficher_noeuds( Noeud *noeuds[] )
 	}
 }
 
-TableauDynamique* initialiser_tableau_dynamique()
-{
-	TableauDynamique *td = (TableauDynamique *) malloc( sizeof(TableauDynamique) );
-	td->taille_tableau = TAILLE_INITIALE_TABLEAU;
-	td->tableau = (int *) calloc(TAILLE_INITIALE_TABLEAU, sizeof(int) );
-	td->taille_utilisee = 0;
-	return td;
-}
-
-void afficher_tableau_dynamique( TableauDynamique *td )
-{
-	int taille_utilisee = td->taille_utilisee;
-	int taille_tableau = td->taille_tableau;
-	int i;
-	printf("Taille totale du tableau : %d\n", taille_tableau);
-	printf("Taille utilisée du tableau : %d\n", taille_utilisee);
-	for (i=0; i<taille_tableau; i++)
-		printf("[%d] ", td->tableau[i]);
-	printf("\n\n");
-}
-
-void ajouter_valeur( TableauDynamique *td, int valeur )
-{
-	if (td->taille_utilisee+1 > td->taille_tableau)		//Il faut réallouer l'espace du tableau
-	{
-		td->tableau = (int * ) realloc(td->tableau, (2 * td->taille_tableau) * sizeof(int) );
-		td->taille_tableau = td->taille_tableau * 2;
-	}
-	td->tableau[td->taille_utilisee] = valeur;
-	td->taille_utilisee++;
-}
-
 void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, TableauDynamique *td )
 {
 	Noeud *noeud;	//Le noeud courant
@@ -187,7 +155,8 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 		paquet->messages[i] = messages[i];
 
 		temps_attente_message = tic - paquet->messages[i];
-		ajouter_valeur(td, temps_attente_message);
+		if (td != NULL)
+			ajouter_valeur(td, temps_attente_message);
 
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
@@ -196,8 +165,6 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	}
 	slot->paquet_message = paquet;
 	slot->contient_message = 1;
-
-	/* Ecrit dans un fichier les temps d'attente des messages */
 }
 
 void decaler_messages( Slot *slots[] )
@@ -257,13 +224,17 @@ void liberer_memoire( Slot *slots[], Noeud *noeuds[], TableauDynamique *td )
 	/* Libère la mémoire prise par les noeuds et leurs liste chainees */
 	for (i=0; i<NOMBRE_NOEUD; i++)
 	{
+		free( noeuds[i]->file_messages->messages );
 		free( noeuds[i]->file_messages );
 		free( noeuds[i] );
 	}
 
 	/* Libération de l'espace mémoire pris par le tableau dynamique */
-	free(td->tableau);
-	free(td);
+	if (td != NULL)
+	{
+		free(td->tableau);
+		free(td);
+	}
 }
 
 void fermer_fichier_std()
@@ -441,25 +412,21 @@ void ecrire_repartition_attentes(TableauDynamique *td)
 	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
 
 	int interval = NOMBRE_TIC / 10;
-	printf("Interval ! %d\n", interval);
 	int borne_superieure = interval;
 	int i;
 	int j = 0;
 	double *quantiles = (double *) calloc(10, sizeof(double));
 
-	printf("Génération des quantiles\n");
 	for (i=0; i<td->taille_utilisee; i++)
 	{
 		if (tableau[i] > borne_superieure)
 		{
 			j++;
 			borne_superieure += interval;
-			printf("borne_superieure : %d\n", borne_superieure);
 		}
 		quantiles[j]++;
 	}
 	ecrire_attente_message(quantiles, 10, interval);
-
 }
 
 void ecrire_attente_message(double quantiles[], int taille_tableau, int interval)
@@ -475,9 +442,13 @@ void ecrire_attente_message(double quantiles[], int taille_tableau, int interval
 	int borne_superieure = interval;
 	for (i=0; i<taille_tableau; i++)
 	{
-		//printf("%d : %d\n", borne_inferieure, borne_superieure);
+		if (quantiles[i] == 0)
+			break;
 		fprintf( f, "%d:%d,%lf\n", borne_inferieure, borne_superieure, quantiles[i] );
-		borne_inferieure = borne_superieure;
+		//fprintf( f, "%d,%lf\n", borne_superieure, quantiles[i] );
+		borne_inferieure = borne_superieure+1;
 		borne_superieure += interval;
 	}
+	free(quantiles);
+	fclose(f);
 }

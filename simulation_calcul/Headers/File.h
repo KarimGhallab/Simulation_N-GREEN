@@ -6,16 +6,17 @@
  /*! \def TAILLE_MAX
   * \brief La taille maximale d'un tableau de message pour une File.
   */
-#define TAILLE_MAX 5000000
+#define TAILLE_INITIALE 500000
 
 /*! \struct File
  * \brief Structure représentant une File de message.
  */
 struct File
 {
-	int messages[ TAILLE_MAX ];
+	int *messages;
 	int indice_fin;
 	int indice_debut;
+	double taille;
 };
 typedef struct File File;
 
