@@ -21,10 +21,6 @@ int main ( int argc, char *argv[] )
 	/* Mise en place de la structure des fichiers necessaire à la sauvegarde des données */
 	supprimer_ancien_csv();
 
-	FILE *f = NULL;
-	if (generer_pdf == 1)
-		f = setup_fichier_attente_message(NOMBRE_TIC);
-
 	time_t debut, fin, total;
 	time(&debut);
 
@@ -78,14 +74,12 @@ int main ( int argc, char *argv[] )
 	time(&fin);
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau :  %ld secondes\n", total);
-	afficher_tableau_dynamique(td);
-	ecrire_quantile_message(td);
-	if (f != NULL)
-		fclose(f);
 
 	if (generer_pdf == 1)	//On génére les fichiers CSV restants, on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
 	{
+		printf("Ecriture des fichiers CSV...\n");
 		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
+		ecrire_repartition_attentes(td);
 
 		printf("Libération de la mémoire...\n");
 		liberer_memoire(slots, noeuds, td);
@@ -93,7 +87,7 @@ int main ( int argc, char *argv[] )
 		printf("Génération des fichiers PDF...\n");
 		fermer_fichier_std();
 		generer_PDF();
-		afficher_PDF();
+		//afficher_PDF();
 	}
 	else
 	{

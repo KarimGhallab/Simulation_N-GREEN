@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 10 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 1000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -225,24 +225,6 @@ void ecrire_etat_noeud( Noeud *noeuds[], int tic );
 */
 void afficher_graphique_attente();
 
-/*! fn void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)
-   \brief Ecrit les tics dans un fichiers csv passé en paramètre.
-   \param *f Le fichier csv dans lequelle on ecrit.
-   \param tics Les tics à écrire dans le fichier.
-   \param taille_tableau La taille du tableau des tics.
-   \param noeud_emetteur Le noeuds emetteur des tics.
-   \pre Le fichier csv doit existé et etre ouvert.
-*/
-void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur);
-
-/*! fn FILE* setup_fichier_attente_message()
-   \brief Créé et ouvre le fichier csv qui contiendra la liste des temps d'attentes de tout les messages de l'anneau.
-    Si le fichier existe déja, son contenu est éffacé.
-   \param tic Le nombre de tic de la simulation.
-   \return Un pointeur sur le fichier ouvert.
-*/
-FILE* setup_fichier_attente_message(int tic);
-
 /*! fn void generer_PDF()
    \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV
    \pre la simulation à généré des fichiers CSV.
@@ -267,8 +249,16 @@ void fermer_fichier_std();
  */
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
 
-/*! fn void ecrire_quantile_message(TableauDynamique *td)
+/*! fn void ecrire_repartition_attentes(TableauDynamique *td)
    \brief Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.
    \param *td Un pointeur vers le tableau dynamique contenant les temps d'attentes.
  */
-void ecrire_quantile_message(TableauDynamique *td);
+void ecrire_repartition_attentes(TableauDynamique *td);
+
+/*! fn void ecrire_attente_message(int quantiles[], int taille_tableau)
+   \brief Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.
+   \param quantiles[] Les quantiles à écrire dans le fichier.
+   \param taille_tableau La taille du tableau des quantiles.
+   \param interval L'interval en nombre de tic entre chaque quantile.
+ */
+void ecrire_attente_message(double quantiles[], int taille_tableau, int interval);

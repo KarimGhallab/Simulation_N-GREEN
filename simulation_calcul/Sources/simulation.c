@@ -409,24 +409,6 @@ void afficher_PDF()
 	}
 }
 
-void ecrire_attente_message(FILE *f, int tics[], int taille_tableau, int noeud_emetteur)
-{
-	if (f != NULL)
-	{
-		int i;
-		for (i=0; i<taille_tableau; i++)
-			fprintf(f, "%d,%d\n", noeud_emetteur, tics[i]);
-	}
-}
-
-FILE* setup_fichier_attente_message(int tic)
-{
-	char *nom_fichier = "../CSV/attentes_messages.csv";
-	FILE *f = fopen(nom_fichier, "w");	//Ouvre un fichier, si le fichier existe déjà, son contenu est ecrasé
-	fprintf(f, "Noeud,TIC_attente,%d\n", tic);
-	return f;
-}
-
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement)
 {
 	chargement[0] = '[';
@@ -452,23 +434,18 @@ int cmpfunc (const void * a, const void * b)
    return ( *(int*)a - *(int*)b );
 }
 
-void ecrire_quantile_message(TableauDynamique *td)
+void ecrire_repartition_attentes(TableauDynamique *td)
 {
-	printf("Tableau avant trie\n");
-	afficher_tableau_dynamique(td);
-
 	/* Trie du tableau */
 	int *tableau = td->tableau;
 	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
 
-	printf("Tableau après trie\n");
-	afficher_tableau_dynamique(td);
-
 	int interval = NOMBRE_TIC / 10;
+	printf("Interval ! %d\n", interval);
 	int borne_superieure = interval;
 	int i;
 	int j = 0;
-	int *quantiles = (int *)calloc(10, sizeof(int));
+	double *quantiles = (double *) calloc(10, sizeof(double));
 
 	printf("Génération des quantiles\n");
 	for (i=0; i<td->taille_utilisee; i++)
@@ -477,9 +454,30 @@ void ecrire_quantile_message(TableauDynamique *td)
 		{
 			j++;
 			borne_superieure += interval;
+			printf("borne_superieure : %d\n", borne_superieure);
 		}
 		quantiles[j]++;
 	}
-	for (i=0; i<interval*10; i++)
-		printf("%d ", quantiles[i]);
+	ecrire_attente_message(quantiles, 10, interval);
+
+}
+
+void ecrire_attente_message(double quantiles[], int taille_tableau, int interval)
+{
+	/* Ouverture du fichier */
+	char *chemin_fichier = "../CSV/attentes_messages.csv";
+	FILE *f = fopen(chemin_fichier, "w");
+
+	fprintf(f, "interval,count,%d\n", NOMBRE_TIC);
+
+	int i;
+	int borne_inferieure = 0;
+	int borne_superieure = interval;
+	for (i=0; i<taille_tableau; i++)
+	{
+		//printf("%d : %d\n", borne_inferieure, borne_superieure);
+		fprintf( f, "%d:%d,%lf\n", borne_inferieure, borne_superieure, quantiles[i] );
+		borne_inferieure = borne_superieure;
+		borne_superieure += interval;
+	}
 }

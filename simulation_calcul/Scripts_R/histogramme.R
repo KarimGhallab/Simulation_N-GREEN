@@ -14,13 +14,13 @@ nombre_tic = substring(nombre_tic_str, 2, taille_texte)		#Enleve le 'X' devant l
 
 texte_info = paste("Fait à partir d'une simulation de", nombre_tic)
 texte_info = paste(texte_info, "tics")
+texte_info
 
 titre = "Répartition des temps d'attentes des messages"
 
-ggplot(data=donnees, aes(donnees$TIC_attente)) +
-geom_histogram(aes(fill=..count..)) +
-scale_y_continuous(labels = comma) +
-scale_x_continuous(labels = comma) +
+ggplot(data=donnees, aes(x = donnees$interval, y = donnees$count)) +
+geom_histogram(stat = "identity") +
+scale_y_continuous(labels = comma) +#scale_x_continuous(labels = comma) +
 labs(fill = "Nombre d'occurence", labels = comma) +
 xlab("Nombre de TIC") +
 ylab("Nombre de message") +
