@@ -123,11 +123,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structSlot.html">Slot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un slot dans l'anneau. Un <a class="el" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. ">Slot</a> est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s'il y en a un.  <a href="structSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAnneau.html">Anneau</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant l'anneau de la simulation Il contient des noeuds, des slots, un tableau dynamique de message ainsi qu'un nombre de messages ayant circulé dans l'anneau.  <a href="structAnneau.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;80000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
@@ -161,48 +164,57 @@ typedef struct <a class="el" href="structNoeud.html">Noeud</a>&#160;</td><td cla
 <tr class="memitem:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a53a7732cbcfa53c991fea8e0686ea79b"></a>
 typedef struct <a class="el" href="structSlot.html">Slot</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Slot</b></td></tr>
 <tr class="separator:a53a7732cbcfa53c991fea8e0686ea79b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a994e00ba2e4f4a2800b6dd143da174c5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a994e00ba2e4f4a2800b6dd143da174c5"></a>
+typedef struct <a class="el" href="structAnneau.html">Anneau</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Anneau</b></td></tr>
+<tr class="separator:a994e00ba2e4f4a2800b6dd143da174c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aff241b56dfbedd24ced2b9e9194add47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aff241b56dfbedd24ced2b9e9194add47">initialiser_anneau</a> (int nombre_slot, int nombre_noeud, int generer_pdf)</td></tr>
+<tr class="memdesc:aff241b56dfbedd24ced2b9e9194add47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise un anneau.  <a href="#aff241b56dfbedd24ced2b9e9194add47">More...</a><br /></td></tr>
+<tr class="separator:aff241b56dfbedd24ced2b9e9194add47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f874b6bd3b40c380beefb8c38045313"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313">afficher_etat_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a2f874b6bd3b40c380beefb8c38045313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'état actuel de l'anneau.  <a href="#a2f874b6bd3b40c380beefb8c38045313">More...</a><br /></td></tr>
+<tr class="separator:a2f874b6bd3b40c380beefb8c38045313"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2771c68538aa0146c4e1a01f04d8e8e1">afficher_slots</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
 <tr class="memdesc:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#a2771c68538aa0146c4e1a01f04d8e8e1">More...</a><br /></td></tr>
 <tr class="separator:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a7eb510d814b46b36629cd3aedd2c87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a6a7eb510d814b46b36629cd3aedd2c87">initialiser_slots</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
-<tr class="memdesc:a6a7eb510d814b46b36629cd3aedd2c87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les slots de l'anneau.  <a href="#a6a7eb510d814b46b36629cd3aedd2c87">More...</a><br /></td></tr>
-<tr class="separator:a6a7eb510d814b46b36629cd3aedd2c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9becbc77126f4b88aaa41ba1b8dfcf8f">initialiser_slots</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_slot)</td></tr>
+<tr class="memdesc:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les slots de l'anneau.  <a href="#a9becbc77126f4b88aaa41ba1b8dfcf8f">More...</a><br /></td></tr>
+<tr class="separator:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3dc0d36f4ecc105fdc9967841b5950c9">afficher_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
 <tr class="memdesc:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#a3dc0d36f4ecc105fdc9967841b5950c9">More...</a><br /></td></tr>
 <tr class="separator:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22f51bbb69e4da2051a14182902efb61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a22f51bbb69e4da2051a14182902efb61">initialiser_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
-<tr class="memdesc:a22f51bbb69e4da2051a14182902efb61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a22f51bbb69e4da2051a14182902efb61">More...</a><br /></td></tr>
-<tr class="separator:a22f51bbb69e4da2051a14182902efb61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9a345e4f539d0e69cee4a57f174ba5f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>entrer_messages</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="separator:a9a345e4f539d0e69cee4a57f174ba5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8b9c861bf2ec6cb390ad512c70a7b5da">initialiser_noeuds</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_noeud)</td></tr>
+<tr class="memdesc:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a8b9c861bf2ec6cb390ad512c70a7b5da">More...</a><br /></td></tr>
+<tr class="separator:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
+<tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
+<tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3274e625465e1330068b4b75475ca8fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3274e625465e1330068b4b75475ca8fe">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
 <tr class="memdesc:a3274e625465e1330068b4b75475ca8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a3274e625465e1330068b4b75475ca8fe">More...</a><br /></td></tr>
 <tr class="separator:a3274e625465e1330068b4b75475ca8fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa235047801949844b4fccda141537d6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa235047801949844b4fccda141537d6c">decaler_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
-<tr class="memdesc:aa235047801949844b4fccda141537d6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).  <a href="#aa235047801949844b4fccda141537d6c">More...</a><br /></td></tr>
-<tr class="separator:aa235047801949844b4fccda141537d6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#acde6cacdd5b5dbb0ec9f142fec20c787">sortir_messages</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
-<tr class="memdesc:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.  <a href="#acde6cacdd5b5dbb0ec9f142fec20c787">More...</a><br /></td></tr>
-<tr class="separator:acde6cacdd5b5dbb0ec9f142fec20c787"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae20f06af19598e7cb21bcc90fe54a732"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae20f06af19598e7cb21bcc90fe54a732"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>liberer_memoire</b> (<a class="el" href="structSlot.html">Slot</a> *slots[], <a class="el" href="structNoeud.html">Noeud</a> *noeuds[], <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="separator:ae20f06af19598e7cb21bcc90fe54a732"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a855dd0aff229849ec157ff7c1d66c1d4">get_temps_attente_max</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
-<tr class="memdesc:a855dd0aff229849ec157ff7c1d66c1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.  <a href="#a855dd0aff229849ec157ff7c1d66c1d4">More...</a><br /></td></tr>
-<tr class="separator:a855dd0aff229849ec157ff7c1d66c1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a515032b7ce967dd7ea5c84e67ffceaff">get_temps_attente_moyen</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], double resultats[])</td></tr>
-<tr class="memdesc:a515032b7ce967dd7ea5c84e67ffceaff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.  <a href="#a515032b7ce967dd7ea5c84e67ffceaff">More...</a><br /></td></tr>
-<tr class="separator:a515032b7ce967dd7ea5c84e67ffceaff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31b6056bb885b856013e2843c6d549be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a31b6056bb885b856013e2843c6d549be">decaler_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a31b6056bb885b856013e2843c6d549be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).  <a href="#a31b6056bb885b856013e2843c6d549be">More...</a><br /></td></tr>
+<tr class="separator:a31b6056bb885b856013e2843c6d549be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c6fefd98f5cb5e352cb3e63293a35a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9c6fefd98f5cb5e352cb3e63293a35a3">sortir_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a9c6fefd98f5cb5e352cb3e63293a35a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait sortir des slots de l'anneau les paquets de message lorsqu'ils sont en face de leur noeud emetteur.  <a href="#a9c6fefd98f5cb5e352cb3e63293a35a3">More...</a><br /></td></tr>
+<tr class="separator:a9c6fefd98f5cb5e352cb3e63293a35a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82288ea32787d0bd08be92f7942ee914"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a82288ea32787d0bd08be92f7942ee914">liberer_memoire_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a82288ea32787d0bd08be92f7942ee914"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère la mémoire prise par un anneau.  <a href="#a82288ea32787d0bd08be92f7942ee914">More...</a><br /></td></tr>
+<tr class="separator:a82288ea32787d0bd08be92f7942ee914"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a0d0a0bc0ddb8721ba513b6be3f8d6c01">get_temps_attente_max</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double resultats[])</td></tr>
+<tr class="memdesc:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau.  <a href="#a0d0a0bc0ddb8721ba513b6be3f8d6c01">More...</a><br /></td></tr>
+<tr class="separator:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7169f781aeff6f1900d60edda5879f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad7169f781aeff6f1900d60edda5879f1">get_temps_attente_moyen</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double resultats[])</td></tr>
+<tr class="memdesc:ad7169f781aeff6f1900d60edda5879f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau.  <a href="#ad7169f781aeff6f1900d60edda5879f1">More...</a><br /></td></tr>
+<tr class="separator:ad7169f781aeff6f1900d60edda5879f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
 <tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet.  <a href="#ae7fe52eac0ad0cea2ca8cff602a81b1f">More...</a><br /></td></tr>
 <tr class="separator:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac47b78397e31a5a7f4e1cb2ca9a7f6f9"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_etat_noeud</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[], int tic)</td></tr>
-<tr class="separator:ac47b78397e31a5a7f4e1cb2ca9a7f6f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af9926b9f58eb1c746724bc6e8fa5d05c">ecrire_etat_noeud</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
+<tr class="memdesc:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau.  <a href="#af9926b9f58eb1c746724bc6e8fa5d05c">More...</a><br /></td></tr>
+<tr class="separator:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18cbdb1fa67d4ff01a703e9f1e4d27a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
 <tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
@@ -219,9 +231,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2a0d15652276a900eba1357af09bc2b4">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
 <tr class="memdesc:a2a0d15652276a900eba1357af09bc2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a2a0d15652276a900eba1357af09bc2b4">More...</a><br /></td></tr>
 <tr class="separator:a2a0d15652276a900eba1357af09bc2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ab1ce4057e6b112a9ddce5911dad22ab0">ecrire_repartition_attentes</a> (<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="memdesc:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.  <a href="#ab1ce4057e6b112a9ddce5911dad22ab0">More...</a><br /></td></tr>
-<tr class="separator:ab1ce4057e6b112a9ddce5911dad22ab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae95f07afb664b1fcc0df38e6ae08c8de">ecrire_repartition_attentes</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau.  <a href="#ae95f07afb664b1fcc0df38e6ae08c8de">More...</a><br /></td></tr>
+<tr class="separator:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9bdb3fbf67285d0d82fe1c1d55062cf7">ecrire_attente_message</a> (double quantiles[], int taille_tableau, int interval)</td></tr>
 <tr class="memdesc:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.  <a href="#a9bdb3fbf67285d0d82fe1c1d55062cf7">More...</a><br /></td></tr>
 <tr class="separator:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,6 +241,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="a2f874b6bd3b40c380beefb8c38045313"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void afficher_etat_anneau </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Affiche l'état actuel de l'anneau. </p>
+<p>fn void <a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313" title="Affiche l&#39;état actuel de l&#39;anneau. ">afficher_etat_anneau(Anneau *anneau)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau à afficher. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a3dc0d36f4ecc105fdc9967841b5950c9"></a>
 <div class="memitem">
 <div class="memproto">
@@ -295,24 +331,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="aa235047801949844b4fccda141537d6c"></a>
+<a class="anchor" id="a31b6056bb885b856013e2843c6d549be"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void decaler_messages </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche). </p>
+<p>Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Le tableau de pointeur sur les slots pour lequelles on décale les messages. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on souhaite décaler les messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -361,24 +397,94 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="ab1ce4057e6b112a9ddce5911dad22ab0"></a>
+<a class="anchor" id="af9926b9f58eb1c746724bc6e8fa5d05c"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_etat_noeud </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite écrire les temps d'attentes. </td></tr>
+    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ae95f07afb664b1fcc0df38e6ae08c8de"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void ecrire_repartition_attentes </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
-          <td class="paramname"><em>td</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages. </p>
-<p>fn void <a class="el" href="simulation_8h.html#ab1ce4057e6b112a9ddce5911dad22ab0" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages. ">ecrire_repartition_attentes(TableauDynamique *td)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau. </p>
+<p>fn void <a class="el" href="simulation_8h.html#ae95f07afb664b1fcc0df38e6ae08c8de" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages de l&#39;anneau. ">ecrire_repartition_attentes(Anneau *anneau)</a> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*td</td><td>Un pointeur vers le tableau dynamique contenant les temps d'attentes. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a8d67e657bbfd76bb6253965e4db4c8fa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void entrer_messages </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau dans lequel on fait entrer les messages. </td></tr>
+    <tr><td class="paramname">tic</td><td>Le tic d'entrée des messages. </td></tr>
   </table>
   </dd>
 </dl>
@@ -421,15 +527,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a855dd0aff229849ec157ff7c1d66c1d4"></a>
+<a class="anchor" id="a0d0a0bc0ddb8721ba513b6be3f8d6c01"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void get_temps_attente_max </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[], </td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -445,10 +551,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
       </table>
 </div><div class="memdoc">
 
-<p>Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds. </p>
+<p>Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
     <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes maximums. </td></tr>
   </table>
   </dd>
@@ -456,15 +562,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a515032b7ce967dd7ea5c84e67ffceaff"></a>
+<a class="anchor" id="ad7169f781aeff6f1900d60edda5879f1"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void get_temps_attente_moyen </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[], </td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -480,14 +586,57 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
       </table>
 </div><div class="memdoc">
 
-<p>Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds. </p>
+<p>Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Les noeuds de l'anneau. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
     <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes moyens. </td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="aff241b56dfbedd24ced2b9e9194add47"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void initialiser_anneau </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_slot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>generer_pdf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise un anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nombre_slot</td><td>Le nombre de slot de la simulation. </td></tr>
+    <tr><td class="paramname">nombre_noeud</td><td>Le nombre de noeud de la simulation. </td></tr>
+    <tr><td class="paramname">generer_pdf</td><td>Booléen indiquant la génération ou non-génération de PDF en fin de simulation. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Un pointeur sur l'anneau créé. </dd></dl>
 
 </div>
 </div>
@@ -532,21 +681,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a22f51bbb69e4da2051a14182902efb61"></a>
+<a class="anchor" id="a8b9c861bf2ec6cb390ad512c70a7b5da"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void initialiser_noeuds </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[], </td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[]&#160;</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_noeud</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -559,24 +708,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Initialise les noeuds de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur des noeuds à initialiser. </td></tr>
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur des slots à modifier. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau qui contiendra les noeuds </td></tr>
+    <tr><td class="paramname">nombre_noeud</td><td>Le nombre de noeud à initialiser. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a6a7eb510d814b46b36629cd3aedd2c87"></a>
+<a class="anchor" id="a9becbc77126f4b88aaa41ba1b8dfcf8f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void initialiser_slots </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_slot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -584,7 +743,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Initialise les slots de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur des slots à afficher. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau qui contiendra les slots. </td></tr>
+    <tr><td class="paramname">nombre_slot</td><td>Le nombre de slot à initialiser. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a82288ea32787d0bd08be92f7942ee914"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void liberer_memoire_anneau </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Libère la mémoire prise par un anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau à libérer. </td></tr>
   </table>
   </dd>
 </dl>
@@ -661,24 +845,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="acde6cacdd5b5dbb0ec9f142fec20c787"></a>
+<a class="anchor" id="a9c6fefd98f5cb5e352cb3e63293a35a3"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void sortir_messages </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur. </p>
+<p>Fait sortir des slots de l'anneau les paquets de message lorsqu'ils sont en face de leur noeud emetteur. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Le tableau de pointeur sur les slots. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on souhaite sortir les messages. </td></tr>
   </table>
   </dd>
 </dl>

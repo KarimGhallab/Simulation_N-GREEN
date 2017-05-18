@@ -147,7 +147,7 @@ void afficher_noeuds( Noeud *noeuds[] );
  */
 void initialiser_noeuds( Anneau *anneau, int nombre_noeud );
 
-/*! \fn void entrer_messages( Anneau *anneau )
+/*! \fn void entrer_messages( Anneau *anneau, int tic )
  * \brief Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.
  * \param *anneau L'anneau dans lequel on fait entrer les messages.
  * \param tic Le tic d'entrée des messages.
