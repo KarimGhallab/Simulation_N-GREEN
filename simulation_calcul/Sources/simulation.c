@@ -490,11 +490,13 @@ void ecrire_repartition_attentes(Anneau *anneau)
 	int *tableau = td->tableau;
 	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
 
-	int interval = NOMBRE_TIC / 10;
+	int nombre_valeur = 10;
+
+	int interval = NOMBRE_TIC / nombre_valeur;
 	int borne_superieure = interval;
 	int i;
 	int j = 0;
-	double *quantiles = (double *) calloc(10, sizeof(double));
+	double *quantiles = (double *) calloc(nombre_valeur, sizeof(double));
 
 	for (i=0; i<td->taille_utilisee; i++)
 	{
@@ -505,7 +507,7 @@ void ecrire_repartition_attentes(Anneau *anneau)
 		}
 		quantiles[j]++;
 	}
-	ecrire_attente_message(quantiles, 10, interval);
+	ecrire_attente_message(quantiles, nombre_valeur, interval);
 }
 
 void ecrire_attente_message(double quantiles[], int taille_tableau, int interval)
@@ -524,7 +526,6 @@ void ecrire_attente_message(double quantiles[], int taille_tableau, int interval
 		if (quantiles[i] == 0)
 			break;
 		fprintf( f, "%d:%d,%lf\n", borne_inferieure, borne_superieure, quantiles[i] );
-		//fprintf( f, "%d,%lf\n", borne_superieure, quantiles[i] );
 		borne_inferieure = borne_superieure+1;
 		borne_superieure += interval;
 	}

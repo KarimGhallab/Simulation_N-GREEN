@@ -26,7 +26,7 @@ titre = "Répartition des temps d'attentes des messages"
 donnees$interval
 ggplot(data=donnees, aes(x = donnees$interval, y = donnees$count)) +
 geom_histogram(stat = "identity",col="red", fill="green", alpha = .2 ) +
-theme(axis.text=element_text(size=6), axis.title=element_text(size=12,face="bold")) +
+theme(axis.text=element_text(size=5), axis.title=element_text(size=12,face="bold")) +
 scale_y_continuous(labels = comma, name = "Nombre de message") +
 scale_x_discrete(name = "Nombre de TIC") +
 labs(caption = texte_info) +
