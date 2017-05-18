@@ -11,16 +11,6 @@
  */
 #define NOMBRE_TIC 100000
 
-/*! \def NOMBRE_SLOT
-    \brief Indique le nombre de slot de l'anneau.
- */
-#define NOMBRE_SLOT 25
-
-/*! \def NOMBRE_NOEUDS
-    \brief Indique le nombre de noeud de l'anneau.
- */
-#define NOMBRE_NOEUD 10
-
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
  */
@@ -120,11 +110,11 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
  */
 void afficher_etat_anneau(Anneau *anneau);
 
-/*! \fn void afficher_slots( Slot *slots[] )
-    \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
-    \param *slots[] Un tableau de pointeur qui contiendra les adresses des slots initialisés.
+/*! \fn void afficher_slots( Anneau *anneau )
+    \brief Affiche les slots de l'anneau.
+    \param *anneau L'anneau pour lequel on souhaite afficher les slots.
  */
-void afficher_slots( Slot *slots[] );
+void afficher_slots( Anneau *anneau );
 
 /*! \fn void initialiser_slots( Anneau *anneau, int nombre_slot );
     \brief Initialise les slots de l'anneau.
@@ -133,11 +123,11 @@ void afficher_slots( Slot *slots[] );
  */
 void initialiser_slots( Anneau *anneau, int nombre_slot );
 
-/*! \fn void afficher_noeuds( Noeud *noeuds[] )
-    \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
-    \param *noeuds[] Un tableau de pointeur qui contiendra les adresses des slots initialisés.
+/*! \fn void afficher_noeuds( Anneau *anneau )
+	\brief Affiche les noeuds de l'anneau.
+	\param *anneau L'anneau pour lequel on souhaite afficher les noeuds.
  */
-void afficher_noeuds( Noeud *noeuds[] );
+void afficher_noeuds( Anneau *anneau );
 
 /*! \fn void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
     \brief Initialise les noeuds de l'anneau.

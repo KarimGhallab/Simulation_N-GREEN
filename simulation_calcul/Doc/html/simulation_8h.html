@@ -133,13 +133,6 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3eae939bfa01e60b044095ff3ff7bbc4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3eae939bfa01e60b044095ff3ff7bbc4">NOMBRE_SLOT</a>&#160;&#160;&#160;25</td></tr>
-<tr class="memdesc:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique le nombre de slot de l'anneau. <br /></td></tr>
-<tr class="separator:a3eae939bfa01e60b044095ff3ff7bbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9c5c87ea2b279e31b47b9c36ea28411e"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NOMBRE_NOEUD</b>&#160;&#160;&#160;10</td></tr>
-<tr class="separator:a9c5c87ea2b279e31b47b9c36ea28411e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3a92c0c3d4878d475633f969fe0b8ca9">PERIODE_MESSAGE_ANTENNE</a>&#160;&#160;&#160;100</td></tr>
 <tr class="memdesc:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique la période selon laquelle les antennes enverront des messages aux noeuds. <br /></td></tr>
@@ -176,15 +169,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a2f874b6bd3b40c380beefb8c38045313"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313">afficher_etat_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a2f874b6bd3b40c380beefb8c38045313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'état actuel de l'anneau.  <a href="#a2f874b6bd3b40c380beefb8c38045313">More...</a><br /></td></tr>
 <tr class="separator:a2f874b6bd3b40c380beefb8c38045313"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2771c68538aa0146c4e1a01f04d8e8e1">afficher_slots</a> (<a class="el" href="structSlot.html">Slot</a> *slots[])</td></tr>
-<tr class="memdesc:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#a2771c68538aa0146c4e1a01f04d8e8e1">More...</a><br /></td></tr>
-<tr class="separator:a2771c68538aa0146c4e1a01f04d8e8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e17fdea3a85c6e772e7bdf68cdfed56"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2e17fdea3a85c6e772e7bdf68cdfed56">afficher_slots</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a2e17fdea3a85c6e772e7bdf68cdfed56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les slots de l'anneau.  <a href="#a2e17fdea3a85c6e772e7bdf68cdfed56">More...</a><br /></td></tr>
+<tr class="separator:a2e17fdea3a85c6e772e7bdf68cdfed56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9becbc77126f4b88aaa41ba1b8dfcf8f">initialiser_slots</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_slot)</td></tr>
 <tr class="memdesc:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les slots de l'anneau.  <a href="#a9becbc77126f4b88aaa41ba1b8dfcf8f">More...</a><br /></td></tr>
 <tr class="separator:a9becbc77126f4b88aaa41ba1b8dfcf8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3dc0d36f4ecc105fdc9967841b5950c9">afficher_noeuds</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeuds[])</td></tr>
-<tr class="memdesc:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.  <a href="#a3dc0d36f4ecc105fdc9967841b5950c9">More...</a><br /></td></tr>
-<tr class="separator:a3dc0d36f4ecc105fdc9967841b5950c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5404404e7fea824543c026995a06d79a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a5404404e7fea824543c026995a06d79a">afficher_noeuds</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a5404404e7fea824543c026995a06d79a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche les noeuds de l'anneau.  <a href="#a5404404e7fea824543c026995a06d79a">More...</a><br /></td></tr>
+<tr class="separator:a5404404e7fea824543c026995a06d79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8b9c861bf2ec6cb390ad512c70a7b5da">initialiser_noeuds</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_noeud)</td></tr>
 <tr class="memdesc:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a8b9c861bf2ec6cb390ad512c70a7b5da">More...</a><br /></td></tr>
 <tr class="separator:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,24 +259,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 
 </div>
 </div>
-<a class="anchor" id="a3dc0d36f4ecc105fdc9967841b5950c9"></a>
+<a class="anchor" id="a5404404e7fea824543c026995a06d79a"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void afficher_noeuds </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeuds</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots. </p>
+<p>Affiche les noeuds de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*noeuds[]</td><td>Un tableau de pointeur qui contiendra les adresses des slots initialisés. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite afficher les noeuds. </td></tr>
   </table>
   </dd>
 </dl>
@@ -308,24 +301,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 
 </div>
 </div>
-<a class="anchor" id="a2771c68538aa0146c4e1a01f04d8e8e1"></a>
+<a class="anchor" id="a2e17fdea3a85c6e772e7bdf68cdfed56"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void afficher_slots </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slots</em>[]</td><td>)</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots. </p>
+<p>Affiche les slots de l'anneau. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*slots[]</td><td>Un tableau de pointeur qui contiendra les adresses des slots initialisés. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite afficher les slots. </td></tr>
   </table>
   </dd>
 </dl>
