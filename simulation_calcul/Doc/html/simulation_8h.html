@@ -124,7 +124,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un slot dans l'anneau. Un <a class="el" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. ">Slot</a> est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s'il y en a un.  <a href="structSlot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structAnneau.html">Anneau</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant l'anneau de la simulation Il contient des noeuds, des slots, un tableau dynamique de message ainsi qu'un nombre de messages ayant circulé dans l'anneau.  <a href="structAnneau.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un anneau de la simulation Il contient des noeuds, des slots, un tableau dynamique de message ainsi qu'un nombre de messages ayant circulé dans l'anneau.  <a href="structAnneau.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -191,8 +191,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3274e625465e1330068b4b75475ca8fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3274e625465e1330068b4b75475ca8fe">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="memdesc:a3274e625465e1330068b4b75475ca8fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a3274e625465e1330068b4b75475ca8fe">More...</a><br /></td></tr>
+<tr class="memitem:a3274e625465e1330068b4b75475ca8fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3274e625465e1330068b4b75475ca8fe"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
 <tr class="separator:a3274e625465e1330068b4b75475ca8fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31b6056bb885b856013e2843c6d549be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a31b6056bb885b856013e2843c6d549be">decaler_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a31b6056bb885b856013e2843c6d549be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).  <a href="#a31b6056bb885b856013e2843c6d549be">More...</a><br /></td></tr>
@@ -209,8 +209,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad7169f781aeff6f1900d60edda5879f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad7169f781aeff6f1900d60edda5879f1">get_temps_attente_moyen</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double resultats[])</td></tr>
 <tr class="memdesc:ad7169f781aeff6f1900d60edda5879f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau.  <a href="#ad7169f781aeff6f1900d60edda5879f1">More...</a><br /></td></tr>
 <tr class="separator:ad7169f781aeff6f1900d60edda5879f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
-<tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet.  <a href="#ae7fe52eac0ad0cea2ca8cff602a81b1f">More...</a><br /></td></tr>
+<tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7fe52eac0ad0cea2ca8cff602a81b1f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
+<tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet. <br /></td></tr>
 <tr class="separator:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af9926b9f58eb1c746724bc6e8fa5d05c">ecrire_etat_noeud</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau.  <a href="#af9926b9f58eb1c746724bc6e8fa5d05c">More...</a><br /></td></tr>
@@ -219,23 +220,23 @@ Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
 <tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
 <tr class="separator:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b21ebb07498720f0395cd8db524aebd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd">generer_PDF</a> ()</td></tr>
-<tr class="memdesc:a1b21ebb07498720f0395cd8db524aebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a1b21ebb07498720f0395cd8db524aebd">More...</a><br /></td></tr>
-<tr class="separator:a1b21ebb07498720f0395cd8db524aebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13efb593322c36c90914cebce13f12f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a13efb593322c36c90914cebce13f12f1">afficher_PDF</a> ()</td></tr>
-<tr class="memdesc:a13efb593322c36c90914cebce13f12f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance le programme evince avec les fichiers PDF générés durant la simulation.  <a href="#a13efb593322c36c90914cebce13f12f1">More...</a><br /></td></tr>
-<tr class="separator:a13efb593322c36c90914cebce13f12f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8aaa907e94e5c4d11296e1da8ec51a80">generer_PDF</a> ()</td></tr>
+<tr class="memdesc:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a8aaa907e94e5c4d11296e1da8ec51a80">More...</a><br /></td></tr>
+<tr class="separator:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8de259e17277266238c08a6771cca036"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8de259e17277266238c08a6771cca036">afficher_PDF</a> ()</td></tr>
+<tr class="memdesc:a8de259e17277266238c08a6771cca036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance le programme evince avec les fichiers PDF générés durant la simulation.  <a href="#a8de259e17277266238c08a6771cca036">More...</a><br /></td></tr>
+<tr class="separator:a8de259e17277266238c08a6771cca036"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a865cbfe3373c1d77e686b13e8965efa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8">fermer_fichier_std</a> ()</td></tr>
 <tr class="memdesc:a865cbfe3373c1d77e686b13e8965efa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ferme les fichiers stdin, stdout et stderr.  <a href="#a865cbfe3373c1d77e686b13e8965efa8">More...</a><br /></td></tr>
 <tr class="separator:a865cbfe3373c1d77e686b13e8965efa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2a0d15652276a900eba1357af09bc2b4">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
-<tr class="memdesc:a2a0d15652276a900eba1357af09bc2b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a2a0d15652276a900eba1357af09bc2b4">More...</a><br /></td></tr>
+<tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a0d15652276a900eba1357af09bc2b4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_barre_chargement</b> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
 <tr class="separator:a2a0d15652276a900eba1357af09bc2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae95f07afb664b1fcc0df38e6ae08c8de">ecrire_repartition_attentes</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau.  <a href="#ae95f07afb664b1fcc0df38e6ae08c8de">More...</a><br /></td></tr>
 <tr class="separator:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9bdb3fbf67285d0d82fe1c1d55062cf7">ecrire_attente_message</a> (double quantiles[], int taille_tableau, int interval)</td></tr>
-<tr class="memdesc:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.  <a href="#a9bdb3fbf67285d0d82fe1c1d55062cf7">More...</a><br /></td></tr>
+<tr class="memitem:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9bdb3fbf67285d0d82fe1c1d55062cf7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_message</b> (double quantiles[], int taille_tableau, int interval)</td></tr>
 <tr class="separator:a9bdb3fbf67285d0d82fe1c1d55062cf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -256,7 +257,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Affiche l'état actuel de l'anneau. </p>
-<p>fn void <a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313" title="Affiche l&#39;état actuel de l&#39;anneau. ">afficher_etat_anneau(Anneau *anneau)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau à afficher. </td></tr>
   </table>
@@ -289,12 +290,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a13efb593322c36c90914cebce13f12f1"></a>
+<a class="anchor" id="a8de259e17277266238c08a6771cca036"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void afficher_PDF </td>
+          <td class="memname">int afficher_PDF </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -303,7 +304,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Lance le programme evince avec les fichiers PDF générés durant la simulation. </p>
-<p>fn void <a class="el" href="simulation_8h.html#a13efb593322c36c90914cebce13f12f1" title="Lance le programme evince avec les fichiers PDF générés durant la simulation. ">afficher_PDF()</a> </p><dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
 
 </div>
 </div>
@@ -349,48 +350,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on souhaite décaler les messages. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a9bdb3fbf67285d0d82fe1c1d55062cf7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ecrire_attente_message </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>quantiles</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>taille_tableau</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>interval</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV. </p>
-<p>fn void ecrire_attente_message(int quantiles[], int taille_tableau) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">quantiles[]</td><td>Les quantiles à écrire dans le fichier. </td></tr>
-    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
-    <tr><td class="paramname">interval</td><td>L'interval en nombre de tic entre chaque quantile. </td></tr>
   </table>
   </dd>
 </dl>
@@ -447,7 +406,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau. </p>
-<p>fn void <a class="el" href="simulation_8h.html#ae95f07afb664b1fcc0df38e6ae08c8de" title="Ecrit un fichier CSV avec les quantiles des temps d&#39;attentes des messages de l&#39;anneau. ">ecrire_repartition_attentes(Anneau *anneau)</a> </p><dl class="params"><dt>Parameters</dt><dd>
+<dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
   </table>
@@ -505,16 +464,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Ferme les fichiers stdin, stdout et stderr. </p>
-<p>fn void <a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8" title="Ferme les fichiers stdin, stdout et stderr. ">fermer_fichier_std()</a> </p>
+<dl class="section return"><dt>Returns</dt><dd>-1 S'il y aune erreur ors de l'appel à la fonction system(), 0 sinon </dd></dl>
 
 </div>
 </div>
-<a class="anchor" id="a1b21ebb07498720f0395cd8db524aebd"></a>
+<a class="anchor" id="a8aaa907e94e5c4d11296e1da8ec51a80"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void generer_PDF </td>
+          <td class="memname">int generer_PDF </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -523,7 +482,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 </div><div class="memdoc">
 
 <p>Lance les scripts R afin de générer les PDF à partir des fichiers CSV. </p>
-<p>fn void <a class="el" href="simulation_8h.html#a1b21ebb07498720f0395cd8db524aebd" title="Lance les scripts R afin de générer les PDF à partir des fichiers CSV. ">generer_PDF()</a> </p><dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>-1 S'il y aune erreur ors de l'appel à la fonction system(), 0 sinon </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
 
 </div>
 </div>
@@ -640,47 +600,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a2a0d15652276a900eba1357af09bc2b4"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void initialiser_barre_chargement </td>
-          <td>(</td>
-          <td class="paramtype">char *&#160;</td>
-          <td class="paramname"><em>chargement</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>taille_tableau</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_chargement</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation. </p>
-<p>fn void initialiser_barre_chargement(char *chargement, int taille_tableau) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*chargement</td><td>La chaine de caractères à initialiser. </td></tr>
-    <tr><td class="paramname">nombre_chargement</td><td>Le nombre de caractère à mettre dans la chaine. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a8b9c861bf2ec6cb390ad512c70a7b5da"></a>
 <div class="memitem">
 <div class="memproto">
@@ -775,76 +694,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a3274e625465e1330068b4b75475ca8fe"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void placer_message </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeud</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>indice_noeud_emetteur</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>messages</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
-          <td class="paramname"><em>td</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
-<p>void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic ) </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
-    <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
-    <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
-    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
-    <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
-    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
-    <tr><td class="paramname">*f</td><td>Le fichier ou ecrire les temps d'attentes des messages. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a9c6fefd98f5cb5e352cb3e63293a35a3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -866,24 +715,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a class="anchor" id="ae7fe52eac0ad0cea2ca8cff602a81b1f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void supprimer_ancien_csv </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Supprime les fichiers present dans le répertoire des fichiers csv du projet. </p>
-<p>fn void <a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f" title="Supprime les fichiers present dans le répertoire des fichiers csv du projet. ">supprimer_ancien_csv()</a> </p>
 
 </div>
 </div>

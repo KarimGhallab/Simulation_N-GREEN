@@ -380,8 +380,9 @@ void ecrire_etat_noeud( Anneau *anneau, int tic )
 	numero_fichier++;
 }
 
-void generer_PDF()
+int generer_PDF()
 {
+	int erreur = 0;
 	DIR *repertoire;
 	struct dirent *dir;
 
@@ -402,15 +403,18 @@ void generer_PDF()
 				strcat(commande, " > /tmp/out.txt");
 
 				/* La commande est prête ! On peut l'exécuter ! */
-				system(commande);
+				if (system(commande) == -1)
+					erreur = 1;
 			}
 		}
 		closedir(repertoire);
 	}
+	return erreur;
 }
 
-void afficher_PDF()
+int afficher_PDF()
 {
+	int erreur = 0;
 	DIR *repertoire;
 	struct dirent *dir;
 
@@ -431,11 +435,13 @@ void afficher_PDF()
 				strcat(commande, " &");
 
 				/* La commande est prête ! On peut l'exécuter ! */
-				system(commande);
+				if (system(commande) == -1)
+					erreur = 1;
 			}
 		}
 		closedir(repertoire);
 	}
+	return erreur;
 }
 
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement)
