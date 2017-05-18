@@ -8,18 +8,17 @@ int main ( int argc, char *argv[] )
 {
 	/* Gestion de la génération ou de la non-génération du PDF */
 	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "-pdf") == 0 ) || ( strcmp(argv[1], "-PDF") == 0 ) ) );
+	int nombre_slot = 25; int nombre_noeud = 10;
+	/* Initialisation de l'anneau */
+	Anneau *anneau = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
 
 	/* Affichage des paramètres de la simulation */
 	printf("\n");
 	printf("Nombre de TIC de la simulation : %d.\n", NOMBRE_TIC);
-	printf("Nombre de slot de l'anneau : %d.\n", NOMBRE_SLOT);
-	printf("Nombre de noeud de l'anneau : %d.\n", NOMBRE_NOEUD);
-	TableauDynamique *td = NULL;
+	printf("Nombre de slot de l'anneau : %d.\n", nombre_slot);
+	printf("Nombre de noeud de l'anneau : %d.\n", nombre_noeud);
 	if (generer_pdf == 1)
-	{
 		printf("Generation des PDFs : Oui.\n\n");
-		td = initialiser_tableau_dynamique();
-	}
 	else
 		printf("Generation des PDFs : Non.\n\n");
 
@@ -31,65 +30,59 @@ int main ( int argc, char *argv[] )
 
 	int nombre_tic_restant = NOMBRE_TIC;
 
-	/* Initialisation des slots et noeuds de l'anneau. */
-	Slot *slots[ NOMBRE_SLOT ];
-	Noeud *noeuds[ NOMBRE_NOEUD ];
-	initialiser_slots(slots);
-	initialiser_noeuds(noeuds, slots);
-
 	/*printf("Etat initial des slots\n");
-	afficher_slots(slots);
+	afficher_slots(anneau->slots);
 
 
 	printf("Etat initial des noeuds\n");
-	afficher_noeuds(noeuds);*/
+	afficher_noeuds(anneau->noeuds);*/
 
 	int saut_interval = 40;
 	int interval = nombre_tic_restant / saut_interval;
 	int cmp = 1;
 	int pourcentage;
+
+	printf("\n");
 	while (nombre_tic_restant > 0)
 	{
 		/* Gestion de la barre de chargement */
 		if (nombre_tic_restant % interval == 0)
 		{
-			//printf("Entré dans la zone de chargement\n");
 			char chargement[ saut_interval +3 ];
 			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
 			pourcentage = (cmp / (float) saut_interval) *100;
 			printf("\r%s %d%%", chargement, pourcentage);
 			fflush(stdout);
 			cmp++;
-			//printf("\n");
-			//printf("Sortie de la zone de chargement\n");
 		}
-		entrer_messages( slots, noeuds, NOMBRE_TIC - nombre_tic_restant, td );
-		decaler_messages(slots);
-		sortir_messages(slots);
+		entrer_messages( anneau, NOMBRE_TIC - nombre_tic_restant );
+		decaler_messages( anneau );
+		sortir_messages( anneau );
 
 		/*afficher_noeuds(noeuds);
 		printf("\n\n");
 
 		afficher_slots(slots);
-		printf("\n\n");
-
-		printf("\n############################\n");*/
+		printf("\n\n");*/
 
 		nombre_tic_restant--;
 	}
-	printf("\n\n");
+	printf("\n\n\n");
 	time(&fin);
 	total = ( fin - debut );
 	printf("Temps total pris pour la rotation totale de l'anneau : %ld secondes.\n", total);
 
-	if (generer_pdf == 1)	//On génére les fichiers CSV restants, on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
+	afficher_etat_anneau(anneau);
+
+	/* Gestion de la création ou non-création des CSVs et PDFs */
+	if (generer_pdf == 1)	//On génére les fichiers CSVs on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
 	{
 		printf("Ecriture des fichiers CSV...\n");
-		ecrire_etat_noeud(noeuds, NOMBRE_TIC - nombre_tic_restant);
-		ecrire_repartition_attentes(td);
+		ecrire_etat_noeud(anneau, NOMBRE_TIC - nombre_tic_restant);
+		ecrire_repartition_attentes(anneau);
 
 		printf("Libération de la mémoire...\n");
-		liberer_memoire(slots, noeuds, td);
+		liberer_memoire_anneau(anneau);
 
 		printf("Génération des fichiers PDF...\n");
 		fermer_fichier_std();
@@ -99,9 +92,8 @@ int main ( int argc, char *argv[] )
 	else
 	{
 		printf("Libération de la mémoire...\n");
-		liberer_memoire(slots, noeuds, td);
+		liberer_memoire_anneau(anneau);
 		fermer_fichier_std();
-		printf("Mémoire libérée !\n");
 	}
 	return (0);
 }

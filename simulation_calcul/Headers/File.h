@@ -17,6 +17,7 @@ struct File
 	int indice_fin;
 	int indice_debut;
 	double taille;
+	double taille_utilisee;
 };
 typedef struct File File;
 
@@ -45,3 +46,9 @@ int supprimer_message(File *file);
  * \param *file la file pour laquelle on souhaite libèrer l'espace mémoire.
  */
 void liberer_file(File *file);
+
+/*! \fn void afficher_messages_file(File *file)
+ * \brief Affiche la liste des messages d'une file.
+ * \param *file la file pour laquelle on souhaite afficher les messages.
+ */
+void afficher_messages_file(File *file);

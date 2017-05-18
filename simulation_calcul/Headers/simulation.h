@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
  * \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 80000 /* NE PAS ALLER AU DELA DE 500 000 TIC !!! */
+#define NOMBRE_TIC 100000
 
 /*! \def NOMBRE_SLOT
  * \brief Indique le nombre de slot de l'anneau.
@@ -87,9 +87,39 @@ struct Slot
 };
 typedef struct Slot Slot;
 
+/*! \struct Anneau
+ * \brief Structure représentant l'anneau de la simulation
+ * Il contient des noeuds, des slots, un tableau dynamique de message ainsi qu'un nombre de messages ayant circulé dans l'anneau.
+ */
+struct Anneau
+{
+	Noeud **noeuds;
+	Slot **slots;
+	TableauDynamique *messages;
+	double nb_message;
+	int nombre_slot;
+	int nombre_noeud;
+};
+typedef struct Anneau Anneau;
+
 //////////////////////////////////////////////////
 ///////////////// Les fonctions /////////////////
 //////////////////////////////////////////////////
+
+/*! \fn void initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
+ * \brief Initialise un anneau.
+ * \param nombre_slot Le nombre de slot de la simulation.
+ * \param nombre_noeud Le nombre de noeud de la simulation.
+ * \param generer_pdf Booléen indiquant la génération ou non-génération de PDF en fin de simulation.
+ * \return Un pointeur sur l'anneau créé.
+ */
+Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf );
+
+/*! fn void afficher_etat_anneau(Anneau *anneau)
+   \brief Affiche l'état actuel de l'anneau.
+   \param *anneau L'anneau à afficher.
+ */
+void afficher_etat_anneau(Anneau *anneau);
 
 /*! \fn void afficher_slots( Slot *slots[] )
  * \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
@@ -97,11 +127,12 @@ typedef struct Slot Slot;
  */
 void afficher_slots( Slot *slots[] );
 
-/*! \fn void initialiser_slots( Slot *slots[] )
+/*! \fn void initialiser_slots( Anneau *anneau, int nombre_slot );
  * \brief Initialise les slots de l'anneau.
- * \param *slots[] Un tableau de pointeur des slots à afficher.
+ * \param *anneau L'anneau qui contiendra les slots.
+ * \param nombre_slot Le nombre de slot à initialiser.
  */
-void initialiser_slots( Slot *slots[] );
+void initialiser_slots( Anneau *anneau, int nombre_slot );
 
 /*! \fn void afficher_noeuds( Noeud *noeuds[] )
  * \brief Initialise les noeuds de l'anneau et modifie en conséquence les indices en écriture/lecture des slots.
@@ -109,21 +140,19 @@ void initialiser_slots( Slot *slots[] );
  */
 void afficher_noeuds( Noeud *noeuds[] );
 
-/*! \fn void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] )
+/*! \fn void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
  * \brief Initialise les noeuds de l'anneau.
- * \param *noeuds[] Un tableau de pointeur des noeuds à initialiser.
- * \param *slots[] Un tableau de pointeur des slots à modifier.
+ * \param *anneau L'anneau qui contiendra les noeuds
+ * \param nombre_noeud Le nombre de noeud à initialiser.
  */
-void initialiser_noeuds( Noeud *noeuds[], Slot *slots[] );
+void initialiser_noeuds( Anneau *anneau, int nombre_noeud );
 
-/*! \fn void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic )
- * \brief Fait entrer des messages dans les noeud selon l'hyper exponentielle et les place dans les slots si cela doit se faire.
- * \param *noeuds[] Un tableau de pointeur sur les noeuds qui recevront les messages.
- * \param *slots[] Un tableau de pointeur sur les slots qui recevront les messages des noeuds.
- * \param tic Le tic actuel de l'anneau.
- * \param *f Le fichier ou ecrire les temps d'attentes des messages.
+/*! \fn void entrer_messages( Anneau *anneau )
+ * \brief Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.
+ * \param *anneau L'anneau dans lequel on fait entrer les messages.
+ * \param tic Le tic d'entrée des messages.
  */
-void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, TableauDynamique *td );
+void entrer_messages( Anneau *anneau, int tic );
 
 /*! void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
  * \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
@@ -137,51 +166,49 @@ void entrer_messages( Slot *slots[], Noeud *noeuds[], int tic, TableauDynamique 
  */
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td );
 
-/*! \fn void decaler_messages( Slot *slots[] )
- * \brief Décale les paquets de mesage des slots dans l'anneau (décalage vers la gauche).
- * \param *slots[] Le tableau de pointeur sur les slots pour lequelles on décale les messages.
+/*! \fn void decaler_messages( Anneau *anneau )
+ * \brief Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).
+ * \param *anneau L'anneau sur lequel on souhaite décaler les messages.
  */
-void decaler_messages( Slot *slots[] );
+void decaler_messages( Anneau *anneau );
 
-/*! \fn void sortir_messages( Slot *slots[] )
-* \brief Fait sortir des slos les paquets de message lorsqu'ils sont en face de leur noeud emetteur.
-* \param *slots[] Le tableau de pointeur sur les slots.
+/*! \fn void sortir_messages( Anneau *anneau )
+* \brief Fait sortir des slots de l'anneau les paquets de message lorsqu'ils sont en face de leur noeud emetteur.
+* \param *anneau L'anneau sur lequel on souhaite sortir les messages.
 */
-void sortir_messages( Slot *slots[] );
+void sortir_messages( Anneau *anneau );
 
-/*! \fn void liberer_memoire( Slot *slots[], Noeud *noeuds[] )
-* \brief Libère la mémoire prise durant l'exécution du programme.
-* \param *slots[] L'espace mémoire des slots à libérer.
-* \param *noeuds[] L'espace mémoire des noeuds à libérer.
-* \param *td L'espace mémoire du tableau dynamique à libérer.
+/*! \fn void liberer_memoire_anneau( Anneau *anneau )
+* \brief Libère la mémoire prise par un anneau.
+* \param *anneau L'anneau à libérer.
 */
-void liberer_memoire( Slot *slots[], Noeud *noeuds[], TableauDynamique *td );
+void liberer_memoire_anneau( Anneau *anneau );
 
-/*! \fn void get_temps_attente_max( Noeud *noeuds[], double resultats[] )
-* \brief Place dans le tableau resultats les temps d'attentes maximums des messages des noeuds.
-* \param *noeuds[] Les noeuds de l'anneau.
+/*! \fn void get_temps_attente_max( Anneau *anneau, double resultats[] )
+* \brief Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau.
+* \param *anneau L'anneau.
 * \param resultats[] Le tableau qui contiendra les temps d'attentes maximums.
 */
-void get_temps_attente_max( Noeud *noeuds[], double resultats[] );
+void get_temps_attente_max( Anneau *anneau, double resultats[] );
 
-/*! \fn void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] )
-* \brief Place dans le tableau resultats les temps d'attentes moyens des messages des noeuds.
-* \param *noeuds[] Les noeuds de l'anneau.
+/*! \fn void get_temps_attente_moyen( Anneau *anneau, double resultats[] )
+* \brief Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau.
+* \param *anneau L'anneau.
 * \param resultats[] Le tableau qui contiendra les temps d'attentes moyens.
 */
-void get_temps_attente_moyen( Noeud *noeuds[], double resultats[] );
+void get_temps_attente_moyen( Anneau *anneau, double resultats[] );
 
 /*! fn void supprimer_ancien_csv()
    \brief Supprime les fichiers present dans le répertoire des fichiers csv du projet.
 */
 void supprimer_ancien_csv();
 
-/*! \fn void ecrire_etat_noeud( Noeud *noeuds[] )
-* \brief Ecrit un fichier .dat qui contiendra les données des temps d'attentes des noeuds.
-* \param *noeuds[] Les noeuds de l'anneau.
+/*! \fn void ecrire_etat_noeud( Anneau *anneau, int tic )
+* \brief Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau.
+* \param *anneau L'anneau pour lequel on souhaite écrire les temps d'attentes.
 * \param tic Le tic actuel de l'anneau.
 */
-void ecrire_etat_noeud( Noeud *noeuds[], int tic );
+void ecrire_etat_noeud( Anneau *anneau, int tic );
 
 /*! \fn void afficher_graphique_attente()
 * \brief Affiche via R un graphique avec les données du fichier 'attente.csv'.
@@ -212,11 +239,11 @@ void fermer_fichier_std();
  */
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
 
-/*! fn void ecrire_repartition_attentes(TableauDynamique *td)
-   \brief Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages.
-   \param *td Un pointeur vers le tableau dynamique contenant les temps d'attentes.
+/*! fn void ecrire_repartition_attentes(Anneau *anneau)
+   \brief Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau.
+   \param *anneau L'anneau.
  */
-void ecrire_repartition_attentes(TableauDynamique *td);
+void ecrire_repartition_attentes(Anneau *anneau);
 
 /*! fn void ecrire_attente_message(int quantiles[], int taille_tableau)
    \brief Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.
