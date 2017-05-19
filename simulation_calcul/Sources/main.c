@@ -8,7 +8,8 @@ int main ( int argc, char *argv[] )
 {
 	/* Gestion de la génération ou de la non-génération du PDF */
 	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "-pdf") == 0 ) || ( strcmp(argv[1], "-PDF") == 0 ) ) );
-	int nombre_slot = 25; int nombre_noeud = 10;
+
+	int nombre_slot = 25; int nombre_noeud = 5;
 	/* Initialisation de l'anneau */
 	Anneau *anneau = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
 

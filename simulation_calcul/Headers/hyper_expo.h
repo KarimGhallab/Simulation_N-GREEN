@@ -12,7 +12,7 @@
 /*! \def NOMBRE_MESSAGE_BURST
     \brief Représente lle nombre de message qui arrive dans un noeud lors d'un burst.
  */
-#define NOMBRE_MESSAGE_BURST 300
+#define NOMBRE_MESSAGE_BURST 80	//300 avant
 
 
 /*! \def LAMBDA
@@ -31,7 +31,7 @@
     \brief Effectue un tirage et indique si la probabilité a été tiré.
     \param probabilite : La probabilité du tirage.
     \return 1 si la probabilité a été tiré, 0 sinon.
-*/
+ */
 int effectuer_tirage(float probabilite);
 
 
@@ -40,7 +40,7 @@ int effectuer_tirage(float probabilite);
     \param borne_min : La borne minimale du nombre à générer.
     \param borne_max : La borne maximale du nombre à générer.
     \return Le nombre généré.
-*/
+ */
 float generer_aleatoire(float borne_min, float borne_max);
 
 
@@ -48,7 +48,7 @@ float generer_aleatoire(float borne_min, float borne_max);
     \brief Calcule naif du résultat d'une loi de poisson.
     \param u : Variable aléatoire.
     \return Le résultat de la loi de poisson.
-*/
+ */
 int loi_de_poisson_naif(float u);
 
 
@@ -57,7 +57,7 @@ int loi_de_poisson_naif(float u);
     \param u : Variable aléatoire.
     \param tableau_poisson : Le tableau contenant les valeurs de la loi de poisson.
     \return Le résultat de la loi de poisson.
-*/
+ */
 int loi_de_poisson_opti(float u, double tableau_poisson[]);
 
 
@@ -65,12 +65,12 @@ int loi_de_poisson_opti(float u, double tableau_poisson[]);
     \brief Initialise le tableau avec les résultats de le loi de poisson.
 	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
    \param tableau_poisson[] : le tableau à initialiser.
-*/
+ */
 void initialiser_tableau(double tableau_poisson[] );
 
 
 /*! \fn int hyper_expo()
     \brief Hyper exponentielle.
     \return Le nombre de message reçu via la loi hyper exponentielle.
-*/
+ */
 int hyper_expo();

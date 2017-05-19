@@ -490,27 +490,30 @@ void ecrire_repartition_attentes(Anneau *anneau)
 	int *tableau = td->tableau;
 	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
 
-	int nombre_valeur = 10;
+	int nombre_valeur = 4;
 
-	int interval = NOMBRE_TIC / nombre_valeur;
-	int borne_superieure = interval;
+	//int interval = NOMBRE_TIC / nombre_valeur;
+	int premiere_limite = 7; int deuxieme_limite = 10; int troisieme_limite = 15; int quatrieme_limite = 20;
+	int bornes_superieurs[] = {premiere_limite, deuxieme_limite, troisieme_limite, quatrieme_limite};
+	int borne_superieure = bornes_superieurs[0];
 	int i;
 	int j = 0;
 	double *quantiles = (double *) calloc(nombre_valeur, sizeof(double));
 
 	for (i=0; i<td->taille_utilisee; i++)
 	{
-		if (tableau[i] > borne_superieure)
+		if ( (tableau[i] >= borne_superieure) && (j < nombre_valeur-1) )
 		{
 			j++;
-			borne_superieure += interval;
+			borne_superieure = bornes_superieurs[j];
 		}
+		//printf("Valeur entre %d et %d\n", borne_inferieure, borne_superieure);
 		quantiles[j]++;
 	}
-	ecrire_attente_message(quantiles, nombre_valeur, interval);
+	ecrire_attente_message(quantiles, nombre_valeur, bornes_superieurs);
 }
 
-void ecrire_attente_message(double quantiles[], int taille_tableau, int interval)
+void ecrire_attente_message(double quantiles[], int taille_tableau, int bornes[])
 {
 	/* Ouverture du fichier */
 	char *chemin_fichier = "../CSV/attentes_messages.csv";
@@ -520,14 +523,13 @@ void ecrire_attente_message(double quantiles[], int taille_tableau, int interval
 
 	int i;
 	int borne_inferieure = 0;
-	int borne_superieure = interval;
 	for (i=0; i<taille_tableau; i++)
 	{
+		int borne_superieure = bornes[i];
 		if (quantiles[i] == 0)
 			break;
 		fprintf( f, "%d:%d,%lf\n", borne_inferieure, borne_superieure, quantiles[i] );
 		borne_inferieure = borne_superieure+1;
-		borne_superieure += interval;
 	}
 	free(quantiles);
 	fclose(f);

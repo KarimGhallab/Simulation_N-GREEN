@@ -9,7 +9,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 100000
+#define NOMBRE_TIC 1000000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -241,6 +241,6 @@ void ecrire_repartition_attentes(Anneau *anneau);
     \brief Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.
     \param quantiles[] Les quantiles à écrire dans le fichier.
     \param taille_tableau La taille du tableau des quantiles.
-    \param interval L'interval en nombre de tic entre chaque quantile.
+    \param bornes[] Un tableau des bornes coresspondant aux quantiles.
  */
-void ecrire_attente_message(double quantiles[], int taille_tableau, int interval);
+void ecrire_attente_message(double quantiles[], int taille_tableau, int bornes[]);
