@@ -1,0 +1,5 @@
+Générer les histogrammes avec les nouvelles valeurs.	(je crois que c'est fait)
+Placer des pourcentages sur l'histogramme
+Refaire l'organigramme
+Voir si l'on peut remplacer les pointeurs sur les slots par les slots directement (gain de temps et de mémoire).
+Continuer rapport

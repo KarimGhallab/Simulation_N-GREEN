@@ -79,16 +79,15 @@ int main ( int argc, char *argv[] )
 	if (generer_pdf == 1)	//On génére les fichiers CSVs on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
 	{
 		printf("Ecriture des fichiers CSV...\n");
-		ecrire_etat_noeud(anneau, NOMBRE_TIC - nombre_tic_restant);
-		ecrire_repartition_attentes(anneau);
+		ecrire_fichier_csv(anneau);
 
 		printf("Libération de la mémoire...\n");
 		liberer_memoire_anneau(anneau);
 
 		printf("Génération des fichiers PDF...\n");
 		fermer_fichier_std();
-		//generer_PDF();
-		//afficher_PDF();
+		generer_PDF();
+		afficher_PDF();
 	}
 	else
 	{

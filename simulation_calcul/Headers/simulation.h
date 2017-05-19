@@ -9,7 +9,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 2000000
+#define NOMBRE_TIC 200000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -144,7 +144,7 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud );
  */
 void entrer_messages( Anneau *anneau, int tic );
 
-/*! \fn void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic )
+/*! \fn void void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
     \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
     \param *noeud Un pointeur vers le noeud qui transmet le paquet.
     \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
@@ -152,9 +152,8 @@ void entrer_messages( Anneau *anneau, int tic );
     \param nombre_message Le nombre de message qui doit etre transmis.
     \param messages[] Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
     \param tic Le tic actuel de l'anneau.
-    \param *f Le fichier ou ecrire les temps d'attentes des messages.
+    \param *td Le tableau des tic de message de toute la simulation.
  */
-
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td );
 
 /*! \fn void decaler_messages( Anneau *anneau )
@@ -175,36 +174,50 @@ void sortir_messages( Anneau *anneau );
 */
 void liberer_memoire_anneau( Anneau *anneau );
 
-/*! \fn void get_temps_attente_max( Anneau *anneau, double resultats[] )
-    \brief Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau.
-    \param *anneau L'anneau.
-    \param resultats[] Le tableau qui contiendra les temps d'attentes maximums.
+/*! \fn void fermer_fichier_std()
+    \brief Ferme les fichiers stdin, stdout et stderr.
+    \return -1 S'il y aune erreur ors de l'appel à la fonction system(), 0 sinon
 */
-void get_temps_attente_max( Anneau *anneau, double resultats[] );
+void fermer_fichier_std();
 
-/*! \fn void get_temps_attente_moyen( Anneau *anneau, double resultats[] )
-    \brief Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau.
-    \param *anneau L'anneau.
-    \param resultats[] Le tableau qui contiendra les temps d'attentes moyens.
-*/
-void get_temps_attente_moyen( Anneau *anneau, double resultats[] );
+/*! \fn void void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
+    \brief Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.
+    \param *chargement La chaine de caractères à initialiser.
+	\param taille_tableau La taille de la chaine de caractères.
+    \param nombre_chargement Le nombre de caractère à mettre dans la chaine.
+ */
+void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
 
-/*! \fn void supprimer_ancien_csv()
-    \brief Supprime les fichiers present dans le répertoire des fichiers csv du projet.
-*/
-void supprimer_ancien_csv();
+/*! \fn int cmpfunc (const void * a, const void * b)
+    \brief Méthode de comparaison pour la fonction qsort().
+    \param *a Le premier paramètre à comparer.
+    \param *b Le second paramètre à comparer.
+ */
+int cmpfunc (const void * a, const void * b);
 
-/*! \fn void ecrire_etat_noeud( Anneau *anneau, int tic )
-    \brief Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau.
+/*! \fn void ecrire_fichier_csv(Anneau *anneau);
+    \brief Ecrit les fichiers CSVs avc les données obtenus par la simulation d'un anneau.
+    \param *anneau L'anneau pour lequel on souhaite sauvegarder les données.
+ */
+void ecrire_fichier_csv(Anneau *anneau);
+
+/*! \fn void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau)
+	\brief Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.
+    \param **quantiles[] Les quantiles à écrire dans le fichier.
+    \param taille_tableau La taille du tableau des quantiles.
+    \param *bornes Un tableau des bornes coresspondant aux quantiles.
+	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
+ */
+void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau);
+
+/*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau )
+    \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.
     \param *anneau L'anneau pour lequel on souhaite écrire les temps d'attentes.
-    \param tic Le tic actuel de l'anneau.
+	\param *quantiles Le tableau des données à sauvegarder.
+	\param *bornes Un tableau des bornes coresspondant aux quantiles.
+	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
 */
-void ecrire_etat_noeud( Anneau *anneau, int tic );
-
-/*! \fn void afficher_graphique_attente()
-    \brief Affiche via R un graphique avec les données du fichier 'attente.csv'.
-*/
-void afficher_graphique_attente();
+void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau );
 
 /*! \fn int generer_PDF()
     \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV
@@ -219,30 +232,7 @@ int generer_PDF();
 */
 int afficher_PDF();
 
-/*! \fn void fermer_fichier_std()
-    \brief Ferme les fichiers stdin, stdout et stderr.
-    \return -1 S'il y aune erreur ors de l'appel à la fonction system(), 0 sinon
+/*! \fn void supprimer_ancien_csv()
+    \brief Supprime les fichiers present dans le répertoire des fichiers csv du projet.
 */
-void fermer_fichier_std();
-
-/*! \fn void initialiser_barre_chargement(char *chargement, int taille_tableau)
-    \brief Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.
-    \param *chargement La chaine de caractères à initialiser.
-    \param nombre_chargement Le nombre de caractère à mettre dans la chaine.
- */
-void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
-
-/*! \fn void ecrire_repartition_attentes(Anneau *anneau)
-    \brief Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau.
-    \param *anneau L'anneau.
- */
-void ecrire_repartition_attentes(Anneau *anneau);
-
-/*! \fn void ecrire_attente_message(int quantiles[], int taille_tableau)
-    \brief Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.
-    \param quantiles[] Les quantiles à écrire dans le fichier.
-    \param taille_tableau La taille du tableau des quantiles.
-    \param *bornes Un tableau des bornes coresspondant aux quantiles.
-	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
- */
-void ecrire_attente_message(double **quantiles, int taille_tableau, int *bornes, int numero_anneau);
+void supprimer_ancien_csv();

@@ -130,7 +130,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;200000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -184,9 +184,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3274e625465e1330068b4b75475ca8fe"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3274e625465e1330068b4b75475ca8fe"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="separator:a3274e625465e1330068b4b75475ca8fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fce2b9823444a58abbdbb90e5c53997"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4fce2b9823444a58abbdbb90e5c53997">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
+<tr class="memdesc:a4fce2b9823444a58abbdbb90e5c53997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a4fce2b9823444a58abbdbb90e5c53997">More...</a><br /></td></tr>
+<tr class="separator:a4fce2b9823444a58abbdbb90e5c53997"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31b6056bb885b856013e2843c6d549be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a31b6056bb885b856013e2843c6d549be">decaler_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a31b6056bb885b856013e2843c6d549be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).  <a href="#a31b6056bb885b856013e2843c6d549be">More...</a><br /></td></tr>
 <tr class="separator:a31b6056bb885b856013e2843c6d549be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,41 +196,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<
 <tr class="memitem:a82288ea32787d0bd08be92f7942ee914"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a82288ea32787d0bd08be92f7942ee914">liberer_memoire_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a82288ea32787d0bd08be92f7942ee914"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère la mémoire prise par un anneau.  <a href="#a82288ea32787d0bd08be92f7942ee914">More...</a><br /></td></tr>
 <tr class="separator:a82288ea32787d0bd08be92f7942ee914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a0d0a0bc0ddb8721ba513b6be3f8d6c01">get_temps_attente_max</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double resultats[])</td></tr>
-<tr class="memdesc:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau.  <a href="#a0d0a0bc0ddb8721ba513b6be3f8d6c01">More...</a><br /></td></tr>
-<tr class="separator:a0d0a0bc0ddb8721ba513b6be3f8d6c01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7169f781aeff6f1900d60edda5879f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad7169f781aeff6f1900d60edda5879f1">get_temps_attente_moyen</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double resultats[])</td></tr>
-<tr class="memdesc:ad7169f781aeff6f1900d60edda5879f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau.  <a href="#ad7169f781aeff6f1900d60edda5879f1">More...</a><br /></td></tr>
-<tr class="separator:ad7169f781aeff6f1900d60edda5879f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7fe52eac0ad0cea2ca8cff602a81b1f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
-<tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet. <br /></td></tr>
-<tr class="separator:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af9926b9f58eb1c746724bc6e8fa5d05c">ecrire_etat_noeud</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
-<tr class="memdesc:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau.  <a href="#af9926b9f58eb1c746724bc6e8fa5d05c">More...</a><br /></td></tr>
-<tr class="separator:af9926b9f58eb1c746724bc6e8fa5d05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa18cbdb1fa67d4ff01a703e9f1e4d27a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa18cbdb1fa67d4ff01a703e9f1e4d27a">afficher_graphique_attente</a> ()</td></tr>
-<tr class="memdesc:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche via R un graphique avec les données du fichier 'attente.csv'. <br /></td></tr>
-<tr class="separator:aa18cbdb1fa67d4ff01a703e9f1e4d27a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a865cbfe3373c1d77e686b13e8965efa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8">fermer_fichier_std</a> ()</td></tr>
+<tr class="memdesc:a865cbfe3373c1d77e686b13e8965efa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ferme les fichiers stdin, stdout et stderr.  <a href="#a865cbfe3373c1d77e686b13e8965efa8">More...</a><br /></td></tr>
+<tr class="separator:a865cbfe3373c1d77e686b13e8965efa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a369bd26809ccd919731c97de32244841"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a369bd26809ccd919731c97de32244841">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
+<tr class="memdesc:a369bd26809ccd919731c97de32244841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a369bd26809ccd919731c97de32244841">More...</a><br /></td></tr>
+<tr class="separator:a369bd26809ccd919731c97de32244841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4ffbd7d116c633fda2c1957ca42cadb9">cmpfunc</a> (const void *a, const void *b)</td></tr>
+<tr class="memdesc:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Méthode de comparaison pour la fonction qsort().  <a href="#a4ffbd7d116c633fda2c1957ca42cadb9">More...</a><br /></td></tr>
+<tr class="separator:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a14c47dd7a54fa1ab2104ba3cb9bbd383">ecrire_fichier_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les fichiers CSVs avc les données obtenus par la simulation d'un anneau.  <a href="#a14c47dd7a54fa1ab2104ba3cb9bbd383">More...</a><br /></td></tr>
+<tr class="separator:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57a791fdac2ee901b94ba4d085a989e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a57a791fdac2ee901b94ba4d085a989e3">ecrire_nb_message_attente_csv</a> (double **quantiles, int taille_tableau, int *bornes, int numero_anneau)</td></tr>
+<tr class="memdesc:a57a791fdac2ee901b94ba4d085a989e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#a57a791fdac2ee901b94ba4d085a989e3">More...</a><br /></td></tr>
+<tr class="separator:a57a791fdac2ee901b94ba4d085a989e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a300b89929924dd233f53bfd0e1e8ef21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a300b89929924dd233f53bfd0e1e8ef21">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles, int *bornes, int taille_tableau)</td></tr>
+<tr class="memdesc:a300b89929924dd233f53bfd0e1e8ef21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a300b89929924dd233f53bfd0e1e8ef21">More...</a><br /></td></tr>
+<tr class="separator:a300b89929924dd233f53bfd0e1e8ef21"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8aaa907e94e5c4d11296e1da8ec51a80">generer_PDF</a> ()</td></tr>
 <tr class="memdesc:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a8aaa907e94e5c4d11296e1da8ec51a80">More...</a><br /></td></tr>
 <tr class="separator:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8de259e17277266238c08a6771cca036"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8de259e17277266238c08a6771cca036">afficher_PDF</a> ()</td></tr>
 <tr class="memdesc:a8de259e17277266238c08a6771cca036"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance le programme evince avec les fichiers PDF générés durant la simulation.  <a href="#a8de259e17277266238c08a6771cca036">More...</a><br /></td></tr>
 <tr class="separator:a8de259e17277266238c08a6771cca036"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a865cbfe3373c1d77e686b13e8965efa8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a865cbfe3373c1d77e686b13e8965efa8">fermer_fichier_std</a> ()</td></tr>
-<tr class="memdesc:a865cbfe3373c1d77e686b13e8965efa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ferme les fichiers stdin, stdout et stderr.  <a href="#a865cbfe3373c1d77e686b13e8965efa8">More...</a><br /></td></tr>
-<tr class="separator:a865cbfe3373c1d77e686b13e8965efa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a0d15652276a900eba1357af09bc2b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a0d15652276a900eba1357af09bc2b4"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_barre_chargement</b> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
-<tr class="separator:a2a0d15652276a900eba1357af09bc2b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae95f07afb664b1fcc0df38e6ae08c8de">ecrire_repartition_attentes</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
-<tr class="memdesc:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau.  <a href="#ae95f07afb664b1fcc0df38e6ae08c8de">More...</a><br /></td></tr>
-<tr class="separator:ae95f07afb664b1fcc0df38e6ae08c8de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d9fc029da0d0ac1d7399b86a981e0ad"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9d9fc029da0d0ac1d7399b86a981e0ad"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_message</b> (double quantiles[], int taille_tableau, int bornes[])</td></tr>
-<tr class="separator:a9d9fc029da0d0ac1d7399b86a981e0ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae7fe52eac0ad0cea2ca8cff602a81b1f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae7fe52eac0ad0cea2ca8cff602a81b1f">supprimer_ancien_csv</a> ()</td></tr>
+<tr class="memdesc:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Supprime les fichiers present dans le répertoire des fichiers csv du projet. <br /></td></tr>
+<tr class="separator:ae7fe52eac0ad0cea2ca8cff602a81b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier principal contenant les fonctions et structures necessaires au main. </p>
@@ -325,6 +318,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 
 </div>
 </div>
+<a class="anchor" id="a4ffbd7d116c633fda2c1957ca42cadb9"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cmpfunc </td>
+          <td>(</td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>a</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>b</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Méthode de comparaison pour la fonction qsort(). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*a</td><td>Le premier paramètre à comparer. </td></tr>
+    <tr><td class="paramname">*b</td><td>Le second paramètre à comparer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a class="anchor" id="a31b6056bb885b856013e2843c6d549be"></a>
 <div class="memitem">
 <div class="memproto">
@@ -349,21 +377,57 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 
 </div>
 </div>
-<a class="anchor" id="af9926b9f58eb1c746724bc6e8fa5d05c"></a>
+<a class="anchor" id="a14c47dd7a54fa1ab2104ba3cb9bbd383"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ecrire_etat_noeud </td>
+          <td class="memname">void ecrire_fichier_csv </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
-          <td class="paramname"><em>anneau</em>, </td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit les fichiers CSVs avc les données obtenus par la simulation d'un anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite sauvegarder les données. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a57a791fdac2ee901b94ba4d085a989e3"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_nb_message_attente_csv </td>
+          <td>(</td>
+          <td class="paramtype">double **&#160;</td>
+          <td class="paramname"><em>quantiles</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em>&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bornes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>numero_anneau</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -373,35 +437,62 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
       </table>
 </div><div class="memdoc">
 
-<p>Ecrit un fichier .csv qui contiendra les données des temps d'attentes des noeuds de l'anneau. </p>
+<p>Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite écrire les temps d'attentes. </td></tr>
-    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
+    <tr><td class="paramname">**quantiles[]</td><td>Les quantiles à écrire dans le fichier. </td></tr>
+    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
+    <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
+    <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="ae95f07afb664b1fcc0df38e6ae08c8de"></a>
+<a class="anchor" id="a300b89929924dd233f53bfd0e1e8ef21"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void ecrire_repartition_attentes </td>
+          <td class="memname">void ecrire_temps_attente_csv </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
-          <td class="paramname"><em>anneau</em></td><td>)</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>quantiles</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bornes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Ecrit un fichier CSV avec les quantiles des temps d'attentes des messages de l'anneau. </p>
+<p>Ecrit les differents temps d'attentes de la simulation selon des quantiles. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite écrire les temps d'attentes. </td></tr>
+    <tr><td class="paramname">*quantiles</td><td>Le tableau des données à sauvegarder. </td></tr>
+    <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
+    <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
   </table>
   </dd>
 </dl>
@@ -480,76 +571,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 
 </div>
 </div>
-<a class="anchor" id="a0d0a0bc0ddb8721ba513b6be3f8d6c01"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void get_temps_attente_max </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
-          <td class="paramname"><em>anneau</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>resultats</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Place dans le tableau resultats les temps d'attentes maximums des messages de l'anneau. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
-    <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes maximums. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="ad7169f781aeff6f1900d60edda5879f1"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void get_temps_attente_moyen </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
-          <td class="paramname"><em>anneau</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>resultats</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Place dans le tableau resultats les temps d'attentes moyens des messages de l'anneau. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*anneau</td><td>L'anneau. </td></tr>
-    <tr><td class="paramname">resultats[]</td><td>Le tableau qui contiendra les temps d'attentes moyens. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="aff241b56dfbedd24ced2b9e9194add47"></a>
 <div class="memitem">
 <div class="memproto">
@@ -590,6 +611,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Un pointeur sur l'anneau créé. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a369bd26809ccd919731c97de32244841"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void void initialiser_barre_chargement </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>chargement</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_chargement</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*chargement</td><td>La chaine de caractères à initialiser. </td></tr>
+    <tr><td class="paramname">taille_tableau</td><td>La taille de la chaine de caractères. </td></tr>
+    <tr><td class="paramname">nombre_chargement</td><td>Le nombre de caractère à mettre dans la chaine. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -681,6 +744,76 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_attente_messag
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau à libérer. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4fce2b9823444a58abbdbb90e5c53997"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void void placer_message </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
+          <td class="paramname"><em>noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>indice_noeud_emetteur</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
+          <td class="paramname"><em>slot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>messages</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>tic</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
+          <td class="paramname"><em>td</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
+    <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
+    <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
+    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
+    <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
+    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
+    <tr><td class="paramname">*td</td><td>Le tableau des tic de message de toute la simulation. </td></tr>
   </table>
   </dd>
 </dl>
