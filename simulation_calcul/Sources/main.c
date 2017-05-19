@@ -87,8 +87,8 @@ int main ( int argc, char *argv[] )
 
 		printf("Génération des fichiers PDF...\n");
 		fermer_fichier_std();
-		generer_PDF();
-		afficher_PDF();
+		//generer_PDF();
+		//afficher_PDF();
 	}
 	else
 	{

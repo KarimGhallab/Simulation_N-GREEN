@@ -9,7 +9,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 1000000
+#define NOMBRE_TIC 2000000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -82,6 +82,7 @@ typedef struct Slot Slot;
  */
 struct Anneau
 {
+	int numero_anneau;
 	Noeud **noeuds;
 	Slot **slots;
 	TableauDynamique *messages;
@@ -241,6 +242,7 @@ void ecrire_repartition_attentes(Anneau *anneau);
     \brief Ecrit les quantiles des temps d'attentes des messages dans un fichier CSV.
     \param quantiles[] Les quantiles à écrire dans le fichier.
     \param taille_tableau La taille du tableau des quantiles.
-    \param bornes[] Un tableau des bornes coresspondant aux quantiles.
+    \param *bornes Un tableau des bornes coresspondant aux quantiles.
+	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
  */
-void ecrire_attente_message(double quantiles[], int taille_tableau, int bornes[]);
+void ecrire_attente_message(double **quantiles, int taille_tableau, int *bornes, int numero_anneau);

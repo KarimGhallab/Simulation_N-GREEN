@@ -10,10 +10,12 @@
 
 Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
 {
+	static int numero = 0;
+	numero++;
 	Anneau *anneau = (Anneau*) malloc( sizeof(Anneau) );
 
 	anneau->nombre_slot = nombre_slot; anneau->nombre_noeud = nombre_noeud;
-	anneau->nb_message = 0;
+	anneau->numero_anneau = numero; anneau->nb_message = 0;
 
 	if (generer_pdf == 1)
 		anneau->messages = initialiser_tableau_dynamique();
@@ -39,7 +41,8 @@ void afficher_etat_anneau(Anneau *anneau)
 		if (slots[i]->contient_message == 1)
 			nombre_slot_plein++;
 	}
-	printf("%d/%d slots sont plein", nombre_slot_plein, nombre_slot);
+	printf("Anneau numéro %d\n", anneau->numero_anneau);
+	printf("%d/%d slots sont plein\n", nombre_slot_plein, nombre_slot);
 	printf("Le nombre de message ayant circulé dans l'anneau est de : %d\n", nombre_message);
 	for(i=0; i<nombre_noeud;i++)
 	{
@@ -358,6 +361,7 @@ void ecrire_etat_noeud( Anneau *anneau, int tic )
 {
 	static int numero_fichier = 1;
 	int nombre_noeud = anneau->nombre_noeud;
+	int nombre_slot = anneau->nombre_slot;
 
 	/* Récupère les données à ecrire */
 	double attente_max[ nombre_noeud ];
@@ -367,26 +371,26 @@ void ecrire_etat_noeud( Anneau *anneau, int tic )
 	get_temps_attente_moyen(anneau, attente_moyenne);
 
 	/* Création du nom du fichier csv */
-	char *debut_nom_fichier = "../CSV/attente";
+	char *debut_nom_fichier = "../CSV/attente_anneau";
 	char buffer[3];
-	char chemin_fichier[20];
+	char chemin_fichier[27];
 
 	strcpy(chemin_fichier, debut_nom_fichier);
-	sprintf(buffer, "%d", numero_fichier);
+	sprintf(buffer, "%d", anneau->numero_anneau);
 	strcat(chemin_fichier, buffer);
 	strcat(chemin_fichier, ".csv");
 
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
-	fprintf(f, "numero_noeud,type_attente,TIC,TIC_actuel\n");
+	fprintf(f, "numero_noeud,type_attente,TIC,TIC_actuel,nombre_slot,nombre_noeud\n");
 
 	int i;
 
 	/* Les deux tableaux font la même taille (celle du nommbre de noeud dans l'anneau) */
 	for (i=0; i<nombre_noeud; i++)
 	{
-		fprintf(f, "%d,max,%lf,%d\n", i, attente_max[i], tic);
-		fprintf(f, "%d,moyenne,%lf,%d\n", i, attente_moyenne[i], tic);
+		fprintf(f, "%d,max,%lf,%d,%d,%d\n", i, attente_max[i], tic, nombre_slot, nombre_noeud);
+		fprintf(f, "%d,moyenne,%lf,%d,%d,%d\n", i, attente_moyenne[i], tic, nombre_slot, nombre_noeud);
 	}
 	fclose(f);
 
@@ -484,42 +488,78 @@ int cmpfunc (const void * a, const void * b)
 
 void ecrire_repartition_attentes(Anneau *anneau)
 {
+	int i; int j = 0; int nombre_colonne = 4; int nombre_valeur = 10;
+	double max; double min; double somme_valeur = 0;
 	TableauDynamique *td = anneau->messages;
 
 	/* Trie du tableau */
 	int *tableau = td->tableau;
 	qsort(tableau, td->taille_utilisee, sizeof(int), cmpfunc);
 
-	int nombre_valeur = 4;
+	int bornes_superieures[nombre_valeur+1];
+	bornes_superieures[0] = 7;
+	bornes_superieures[1] = 10;
+	/* Initialisation des bornes supérieures */
+	for(i=2; i<nombre_valeur; i++)
+		bornes_superieures[i] = bornes_superieures[i-1] + 5;
+	bornes_superieures[nombre_valeur] = NOMBRE_TIC;
 
-	//int interval = NOMBRE_TIC / nombre_valeur;
-	int premiere_limite = 7; int deuxieme_limite = 10; int troisieme_limite = 15; int quatrieme_limite = 20;
-	int bornes_superieurs[] = {premiere_limite, deuxieme_limite, troisieme_limite, quatrieme_limite};
-	int borne_superieure = bornes_superieurs[0];
-	int i;
-	int j = 0;
-	double *quantiles = (double *) calloc(nombre_valeur, sizeof(double));
+	int borne_superieure = bornes_superieures[0];
 
+	/* Allocation du tableau */
+	double **quantiles = (double **) calloc(nombre_valeur+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	for(i=0; i<nombre_valeur; i++)
+		quantiles[i] = (double *) calloc(nombre_colonne, sizeof(double));	//La premiere ligne du tableau
+
+	/* Génération des valeurs du tableau */
+	min = tableau[0];
 	for (i=0; i<td->taille_utilisee; i++)
 	{
-		if ( (tableau[i] >= borne_superieure) && (j < nombre_valeur-1) )
+		if ( (tableau[i] >= borne_superieure) && (j < nombre_valeur) )
 		{
+			/* Assignation des valeurs pour la borne précedente */
+			max = tableau[i-1];
+			quantiles[j][2] = max; quantiles[j][3] = somme_valeur/quantiles[j][0];
+			somme_valeur = 0;
+			min = tableau[i];
 			j++;
-			borne_superieure = bornes_superieurs[j];
+			/* Assignation des valeurs pour la nouvelle borne */
+			quantiles[j][1] = min;
+			borne_superieure = bornes_superieures[j];
 		}
-		//printf("Valeur entre %d et %d\n", borne_inferieure, borne_superieure);
-		quantiles[j]++;
+		somme_valeur += tableau[i];
+		quantiles[j][0]++;
 	}
-	ecrire_attente_message(quantiles, nombre_valeur, bornes_superieurs);
+	//Affectation des valeurs pour le dernier ensemble de données (Avant la fin du tableau utilisé)
+	max = tableau[i-1];
+	quantiles[j][2] = max; quantiles[j][3] = somme_valeur/quantiles[j][0];
+
+	printf("Affichage tableau\n");
+	for(i=0; i<nombre_valeur; i++)
+	{
+		for(j=0; j<nombre_colonne; j++)
+			printf("[%lf]", quantiles[i][j]);
+		printf("\n");
+	}
+	ecrire_attente_message(quantiles, nombre_valeur, bornes_superieures, anneau->numero_anneau);
 }
 
-void ecrire_attente_message(double quantiles[], int taille_tableau, int bornes[])
+void ecrire_attente_message(double **quantiles, int taille_tableau, int *bornes, int numero_anneau)
 {
+
+	char *debut_nom_fichier = "../CSV/attentes_messages_anneau";
+	char buffer[3];
+	char chemin_fichier[41];
+
+	strcpy(chemin_fichier, debut_nom_fichier);
+	sprintf(buffer, "%d", numero_anneau);
+	strcat(chemin_fichier, buffer);
+	strcat(chemin_fichier, ".csv");
+
 	/* Ouverture du fichier */
-	char *chemin_fichier = "../CSV/attentes_messages.csv";
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,count,%d\n", NOMBRE_TIC);
+	fprintf(f, "interval,count,min,max,moyenne%d\n", NOMBRE_TIC);
 
 	int i;
 	int borne_inferieure = 0;
@@ -528,7 +568,7 @@ void ecrire_attente_message(double quantiles[], int taille_tableau, int bornes[]
 		int borne_superieure = bornes[i];
 		if (quantiles[i] == 0)
 			break;
-		fprintf( f, "%d:%d,%lf\n", borne_inferieure, borne_superieure, quantiles[i] );
+		fprintf( f, "%d:%d,%lf,%lf,%lf,%lf\n", borne_inferieure, borne_superieure, quantiles[i][0], quantiles[i][1], quantiles[i][2], quantiles[i][3]);
 		borne_inferieure = borne_superieure+1;
 	}
 	free(quantiles);
