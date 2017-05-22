@@ -36,21 +36,21 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	titre = "Répartition des temps d'attentes des messages"
 
 	############# Obtention des pourcentages #############
-	pourcentage = NULL
-	somme = sum(donnees$valeur)
-	for (valeur in donnees$valeur)
+	pourcentages = NULL
+	for (valeur in donnees$taux)
 	{
-		v = (valeur/somme) * 100
-		v = format(v, digits = 3)
-		v = paste(v, "%", sep="")
-		pourcentage <- c(pourcentage, v)
+		pourcentage = valeur * 100
+		pourcentage = format(pourcentage, digits=3)
+		abscisse = paste(pourcentage, "%", sep="")
+		pourcentages <- c(pourcentages, abscisse)
 	}
+	#print(pourcentages)
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-	p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$valeur)) +
+	p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$taux)) +
 	geom_histogram(stat = "identity",col="red", fill="green", alpha = .2 ) +
-	geom_text(aes(label=pourcentage, y = donnees$valeur), size = 3, hjust=0.5, vjust=-0.5, color="black") +
+	geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black") +
 	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
-	scale_y_continuous(labels = comma, name = "Nombre de message") +
+	scale_y_continuous(labels = percent, name = "Nombre de message") +
 	scale_x_discrete(name = "Interval") +
 	labs(caption = texte_info) +
 	ggtitle(titre)

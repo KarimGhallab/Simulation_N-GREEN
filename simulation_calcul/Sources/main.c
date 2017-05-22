@@ -30,7 +30,12 @@ int main ( int argc, char *argv[] )
 		printf("Libération de la mémoire...\n");
 		liberer_memoire_anneau(anneaux[i]);
 	}
-
-	fermer_fichier_std();
+	if (generer_pdf == 1)
+	{
+		printf("Génération des fichiers PDF...\n");
+		fermer_fichier_std();
+		generer_PDF();
+		afficher_PDF();
+	}
 	return (0);
 }

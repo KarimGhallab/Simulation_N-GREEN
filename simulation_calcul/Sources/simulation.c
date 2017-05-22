@@ -194,10 +194,6 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	{
 		printf("Ecriture des fichiers CSV...\n");
 		ecrire_fichier_csv(anneau);
-
-		printf("Génération des fichiers PDF...\n");
-		generer_PDF();
-		afficher_PDF();
 	}
 }
 
@@ -522,6 +518,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 {
 	int nombre_noeud = anneau->nombre_noeud;
 	int nombre_slot = anneau->nombre_slot;
+	double nb_message_total = anneau->nb_message;
 
 	/* Création du nom du fichier csv */
 	char *debut_nom_fichier = "../CSV/attente_anneau";
@@ -536,7 +533,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,valeur,TIC,nb_slot,nb_noeud\n");
+	fprintf(f, "interval,taux,TIC,nb_slot,nb_noeud\n");
 	int i;
 	int borne_inferieure = 0;
 	for (i=0; i<taille_tableau; i++)
@@ -544,7 +541,8 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 		int borne_superieure = bornes[i];
 		if (quantiles[i] == 0)
 			break;
-		fprintf(f, "%d:%d,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, quantiles[i], NOMBRE_TIC, nombre_slot, nombre_noeud);
+		double pourcentage = (quantiles[i] / nb_message_total);
+		fprintf(f, "%d:%d,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, pourcentage, NOMBRE_TIC, nombre_slot, nombre_noeud);
 		borne_inferieure = borne_superieure+1;
 	}
 	fclose(f);
@@ -573,11 +571,8 @@ int generer_PDF()
 				//strcat(commande, " > /tmp/out.txt");
 
 				/* La commande est prête ! On peut l'exécuter ! */
-				int copie_stdout = dup(1);
-				close(1);
 				if (system(commande) == -1)
 					erreur = 1;
-				dup2(copie_stdout, 1);
 			}
 		}
 		closedir(repertoire);
@@ -608,11 +603,8 @@ int afficher_PDF()
 				strcat(commande, " &");
 
 				/* La commande est prête ! On peut l'exécuter ! */
-				int copie_stdout = dup(1);
-				close(1);
 				if (system(commande) == -1)
 					erreur = 1;
-				dup2(copie_stdout, 1);	//On bloque stdout afin de ne pas avoir d'inputs inutiles dans la console
 			}
 		}
 		closedir(repertoire);
