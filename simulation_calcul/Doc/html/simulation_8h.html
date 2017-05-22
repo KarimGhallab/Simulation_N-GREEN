@@ -130,7 +130,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;200000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;500000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -181,6 +181,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8b9c861bf2ec6cb390ad512c70a7b5da">initialiser_noeuds</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_noeud)</td></tr>
 <tr class="memdesc:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a8b9c861bf2ec6cb390ad512c70a7b5da">More...</a><br /></td></tr>
 <tr class="separator:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad156a2e314c7813bfeb2139981d2298e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad156a2e314c7813bfeb2139981d2298e">effectuer_simulation</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int generer_pdf)</td></tr>
+<tr class="memdesc:ad156a2e314c7813bfeb2139981d2298e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation.  <a href="#ad156a2e314c7813bfeb2139981d2298e">More...</a><br /></td></tr>
+<tr class="separator:ad156a2e314c7813bfeb2139981d2298e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,9 +211,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a14c47dd7a54fa1ab2104ba3cb9bbd383">ecrire_fichier_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les fichiers CSVs avc les données obtenus par la simulation d'un anneau.  <a href="#a14c47dd7a54fa1ab2104ba3cb9bbd383">More...</a><br /></td></tr>
 <tr class="separator:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57a791fdac2ee901b94ba4d085a989e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a57a791fdac2ee901b94ba4d085a989e3">ecrire_nb_message_attente_csv</a> (double **quantiles, int taille_tableau, int *bornes, int numero_anneau)</td></tr>
-<tr class="memdesc:a57a791fdac2ee901b94ba4d085a989e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#a57a791fdac2ee901b94ba4d085a989e3">More...</a><br /></td></tr>
-<tr class="separator:a57a791fdac2ee901b94ba4d085a989e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af66630edc14ed7f6a3172e7e81ae7bc7"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_nb_message_attente_csv</b> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles, int taille_tableau, int *bornes)</td></tr>
+<tr class="separator:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a300b89929924dd233f53bfd0e1e8ef21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a300b89929924dd233f53bfd0e1e8ef21">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles, int *bornes, int taille_tableau)</td></tr>
 <tr class="memdesc:a300b89929924dd233f53bfd0e1e8ef21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a300b89929924dd233f53bfd0e1e8ef21">More...</a><br /></td></tr>
 <tr class="separator:a300b89929924dd233f53bfd0e1e8ef21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,55 +404,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a57a791fdac2ee901b94ba4d085a989e3"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ecrire_nb_message_attente_csv </td>
-          <td>(</td>
-          <td class="paramtype">double **&#160;</td>
-          <td class="paramname"><em>quantiles</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>taille_tableau</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>bornes</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numero_anneau</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">**quantiles[]</td><td>Les quantiles à écrire dans le fichier. </td></tr>
-    <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
-    <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
-    <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a300b89929924dd233f53bfd0e1e8ef21"></a>
 <div class="memitem">
 <div class="memproto">
@@ -493,6 +447,41 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
     <tr><td class="paramname">*quantiles</td><td>Le tableau des données à sauvegarder. </td></tr>
     <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
     <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ad156a2e314c7813bfeb2139981d2298e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void effectuer_simulation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>generer_pdf</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on effectue la simulation </td></tr>
+    <tr><td class="paramname">generer_pdf</td><td>1 si l'on souhaite générer un PDF, toutes autres valeurs sinon. </td></tr>
   </table>
   </dd>
 </dl>
