@@ -550,7 +550,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 
 int generer_PDF()
 {
-	int erreur = 0;
+	int resultat = 1;
 	DIR *repertoire;
 	struct dirent *dir;
 
@@ -572,17 +572,17 @@ int generer_PDF()
 
 				/* La commande est prête ! On peut l'exécuter ! */
 				if (system(commande) == -1)
-					erreur = 1;
+					resultat = 1;
 			}
 		}
 		closedir(repertoire);
 	}
-	return erreur;
+	return resultat;
 }
 
 int afficher_PDF()
 {
-	int erreur = 0;
+	int resultat = 1;
 	DIR *repertoire;
 	struct dirent *dir;
 
@@ -604,12 +604,12 @@ int afficher_PDF()
 
 				/* La commande est prête ! On peut l'exécuter ! */
 				if (system(commande) == -1)
-					erreur = 1;
+					resultat = 1;
 			}
 		}
 		closedir(repertoire);
 	}
-	return erreur;
+	return resultat;
 }
 
 void supprimer_ancien_csv()
@@ -621,7 +621,7 @@ void supprimer_ancien_csv()
 	repertoire = opendir("../CSV/");
 	if (repertoire)		//Le repertoire s'est ouvert avec succès
 	{
-		//On supprime tout les fichiers csv
+		//On supprime tout les fichiers CSVs
 		while ( (dir = readdir(repertoire) ) != NULL)
 		{
 			char chemin_fichier[65] = "../CSV/";

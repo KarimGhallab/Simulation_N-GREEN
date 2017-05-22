@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
+#include <unistd.h>
 int main ( int argc, char *argv[] )
 {
 	/* Gestion de la génération ou de la non-génération du PDF */
@@ -33,9 +33,14 @@ int main ( int argc, char *argv[] )
 	if (generer_pdf == 1)
 	{
 		printf("Génération des fichiers PDF...\n");
+		int copie_stdout = dup(1);
 		fermer_fichier_std();
-		generer_PDF();
-		afficher_PDF();
+		int res = generer_PDF() || afficher_PDF();
+		if (res != 1)
+		{
+			dup2(copie_stdout, 1);
+			printf("Erreur lors de la génération ou l'affichage du PDF...\n");
+		}
 	}
 	return (0);
 }
