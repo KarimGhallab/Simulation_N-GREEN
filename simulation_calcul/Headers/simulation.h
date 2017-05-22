@@ -83,8 +83,8 @@ typedef struct Slot Slot;
 struct Anneau
 {
 	int numero_anneau;
-	Noeud **noeuds;
-	Slot **slots;
+	Noeud *noeuds;
+	Slot *slots;
 	TableauDynamique *messages;
 	double nb_message;
 	int nombre_slot;
