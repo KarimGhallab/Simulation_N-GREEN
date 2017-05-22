@@ -9,7 +9,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 200000
+#define NOMBRE_TIC 500000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -137,6 +137,13 @@ void afficher_noeuds( Anneau *anneau );
  */
 void initialiser_noeuds( Anneau *anneau, int nombre_noeud );
 
+/*! \fn void effectuer_simulation(Anneau *anneau, int generer_pdf)
+    \brief Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation.
+    \param *anneau L'anneau sur lequel on effectue la simulation
+    \param generer_pdf 1 si l'on souhaite générer un PDF, toutes autres valeurs sinon.
+ */
+void effectuer_simulation(Anneau *anneau, int generer_pdf);
+
 /*! \fn void entrer_messages( Anneau *anneau, int tic )
     \brief Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.
     \param *anneau L'anneau dans lequel on fait entrer les messages.
@@ -203,12 +210,12 @@ void ecrire_fichier_csv(Anneau *anneau);
 
 /*! \fn void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau)
 	\brief Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.
-    \param **quantiles[] Les quantiles à écrire dans le fichier.
+	\param *anneau L'anneau sur lequel porte les données à ecrire.
+	\param **quantiles Les quantiles à écrire dans le fichier.
     \param taille_tableau La taille du tableau des quantiles.
     \param *bornes Un tableau des bornes coresspondant aux quantiles.
-	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
  */
-void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau);
+void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes);
 
 /*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau )
     \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.

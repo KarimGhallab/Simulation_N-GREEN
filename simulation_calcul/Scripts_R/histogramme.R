@@ -1,6 +1,5 @@
 library(ggplot2)
 library(scales)
-library(easyGgplot2)
 
 # On part du principe que les fichiers CSVs sont toujours générés par deux.
 nombre_fichiers = length(list.files(path ="../CSV/", pattern="*.csv"))
@@ -21,17 +20,35 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	donnees$interval <- factor(donnees$interval, levels=unique(donnees$interval))
 
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
+	nombre_slot = as.character(donnees$nb_slot[1])
+	nombre_noeud = as.character(donnees$nb_noeud[1])
 
 	############# On écrit un petit message récapitulatif de la simulation #############
 	texte_info = paste("Fait à partir d'une simulation de", nombre_tic)
 	texte_info = paste(texte_info, "tics")
+	texte_info = paste(texte_info, "avec")
+	texte_info = paste(texte_info, nombre_slot)
+	texte_info = paste(texte_info, "slots")
+	texte_info = paste(texte_info, "et")
+	texte_info = paste(texte_info, nombre_noeud)
+	texte_info = paste(texte_info, "noeuds")
 
 	titre = "Répartition des temps d'attentes des messages"
 
+	############# Obtention des pourcentages #############
+	pourcentage = NULL
+	somme = sum(donnees$valeur)
+	for (valeur in donnees$valeur)
+	{
+		v = (valeur/somme) * 100
+		v = format(v, digits = 3)
+		v = paste(v, "%", sep="")
+		pourcentage <- c(pourcentage, v)
+	}
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
 	p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$valeur)) +
 	geom_histogram(stat = "identity",col="red", fill="green", alpha = .2 ) +
-	geom_text(aes(label=comma(donnees$valeur), y = donnees$valeur), size = 3, hjust=0.5, vjust=-0.5, color="black") +
+	geom_text(aes(label=pourcentage, y = donnees$valeur), size = 3, hjust=0.5, vjust=-0.5, color="black") +
 	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
 	scale_y_continuous(labels = comma, name = "Nombre de message") +
 	scale_x_discrete(name = "Interval") +
@@ -63,13 +80,12 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	ylab("Nombre de TIC") +
 	xlab("Quantile") +
 	geom_text(aes(label=donnees$valeur, y = donnees$valeur), size = 3, angle=90, position = position_dodge(width =0.9), hjust=1.2, vjust=0.7, color="white") +
-	theme(legend.background = element_rect(fill="lightblue", size=0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic"), axis.text.x=element_blank(),) +
+	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic"), axis.text.x=element_blank(),) +
 	scale_fill_discrete(name = "Type d'attente") +
 	labs(caption = texte_info) +
 	ggtitle(titre)
 
 	print(p)
-
 }
 
 dev.off()

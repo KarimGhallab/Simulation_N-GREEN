@@ -139,6 +139,70 @@ void afficher_noeuds( Anneau *anneau )
 	}
 }
 
+void effectuer_simulation(Anneau *anneau, int generer_pdf)
+{
+	/* Affichage des paramètres de la simulation */
+	printf("\n");
+	printf("Nombre de TIC de la simulation : %d.\n", NOMBRE_TIC);
+	printf("Nombre de slot de l'anneau : %d.\n", anneau->nombre_slot);
+	printf("Nombre de noeud de l'anneau : %d.\n", anneau->nombre_noeud);
+	if (generer_pdf == 1)
+		printf("Generation des PDFs : Oui.\n\n");
+	else
+		printf("Generation des PDFs : Non.\n\n");
+
+	int nombre_tic_restant = NOMBRE_TIC;
+	int saut_interval = 40; int cmp = 1;
+	int interval = nombre_tic_restant / saut_interval;
+	int pourcentage;
+	char chargement[ saut_interval +3 ];
+
+	time_t debut, fin, total;
+	time(&debut);
+
+	while (nombre_tic_restant > 0)
+	{
+		/* Gestion de la barre de chargement */
+		if (nombre_tic_restant % interval == 0)
+		{
+			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
+			pourcentage = (cmp / (float) saut_interval) *100;
+			printf("\r%s %d%%", chargement, pourcentage);
+			fflush(stdout);
+			cmp++;
+		}
+		entrer_messages( anneau, NOMBRE_TIC - nombre_tic_restant );
+		decaler_messages( anneau );
+		sortir_messages( anneau );
+
+		/*afficher_noeuds(noeuds);
+		printf("\n\n");
+
+		afficher_slots(slots);
+		printf("\n\n");*/
+
+		nombre_tic_restant--;
+	}	//fin de la rotation
+	printf("\n");
+	afficher_etat_anneau(anneau);
+
+	printf("\n\n\n");
+	time(&fin);
+	total = ( fin - debut );
+	printf("Temps total pris pour la rotation totale de l'anneau : %ld secondes.\n", total);
+
+	/* Gestion de la création ou non-création des CSVs et PDFs */
+	if (generer_pdf == 1)	//On génére les fichiers CSVs on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
+	{
+		printf("Ecriture des fichiers CSV...\n");
+		ecrire_fichier_csv(anneau);
+
+		printf("Génération des fichiers PDF...\n");
+		generer_PDF();
+		afficher_PDF();
+	}
+}
+
 void entrer_messages( Anneau *anneau, int tic )
 {
 	Noeud **noeuds = anneau->noeuds; Slot **slots = anneau->slots;
@@ -340,7 +404,7 @@ int cmpfunc (const void * a, const void * b)
 
 void ecrire_fichier_csv(Anneau *anneau)
 {
-	int nombre_quantile = 4;
+	int nombre_quantile = 5;
 	//Ecriture de la répartition des temps d'attente (Min, Max, moyenne)
 	int i; int j = 0; int nombre_colonne = 4;
 	double max; double min; double somme_valeur = 0;
@@ -350,8 +414,8 @@ void ecrire_fichier_csv(Anneau *anneau)
 	/* Trie du tableau */
 	int *tableau = td->tableau;
 	qsort(tableau, taille_utilisee, sizeof(int), cmpfunc);
-	int val_max = tableau[taille_utilisee-1];
 
+	int val_max = tableau[taille_utilisee-1];
 	int bornes_superieures[nombre_quantile];
 
 	int interval = taille_utilisee / nombre_quantile+1;
@@ -387,7 +451,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 	quantiles[nombre_quantile-1][2] = val_max;
 	quantiles[nombre_quantile-1][3] = somme_valeur/quantiles[j][0];
 
-	ecrire_nb_message_attente_csv(quantiles, nombre_quantile, bornes_superieures, anneau->numero_anneau);
+	ecrire_nb_message_attente_csv(anneau, quantiles, nombre_quantile, bornes_superieures);
 	/* Libération de la mémoire du quantile */
 	for(i=0; i<nombre_quantile+1; i++)
 		free(quantiles[i]);
@@ -423,8 +487,12 @@ void ecrire_fichier_csv(Anneau *anneau)
 	free(quantiles_nb_message);
 }
 
-void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau)
+void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes)
 {
+	int numero_anneau = anneau->numero_anneau;
+	int nombre_noeud = anneau->nombre_noeud;
+	int nombre_slot = anneau->nombre_slot;
+
 	char *debut_nom_fichier = "../CSV/repartition_attentes";
 	char buffer[3];
 	char chemin_fichier[65];
@@ -437,7 +505,7 @@ void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,type_valeur,valeur,TIC\n");
+	fprintf(f, "interval,type_valeur,valeur,TIC,nb_slot,nb_noeud\n");
 	int i;
 	int borne_inferieure = 0;
 	for (i=0; i<taille_tableau; i++)
@@ -445,9 +513,9 @@ void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *
 		int borne_superieure = bornes[i];
 		if (quantiles[i][0] == 0)
 			break;
-		fprintf(f, "%d:%d,Min,%lf,%d\n", borne_inferieure, borne_superieure, quantiles[i][1], NOMBRE_TIC);
-		fprintf(f, "%d:%d,Moyenne,%lf,%d\n", borne_inferieure, borne_superieure, quantiles[i][3], NOMBRE_TIC);
-		fprintf(f, "%d:%d,Max,%lf,%d\n", borne_inferieure, borne_superieure, quantiles[i][2], NOMBRE_TIC);
+		fprintf(f, "%d:%d,Min,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, quantiles[i][1], NOMBRE_TIC, nombre_slot, nombre_noeud);
+		fprintf(f, "%d:%d,Moyenne,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, quantiles[i][3], NOMBRE_TIC, nombre_slot, nombre_noeud);
+		fprintf(f, "%d:%d,Max,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, quantiles[i][2], NOMBRE_TIC, nombre_slot, nombre_noeud);
 		borne_inferieure = borne_superieure+1;
 	}
 	fclose(f);
@@ -471,7 +539,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,valeur,TIC\n");
+	fprintf(f, "interval,valeur,TIC,nb_slot,nb_noeud\n");
 	int i;
 	int borne_inferieure = 0;
 	for (i=0; i<taille_tableau; i++)
@@ -479,7 +547,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 		int borne_superieure = bornes[i];
 		if (quantiles[i] == 0)
 			break;
-		fprintf(f, "%d:%d,%lf,%d\n", borne_inferieure, borne_superieure, quantiles[i], NOMBRE_TIC);
+		fprintf(f, "%d:%d,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, quantiles[i], NOMBRE_TIC, nombre_slot, nombre_noeud);
 		borne_inferieure = borne_superieure+1;
 	}
 	fclose(f);
@@ -508,8 +576,11 @@ int generer_PDF()
 				//strcat(commande, " > /tmp/out.txt");
 
 				/* La commande est prête ! On peut l'exécuter ! */
+				int copie_stdout = dup(1);
+				close(1);
 				if (system(commande) == -1)
 					erreur = 1;
+				dup2(copie_stdout, 1);
 			}
 		}
 		closedir(repertoire);
@@ -540,8 +611,11 @@ int afficher_PDF()
 				strcat(commande, " &");
 
 				/* La commande est prête ! On peut l'exécuter ! */
+				int copie_stdout = dup(1);
+				close(1);
 				if (system(commande) == -1)
 					erreur = 1;
+				dup2(copie_stdout, 1);	//On bloque stdout afin de ne pas avoir d'inputs inutiles dans la console
 			}
 		}
 		closedir(repertoire);
