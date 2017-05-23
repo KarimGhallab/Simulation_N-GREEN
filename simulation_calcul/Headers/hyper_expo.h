@@ -52,7 +52,7 @@ float generer_aleatoire(float borne_min, float borne_max);
 int loi_de_poisson_naif(float u);
 
 
-/*! \fn int loi_de_poisson_opti(float u)
+/*! \fn int loi_de_poisson_opti(float u, double tableau_poisson[])
     \brief Calcule optimisé du résultat d'une loi de poisson.
     \param u : Variable aléatoire.
     \param tableau_poisson : Le tableau contenant les valeurs de la loi de poisson.

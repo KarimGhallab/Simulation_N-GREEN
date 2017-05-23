@@ -11,13 +11,13 @@ int main ( int argc, char *argv[] )
 
 	int nombre_slot = 25; int nombre_noeud = 5;
 	/* Initialisation de l'anneau */
-	int nombre_anneau = 2;
+	int nombre_anneau = 1;
 	Anneau *anneau1 = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
-	Anneau *anneau2 = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
+	//Anneau *anneau2 = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
 
 	Anneau *anneaux[nombre_anneau];
 	anneaux[0] = anneau1;
-	anneaux[1] = anneau2;
+	//anneaux[1] = anneau2;
 
 	/* Mise en place de la structure des fichiers necessaire à la sauvegarde des données */
 	supprimer_ancien_csv();
@@ -35,7 +35,8 @@ int main ( int argc, char *argv[] )
 		printf("Génération des fichiers PDF...\n");
 		int copie_stdout = dup(1);
 		fermer_fichier_std();
-		int res = generer_PDF() || afficher_PDF();
+		int res = generer_PDF();
+		res = afficher_PDF();
 		if (res != 1)
 		{
 			dup2(copie_stdout, 1);

@@ -25,11 +25,12 @@ void afficher_tableau_dynamique( TableauDynamique *td )
 
 void ajouter_valeur( TableauDynamique *td, int valeur )
 {
-	if (td->taille_utilisee+1 > td->taille_tableau)		//Il faut réallouer l'espace du tableau
+	td->tableau[td->taille_utilisee] = valeur;
+	td->taille_utilisee++;
+
+	if (td->taille_utilisee == td->taille_tableau)		//Il faut réallouer l'espace du tableau
 	{
 		td->tableau = (int * ) realloc(td->tableau, (2 * td->taille_tableau) * sizeof(int) );
 		td->taille_tableau = td->taille_tableau * 2;
 	}
-	td->tableau[td->taille_utilisee] = valeur;
-	td->taille_utilisee++;
 }

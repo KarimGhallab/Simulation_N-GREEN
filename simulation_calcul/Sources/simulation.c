@@ -267,9 +267,13 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	/* Met à jour les temps d'attentes du noeud qui envoi le message */
 	int i; int temps_attente_message;
 
+	//memcpy dans l'espace mémoire du seconde paramètres, les valeurs comprises dans l'espace du second paramètres
+	//La longueur de l'espace mémoire à copier est spécifié par le troisieme paramètre
+	memcpy(paquet->messages, messages, (nombre_message * sizeof(int)) );
+
 	for (i=0; i<nombre_message; i++)
 	{
-		paquet->messages[i] = messages[i];
+		//paquet->messages[i] = messages[i];	//copy
 
 		temps_attente_message = tic - paquet->messages[i];
 		if (td != NULL)

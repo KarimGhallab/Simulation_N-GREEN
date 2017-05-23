@@ -7,5 +7,6 @@ var searchData=
   ['afficher_5fslots',['afficher_slots',['../simulation_8h.html#a2e17fdea3a85c6e772e7bdf68cdfed56',1,'simulation.h']]],
   ['afficher_5ftableau_5fdynamique',['afficher_tableau_dynamique',['../TableauDynamique_8h.html#a391333882c7f1fc06b20a189be22a5c6',1,'TableauDynamique.h']]],
   ['ajouter_5fmessage',['ajouter_message',['../File_8h.html#a467191ed94deaa3c303e7b9c525dc95a',1,'File.h']]],
+  ['ajouter_5fvaleur',['ajouter_valeur',['../TableauDynamique_8h.html#aec2a09033fe1247ca9cfeb2b0e0587e8',1,'TableauDynamique.h']]],
   ['anneau',['Anneau',['../structAnneau.html',1,'']]]
 ];

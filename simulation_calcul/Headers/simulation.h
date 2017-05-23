@@ -208,7 +208,7 @@ int cmpfunc (const void * a, const void * b);
  */
 void ecrire_fichier_csv(Anneau *anneau);
 
-/*! \fn void ecrire_nb_message_attente_csv(double **quantiles, int taille_tableau, int *bornes, int numero_anneau)
+/*! \fn void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes)
 	\brief Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.
 	\param *anneau L'anneau sur lequel porte les données à ecrire.
 	\param **quantiles Les quantiles à écrire dans le fichier.

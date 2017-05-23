@@ -2,8 +2,8 @@
     \brief Header du fichier contenant la structure représentant une file.
  */
 
- /*! \def TAILLE_MAX
-     \brief La taille maximale d'un tableau de message pour une File.
+ /*! \def TAILLE_INITIALE
+     \brief La taille initiale d'un tableau de message pour une File.
   */
 #define TAILLE_INITIALE 500000
 

@@ -20,13 +20,13 @@ struct TableauDynamique
 typedef struct TableauDynamique TableauDynamique;
 
 
-/*! \fn void initialiser_tableau(TableauDynamique td)
+/*! \fn TableauDynamique* initialiser_tableau_dynamique()
     \brief Initialise un tableau dynamique.
-    \return TableauDynamique* Un pointeur vers tableau dynamique.
+    \return TableauDynamique* Un pointeur vers le tableau dynamique.
  */
 TableauDynamique* initialiser_tableau_dynamique();
 
-/*! \fn TableauDynamique* ajouter_valeur( TableauDynamique *td, valeur );
+/*! \fn void ajouter_valeur( TableauDynamique *td, int valeur )
     \brief Ajoute une valeur au tableau dynamique.
      La taille du tableau peut etre réallouer si necessaire.
     \param *td Le tableau auquel on souhaite ajouter la valeur.
@@ -34,7 +34,7 @@ TableauDynamique* initialiser_tableau_dynamique();
  */
 void ajouter_valeur( TableauDynamique *td, int valeur );
 
-/*! \fn void afficher_tableau_dynamique(TableauDynamique *td)
+/*! \fn void afficher_tableau_dynamique( TableauDynamique *td )
     \brief Affiche un tableau dynamique.
     \param *td Un pointeur sur le tableau dynamique à afficher.
  */

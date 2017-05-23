@@ -128,8 +128,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a36caeb1f4b4de1381a2dfe5d10b417ea">loi_de_poisson_naif</a> (float u)</td></tr>
 <tr class="memdesc:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule naif du résultat d'une loi de poisson.  <a href="#a36caeb1f4b4de1381a2dfe5d10b417ea">More...</a><br /></td></tr>
 <tr class="separator:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a27dbb7b267a6c442ac5b69a2e5dd8ba8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>loi_de_poisson_opti</b> (float u, double tableau_poisson[])</td></tr>
+<tr class="memitem:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a27dbb7b267a6c442ac5b69a2e5dd8ba8">loi_de_poisson_opti</a> (float u, double tableau_poisson[])</td></tr>
+<tr class="memdesc:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule optimisé du résultat d'une loi de poisson.  <a href="#a27dbb7b267a6c442ac5b69a2e5dd8ba8">More...</a><br /></td></tr>
 <tr class="separator:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae457618edd975e9f389d2be0c6c7dfa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ae457618edd975e9f389d2be0c6c7dfa7">initialiser_tableau</a> (double tableau_poisson[])</td></tr>
 <tr class="memdesc:ae457618edd975e9f389d2be0c6c7dfa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé.  <a href="#ae457618edd975e9f389d2be0c6c7dfa7">More...</a><br /></td></tr>
@@ -262,6 +262,42 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>loi_de_poisson_opti</b
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Le résultat de la loi de poisson. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a27dbb7b267a6c442ac5b69a2e5dd8ba8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int loi_de_poisson_opti </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>tableau_poisson</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calcule optimisé du résultat d'une loi de poisson. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
+    <tr><td class="paramname">tableau_poisson</td><td>: Le tableau contenant les valeurs de la loi de poisson. </td></tr>
   </table>
   </dd>
 </dl>
