@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Simualation graphique N-GREEN: simulation_v2.Controleur Class Reference</title>
+<title>Simulation graphique N-GREEN: simulation_v2.Controleur Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Simualation graphique N-GREEN
+   <div id="projectname">Simulation graphique N-GREEN
    </div>
    <div id="projectbrief">Simulation graphique du réseau en anneau du projet N-GREEN</div>
   </td>
@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -81,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>simulation_v2</b></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1Controleur.html">Controleur</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacesimulation__v2.html">simulation_v2</a></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1Controleur.html">Controleur</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -93,10 +94,14 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">simulation_v2.Controleur Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Classe représentant le système que l'on souhaite modéliser dans sa globalité Elle fait l'intermédiaire entre le modèle et la vue.  
+ <a href="classsimulation__v2_1_1Controleur.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Controleur.html#a76cc4b954f4e8e08491ea2cd80d1b60c">__init__</a> (self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)</td></tr>
+<tr class="memdesc:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>.  <a href="#a76cc4b954f4e8e08491ea2cd80d1b60c">More...</a><br /></td></tr>
 <tr class="separator:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -130,9 +135,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a54f133db7dc8c75c79a8b1edf5c5fada"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">    Classe représentant le système que l'on souhaite modéliser dans sa globalité
-    Elle fera l'intermédiaire entre le modèle et la vue.
-</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<div class="textblock"><p>Classe représentant le système que l'on souhaite modéliser dans sa globalité Elle fait l'intermédiaire entre le modèle et la vue. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a76cc4b954f4e8e08491ea2cd80d1b60c"></a>
 <div class="memitem">
 <div class="memproto">
@@ -186,8 +190,21 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">    Le constructeur.
-</pre> 
+
+<p>Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">self</td><td>: L'objet <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>. </td></tr>
+    <tr><td class="paramname">fenetre</td><td>: La fenêtre Tkinter de la simulation. </td></tr>
+    <tr><td class="paramname">canvas</td><td>: Le canvas de la simulation. </td></tr>
+    <tr><td class="paramname">slots_vue</td><td>: Les slots de la vue de la simulation. </td></tr>
+    <tr><td class="paramname">slots_modele</td><td>: Les slost du modèle de la simulation. </td></tr>
+    <tr><td class="paramname">noeuds_vue</td><td>: Les noeuds de la vue de la simulation. </td></tr>
+    <tr><td class="paramname">noeuds_modele</td><td>: Les noeuds du modèle de la simulation. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

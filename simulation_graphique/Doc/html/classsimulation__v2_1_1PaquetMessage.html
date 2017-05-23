@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Simualation graphique N-GREEN: simulation_v2.PaquetMessage Class Reference</title>
+<title>Simulation graphique N-GREEN: simulation_v2.PaquetMessage Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Simualation graphique N-GREEN
+   <div id="projectname">Simulation graphique N-GREEN
    </div>
    <div id="projectbrief">Simulation graphique du réseau en anneau du projet N-GREEN</div>
   </td>
@@ -39,6 +39,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Packages</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li>
         <div id="MSearchBox" class="MSearchBoxInactive">
@@ -81,7 +82,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>simulation_v2</b></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html">PaquetMessage</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacesimulation__v2.html">simulation_v2</a></li><li class="navelem"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html">PaquetMessage</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -93,16 +94,23 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">simulation_v2.PaquetMessage Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, l'id du paquet le représentant graphiquement ainsi que la taille du paquet.  
+ <a href="classsimulation__v2_1_1PaquetMessage.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a9f7f61de2a361e186dfec6a2dc523bbd">__init__</a> (self, id_message, indice_noeud_emetteur, taille, messages)</td></tr>
+<tr class="memdesc:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un paquet de message.  <a href="#a9f7f61de2a361e186dfec6a2dc523bbd">More...</a><br /></td></tr>
 <tr class="separator:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a4d5c97ecb3e51512d35516e1e0b274"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a9a4d5c97ecb3e51512d35516e1e0b274">update_position</a> (self, nouveau_x, nouveau_y)</td></tr>
+<tr class="memdesc:a9a4d5c97ecb3e51512d35516e1e0b274"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met a jour la position graphique du message.  <a href="#a9a4d5c97ecb3e51512d35516e1e0b274">More...</a><br /></td></tr>
 <tr class="separator:a9a4d5c97ecb3e51512d35516e1e0b274"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1d561adb996726291e6c05a2c63602"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a3f1d561adb996726291e6c05a2c63602">__str__</a> (self)</td></tr>
+<tr class="memdesc:a3f1d561adb996726291e6c05a2c63602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renvoie le paquet sous forme de chaine de caractères.  <a href="#a3f1d561adb996726291e6c05a2c63602">More...</a><br /></td></tr>
 <tr class="separator:a3f1d561adb996726291e6c05a2c63602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0cf801915994d2b32d7aa0ca2dc42f32"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a0cf801915994d2b32d7aa0ca2dc42f32">equals</a> (self, autre_message)</td></tr>
+<tr class="memdesc:a0cf801915994d2b32d7aa0ca2dc42f32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retourne l'equalité entre deux messages.  <a href="#a0cf801915994d2b32d7aa0ca2dc42f32">More...</a><br /></td></tr>
 <tr class="separator:a0cf801915994d2b32d7aa0ca2dc42f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -127,10 +135,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ad55d919937881389f90642f529a23c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">    Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
-    l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
-    Il contient aussi un tableau contenant les messages du paquet.
-</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<div class="textblock"><p>Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, l'id du paquet le représentant graphiquement ainsi que la taille du paquet. </p>
+<p>Il contient aussi un tableau contenant les messages du paquet. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a9f7f61de2a361e186dfec6a2dc523bbd"></a>
 <div class="memitem">
 <div class="memproto">
@@ -172,9 +179,19 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">    Le constructeur d'un paquet de message.
-    Il prend en paramètre l'id du message graphique et l'indice du noeud emetteur.
-</pre> 
+
+<p>Le constructeur d'un paquet de message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">self</td><td>: le <a class="el" href="classsimulation__v2_1_1PaquetMessage.html" title="Représente un paquet de message curculant dans l&#39;anneau : contient à la fois les coordonnées graphiqu...">PaquetMessage</a>. </td></tr>
+    <tr><td class="paramname">id_message</td><td>: L'id du message. </td></tr>
+    <tr><td class="paramname">indice_noeud_emetteur</td><td>: L'indice du noeud emetteur du paquet. </td></tr>
+    <tr><td class="paramname">taille</td><td>: La taille du paquet. </td></tr>
+    <tr><td class="paramname">messages</td><td>: Les messages du paquet. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
@@ -191,8 +208,16 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">    Renvoie le paquet sous forme de chaine de caractères.
-</pre> 
+
+<p>Renvoie le paquet sous forme de chaine de caractères. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">self</td><td>: le <a class="el" href="classsimulation__v2_1_1PaquetMessage.html" title="Représente un paquet de message curculant dans l&#39;anneau : contient à la fois les coordonnées graphiqu...">PaquetMessage</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Le paquet sous forme de chaine de caractères. </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a0cf801915994d2b32d7aa0ca2dc42f32"></a>
@@ -218,8 +243,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">    Retourne l'equalité entre deux messages.
-</pre> 
+
+<p>Retourne l'equalité entre deux messages. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">self</td><td>: le premier <a class="el" href="classsimulation__v2_1_1PaquetMessage.html" title="Représente un paquet de message curculant dans l&#39;anneau : contient à la fois les coordonnées graphiqu...">PaquetMessage</a>. </td></tr>
+    <tr><td class="paramname">autre_message</td><td>: le second <a class="el" href="classsimulation__v2_1_1PaquetMessage.html" title="Représente un paquet de message curculant dans l&#39;anneau : contient à la fois les coordonnées graphiqu...">PaquetMessage</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>True si les PaquetMessages sont les mêmes, False sinon. </dd></dl>
+
 </div>
 </div>
 <a class="anchor" id="a9a4d5c97ecb3e51512d35516e1e0b274"></a>
@@ -251,8 +285,17 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">    Met a jour la position graphique du message.
-</pre> 
+
+<p>Met a jour la position graphique du message. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">self</td><td>: le <a class="el" href="classsimulation__v2_1_1PaquetMessage.html" title="Représente un paquet de message curculant dans l&#39;anneau : contient à la fois les coordonnées graphiqu...">PaquetMessage</a>. </td></tr>
+    <tr><td class="paramname">nouveau_x</td><td>: La nouvelle coordonnée X du message. </td></tr>
+    <tr><td class="paramname">nouveau_y</td><td>: La nouvelle coordonnée Y du message. </td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

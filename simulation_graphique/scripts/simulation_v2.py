@@ -1,9 +1,7 @@
 #coding: utf8
 
-"""
-	Ce script permet de réaliser une simulation d'un anneau en réseau dans le cadre du projet N-GREEN.
-	Auteur : Ghallab Karim.
-"""
+##	@package simulation_v2
+#	Ce script permet de réaliser une simulation d'un anneau en réseau dans le cadre du projet N-GREEN.
 
 import tkMessageBox
 import time
@@ -66,7 +64,7 @@ DICT_TEXTES_NOEUDS = {}
 PERIODE_MESSAGE_ANTENNE = 100
 STATHAM_MODE = False
 
-#Les variables pour l'hyper exponentielle
+""" Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.01
 global LAMBDA
 LAMBDA = 10
@@ -81,12 +79,9 @@ LIMITE_NOMBRE_MESSAGE_MIN = 60
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
+##	Créer une fenetre Tkinter avec son titre.
+#	@return La fenêtre Tkinter créée.
 def creer_fenetre():
-	"""
-		Créer une fenetre Tkinter avec son titre.
-	"""
-
-	# On crée une fenêtre, racine de notre interface
 	fenetre = Tk()
 	if STATHAM_MODE:
 		titre = "Jason Statham : <3"
@@ -96,13 +91,10 @@ def creer_fenetre():
 
 	return fenetre
 
-
+##	Créer un canvas avec une croix au centre et le place dans la fenetre.
+#	@param fenetre : La fenetre Tkinter ou le canvas sera ajouté.
+#	@return Le canvas créé.
 def creer_canvas(fenetre):
-	"""
-		Créer un canvas avec une croix au centre et le place dans la fenetre.
-		fenetre est la fenetre Tkinter ou le canvas sera ajouté.
-	"""
-
 	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#909090')
 
 	#Création de la croix au centre du canvas
@@ -113,14 +105,13 @@ def creer_canvas(fenetre):
 
 	return canvas
 
-
+##	Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant :
+#	En indice 0 les slots du modele
+#	En indice 1 les slots de la vue.
+#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param canvas : Le canvas sur lequel on place les slots graphiques.
+#	@return En indice 0 les slots du modèle, en indice 1 les slots de la vue.
 def placer_slots(fenetre, canvas):
-	"""
-		Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant :
-		En indice 0 les slots du modele
-		En indice 1 les slots de la vue.
-	"""
-
 	slots_vue = [None] * NOMBRE_SLOT	#Tableau qui contiendra les rectangles représentant les slots du modèle
 	slots_modele = [ None ] * NOMBRE_SLOT
 
@@ -139,14 +130,16 @@ def placer_slots(fenetre, canvas):
 	return slots_modele, slots_vue
 
 
+##	Place sur la toile les noeuds et renvoie un tableau contenant :
+#	En indice 0 les noeuds du modele.
+#	En indice 1 les noeuds de la vue.
+#	En indice 2 les slots du modèle.
+#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param canvas : Le canvas sur lequel on place les slots graphiques.
+#	@param slots_modele : Les slots du modele
+#	@param slots_vue : Les slots de la vue
+#	@return En indice 0 les noeuds du modèle, en indice 1 les noeuds de la vue, en indice 2 les slots du modèle.
 def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
-	"""
-		Place sur la toile les noeuds et renvoie un tableau contenant :
-		En indice 0 les noeuds du modele.
-		En indice 1 les noeuds de la vue.
-		En indice 2 les slots du modèle.
-	"""
-
 	global TEXTS_NOEUDS
 	global DICT_TEXTES_NOEUDS
 
@@ -171,21 +164,21 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible -1 ].indice_noeud_ecriture = j
 
-		#Modification des couleur des slots
+		""" Modification des couleur des slots """
 		couleur = noeuds_modele[j].couleur
 		canvas.itemconfig(slots_vue[indice_slot_accessible], outline=couleur)
 		canvas.itemconfig(slots_vue[indice_slot_accessible-1], outline=couleur)
 
-		#Calcule de la position du noeud
+		""" Calcule de la position du noeud """
 		milieu_x = COTE_CANVAS/2
 		milieu_y = COTE_CANVAS/2
 
-		#Calcule de l'abscisse du noeud en fonction de la position du slot
+		""" Calcule de l'abscisse du noeud en fonction de la position du slot """
 		x1 = milieu_x + slots_modele [ indice_slot_accessible ].val_cos * DISTANCE_NOEUD
 		x2 = milieu_x + slots_modele [ indice_slot_accessible -1 ].val_cos * DISTANCE_NOEUD
 		x = (x1 + x2) / 2
 
-		#Calcule de l'ordonné du noeud en fonction de la position du slot
+		""" Calcule de l'ordonné du noeud en fonction de la position du slot """
 		y1 = milieu_y - slots_modele [ indice_slot_accessible ].val_sin * DISTANCE_NOEUD
 		y2 = milieu_y - slots_modele [ indice_slot_accessible -1 ].val_sin * DISTANCE_NOEUD
 		y = (y1 + y2) / 2
@@ -193,7 +186,7 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
 		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click_noeud)
 
-		#le texte du rectangle
+		""" #le texte du rectangle """
 		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
 		canvas.tag_bind(TEXTS_NOEUDS[j], "<Button-1>", callback_click_texte)
 
@@ -202,11 +195,15 @@ def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
 	return noeuds_modele, noeuds_vue, slots_modele
 
 
-def placer_message_graphique(canvas, depart, arrive, couleur_message):
-	"""
-		Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.
-	"""
+##	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.
+#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param canvas : Le canvas sur lequel on place le message.
+#	@param depart : Les coordonnees de départ du message.
+#	@param arrive : Les coordonnees d'arrivée du message.
+#	@param couleur_message : La couleur du message.
+#	@return L'id du message créé.
 
+def placer_message_graphique(canvas, depart, arrive, couleur_message):
 	coordonnees = canvas.coords(depart)
 
 	depart_x = (coordonnees[0] + coordonnees[2])/2
@@ -217,28 +214,25 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 	arrivee_x = (coordonnees[0] + coordonnees[2])/2
 	arrivee_y = (coordonnees[1] + coordonnees[3])/2
 
-	#Le point est placé
+	""" Le point est placé """
 	if not STATHAM_MODE:
 		objet = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
 	else:
 		objet = canvas.create_image(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, image=IMAGE_JASON)
-	#On fait se déplacer le message
+	""" On fait se déplacer le message """
 	t = Thread(target=deplacer_vers, args=(canvas, objet, arrivee_x, arrivee_y))
 	t.start()
 
 	return objet
 
-
+##	place le panel gauche de la fenetre contenant les boutons:
+#	- Start.
+#	- Stop.
+#	- Restart.
+#	- Augmenter vitesse.
+#	- Diminuer vitesse.
+#	@param fenetre : La fenetre sur laquelle on place le panel.
 def placer_panel_gauche(fenetre):
-	"""
-		place le panel gauche de la fenetre contenant les boutons:
-			- Start.
-			- Stop.
-			- Restart.
-			- Augmenter vitesse.
-			- Diminuer vitesse.
-	"""
-
 	play = Image.open("../images/play.png")
 	IMAGES.append( ImageTk.PhotoImage(play) )
 	bouton_play = Button(fenetre, command = commencer_rotation, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
@@ -273,23 +267,20 @@ def placer_panel_gauche(fenetre):
 	bouton_down.grid(row=9)
 
 
+##	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
+#	- Le nombre de slot utilisé.
+#	- Le nombre de Noeud présent.
+#	- Le lambda actuellement utilisé.
+#	- le lambda burst actuellement utilisé.
+#	- Et la limite minimal des noeuds pour evoyer un message.
+#	Le panel contient aussi un bouton de validation des données.
+#	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
+#	@param fenetre : La fenetre sur laquelle on place le panel gauche.
 def placer_panel_bas(fenetre):
-	"""
-		Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
-			- Le nombre de slot utilisé.
-			- Le nombre de Noeud présent.
-			- Le lambda actuellement utilisé.
-			- le lambda burst actuellement utilisé.
-			- Et la limite minimal des noeuds pour evoyer un message.
-
-		Le panel contient aussi un bouton de validation des données.
-		Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
-	"""
-
 	nombre_slot = len( controleur.slots_modele )
 	nombre_noeud = len( controleur.noeuds_modele )
 
-	#Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde
+	""" Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde """
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
 	label_lambda_actuel = Label(fenetre, text = "Lambda actuel : "+str(LAMBDA) )
@@ -303,7 +294,7 @@ def placer_panel_bas(fenetre):
 	label_limite_taille_message_min.grid(row=NOMBRE_LIGNE_CANVAS+5, column=1, sticky='W')
 	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+6, 1)
 
-	#Les labels des entry pour un nouveau nombre de slot/noeud
+	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
 	label_nouveau_lambda = Label(fenetre, text = "Nouvelle valeur du lambda : ")
@@ -316,14 +307,14 @@ def placer_panel_bas(fenetre):
 	label_nouveau_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=2, sticky='W')
 	label_nouvelle_limite.grid(row=NOMBRE_LIGNE_CANVAS+5, column=2, sticky='W')
 
-	#Les entry
+	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_noeud = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda_burst = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_limite_message = Entry(fenetre, width=LONGUEUR_ENTRY)
 
-	#Ajout d'un event
+	""" Ajout d'un event """
 	entry_slot.bind("<Key>", callback_validation_configuration)
 	entry_noeud.bind("<Key>", callback_validation_configuration)
 	entry_lambda.bind("<Key>", callback_validation_configuration)
@@ -342,16 +333,16 @@ def placer_panel_bas(fenetre):
 	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky='W')
 	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky='W')
 
-	#le bouton
+	""" le bouton """
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
 	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+7, column=4, sticky='E')
 
 
+##	Met a jour le label du panel bas affichant le TIC en millisecondes.
+#	@param fenetre : La fenetre sur laquelle on se situe le label que l'on souhaite modifier.
+#	@param ligne : La ligne ou se situe le label par rapport au panel bas.
+#	@param colonne : La colonne ou se situe le label par rapport au panel bas.
 def update_label_TIC(fenetre, ligne, colonne):
-	"""
-		Met a jour le label du panel bas affichant le TIC en millisecondes.
-	"""
-
 	global LABEL_TIC
 
 	if LABEL_TIC != None:
@@ -365,16 +356,17 @@ def update_label_TIC(fenetre, ligne, colonne):
 	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
 
 
+##	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y.
+#	@param canvas : Le canvas sur lequel se situe l'objet que l'on souhaite déplacer.
+#	@param objet : L'objet que l'on souhaite déplacer.
+#	@param arrivee_x : Le point d'arrivé x que l'on souhaite pour l'objet.
+#	@param arrivee_y : Le point d'arrivé y que l'on souhaite pour l'objet.
 def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
-	"""
-		Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y.
-	"""
-
-	#Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours
+	""" Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours """
 	objet_x = int(canvas.coords(objet)[0])
 	objet_y = int(canvas.coords(objet)[1])
 
-	#Calcule la taille de la forme de l'objet passé
+	""" Calcule la taille de la forme de l'objet passé """
 
 	if not STATHAM_MODE:
 		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
@@ -400,18 +392,17 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
 
+##	Fait sortir graphiquement un mssage du canvas.
+#	@param canvas : Le canvas sur lequel se situe le message que l'on souhaite sortir.
+#	@param message : Le message que l'on souhaite sortir.
 def sortir_message_graphique(canvas, message):
-	"""
-		Fait sortir graphiquement un mssage du canvas.
-	"""
-
-	#L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas
+	""" L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas """
 	time.sleep( float(TIC) / float(1000) )
 
 	x = int(canvas.coords(message)[0])
 	y = int(canvas.coords(message)[1])
 
-	#Mise en place des directions pour les abscisses et les ordonnées
+	""" Mise en place des directions pour les abscisses et les ordonnées """
 	if x > COTE_CANVAS/2:
 		direction_x = 1
 		objectif_x = COTE_CANVAS
@@ -439,7 +430,7 @@ def sortir_message_graphique(canvas, message):
 
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
-		#Si un bord du canvas est atteint on supprime le message du canvas
+		""" Si un bord du canvas est atteint on supprime le message du canvas """
 		if x == 0 or x == COTE_CANVAS or y == 0 or y == COTE_CANVAS:
 			canvas.delete(message)
 			break
@@ -447,22 +438,23 @@ def sortir_message_graphique(canvas, message):
 
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
+##	Représente un noeud dans le système, un noeuds peux stocker des messages.
 class Noeud:
-	"""
-		Représente un noeud dans le système, un noeuds peux stocker des messages.
-	"""
 
+
+	##	Constructeur d'un noeud.
+	#	@param self : L'objet de la classe.
+	#	@param indice_slot_lecture : L'indice du slot en lecture.
+	#	@param indice_slot_ecriture : L'indice du slot en ecriture.
+	#	@param couleur : La couleur graphique du noeud.
+	#	@param nb_antenne : Le nombre d'antenne du noeud.
+	#	@param debut_periode : Le début de la période du noeud pour recevoir des messages des antennes.
 	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, debut_periode):
-		"""
-			Constructeur d'un noeud.
-			Il prend en argument l'indice de son slot de lecture, l'indice de son slot d'ecriture, sa couleur (graphique), son nombre d'antenne, ainsi que le décalage en nombre de TIC pour la récéption de message des antennes.
-		"""
-
 		self.nb_message = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
-		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeuds
+		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debut_periode = debut_periode		#Le décalage selon lequel le noeud recoit des messages des antennes
 		self.messages = deque()		#File FIFO contenant les TIC d'arrivé des messages
 		self.attente_max = 0		#Le temps d'attente maximal dans le noeud
@@ -470,24 +462,25 @@ class Noeud:
 		self.attente_totale = 0
 
 
+	##	renvoie l'équalité entres deux noeuds.
+	#	@param self : Le premier noeud.
+	#	@param autre_noeud : Le second noeud.
+	#	@return True si les noeuds sont les mêmes, False sinon.
 	def equals(self, autre_noeud):
-		"""
-			renvoie l'équalité entres deux noeuds.
-		"""
-
 		return self.couleur == autre_noeud.couleur
 
 
+	##	Ajoute un message au noeud.
+	#	@param self : Le noeud.
+	#	@param message : Le message à ajouter au noeud.
 	def ajouter_message(self, message):
 		self.messages.append(message)
 		self.nb_message_total += 1
 
 
+	##	Met a jour le texte affichant le nombre de message en attente dans le noeud.
+	#	@param self : Le noeud.
 	def update_file_noeud_graphique(self):
-		"""
-			Met a jour le texte affichant le nombre de message en attente dans le noeud.
-		"""
-
 		global controleur
 		global TEXTS_NOEUDS
 		global DICT_TEXTES_NOEUDS
@@ -512,27 +505,30 @@ class Noeud:
 		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud] ] = controleur.noeuds_modele [indice_noeud]
 
 
+	##	Renvoie le noeud sous forme de chaine de caractères.
+	#	@param self : Le noeud.
+	#	@return Le noeud sous forme de chaine de caractères.
 	def __str__(self):
-		"""
-			Renvoie le noeud sous forme de chaine de caractères.
-		"""
-
 		return str(self.couleur)
 
+	##	Met à jour le temps d'attente des messages du noeud.
+	#	@param self : Le noeud.
 	def update_attente(self):
-		"""
-			Met à jour le temps d'attente des messages du noeud.
-		"""
-
 		for message in self.messages:
 			self.attente_totale += 1
 
 
+##	Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
 class Slot:
 
-	"""
-		Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
-	"""
+
+	##	Le constructeur d'un slot
+	#	@param self : Le slot.
+	#	@param id : L'id du slot.
+	#	@param indice_noeud_lecture : L'indice du noeud en lecture.
+	#	@param indice_noeud_ecriture : L'indice du noeud en écriture.
+	#	@param val_cos : La valeur du cosinus de la position du noeud.
+	#	@param val_sin : La valeur du sinus de la position du noeud.
 	def __init__(self, id, indice_noeud_lecture, indice_noeud_ecriture, val_cos, val_sin):
 		self.id = id
 		self.paquet_message = None	#Indique si le slot possede un paquet de message
@@ -541,9 +537,8 @@ class Slot:
 		self.val_cos = val_cos
 		self.val_sin = val_sin
 
-	"""
-		Renvoie le slot sous forme de chaine de caractères.
-	"""
+	##	Renvoie le slot sous la forme d'une chaine de caractères.
+	#	@return Le slot sous la forme d'une chaine de caractères.
 	def __str__(self):
 		if self.paquet_message == None:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je ne possede pas de message"
@@ -551,18 +546,18 @@ class Slot:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je possede un message"
 
 
+##	Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
+#	l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
+#	Il contient aussi un tableau contenant les messages du paquet.
 class PaquetMessage:
-	"""
-		Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
-		l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
-		Il contient aussi un tableau contenant les messages du paquet.
-	"""
-	def __init__(self, id_message, indice_noeud_emetteur, taille, messages):
-		"""
-			Le constructeur d'un paquet de message.
-			Il prend en paramètre l'id du message graphique et l'indice du noeud emetteur.
-		"""
 
+	##	Le constructeur d'un paquet de message.
+	#	@param self : le PaquetMessage.
+	#	@param id_message : L'id du message.
+	#	@param indice_noeud_emetteur : L'indice du noeud emetteur du paquet.
+	#	@param taille : La taille du paquet.
+	#	@param messages : Les messages du paquet.
+	def __init__(self, id_message, indice_noeud_emetteur, taille, messages):
 		self.id_message_graphique = id_message
 		self.indice_noeud_emetteur = indice_noeud_emetteur
 		self.x = None
@@ -571,33 +566,35 @@ class PaquetMessage:
 		self.messages = messages
 
 
+	##	Met a jour la position graphique du message.
+	#	@param self : le PaquetMessage.
+	#	@param nouveau_x : La nouvelle coordonnée X du message.
+	#	@param nouveau_y : La nouvelle coordonnée Y du message.
 	def update_position(self, nouveau_x, nouveau_y):
-		"""
-			Met a jour la position graphique du message.
-		"""
-
 		self.x = nouveau_x
 		self.y = nouveau_y
 
-
+	##	Renvoie le paquet sous forme de chaine de caractères.
+	#	@param self : le PaquetMessage.
+	#	@return Le paquet sous forme de chaine de caractères.
 	def __str__(self):
-		"""
-			Renvoie le paquet sous forme de chaine de caractères.
-		"""
-
 		global controleur
 		return "Message envoyé par le noeud  : "+str(controleur.noeuds_modele[self.indice_noeud_emetteur].couleur)
 
 
+	##	Retourne l'equalité entre deux messages.
+	#	@param self : le premier PaquetMessage.
+	#	@param autre_message : le second PaquetMessage.
+	#	@return True si les PaquetMessages sont les mêmes, False sinon.
 	def equals(self, autre_message):
-		"""
-			Retourne l'equalité entre deux messages.
-		"""
-
 		return self.id_message_graphique == autre_message.id_message_graphique
 
-
+##	Classe représentant un message dans l'anneau.
 class MessageN:
+
+	##	Constructeur d'un message.
+	#	@param self : Le MessageN
+	#	@param TIC_arrive : Le TIC d'arrivé du message.
 	def __init__(self, TIC_arrive):
 		self.TIC_arrive = TIC_arrive
 
@@ -606,32 +603,24 @@ class MessageN:
 ############ Partie tirage/hyper exponentielle ############
 ###########################################################
 
+##	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.
+#	@param La probabilité selon laquel le tirage à tiré un événement ou non.
+#	@return True si le tirage est inférieur ou égal à la probabilité, False sinon.
 def effectuer_tirage(probabilite):
-	"""
-		Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.
-	"""
-
 	tirage = random.uniform(0, 1)
 	return tirage <= probabilite
 
-
+##	Réalise le tirage selon l'hyper exponentielle.
 def hyper_expo():
-	"""
-		Réalise le tirage selon l'hyper exponentielle.
-	"""
-
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
 		return LAMBDA_BURST
 	else:
 		u = random.uniform(0, 1)
 		return loi_de_poisson_naif(u)
 
-
+##	Calcule le nombre de message Best Effort transmis par un noeud.
+#	@param u : Le paramètre u de la loi de poisson.
 def loi_de_poisson_naif(u):
-	"""
-		Calcule le nombre de message Best Effort transmis par un noeud.
-	"""
-
 	p = exp (- LAMBDA)
 	x = 0
 	f = p
@@ -644,23 +633,25 @@ def loi_de_poisson_naif(u):
 
 # # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
 
+##	Classe représentant le système que l'on souhaite modéliser dans sa globalité
+#	Elle fait l'intermédiaire entre le modèle et la vue.
 class Controleur:
-	"""
-		Classe représentant le système que l'on souhaite modéliser dans sa globalité
-		Elle fera l'intermédiaire entre le modèle et la vue.
-	"""
 
-
+	##	Le constructeur d'un Controleur.
+	#	@param self : L'objet Controleur.
+	#	@param fenetre : La fenêtre Tkinter de la simulation.
+	#	@param canvas : Le canvas de la simulation.
+	#	@param slots_vue : Les slots de la vue de la simulation.
+	#	@param slots_modele : Les slost du modèle de la simulation.
+	#	@param noeuds_vue : Les noeuds de la vue de la simulation.
+	#	@param noeuds_modele : Les noeuds du modèle de la simulation.
 	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele):
-		"""
-			Le constructeur.
-		"""
 		self.fenetre = fenetre
 		self.canvas = canvas
-		self.slots_vue = slots_vue		#La représentation des slots dans le canvas (un tableau de rectangle)
-		self.slots_modele = slots_modele		#Un tableau représentant les slots, chaque case dispose de deux etats si elle dispose ou non d'un message
-		self.noeuds_vue = noeuds_vue		#La représentation des noeuds dans le canvas
-		self.noeuds_modele = noeuds_modele	#Un tableau de Noeud
+		self.slots_vue = slots_vue
+		self.slots_modele = slots_modele
+		self.noeuds_vue = noeuds_vue
+		self.noeuds_modele = noeuds_modele
 		self.continuer = False		#Booléen indiquant s'il faut effectuer d'autres tics ou non
 		self.entrys = {}	#Un dictionnaire des entry de l'interface
 		self.nb_tic = 0
@@ -669,17 +660,16 @@ class Controleur:
 ###########################################################
 ################ Les listeners des boutons ################
 ###########################################################
-def callback_click_noeud(event):
-	"""
-		Fonction callback du click sur un noeud.
-	"""
 
+##	Fonction callback du click sur un noeud.
+#	@param event : L'événement qui déclenche le callback.
+def callback_click_noeud(event):
 	etat_continuer = controleur.continuer	#L'état de l'anneau
 
 	id_objet = event.widget.find_closest(event.x, event.y)
 	id_objet = int( id_objet[0] )
 
-	#On récupére le noeud sur lequel l'utilisateur à cliqué
+	""" On récupére le noeud sur lequel l'utilisateur à cliqué """
 	i = 0
 	while i < NOMBRE_NOEUD -1 and controleur.noeuds_vue[i] != id_objet:
 		controleur.noeuds_vue[i]
@@ -689,32 +679,30 @@ def callback_click_noeud(event):
 		afficher_dialogue_noeud( controleur.noeuds_modele[i], etat_continuer )
 
 
+##	Fonction callback d'un clique sur le texte d'un noeud.
+#	@param event : L'événement qui déclenche le callback.
 def callback_click_texte(event):
-	"""
-		Fonction callback d'un clique sur le texte d'un noeud
-	"""
-
 	etat_continuer = controleur.continuer	#L'état de l'anneau
 
 	id_objet = event.widget.find_closest(event.x, event.y)
 	id_objet = int( id_objet[0] )
 
-	#On récupére le noeud sur lequel est situé le texte
+	""" On récupére le noeud sur lequel est situé le texte """
 	noeud = DICT_TEXTES_NOEUDS [id_objet]
 
 	if noeud != None:
 		afficher_dialogue_noeud( noeud, etat_continuer )
 
 
+##	Affiche une boîte de dialogue avec les informations du noeud.
+#	@param noeud : le noeud pour lequel on souhaite afficher les informations.
+#	@param etat_mouvement_anneau : Booléen inquiant si l'anneau est en marche.
 def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
-	"""
-		Affiche une boîte de dialogue avec les informations du noeud.
-	"""
 	if etat_mouvement_anneau == True:
 		arreter_rotation()
 
 	if noeud.nb_message_total > 0:
-		#Récupération des valeurs
+		""" Récupération des valeurs """
 		attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 		attente_moyenne_arrondie = format(attente_moyenne, '.2f')
 		attente_max = noeud.attente_max
@@ -730,46 +718,40 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 		message = "Ce noeud n'a encore reçu aucun message."
 	titre = str(noeud)
 
-	#Si l'anneau était en marche, on reprend le mouvement une fois que l'utilisateur a cliqué sur le bouton de la boite de dîalogue
+	""" Si l'anneau était en marche, on reprend le mouvement une fois que l'utilisateur a cliqué sur le bouton de la boite de dîalogue """
 	if tkMessageBox.showinfo(titre, message) and etat_mouvement_anneau == True:
 		commencer_rotation()
 
-def callback_validation_configuration(event):
-	"""
-		Gére les inputs au clavier d'un utilisteur lorsqu'il saisie une nouvelle configuration pour l'anneau
-	"""
 
+##	Gére les inputs au clavier d'un utilisteur lorsqu'il saisie une nouvelle configuration pour l'anneau.
+#	@param event : L'évenement qui déclenche la fonction.
+def callback_validation_configuration(event):
 	if event.char == '\r':		#Le bouton entrée
 		modifier_configuration()
 
 
+##	Callback au bouton demandant un reset de l'application.
+#	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
 def reset():
-	"""
-		Callback au bouton demandant un reset de l'application
-		Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
-	"""
-
 	global controleur
 	global tache
 
 	controleur.continuer = False
 	controleur.nb_tic = 0
 
-	#Clear la console python (Pour Linux uniquement)
+	""" Clear la console python (Pour Linux uniquement) """
 	os.system("clear")
 
-	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
+	""" supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface """
 	if tache != None:
 		controleur.fenetre.after_cancel(tache)
 
-	#La méthode after permet ici de faire s'executer les threads en cours
+	""" La méthode after permet ici de faire s'executer les threads en cours """
 	controleur.fenetre.after(TIC, initialisation, (fenetre) )
 
-def commencer_rotation():
-	"""
-		Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
-	"""
 
+##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
+def commencer_rotation():
 	global controleur
 	global tache
 
@@ -777,23 +759,18 @@ def commencer_rotation():
 		controleur.continuer = True
 
 
+## Arrête la rotaion. Méthode appeler lors d'un clique sur le bouton de fin.
 def arreter_rotation():
-	"""
-		Arrête la rotaion. Méthode appeler lors d'un clique sur le bouton de fin.
-	"""
 
 	global controleur
 
 	afficher_stat_noeud()
-	#supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface
+	""" supprime le prochain tic s'il y a afin de ne pas faire planté les threads et l'interface """
 	controleur.continuer = False
 
 
+##	Augmente la vitesse de rotation.
 def augmenter_vitesse():
-	"""
-		Augmente la vitesse de rotation.
-	"""
-
 	global TIC
 	global LABEL_TIC
 
@@ -808,11 +785,8 @@ def augmenter_vitesse():
 		update_label_TIC(controleur.fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
 
 
+##	Diminue la vitesse de rotation.
 def diminuer_vitesse():
-	"""
-		Diminue la vitesse de rotation.
-	"""
-
 	global TIC
 
 	TIC += 100
@@ -826,11 +800,8 @@ def diminuer_vitesse():
 	update_label_TIC(controleur.fenetre, NOMBRE_LIGNE_CANVAS+4, 1)
 
 
+##	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas.
 def modifier_configuration():
-	"""
-		Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas.
-	"""
-
 	global controleur
 	global NOMBRE_NOEUD
 	global NOMBRE_SLOT
@@ -852,7 +823,7 @@ def modifier_configuration():
 	valeur_lambda_burst = controleur.entrys[ CLE_ENTRY_LAMBDA_BURST ].get()
 	valeur_limite_message = controleur.entrys[ CLE_ENTRY_LIMITE_MESSAGE ].get()
 
-	#Recupération de la valeur du noeud
+	""" Recupération de la valeur du noeud """
 	if valeur_noeud != "":
 		int_valeur_noeud = int(valeur_noeud)
 		if int_valeur_noeud > len(COULEURS_MESSAGE):
@@ -868,7 +839,7 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 
-	#Recupération de la valeur du slot
+	""" Recupération de la valeur du slot """
 	if valeur_slot != "":
 		int_valeur_slot = int(valeur_slot)
 		if int_valeur_slot <= 0:
@@ -885,7 +856,7 @@ def modifier_configuration():
 		tkMessageBox.showerror("Erreur nombre de noeud et nombre de slot!", message)
 		erreur = True
 
-	#Recupération de la valeur du lambda
+	""" Recupération de la valeur du lambda """
 	if valeur_lambda != "":
 		valeur_lambda = int(valeur_lambda)
 		if valeur_lambda <= 0:
@@ -897,7 +868,7 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 
-	#Recupération de la valeur du lambda burst
+	""" Recupération de la valeur du lambda burst """
 	if valeur_lambda_burst != "":
 		valeur_lambda_burst = int(valeur_lambda_burst)
 		if valeur_lambda_burst <= 0:
@@ -930,21 +901,17 @@ def modifier_configuration():
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
 
 
-"""
-	Stop l'appli en faisant attention aux thread restants.
-"""
+##	Stop l'appli en faisant attention aux thread restants.
 def arreter_appli():
 	arreter_rotation()
 	afficher_stat_noeud()
 	fenetre.destroy()
 
 
+##	Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.
 def placer_message(indice_noeud, messages):
-	"""
-		Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.
-	"""
-
 	global controleur
+
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
 	slot_modele = controleur.slots_modele[ indice_slot ]
@@ -957,22 +924,22 @@ def placer_message(indice_noeud, messages):
 		erreur = True
 		message += "Le noeud est vide"
 	if not erreur:
-		#Récupération des valeurs
+		""" Récupération des valeurs """
 		canvas = controleur.canvas
 		noeud_graphique = controleur.noeuds_vue[ indice_noeud ]
 		slot_graphique = controleur.slots_vue[indice_slot]
 		couleur_message = controleur.noeuds_modele[ indice_noeud ].couleur
 
-		#Création du message
+		""" Création du message """
 		id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
 		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), messages)
 
-		#Mise à jour de la distance
+		""" Mise à jour de la distance """
 		message_x = canvas.coords(id_message_graphique)[0]
 		message_y = canvas.coords(id_message_graphique)[1]
 		controleur.slots_modele[indice_slot].paquet_message.update_position(message_x, message_y)
 
-		#Met à jour les temps d'attentes du noeud qui envoi le message
+		""" Met à jour les temps d'attentes du noeud qui envoi le message """
 		for message in messages:
 			if message != None:
 				temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
@@ -984,22 +951,18 @@ def placer_message(indice_noeud, messages):
 		print message
 
 
+##	Exécute une rotation des messages dans l'anneau.
 def rotation_message():
-	"""
-		Exécute une rotation des messages dans l'anneau.
-	"""
 	global controleur
+
 	decaler_messages()
 	sortir_message()
 	entrer_message()
 
 
+##	Fait entrer dans l'anneau des messages.
+#	Ici les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
 def entrer_message():
-	"""
-		Fait entrer dans l'anneau des messages.
-		Ici les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
-	"""
-
 	global controleur
 
 	for i in range (NOMBRE_SLOT):		#Parcours des slots de l'anneau
@@ -1007,27 +970,27 @@ def entrer_message():
 		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 
-			#Le slot affiche si c'est sa période de réception de message provenant des antennes
+			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
 			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
 				print "C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
 
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
-			#On ajoute au noeud le tic d'arrivé des messages
+			""" On ajoute au noeud le tic d'arrivé des messages """
 			for i in range(nb_message):
 					noeud.ajouter_message( MessageN(controleur.nb_tic) )
 
 			noeud.nb_message += nb_message
 			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut enenvoyer un
 				if noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MAX:
-					#On enleve les messages du noeud
+					""" On enleve les messages du noeud """
 					messages = [None] * LIMITE_NOMBRE_MESSAGE_MAX
 					for i in range(LIMITE_NOMBRE_MESSAGE_MAX):
 						messages.append( noeud.messages.popleft() )
 
 					noeud.nb_message -= LIMITE_NOMBRE_MESSAGE_MAX
 				else:		#Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud
-					#On enleve les messages du noeud
+					""" On enleve les messages du noeud """
 					messages = [None] * noeud.nb_message
 					for i in range(noeud.nb_message):
 							messages.append( noeud.messages.popleft() )
@@ -1036,13 +999,11 @@ def entrer_message():
 			noeud.update_file_noeud_graphique()
 
 
+##	Fait sortir du système un mesage.
 def sortir_message():
-	"""
-		Fait sortir du système un mesage.
-	"""
-
 	global controleur
-	#Fais sortir les messages qui repassent devant leur Noeud emetteur
+
+	""" Fais sortir les messages qui repassent devant leur Noeud emetteur """
 	for slot in controleur.slots_modele:
 		paquet_message = slot.paquet_message
 
@@ -1052,11 +1013,8 @@ def sortir_message():
 			slot.paquet_message = None
 
 
+##	Methode appelant une methode récursive qui décale d'un slot les message du système.
 def decaler_messages():
-	"""
-		Methode appelant une methode récursive qui décale d'un slot les message du système.
-	"""
-
 	global controleur
 
 	tempon = controleur.slots_modele[1].paquet_message
@@ -1064,11 +1022,8 @@ def decaler_messages():
 	decaler_messages2(0, 0, tempon, True)
 
 
+##	Méthode récursive qui décale les messages de l'anneau.
 def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel):
-	"""
-		Méthode récursive qui décale les messages de l'anneau.
-	"""
-
 	global controleur
 
 	milieu_x = COTE_CANVAS/2
@@ -1079,7 +1034,7 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 
 	msg = controleur.slots_modele[indice_slot].paquet_message
 	if msg != None:
-		#On déplace le message
+		""" On déplace le message """
 		t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
 		t.start()
 
@@ -1097,20 +1052,17 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 		controleur.slots_modele[indice_slot].paquet_message = paquet_message
 
 
+##	calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message
+#	Le calcul prend en compte la distance à parcourir entre chaque déplacement.
 def calculer_vitesse():
-	"""
-		calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message
-		Le calcul prend en compte la distance à parcourir entre chaque déplacement.
-	"""
-
-	#Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
-	#suffisament de temps pour finir de bouger les messages
+	""" Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
+		suffisament de temps pour finir de bouger les messages """
 	matela_securite = 100
 
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
 
-	#Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots
+	""" Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots """
 	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_SLOT
 	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_SLOT
 
@@ -1121,7 +1073,7 @@ def calculer_vitesse():
 
 	global VITESSE_LATENCE_MESSAGE
 
-	#Le résultat est en milliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde
+	""" Le résultat est en milliseconde, il faut donc le diviser par 1000 pour l'obtenir en seconde """
 	pixel_par_seconde = (TIC/distance_max) / (1000 * matela_securite)
 
 	arrondi = format(pixel_par_seconde, '.5f')
@@ -1130,19 +1082,18 @@ def calculer_vitesse():
 
 # # # # # # # # # #		M E T H O D E S		M A I N		# # # # # # # # # # # #
 
-def initialisation(fenetre):
-	"""
-		Met en place le canvas.
-	"""
 
+##	Met en place le canvas.
+#	@param fenetre : La fenetre sur laquelle on place le canvas.
+def initialisation(fenetre):
 	global controleur
 	global IMAGE_JASON
 
-	#On détruit tout les widgets de la fenêtre afin que celle-ci soit toute belle
+	""" On détruit tout les widgets de la fenêtre afin que celle-ci soit toute belle """
 	for widget in fenetre.winfo_children():
 	    widget.destroy()
 
-	#Mise en place du canvas et des données du controleur
+	""" Mise en place du canvas et des données du controleur """
 	canvas = creer_canvas(fenetre)
 	IMAGE_JASON = PhotoImage(file="../images/jason_statham.png")
 
@@ -1165,12 +1116,8 @@ def initialisation(fenetre):
 
 	effectuer_tic()
 
-
+##	Attend un TIC et effectue une rotation des messages.
 def effectuer_tic():
-	"""
-		Attend un TIC et effectue une rotation des messages.
-	"""
-
 	global controleur
 	global tache
 
@@ -1185,11 +1132,9 @@ def effectuer_tic():
 
 	tache = controleur.fenetre.after(TIC, effectuer_tic )
 
-def afficher_message_anneau():
-	"""
-		Affiche l'état des slots de l'anneau.
-	"""
 
+##	Affiche l'état des slots de l'anneau.
+def afficher_message_anneau():
 	global controleur
 	for i in range (NOMBRE_SLOT):
 		if controleur.slots_modele[i].paquet_message == None:
@@ -1198,11 +1143,8 @@ def afficher_message_anneau():
 			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
 
 
+##	Affiche les statistiques liés aux temps d'attente des noeuds.
 def afficher_stat_noeud():
-	"""
-		Affiche les statistiques liés aux temps d'attente des noeuds.
-	"""
-
 	global controleur
 
 	print "\n######### STATS #######"

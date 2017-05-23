@@ -1,0 +1,6 @@
+valeur_slot
+valeur_noeud
+
+liste_des_tics_d_envois_pour_le_noeud_0
+liste_des_tics_d_envois_pour_le_noeud_1
+liste_des_tics_d_envois_pour_le_noeud_2
