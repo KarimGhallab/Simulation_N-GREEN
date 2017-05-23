@@ -1,7 +1,7 @@
 #coding: utf8
-"""
-	Script Python simulant le comportement de l'hyper exponentielle.
-"""
+
+##	@package hyper_expo
+#	Script Python simulant le comportement de l'hyper exponentielle.
 
 from math import exp
 import random
@@ -12,20 +12,17 @@ LAMBDA = 1
 TAILLE_TABLEAU = 10
 global TABLEAU_POISSON
 
-def effectuer_tirage(probabilite):
-	"""
-		Effectue un tirage et renvoie un booléen indiquant si ce tirage est compris dans la probabilité.
-	"""
 
+##	Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.
+#	@param La probabilité selon laquel le tirage à tiré un événement ou non.
+#	@return True si le tirage est inférieur ou égal à la probabilité, False sinon.
+def effectuer_tirage(probabilite):
 	tirage = random.uniform(0, 1)
 	print "Tirage : " ,tirage
 	return tirage <= probabilite
 
+##	Réalise le tirage selon l'hyper exponentielle.
 def hyper_expo():
-	"""
-		Fonction principal simulant l'hyper exponentielle.
-	"""
-
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
 		print "Burst !\nOn envoie : ", NOMBRE_MESSAGE_BURST, " messages."
 	else:
@@ -33,12 +30,9 @@ def hyper_expo():
 		print "Resultat loi de poisson via l'algo naif : ", loi_de_poisson_naif(u)
 		print "Resultat loi de poisson via l'algo optimisé : ", loi_de_poisson_opti(u)
 
-
+##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.
+#	@param u : Le paramètre u de la loi de poisson.
 def loi_de_poisson_naif(u):
-	"""
-		Calcule naif du résultat d'une loi de poisson.
-	"""
-
 	p = exp (- LAMBDA)
 	x = 0
 	f = p
@@ -48,13 +42,10 @@ def loi_de_poisson_naif(u):
 		f += p
 	return x
 
-
+##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.
+#	@param u : Le paramètre u de la loi de poisson.
 def loi_de_poisson_opti(u):
-	"""
-		Calcule optimisé du résultat d'une loi de poisson.
-	"""
-
-	#Initialisation des variables
+	""" Initialisation des variables """
 	initialiser_tableau()
 
 	maxi = TAILLE_TABLEAU
@@ -79,13 +70,11 @@ def loi_de_poisson_opti(u):
 
 	return x
 
-
+##	Initialise le tableau avec les résultats de le loi de poisson.
+#	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
 def initialiser_tableau():
-	"""
-		Initialise le tableau avec les résultats de le loi de poisson.
-		Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
-	"""
 	global TABLEAU_POISSON
+
 	TABLEAU_POISSON = [0] * TAILLE_TABLEAU
 
 	TABLEAU_POISSON[0] = exp(-LAMBDA)
@@ -96,13 +85,10 @@ def initialiser_tableau():
 		TABLEAU_POISSON[i] = TABLEAU_POISSON[i-1]+p
 
 
+##	Affiche un tableau sous la forme :
+#		Indice :
+#		Valeur :
 def afficher_tableau():
-	"""
-		Affiche un tableau sous la forme :
-			Indice :
-			Valeur :
-	"""
-
 	for i in range(TAILLE_TABLEAU):
 		print "Indice : ", i
 		print "valeur : ", TABLEAU_POISSON[i], "\n"

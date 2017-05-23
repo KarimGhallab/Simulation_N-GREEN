@@ -618,7 +618,7 @@ def hyper_expo():
 		u = random.uniform(0, 1)
 		return loi_de_poisson_naif(u)
 
-##	Calcule le nombre de message Best Effort transmis par un noeud.
+##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.
 #	@param u : Le paramètre u de la loi de poisson.
 def loi_de_poisson_naif(u):
 	p = exp (- LAMBDA)
