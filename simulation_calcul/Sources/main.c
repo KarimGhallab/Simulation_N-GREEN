@@ -41,7 +41,10 @@ int main ( int argc, char *argv[] )
 		{
 			dup2(copie_stdout, 1);
 			printf("Erreur lors de la génération ou l'affichage du PDF...\n");
+			close(1);
 		}
 	}
+	else
+		fermer_fichier_std();
 	return (0);
 }

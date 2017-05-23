@@ -155,8 +155,8 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	int pourcentage;
 	char chargement[ saut_interval +3 ];
 
-	time_t debut, fin, total;
-	time(&debut);
+	//time_t debut, fin, total;
+	clock_t debut = clock();
 
 	while (nombre_tic_restant > 0)
 	{
@@ -185,9 +185,11 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	afficher_etat_anneau(anneau);
 
 	printf("\n\n\n");
-	time(&fin);
-	total = ( fin - debut );
-	printf("Temps total pris pour la rotation totale de l'anneau : %ld secondes.\n", total);
+	//time(&fin);
+	//total = ( fin - debut );
+	clock_t fin = clock();
+	double total = (double)(fin - debut) / CLOCKS_PER_SEC;		//CLOCKS_PER_SEC est une constante déclarée dans time.h
+	printf("Temps pris pour la rotation totale de l'anneau : %.3f secondes.\n", total);
 
 	/* Gestion de la création ou non-création des CSVs et PDFs */
 	if (generer_pdf == 1)	//On génére les fichiers CSVs on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
@@ -264,17 +266,11 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	paquet->nombre_messages = nombre_message;
 
 	/* Affecte le tableau de message */
-	/* Met à jour les temps d'attentes du noeud qui envoi le message */
+	/* Met à jour les temps d'attentes du noeud qui envoie le message */
 	int i; int temps_attente_message;
-
-	//memcpy dans l'espace mémoire du seconde paramètres, les valeurs comprises dans l'espace du second paramètres
-	//La longueur de l'espace mémoire à copier est spécifié par le troisieme paramètre
-	memcpy(paquet->messages, messages, (nombre_message * sizeof(int)) );
 
 	for (i=0; i<nombre_message; i++)
 	{
-		//paquet->messages[i] = messages[i];	//copy
-
 		temps_attente_message = tic - paquet->messages[i];
 		if (td != NULL)
 			ajouter_valeur(td, temps_attente_message);
@@ -325,11 +321,11 @@ void sortir_messages( Anneau *anneau )
 	for (i=0; i<nombre_slot; i++)
 	{
 		if ( (slots[i].contient_message == 1) && (slots[i].indice_noeud_lecture == slots[i].paquet_message->indice_noeud_emetteur) )
-			{
-				//printf("Le slot %d sort un message\n", slots[i]->id);
-				free( slots[i].paquet_message ) ;
-				slots[i].contient_message = 0;
-			}
+		{
+			//printf("Le slot %d sort un message\n", slots[i]->id);
+			free( slots[i].paquet_message ) ;
+			slots[i].contient_message = 0;
+		}
 	}
 }
 

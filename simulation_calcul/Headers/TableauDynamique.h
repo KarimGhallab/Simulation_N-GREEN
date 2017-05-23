@@ -5,7 +5,7 @@
  /*! \def TAILLE_INITIALE_TABLEAU
      \brief La taille initiale du tableau de la structure TableauDynamique.
   */
- #define TAILLE_INITIALE_TABLEAU 100000
+ #define TAILLE_INITIALE_TABLEAU 200000
 
 /*! \struct TableauDynamique
     \brief Structure représentant tableau de taille dynamique.
