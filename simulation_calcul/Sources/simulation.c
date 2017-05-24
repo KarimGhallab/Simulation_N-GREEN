@@ -46,7 +46,7 @@ void afficher_etat_anneau(Anneau *anneau)
 	printf("Le nombre de message ayant circulé dans l'anneau est de : %d\n", nombre_message);
 	for(i=0; i<nombre_noeud;i++)
 	{
-		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->taille_utilisee);
+		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->nb_message_file);
 	}
 }
 
@@ -155,7 +155,6 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	int pourcentage;
 	char chargement[ saut_interval +3 ];
 
-	//time_t debut, fin, total;
 	clock_t debut = clock();
 
 	while (nombre_tic_restant > 0)
@@ -185,8 +184,6 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	afficher_etat_anneau(anneau);
 
 	printf("\n\n\n");
-	//time(&fin);
-	//total = ( fin - debut );
 	clock_t fin = clock();
 	double total = (double)(fin - debut) / CLOCKS_PER_SEC;		//CLOCKS_PER_SEC est une constante déclarée dans time.h
 	printf("Temps pris pour la rotation totale de l'anneau : %.3f secondes.\n", total);
@@ -207,7 +204,7 @@ void entrer_messages( Anneau *anneau, int tic )
 
 	Noeud *noeud;	//Le noeud courant
 	int nb_message;		//Le nombre de message envoyé par le noeud courant
-	int messages[80];	//Un tableau des messages qu'envoi le noeud courant
+
 	int i;
 	for (i=0; i< nombre_slot; i++)
 	{
@@ -220,25 +217,21 @@ void entrer_messages( Anneau *anneau, int tic )
 				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud.debut_periode, noeud.nb_antenne);*/
 
 			nb_message = hyper_expo();
-			//int nb_message = 20;
 			//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
 
 			//On ajoute au noeud le tic d'arrivé des messages
-			int j;
-			for (j=0; j<nb_message; j++)
-				ajouter_message( noeud->file_messages, tic );
+			ajouter_message( noeud->file_messages, nb_message, tic );
 
 			noeud->nb_message += nb_message;
 			noeud->nb_message_total += nb_message;
 
 			if ( ( slots[i].contient_message == 0) && (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
 			{
-				int k;
 				if (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
 				{
 					/* On enleve les messages du noeud */
-					for (k=0; k<LIMITE_NOMBRE_MESSAGE_MAX; k++)
-						messages[k] = supprimer_message( noeuds[ slots[i].indice_noeud_ecriture ].file_messages );
+					int messages[LIMITE_NOMBRE_MESSAGE_MAX];
+					supprimer_message( noeuds[ slots[i].indice_noeud_ecriture ].file_messages, LIMITE_NOMBRE_MESSAGE_MAX, messages );
 					anneau->nb_message += LIMITE_NOMBRE_MESSAGE_MAX;
 					placer_message( noeud, noeud->id, &slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
 					noeuds[ slots[i].indice_noeud_ecriture ].nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
@@ -247,8 +240,8 @@ void entrer_messages( Anneau *anneau, int tic )
 				{
 					//On enleve les messages du noeud
 					int nb_messages_noeud = noeud->nb_message;
-					for (k=0; k<nb_messages_noeud; k++)
-						messages[k] = supprimer_message( noeud->file_messages );
+					int messages[nb_messages_noeud];
+					supprimer_message( noeud->file_messages, nb_messages_noeud, messages );
 					anneau->nb_message += nb_messages_noeud;
 					placer_message( noeud, noeud->id, &slots[ noeud->indice_slot_ecriture ], nb_messages_noeud, messages, tic, td );
 					noeuds[ slots[i].indice_noeud_ecriture ].nb_message = 0;
@@ -331,6 +324,7 @@ void sortir_messages( Anneau *anneau )
 
 void liberer_memoire_anneau( Anneau *anneau )
 {
+	printf("Fonction de libération\n");
 	Slot *slots = anneau->slots; Noeud *noeuds = anneau->noeuds;
 	TableauDynamique *td = anneau->messages;
 	int nombre_noeud = anneau->nombre_noeud; int nombre_slot = anneau->nombre_slot;
@@ -342,7 +336,6 @@ void liberer_memoire_anneau( Anneau *anneau )
 		{
 			free( slots[i].paquet_message );
 		}
-		//free( slots[i] );
 	}
 	free(slots);
 
@@ -376,7 +369,6 @@ void initialiser_barre_chargement(char *chargement, int taille_tableau, int nomb
 	chargement[taille_tableau-1] = ']';
 	chargement[taille_tableau] = '\0';
 
-	//printf("Taille du tableau : %d, Nombre de chargement : %d\n", taille_tableau, nombre_chargement);
 	int i;
 	for(i=1; i<=nombre_chargement;i++)
 		chargement[i] = '=';
@@ -474,7 +466,6 @@ void ecrire_fichier_csv(Anneau *anneau)
 			borne_superieure = bornes_superieures[j];
 		}
 		quantiles_nb_message[j]++;
-		//printf("%lf ", quantiles_nb_message[j]);
 	}
 	ecrire_temps_attente_csv(anneau, quantiles_nb_message, bornes_superieures, nombre_quantile);
 	free(quantiles_nb_message);
@@ -568,7 +559,6 @@ int generer_PDF()
 
 				strcat(chemin_fichier, dir->d_name);
 				strcat(commande, chemin_fichier);
-				//strcat(commande, " > /tmp/out.txt");
 
 				/* La commande est prête ! On peut l'exécuter ! */
 				if (system(commande) == -1)

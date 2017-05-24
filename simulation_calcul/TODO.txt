@@ -1,4 +1,6 @@
 Générer les histogrammes avec les nouvelles valeurs. (Fait !)
+Revoir le décalage des messages (n'optimise pas le code)
+Revoir la structure de données de stockage des messages dans les noeuds. (Fait !)
 Placer des pourcentages sur l'histogramme (Fait !)
 Refaire l'organigramme
 Voir si l'on peut remplacer les pointeurs sur les slots par les slots directement (Fait !).

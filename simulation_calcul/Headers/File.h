@@ -12,10 +12,11 @@
  */
 struct File
 {
-	int *messages;
+	int **messages;
 	int indice_fin;
 	int indice_debut;
 	double taille;
+	double nb_message_file;
 	double taille_utilisee;
 };
 typedef struct File File;
@@ -26,19 +27,21 @@ typedef struct File File;
  */
 File* creer_file();
 
-/*! \fn void ajouter_message(File *file, int message)
+/*! \fn void ajouter_message(File *file, int nb_message, int message)
     \brief Ajoute un message en fin de file.
     \param *file la file à laquelle on souhaite ajouter un message.
-    \param message Le message à ajouter.
+	\param nb_message Le nombre de message à ajouter.
+	\param message Le message à ajouter pour chaque nombre de message.
  */
-void ajouter_message(File *file, int message);
+void ajouter_message(File *file, int nb_message, int message);
 
-/*! \fn int supprimer_message(File *file)
-    \brief Retire un message en debut de file.
-    \param *file la file à laquelle on souhaite retirer un message.
-    \return Le message retiré de la file.
+/*! \fn int* supprimer_message(File *file, int nb_message)
+    \brief Retire plusieurs messages en debut de file et les ajoute au tableau de message.
+    \param *file la file à laquelle on souhaite retirer les messages.
+	\param nb_message Le nombre de message que l'on souhaite retirer.
+	\param *messages Le tableau de message à initialiser.
  */
-int supprimer_message(File *file);
+void supprimer_message(File *file, int nb_message, int *messages);
 
 /*! \fn void liberer_file(File *file)
     \brief Libère l'espace mémoire pris par la file
