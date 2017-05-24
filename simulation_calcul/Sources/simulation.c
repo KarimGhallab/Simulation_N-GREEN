@@ -271,7 +271,7 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 
 	for (i=0; i<nombre_message; i++)
 	{
-		temps_attente_message = tic - paquet->messages[i];
+		temps_attente_message = tic - messages[i];
 		if (td != NULL)
 			ajouter_valeur(td, temps_attente_message);
 
