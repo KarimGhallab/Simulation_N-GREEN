@@ -19,6 +19,18 @@ openPM: compil_openMP clear
 openPM_pdf: compil_openMP clear
 	./resultat -PDF
 
+memcheck_openMP: compil_openMP_debug clear
+	./resultat
+	
+callgrind_openMP: compil_openMP_debug clear
+	./resultat
+
+memcheck_openMP_pdf: compil_openMP_debug clear
+	./resultat -PDF
+
+callgrind_openMP_pdf: compil_openMP_debug clear
+	./resultat -PDF
+
 memcheck: compil_debug clear
 	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat
 
@@ -42,6 +54,9 @@ compil_debug: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
 
 compil_openMP: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
 	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat
+
+compil_openMP_debug: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat -g
 
 hyper_expo.o: hyper_expo.c
 	$(compilateur) $(CFLAGS) hyper_expo.c
