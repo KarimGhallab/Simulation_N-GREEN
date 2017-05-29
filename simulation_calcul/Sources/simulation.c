@@ -51,14 +51,14 @@ void afficher_etat_anneau(Anneau *anneau)
 	for(i=0; i<nombre_noeud;i++)
 		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->nb_message_file);
 
-	printf("Affichage des couples\n");
+	/*printf("Affichage des couples\n");
 	printf("Couple lecture\n");
 	for(i=0; i<nombre_noeud;i++)
 		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_lecture[i][0], anneau->couple_lecture[i][1]);
 
 	printf("Couple ecriture\n");
 	for(i=0; i<nombre_noeud;i++)
-		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_ecriture[i][0], anneau->couple_ecriture[i][1]);
+		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_ecriture[i][0], anneau->couple_ecriture[i][1]);*/
 }
 
 void initialiser_slots( Anneau *anneau, int nombre_slot )
@@ -161,7 +161,7 @@ void afficher_noeuds( Anneau *anneau )
 	}
 }
 
-void effectuer_simulation(Anneau *anneau, int generer_pdf)
+void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargement)
 {
 	/* Affichage des paramètres de la simulation */
 	printf("\n");
@@ -179,13 +179,11 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	int pourcentage;
 	char chargement[ saut_interval +3 ];
 
-	clock_t debut = clock();
-
 	while (nombre_tic_restant > 0)
 	{
 		//printf("Tic numéro %d\n", (NOMBRE_TIC - nombre_tic_restant) + 1);
 		/* Gestion de la barre de chargement */
-		if (nombre_tic_restant % interval == 0)
+		if ((afficher_chargement == 1) && (nombre_tic_restant % interval == 0) )
 		{
 			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
 			pourcentage = (cmp / (float) saut_interval) *100;
@@ -209,9 +207,6 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 	afficher_etat_anneau(anneau);
 
 	printf("\n\n\n");
-	clock_t fin = clock();
-	double total = (double)(fin - debut) / CLOCKS_PER_SEC;		//CLOCKS_PER_SEC est une constante déclarée dans time.h
-	printf("Temps pris pour la rotation totale de l'anneau : %.3f secondes.\n", total);
 
 	/* Gestion de la création ou non-création des CSVs et PDFs */
 	if (generer_pdf == 1)	//On génére les fichiers CSVs on génére les PDFs via les scripts R et on ouvre ces PDFs avec evince
@@ -330,7 +325,6 @@ void sortir_messages( Anneau *anneau )
 
 void liberer_memoire_anneau( Anneau *anneau )
 {
-	printf("Fonction de libération\n");
 	Noeud *noeuds = anneau->noeuds;
 	TableauDynamique *td = anneau->messages;
 	int nombre_noeud = anneau->nombre_noeud;

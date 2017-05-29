@@ -129,12 +129,13 @@ void afficher_noeuds( Anneau *anneau );
  */
 void initialiser_noeuds( Anneau *anneau, int nombre_noeud );
 
-/*! \fn void effectuer_simulation(Anneau *anneau, int generer_pdf)
+/*! \fn void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargement)
     \brief Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation.
     \param *anneau L'anneau sur lequel on effectue la simulation
     \param generer_pdf 1 si l'on souhaite générer un PDF, toutes autres valeurs sinon.
+	\param afficher_chargement 1 si l'on souhaite afficher la barre de chargement, toutes autres valeurs sinon.
  */
-void effectuer_simulation(Anneau *anneau, int generer_pdf);
+void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargement);
 
 /*! \fn void entrer_messages( Anneau *anneau, int tic )
     \brief Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.

@@ -114,9 +114,6 @@ Include dependency graph for simulation.h:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structPaquetMessage.html">PaquetMessage</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un paquet de message curculant dans les slots. Cette structure contient l'indice du noeud emetteur du paquet, le nombre de message, et un tableau des différents messages.  <a href="structPaquetMessage.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structNoeud.html">Noeud</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure représentant un <a class="el" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot...">Noeud</a> de l'anneau. Elle contient un nombre de message, les indices des slots avec lesquels le noeud peut intéragir, ainsi que le nombre d'antenne liée au noeud et le décalage avec laquelle le noeud doit recevoir un message de ses antennes.  <a href="structNoeud.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,9 +145,6 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:af4337ddab97d44850cf81fa5960c6727"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4337ddab97d44850cf81fa5960c6727"></a>
-typedef struct <a class="el" href="structPaquetMessage.html">PaquetMessage</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PaquetMessage</b></td></tr>
-<tr class="separator:af4337ddab97d44850cf81fa5960c6727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e9241b13e33c89b710a91795150ede0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8e9241b13e33c89b710a91795150ede0"></a>
 typedef struct <a class="el" href="structNoeud.html">Noeud</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Noeud</b></td></tr>
 <tr class="separator:a8e9241b13e33c89b710a91795150ede0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,9 +175,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8b9c861bf2ec6cb390ad512c70a7b5da">initialiser_noeuds</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int nombre_noeud)</td></tr>
 <tr class="memdesc:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise les noeuds de l'anneau.  <a href="#a8b9c861bf2ec6cb390ad512c70a7b5da">More...</a><br /></td></tr>
 <tr class="separator:a8b9c861bf2ec6cb390ad512c70a7b5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad156a2e314c7813bfeb2139981d2298e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ad156a2e314c7813bfeb2139981d2298e">effectuer_simulation</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int generer_pdf)</td></tr>
-<tr class="memdesc:ad156a2e314c7813bfeb2139981d2298e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation.  <a href="#ad156a2e314c7813bfeb2139981d2298e">More...</a><br /></td></tr>
-<tr class="separator:ad156a2e314c7813bfeb2139981d2298e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67a393f76195681c7d7bf3e67490f970"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a67a393f76195681c7d7bf3e67490f970">effectuer_simulation</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int generer_pdf, int afficher_chargement)</td></tr>
+<tr class="memdesc:a67a393f76195681c7d7bf3e67490f970"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effectue une simulation sur un anneau at génére ou non un fichier PDF récapitulatif de la simulation.  <a href="#a67a393f76195681c7d7bf3e67490f970">More...</a><br /></td></tr>
+<tr class="separator:a67a393f76195681c7d7bf3e67490f970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -502,7 +496,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="ad156a2e314c7813bfeb2139981d2298e"></a>
+<a class="anchor" id="a67a393f76195681c7d7bf3e67490f970"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -516,7 +510,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>generer_pdf</em>&#160;</td>
+          <td class="paramname"><em>generer_pdf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>afficher_chargement</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -531,6 +531,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on effectue la simulation </td></tr>
     <tr><td class="paramname">generer_pdf</td><td>1 si l'on souhaite générer un PDF, toutes autres valeurs sinon. </td></tr>
+    <tr><td class="paramname">afficher_chargement</td><td>1 si l'on souhaite afficher la barre de chargement, toutes autres valeurs sinon. </td></tr>
   </table>
   </dd>
 </dl>

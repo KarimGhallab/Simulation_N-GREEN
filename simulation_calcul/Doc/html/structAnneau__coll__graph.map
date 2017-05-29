@@ -3,5 +3,4 @@
 <area shape="rect" id="node3" href="$structFile.html" title="Structure représentant une File de message. " alt="" coords="14,5,57,32"/>
 <area shape="rect" id="node4" href="$structTableauDynamique.html" title="Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d&#39;entier..." alt="" coords="89,95,224,121"/>
 <area shape="rect" id="node5" href="$structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="249,95,294,121"/>
-<area shape="rect" id="node6" href="$structPaquetMessage.html" title="Structure représentant un paquet de message curculant dans les slots. Cette structure contient l&#39;indi..." alt="" coords="213,5,329,32"/>
 </map>
