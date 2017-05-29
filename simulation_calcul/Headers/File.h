@@ -1,3 +1,5 @@
+#include "./CoupleNombreValeur.h"
+
 /*! \file File.h
     \brief Header du fichier contenant la structure représentant une file.
  */
@@ -12,12 +14,11 @@
  */
 struct File
 {
-	int **messages;
+	CoupleNombreValeur **messages;
 	int indice_fin;
 	int indice_debut;
 	double taille;
 	double nb_message_file;
-	double taille_utilisee;
 };
 typedef struct File File;
 

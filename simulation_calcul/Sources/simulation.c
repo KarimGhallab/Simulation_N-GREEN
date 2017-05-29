@@ -328,11 +328,11 @@ void liberer_memoire_anneau( Anneau *anneau )
 	Noeud *noeuds = anneau->noeuds;
 	TableauDynamique *td = anneau->messages;
 	int nombre_noeud = anneau->nombre_noeud;
-	int i;
 	/* Libère la mémoire prise par les slots */
 	free(anneau->slots);
 
 	/* Libère la mémoire prise par les noeuds et leurs File */
+	int i;
 	for (i=0; i<nombre_noeud; i++)
 	{
 		liberer_file( noeuds[i].file_messages );

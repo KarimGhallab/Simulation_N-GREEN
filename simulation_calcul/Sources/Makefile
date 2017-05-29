@@ -13,6 +13,7 @@ pdf: compil clear
 debug: compil clear
 	$(debugger) ./resultat
 
+
 openPM: compil_openMP clear
 	./resultat
 
@@ -21,7 +22,7 @@ openPM_pdf: compil_openMP clear
 
 memcheck_openMP: compil_openMP_debug clear
 	./resultat
-	
+
 callgrind_openMP: compil_openMP_debug clear
 	./resultat
 
@@ -30,6 +31,7 @@ memcheck_openMP_pdf: compil_openMP_debug clear
 
 callgrind_openMP_pdf: compil_openMP_debug clear
 	./resultat -PDF
+
 
 memcheck: compil_debug clear
 	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat
@@ -46,20 +48,24 @@ callgrind_pdf: compil_debug clear
 	kcachegrind &
 
 
-compil: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
-	gcc -Wall TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat
+compil: TableauDynamique.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_debug: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
-	gcc -Wall TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat -g
+compil_debug: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
+	gcc -Wall TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
 
-compil_openMP: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat
+compil_openMP: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_openMP_debug: TableauDynamique.o hyper_expo.o simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c simulation.c File.c main.c -o resultat -g
+compil_openMP_debug: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+
 
 hyper_expo.o: hyper_expo.c
 	$(compilateur) $(CFLAGS) hyper_expo.c
+
+CoupleNombreValeur.o: CoupleNombreValeur.c
+	$(compilateur) $(CFLAGS) CoupleNombreValeur.c
 
 simulation.o: simulation.c
 	$(compilateur) $(CFLAGS) simulation.c

@@ -48,7 +48,6 @@ struct Noeud
 	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
 };
-
 typedef struct Noeud Noeud;
 
 /*! \struct Slot
@@ -88,7 +87,7 @@ typedef struct Anneau Anneau;
 ///////////////// Les fonctions /////////////////
 //////////////////////////////////////////////////
 
-/*! \fn void initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
+/*! \fn Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf );
     \brief Initialise un anneau.
     \param nombre_slot Le nombre de slot de la simulation.
     \param nombre_noeud Le nombre de noeud de la simulation.
