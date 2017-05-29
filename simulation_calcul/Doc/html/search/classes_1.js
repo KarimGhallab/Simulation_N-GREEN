@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['file',['File',['../structFile.html',1,'']]]
+  ['couplenombrevaleur',['CoupleNombreValeur',['../structCoupleNombreValeur.html',1,'']]]
 ];

@@ -1,4 +1,5 @@
 <map id="Headers/simulation.h" name="Headers/simulation.h">
-<area shape="rect" id="node2" href="$File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="5,80,68,107"/>
-<area shape="rect" id="node3" href="$TableauDynamique_8h.html" title="Header du fichier de la strcture de tableau dynamique. " alt="" coords="92,80,245,107"/>
+<area shape="rect" id="node2" href="$File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="57,80,119,107"/>
+<area shape="rect" id="node4" href="$TableauDynamique_8h.html" title="Header du fichier de la strcture de tableau dynamique. " alt="" coords="143,80,297,107"/>
+<area shape="rect" id="node3" href="$CoupleNombreValeur_8h.html" title="Header du fichier décrivant une structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeu..." alt="" coords="5,155,171,181"/>
 </map>

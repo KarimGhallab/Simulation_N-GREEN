@@ -14,7 +14,7 @@
  */
 struct File
 {
-	CoupleNombreValeur **messages;
+	CoupleNombreValeur *messages;
 	int indice_fin;
 	int indice_debut;
 	double taille;
