@@ -15,18 +15,22 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
 	Anneau *anneau = (Anneau*) malloc( sizeof(Anneau) );
 
 	anneau->nombre_slot = nombre_slot; anneau->nombre_noeud = nombre_noeud;
-	anneau->numero_anneau = numero; anneau->nb_message = 0;
+	anneau->numero_anneau = numero; anneau->nb_message = 0; anneau->decallage = 0;
+	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
+	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
 
 	if (generer_pdf == 1)
 		anneau->messages = initialiser_tableau_dynamique();
 	else
 		anneau->messages = NULL;
 
+
 	initialiser_slots(anneau, nombre_slot);
 	initialiser_noeuds(anneau, nombre_noeud);
 
 	return anneau;
 }
+
 void afficher_etat_anneau(Anneau *anneau)
 {
 	Slot *slots = anneau->slots; Noeud *noeuds = anneau->noeuds;
@@ -45,9 +49,16 @@ void afficher_etat_anneau(Anneau *anneau)
 	printf("%d/%d slots sont plein\n", nombre_slot_plein, nombre_slot);
 	printf("Le nombre de message ayant circulé dans l'anneau est de : %d\n", nombre_message);
 	for(i=0; i<nombre_noeud;i++)
-	{
 		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->nb_message_file);
-	}
+
+	printf("Affichage des couples\n");
+	printf("Couple lecture\n");
+	for(i=0; i<nombre_noeud;i++)
+		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_lecture[i][0], anneau->couple_lecture[i][1]);
+
+	printf("Couple ecriture\n");
+	for(i=0; i<nombre_noeud;i++)
+		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_ecriture[i][0], anneau->couple_ecriture[i][1]);
 }
 
 void initialiser_slots( Anneau *anneau, int nombre_slot )
@@ -75,7 +86,7 @@ void afficher_slots( Anneau *anneau )
 		if (slots[i].contient_message == 0)
 			indice_noeud_emetteur = -1;
 		else
-			indice_noeud_emetteur = slots[i].paquet_message->indice_noeud_emetteur;
+			indice_noeud_emetteur = slots[i].noeud_emetteur_paquet;
 		printf("Indice du tableau : %d     Id du slot : %d    Il contient un paquet : %d    Noeud emetteur du paquet : %d    Indice en lecture : %d    Indice en écriture : %d\n", i, slots[i].id, slots[i].contient_message == 1, indice_noeud_emetteur, slots[i].indice_noeud_lecture, slots[i].indice_noeud_ecriture);
 	}
 }
@@ -107,7 +118,6 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 				indice_slot_ecriture = nombre_slot -1;
 
 		/* Création du noeud */
-
 		noeuds[j].id = j; noeuds[j].nb_message = 0; noeuds[j].indice_slot_lecture = indice_slot_lecture;
 		noeuds[j].indice_slot_ecriture = indice_slot_ecriture; noeuds[j].nb_antenne = nombre_antenne;
 		noeuds[j].debut_periode = debut_periode;
@@ -118,6 +128,20 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 		/* Met à jour les indices des slots */
 		slots[ indice_slot_lecture ].indice_noeud_lecture = j;
 		slots[ indice_slot_ecriture ].indice_noeud_ecriture = j;
+	}
+
+	int i;
+	int **couple_lecture = anneau->couple_lecture;
+	int **couple_ecriture = anneau->couple_ecriture;
+	for (i=0; i<nombre_noeud; i++)
+	{
+		couple_lecture[i] = (int *) malloc(2 * sizeof(int) );
+		couple_lecture[i][0] = noeuds[i].id;
+		couple_lecture[i][1] = slots [noeuds[i].indice_slot_lecture].id;
+
+		couple_ecriture[i] = (int *) malloc(2 * sizeof(int) );
+		couple_ecriture[i][0] = noeuds[i].id;
+		couple_ecriture[i][1] = slots [noeuds[i].indice_slot_ecriture].id;
 	}
 }
 
@@ -159,6 +183,7 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 
 	while (nombre_tic_restant > 0)
 	{
+		//printf("Tic numéro %d\n", (NOMBRE_TIC - nombre_tic_restant) + 1);
 		/* Gestion de la barre de chargement */
 		if (nombre_tic_restant % interval == 0)
 		{
@@ -169,8 +194,8 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 			cmp++;
 		}
 		entrer_messages( anneau, NOMBRE_TIC - nombre_tic_restant );
-		decaler_messages( anneau );
 		sortir_messages( anneau );
+		decaler_messages( anneau );
 
 		/*afficher_noeuds(noeuds);
 		printf("\n\n");
@@ -198,54 +223,56 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf)
 
 void entrer_messages( Anneau *anneau, int tic )
 {
-	Noeud *noeuds = anneau->noeuds; Slot *slots = anneau->slots;
 	TableauDynamique *td = anneau->messages;
+	int ** couple_ecriture = anneau->couple_ecriture;
 	int nombre_slot = anneau->nombre_slot;
+	int nombre_noeud = anneau->nombre_noeud;
 
 	Noeud *noeud;	//Le noeud courant
+	Slot *slot;
 	int nb_message;		//Le nombre de message envoyé par le noeud courant
 
 	int i;
-	for (i=0; i< nombre_slot; i++)
+
+	for (i=0; i< nombre_noeud; i++)
 	{
-		if (slots[i].indice_noeud_ecriture != -1)	//Le slot est un slot d'ecriture
+		noeud = &(anneau->noeuds[ couple_ecriture[i][0] ]);
+		int position_slot = (couple_ecriture[i][1] + anneau->decallage) % nombre_slot;
+		slot = &(anneau->slots[position_slot]);
+
+		//Le noeud affiche si c'est sa période de réception de message provenant des antennes
+		/*if (tic % PERIODE_MESSAGE_ANTENNE == noeud->debut_periode)
+			printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud->debut_periode, noeud->nb_antenne);*/
+
+		nb_message = hyper_expo();
+		//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
+
+		//On ajoute au noeud le tic d'arrivé des messages
+		ajouter_message( noeud->file_messages, nb_message, tic );
+
+		noeud->nb_message += nb_message;
+		noeud->nb_message_total += nb_message;
+
+		if ( ( slot->contient_message == 0) && (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
 		{
-			noeud = &noeuds[ slots[i].indice_noeud_ecriture ];
-
-			//Le slot affiche si c'est sa période de réception de message provenant des antennes
-			/*if (tic % PERIODE_MESSAGE_ANTENNE == noeuds[ slots[i].indice_noeud_ecriture ].debut_periode)	//C'est la periode du noeud, il reçoit un message de ses antennes
-				printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud.debut_periode, noeud.nb_antenne);*/
-
-			nb_message = hyper_expo();
-			//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
-
-			//On ajoute au noeud le tic d'arrivé des messages
-			ajouter_message( noeud->file_messages, nb_message, tic );
-
-			noeud->nb_message += nb_message;
-			noeud->nb_message_total += nb_message;
-
-			if ( ( slots[i].contient_message == 0) && (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
+			if (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
 			{
-				if (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
-				{
-					/* On enleve les messages du noeud */
-					int messages[LIMITE_NOMBRE_MESSAGE_MAX];
-					supprimer_message( noeuds[ slots[i].indice_noeud_ecriture ].file_messages, LIMITE_NOMBRE_MESSAGE_MAX, messages );
-					anneau->nb_message += LIMITE_NOMBRE_MESSAGE_MAX;
-					placer_message( noeud, noeud->id, &slots[ noeud->indice_slot_ecriture ], LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
-					noeuds[ slots[i].indice_noeud_ecriture ].nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
-				}
-				else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
-				{
-					//On enleve les messages du noeud
-					int nb_messages_noeud = noeud->nb_message;
-					int messages[nb_messages_noeud];
-					supprimer_message( noeud->file_messages, nb_messages_noeud, messages );
-					anneau->nb_message += nb_messages_noeud;
-					placer_message( noeud, noeud->id, &slots[ noeud->indice_slot_ecriture ], nb_messages_noeud, messages, tic, td );
-					noeuds[ slots[i].indice_noeud_ecriture ].nb_message = 0;
-				}
+				/* On enleve les messages du noeud */
+				int messages[LIMITE_NOMBRE_MESSAGE_MAX];
+				supprimer_message( noeud->file_messages, LIMITE_NOMBRE_MESSAGE_MAX, messages );
+				anneau->nb_message += LIMITE_NOMBRE_MESSAGE_MAX;
+				placer_message( noeud, noeud->id, slot, LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
+				noeud->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
+			}
+			else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
+			{
+				//On enleve les messages du noeud
+				int nb_messages_noeud = noeud->nb_message;
+				int messages[nb_messages_noeud];
+				supprimer_message( noeud->file_messages, nb_messages_noeud, messages );
+				anneau->nb_message += nb_messages_noeud;
+				placer_message( noeud, noeud->id, slot, nb_messages_noeud, messages, tic, td );
+				noeud->nb_message = 0;
 			}
 		}
 	}
@@ -254,9 +281,7 @@ void entrer_messages( Anneau *anneau, int tic )
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
-	PaquetMessage *paquet = (PaquetMessage *) malloc( sizeof(PaquetMessage) );
-	paquet->indice_noeud_emetteur = indice_noeud_emetteur;
-	paquet->nombre_messages = nombre_message;
+	slot->noeud_emetteur_paquet = indice_noeud_emetteur;
 
 	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoie le message */
@@ -273,77 +298,55 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 
 		noeud->attente_totale += temps_attente_message;
 	}
-	slot->paquet_message = paquet;
 	slot->contient_message = 1;
 }
 
 void decaler_messages( Anneau *anneau )
 {
 	int nombre_slot = anneau->nombre_slot;
-	Slot *slots = anneau->slots;
-	PaquetMessage *tmp_message = slots[ nombre_slot-1 ].paquet_message;
-	int tmp_contient = slots[ nombre_slot-1 ].contient_message;
-
-	int i;
-	/* Boucle sur le tableau de la fin jusqu'à la première case */
-	for (i=nombre_slot-1; i>=0; i--)
-	{
-		if (i -1 < 0)	//Il faut échanger le premier est le dernier élement
-		{
-			slots[ nombre_slot-1 ].paquet_message = tmp_message;
-			slots[ nombre_slot-1 ].contient_message = tmp_contient;
-		}
-		else
-		{
-			PaquetMessage *tmp_message_bis = slots[i-1].paquet_message;
-			slots[i-1].paquet_message = tmp_message;
-			tmp_message = tmp_message_bis;
-
-			int tmp_contient_bis = slots[i-1].contient_message;
-			slots[i-1].contient_message = tmp_contient;
-			tmp_contient = tmp_contient_bis;
-		}
-	}
+	anneau->decallage++;
+	anneau->decallage = anneau->decallage % nombre_slot;
 }
 
 void sortir_messages( Anneau *anneau )
 {
-	Slot *slots = anneau->slots;
+	Slot *slot;
+	Noeud *noeud;
 	int nombre_slot = anneau->nombre_slot;
+	int nombre_noeud = anneau->nombre_noeud;
+	int **couple_lecture = anneau->couple_lecture;
 	int i;
-	for (i=0; i<nombre_slot; i++)
+	for (i=0; i< nombre_noeud; i++)
 	{
-		if ( (slots[i].contient_message == 1) && (slots[i].indice_noeud_lecture == slots[i].paquet_message->indice_noeud_emetteur) )
-		{
-			//printf("Le slot %d sort un message\n", slots[i]->id);
-			free( slots[i].paquet_message ) ;
-			slots[i].contient_message = 0;
-		}
+		noeud = &(anneau->noeuds[ couple_lecture[i][0] ]);
+		int position_slot = (couple_lecture[i][1] + anneau->decallage) % nombre_slot;
+
+		slot = &(anneau->slots[position_slot]);
+
+		if ( (slot->contient_message == 1) && (noeud->id == slot->noeud_emetteur_paquet) )
+			slot->contient_message = 0;
 	}
 }
 
 void liberer_memoire_anneau( Anneau *anneau )
 {
 	printf("Fonction de libération\n");
-	Slot *slots = anneau->slots; Noeud *noeuds = anneau->noeuds;
+	Noeud *noeuds = anneau->noeuds;
 	TableauDynamique *td = anneau->messages;
-	int nombre_noeud = anneau->nombre_noeud; int nombre_slot = anneau->nombre_slot;
+	int nombre_noeud = anneau->nombre_noeud;
 	int i;
-	/* Libère la mémoire prise par les slots et leur paquet de message */
-	for (i=0; i<nombre_slot; i++)
-	{
-		if (slots[i].contient_message == 1)
-		{
-			free( slots[i].paquet_message );
-		}
-	}
-	free(slots);
+	/* Libère la mémoire prise par les slots */
+	free(anneau->slots);
 
 	/* Libère la mémoire prise par les noeuds et leurs File */
 	for (i=0; i<nombre_noeud; i++)
 	{
 		liberer_file( noeuds[i].file_messages );
+		free(anneau->couple_lecture[i]);
+		free(anneau->couple_ecriture[i]);
 	}
+	free(anneau->couple_ecriture);
+	free(anneau->couple_lecture);
 	free(noeuds);
 
 	/* Libération de l'espace mémoire pris par le tableau dynamique */

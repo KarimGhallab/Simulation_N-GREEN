@@ -30,17 +30,6 @@
 ///////////////// Les structures /////////////////
 //////////////////////////////////////////////////
 
-/*! \struct PaquetMessage
-    \brief Structure représentant un paquet de message curculant dans les slots.
-    Cette structure contient l'indice du noeud emetteur du paquet, le nombre de message, et un tableau des différents messages.
- */
-struct PaquetMessage
-{
-	int indice_noeud_emetteur;
-	int nombre_messages;
-	int messages[80];		//Un slot ne peut contenir plus de 80 messages (Un message contient uniquement son tic d'arrivé).
-};
-typedef struct PaquetMessage PaquetMessage;
 
 /*! \struct Noeud
     \brief Structure représentant un Noeud de l'anneau.
@@ -70,7 +59,7 @@ struct Slot
 {
 	int id;
 	int contient_message;		//Indique si le slot contient un message.
-	PaquetMessage *paquet_message;		//Le pquet de message du slot.
+	int noeud_emetteur_paquet;		//Le pquet de message du slot.
 	int indice_noeud_lecture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1.
 	int indice_noeud_ecriture;		//Si le slot ne peut accèder a aucun noeud, ce champs vaut -1.
 };
@@ -83,6 +72,9 @@ typedef struct Slot Slot;
 struct Anneau
 {
 	int numero_anneau;
+	int **couple_lecture;
+	int **couple_ecriture;
+	int decallage;
 	Noeud *noeuds;
 	Slot *slots;
 	TableauDynamique *messages;

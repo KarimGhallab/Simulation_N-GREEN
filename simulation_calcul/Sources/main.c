@@ -20,7 +20,6 @@ int main ( int argc, char *argv[] )
 	for (i=0; i<nombre_anneau; i++)
 		anneaux[i] = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf);
 
-
 	for (i=0; i<nombre_anneau; i++)
 	{
 		printf("Simulation n° %d\n", i+1);
