@@ -5,12 +5,7 @@
 
 from __future__ import print_function
 
-import tkMessageBox
-import tkFileDialog
-import time
-import random
-import sys
-import os
+import tkMessageBox, tkFileDialog, time, random, sys, os, csv
 
 from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
 from math import cos, sin, pi, exp
@@ -350,19 +345,7 @@ def ouvrir_fichier():
 	chemin_fichier = tkFileDialog.askopenfilename()
 	print (chemin_fichier)
 	if chemin_fichier != "()" and chemin_fichier != "":
-		print ("Lecture de fichier")
-		fichier = open(chemin_fichier, 'r')
-		lignes = fichier.readlines()
-		compteur = 0
-		for ligne in lignes:
-			if compteur == 0:	#Valeur du nombre de noeud
-				controleur.nb_noeud_anneau = int(ligne)
-			elif compteur == 1:	#Valeur du nombre de slot
-				controleur.nb_slot_anneau = int(ligne)
-			else:
-				for lettre in ligne:
-					print (lettre, end="")
-			compteur += 1
+		controleur.chemin_fichier = chemin_fichier
 		reset(True)
 		tkMessageBox.showinfo("Chargement", "La simulation va désormais exécuter le scénario du fichier fournis !;)")
 
@@ -470,7 +453,6 @@ def sortir_message_graphique(canvas, message):
 ##	Représente un noeud dans le système, un noeuds peux stocker des messages.
 class Noeud:
 
-
 	##	Constructeur d'un noeud.
 	#	@param self : L'objet de la classe.
 	#	@param indice_slot_lecture : L'indice du slot en lecture.
@@ -489,6 +471,7 @@ class Noeud:
 		self.attente_max = 0		#Le temps d'attente maximal dans le noeud
 		self.nb_message_total = 0
 		self.attente_totale = 0
+		self.tics_sorties = []
 
 
 	##	renvoie l'équalité entres deux noeuds.
@@ -549,7 +532,6 @@ class Noeud:
 
 ##	Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
 class Slot:
-
 
 	##	Le constructeur d'un slot
 	#	@param self : Le slot.
@@ -690,6 +672,7 @@ class Controleur:
 		self.nb_noeud_anneau = nb_noeud
 		self.nb_slot_anneau = nb_slot
 		self.lire_fichier = lire_fichier
+		self.chemin_fichier = None
 
 
 ###########################################################
@@ -783,8 +766,6 @@ def reset(lire_fichier):
 		controleur.fenetre.after_cancel(tache)
 
 	""" La méthode after permet ici de faire s'executer les threads en cours """
-	print ("Nombre de noeud : ", controleur.nb_noeud_anneau)
-	print ("Nombre de slot : ", controleur.nb_slot_anneau)
 	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, lire_fichier) )
 
 
@@ -975,15 +956,13 @@ def placer_message(indice_noeud, messages):
 		controleur.slots_modele[indice_slot].paquet_message.update_position(message_x, message_y)
 
 		""" Met à jour les temps d'attentes du noeud qui envoi le message """
-		for message in messages:
-			if message != None:
-				temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
-				if temps_attente_message > noeud_modele.attente_max:
-					noeud_modele.attente_max = temps_attente_message
-				noeud_modele.attente_totale += temps_attente_message
-
-	else:	#Une erreur est survenue, on affiche un message
-		print (message)
+		if controleur.lire_fichier == False:
+			for message in messages:
+				if message != None:
+					temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
+					if temps_attente_message > noeud_modele.attente_max:
+						noeud_modele.attente_max = temps_attente_message
+					noeud_modele.attente_totale += temps_attente_message
 
 
 ##	Exécute une rotation des messages dans l'anneau.
@@ -994,6 +973,8 @@ def rotation_message():
 	sortir_message()
 	if controleur.lire_fichier == False:
 		entrer_message()
+	else:
+		entrer_message_via_fichier()
 
 
 ##	Fait entrer dans l'anneau des messages.
@@ -1017,7 +998,7 @@ def entrer_message():
 					noeud.ajouter_message( MessageN(controleur.nb_tic) )
 
 			noeud.nb_message += nb_message
-			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut enenvoyer un
+			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut en envoyer un
 				if noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MAX:
 					""" On enleve les messages du noeud """
 					messages = [None] * LIMITE_NOMBRE_MESSAGE_MAX
@@ -1033,6 +1014,19 @@ def entrer_message():
 					noeud.nb_message = 0
 				placer_message( slot.indice_noeud_ecriture, messages )
 			noeud.update_file_noeud_graphique()
+
+def entrer_message_via_fichier():
+	global controleur
+
+	tic_actuel = controleur.nb_tic
+	for i in range( len(controleur.noeuds_modele) ):
+		noeud = controleur.noeuds_modele[i]
+		print (str(noeud))
+		if len(noeud.tics_sorties) > 0:
+			if tic_actuel == int(noeud.tics_sorties[0]):
+				noeud.tics_sorties.pop(0)
+				message = [0] * LIMITE_NOMBRE_MESSAGE_MAX
+				placer_message(i, message)
 
 
 ##	Fait sortir du système un mesage.
@@ -1127,6 +1121,20 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 	global controleur
 	global IMAGE_JASON
 
+	if lire_fichier:
+		chemin_fichier = controleur.chemin_fichier
+		fichier =   open(chemin_fichier, 'r')
+		reader = csv.reader(fichier)
+		i = 0
+		for ligne in reader:	#On ne parcours que les deux premieres lignes afin de recuperer les nombres de noeud et de slot
+			if i == 0:		#Le nombre de noeud de l'anneau
+				nb_noeud = int(ligne[0])
+				print(nb_noeud)
+			elif i == 1:	#le nombre de slot de l'anneau
+				nb_slot = int(ligne[0])
+			else:
+				break
+			i += 1
 	""" On détruit tout les widgets de la fenêtre afin que celle-ci soit toute belle """
 	for widget in fenetre.winfo_children():
 	    widget.destroy()
@@ -1140,12 +1148,24 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 	slots_vue = slots[1]
 
 	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue)
-
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
 	slots_modele = noeuds[2]
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier)
+
+	if lire_fichier:
+		fichier = open(chemin_fichier, 'r')
+		reader = csv.reader(fichier)
+		i = 0
+		for ligne in reader:
+			if i >= 2:			#Les tics d'envoi de message d'un noeud
+				indice_noeud = int(ligne[0])
+				for j in range(1, len(ligne)):
+					controleur.noeuds_modele[indice_noeud].tics_sorties.append(ligne[j])
+			i += 1
+		for k in range( controleur.nb_noeud_anneau ):
+			print ("indice : "+str(k)+"Tics de sorties : "+str(controleur.noeuds_modele[k].tics_sorties))
 
 	calculer_vitesse()
 
