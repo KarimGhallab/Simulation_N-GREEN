@@ -100,9 +100,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Controleur.html#a76cc4b954f4e8e08491ea2cd80d1b60c">__init__</a> (self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)</td></tr>
-<tr class="memdesc:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>.  <a href="#a76cc4b954f4e8e08491ea2cd80d1b60c">More...</a><br /></td></tr>
-<tr class="separator:a76cc4b954f4e8e08491ea2cd80d1b60c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2be19ca8831580d536873acbcd104980"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Controleur.html#a2be19ca8831580d536873acbcd104980">__init__</a> (self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier)</td></tr>
+<tr class="memdesc:a2be19ca8831580d536873acbcd104980"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>.  <a href="#a2be19ca8831580d536873acbcd104980">More...</a><br /></td></tr>
+<tr class="separator:a2be19ca8831580d536873acbcd104980"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -133,11 +133,20 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a54f133db7dc8c75c79a8b1edf5c5fada"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54f133db7dc8c75c79a8b1edf5c5fada"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>nb_tic</b></td></tr>
 <tr class="separator:a54f133db7dc8c75c79a8b1edf5c5fada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87251db1c29d0163aa89d28fdd6b6551"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87251db1c29d0163aa89d28fdd6b6551"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud_anneau</b></td></tr>
+<tr class="separator:a87251db1c29d0163aa89d28fdd6b6551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abaa4b2a8f5958d45780d7c01ebd4cfd2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abaa4b2a8f5958d45780d7c01ebd4cfd2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot_anneau</b></td></tr>
+<tr class="separator:abaa4b2a8f5958d45780d7c01ebd4cfd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace473ecb6cdadfb8a57217c26f01ca47"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ace473ecb6cdadfb8a57217c26f01ca47"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>lire_fichier</b></td></tr>
+<tr class="separator:ace473ecb6cdadfb8a57217c26f01ca47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe représentant le système que l'on souhaite modéliser dans sa globalité Elle fait l'intermédiaire entre le modèle et la vue. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a76cc4b954f4e8e08491ea2cd80d1b60c"></a>
+<a class="anchor" id="a2be19ca8831580d536873acbcd104980"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -181,7 +190,25 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>noeuds_modele</em>&#160;</td>
+          <td class="paramname"><em>noeuds_modele</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>nb_noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>nb_slot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>lire_fichier</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -201,6 +228,9 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">slots_modele</td><td>: Les slost du modèle de la simulation. </td></tr>
     <tr><td class="paramname">noeuds_vue</td><td>: Les noeuds de la vue de la simulation. </td></tr>
     <tr><td class="paramname">noeuds_modele</td><td>: Les noeuds du modèle de la simulation. </td></tr>
+    <tr><td class="paramname">nb_noeud</td><td>: Le nombre de noeud de la simulation. </td></tr>
+    <tr><td class="paramname">nb_slot</td><td>: Le nombre de slot de la simulation. </td></tr>
+    <tr><td class="paramname">lire_fichier</td><td>: Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier. </td></tr>
   </table>
   </dd>
 </dl>

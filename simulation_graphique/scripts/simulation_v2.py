@@ -3,7 +3,10 @@
 ##	@package simulation_v2
 #	Ce script permet de réaliser une simulation d'un anneau en réseau dans le cadre du projet N-GREEN.
 
+from __future__ import print_function
+
 import tkMessageBox
+import tkFileDialog
 import time
 import random
 import sys
@@ -248,7 +251,7 @@ def placer_panel_gauche(fenetre):
 
 	replay = Image.open("../images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
-	bouton_reset = Button(fenetre, text ="Recommencer", command = reset, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
+	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(False), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
@@ -332,9 +335,36 @@ def placer_panel_bas(fenetre):
 	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky='W')
 	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky='W')
 
-	""" le bouton """
+	""" les boutons """
+	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White", width=LONGUEUR_BOUTON)
+	bouton_explorer.grid(row=NOMBRE_LIGNE_CANVAS+7, column=3, sticky='E')
+
 	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
 	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+7, column=4, sticky='E')
+
+##	Fonction callback ouvrant un fichier selectinné depuis un explorateur.
+#	Le fichier ouvert doit être un fichier de configuration au format txt.
+def ouvrir_fichier():
+	global controleur
+
+	chemin_fichier = tkFileDialog.askopenfilename()
+	print (chemin_fichier)
+	if chemin_fichier != "()" and chemin_fichier != "":
+		print ("Lecture de fichier")
+		fichier = open(chemin_fichier, 'r')
+		lignes = fichier.readlines()
+		compteur = 0
+		for ligne in lignes:
+			if compteur == 0:	#Valeur du nombre de noeud
+				controleur.nb_noeud_anneau = int(ligne)
+			elif compteur == 1:	#Valeur du nombre de slot
+				controleur.nb_slot_anneau = int(ligne)
+			else:
+				for lettre in ligne:
+					print (lettre, end="")
+			compteur += 1
+		reset(True)
+		tkMessageBox.showinfo("Chargement", "La simulation va désormais exécuter le scénario du fichier fournis !;)")
 
 
 ##	Met a jour le label du panel bas affichant le TIC en millisecondes.
@@ -646,7 +676,8 @@ class Controleur:
 	#	@param noeuds_modele : Les noeuds du modèle de la simulation.
 	#	@param nb_noeud : Le nombre de noeud de la simulation.
 	#	@param nb_slot : Le nombre de slot de la simulation.
-	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot):
+	#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
+	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier):
 		self.fenetre = fenetre
 		self.canvas = canvas
 		self.slots_vue = slots_vue
@@ -658,6 +689,7 @@ class Controleur:
 		self.nb_tic = 0
 		self.nb_noeud_anneau = nb_noeud
 		self.nb_slot_anneau = nb_slot
+		self.lire_fichier = lire_fichier
 
 
 ###########################################################
@@ -735,7 +767,8 @@ def callback_validation_configuration(event):
 
 ##	Callback au bouton demandant un reset de l'application.
 #	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
-def reset():
+#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
+def reset(lire_fichier):
 	global controleur
 	global tache
 
@@ -750,7 +783,9 @@ def reset():
 		controleur.fenetre.after_cancel(tache)
 
 	""" La méthode after permet ici de faire s'executer les threads en cours """
-	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau) )
+	print ("Nombre de noeud : ", controleur.nb_noeud_anneau)
+	print ("Nombre de slot : ", controleur.nb_slot_anneau)
+	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, lire_fichier) )
 
 
 ##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
@@ -898,7 +933,7 @@ def modifier_configuration():
 		LAMBDA = tmp_lambda
 		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
-		reset()
+		reset(False)
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration a été chargé avec succès !;)")
 
 
@@ -948,7 +983,7 @@ def placer_message(indice_noeud, messages):
 				noeud_modele.attente_totale += temps_attente_message
 
 	else:	#Une erreur est survenue, on affiche un message
-		print message
+		print (message)
 
 
 ##	Exécute une rotation des messages dans l'anneau.
@@ -957,7 +992,8 @@ def rotation_message():
 
 	decaler_messages()
 	sortir_message()
-	entrer_message()
+	if controleur.lire_fichier == False:
+		entrer_message()
 
 
 ##	Fait entrer dans l'anneau des messages.
@@ -972,7 +1008,7 @@ def entrer_message():
 
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
 			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
-				print "C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes."
+				print ("C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes.")
 
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
@@ -1086,7 +1122,8 @@ def calculer_vitesse():
 ##	Met en place le canvas.
 #	@param fenetre : La fenetre sur laquelle on place le canvas.
 #	@param nb_noeud : Le nombre de noeud à initialiser.
-def initialisation(fenetre, nb_noeud, nb_slot):
+#	@param lire_fichier : Un booléen indiquant si la simulation se fait via une lecture de fichier ou non.
+def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 	global controleur
 	global IMAGE_JASON
 
@@ -1108,7 +1145,7 @@ def initialisation(fenetre, nb_noeud, nb_slot):
 	noeuds_vue = noeuds[1]
 	slots_modele = noeuds[2]
 
-	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot)
+	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier)
 
 	calculer_vitesse()
 
@@ -1124,7 +1161,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print "Nombre de TIC : ", controleur.nb_tic
+		print ("Nombre de TIC : ", controleur.nb_tic)
 
 		rotation_message()
 
@@ -1139,22 +1176,22 @@ def afficher_message_anneau():
 	global controleur
 	for i in range (controleur.nb_slot_anneau):
 		if controleur.slots_modele[i].paquet_message == None:
-			print "Le slot ", controleur.slots_vue[i], " ne contient pas de message"
+			print ("Le slot ", controleur.slots_vue[i], " ne contient pas de message")
 		else:
-			print "Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ]
+			print ("Le slot ", controleur.slots_vue[i], " contient un message mis par le noeud ", controleur.noeuds_modele[ controleur.slots_modele[i].paquet_message.indice_noeud_emetteur ])
 
 
 ##	Affiche les statistiques liés aux temps d'attente des noeuds.
 def afficher_stat_noeud():
 	global controleur
 
-	print "\n######### STATS #######"
+	print ("\n######### STATS #######")
 	for noeud in controleur.noeuds_modele:
 		if noeud.nb_message_total != 0:
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
-			print "Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)
-	print ""
+			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max))
+	print ("")
 
 
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
@@ -1166,16 +1203,16 @@ if len(sys.argv) > 1:	#Un argument à été donnée
 	for i in range( len(sys.argv) ):
 		argument = str( sys.argv[i] )
 		if argument in valeur_pour_statham:		#On active le STATHAM MDOE !!!
-			print "On active le STATHAM MDOE !!!"
+			print ("On active le STATHAM MDOE !!!")
 			STATHAM_MODE = True
 
 		elif argument == "-f":
 			if len(sys.argv) > i+1:
 				chemin_fichier = str(sys.argv[i+1])
 				lire_fichier = True
-				print "Lecture du fichier : \""+chemin_fichier+"\""
+				print ("Lecture du fichier : \""+chemin_fichier+"\"")
 			else:
-				print "Aucun chemin de fichier spécifié"
+				print ("Aucun chemin de fichier spécifié")
 
 global controleur
 controleur = None
@@ -1186,5 +1223,5 @@ fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un
 nb_noeud = 5
 nb_slot = 25
 
-initialisation(fenetre, nb_noeud, nb_slot)
+initialisation(fenetre, nb_noeud, nb_slot, lire_fichier)
 fenetre.mainloop()
