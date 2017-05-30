@@ -22,13 +22,9 @@ COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple",
 
 COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
-global NOMBRE_SLOT
-NOMBRE_SLOT = 25		#Le nombre de slot du système
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 
-global NOMBRE_NOEUD
-NOMBRE_NOEUD = 10	#Le nombre de noeud du système
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 
@@ -86,7 +82,7 @@ def creer_fenetre():
 	if STATHAM_MODE:
 		titre = "Jason Statham : <3"
 	else:
-		titre = "Simulation N-GREEN"
+		titre = "Simulation réseau en anneau N-GREEN"
 	fenetre.title(titre)
 
 	return fenetre
@@ -110,17 +106,18 @@ def creer_canvas(fenetre):
 #	En indice 1 les slots de la vue.
 #	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
 #	@param canvas : Le canvas sur lequel on place les slots graphiques.
+#	@param nb_slot : Le nombre de slot à placer.
 #	@return En indice 0 les slots du modèle, en indice 1 les slots de la vue.
-def placer_slots(fenetre, canvas):
-	slots_vue = [None] * NOMBRE_SLOT	#Tableau qui contiendra les rectangles représentant les slots du modèle
-	slots_modele = [ None ] * NOMBRE_SLOT
+def placer_slots(fenetre, canvas, nb_slot):
+	slots_vue = [None] * nb_slot	#Tableau qui contiendra les rectangles représentant les slots du modèle
+	slots_modele = [ None ] * nb_slot
 
 	#Le point du milieu
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
-	for i in range(1, NOMBRE_SLOT+1):
-		val_cos = cos(2*i*pi/NOMBRE_SLOT)
-		val_sin = sin(2*i*pi/NOMBRE_SLOT)
+	for i in range(1, nb_slot+1):
+		val_cos = cos(2*i*pi/nb_slot)
+		val_sin = sin(2*i*pi/nb_slot)
 		nouveau_x = milieu_x + val_cos * DISTANCE_SLOT
 		nouveau_y = milieu_y - val_sin * DISTANCE_SLOT
 
@@ -136,25 +133,27 @@ def placer_slots(fenetre, canvas):
 #	En indice 2 les slots du modèle.
 #	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
 #	@param canvas : Le canvas sur lequel on place les slots graphiques.
+#	@param nb_noeud : Le nombre de noeud à placer.
+#	@param nb_slot : Le nombre de slot déjà placé.
 #	@param slots_modele : Les slots du modele
 #	@param slots_vue : Les slots de la vue
 #	@return En indice 0 les noeuds du modèle, en indice 1 les noeuds de la vue, en indice 2 les slots du modèle.
-def placer_noeuds(fenetre, canvas, slots_modele, slots_vue):
+def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue):
 	global TEXTS_NOEUDS
 	global DICT_TEXTES_NOEUDS
 
-	noeuds_vue = [None] * NOMBRE_NOEUD
-	noeuds_modele = [None] * NOMBRE_NOEUD
-	TEXTS_NOEUDS = [None] * NOMBRE_NOEUD
+	noeuds_vue = [None] * nb_noeud
+	noeuds_modele = [None] * nb_noeud
+	TEXTS_NOEUDS = [None] * nb_noeud
 
-	pas = NOMBRE_SLOT // NOMBRE_NOEUD
+	pas = nb_slot // nb_noeud
 
-	for j in range(NOMBRE_NOEUD):
+	for j in range(nb_noeud):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
 
 		debut_periode = int(random.uniform(0, 99))	#Le décalage entre chaque récéption de message émis par les antennes
 
-		if j == 0 or j == NOMBRE_NOEUD-1:	#L'anneau doit contenir deux noeuds n'étant liés avec aucunes antennes
+		if j == 0 or j == nb_noeud-1:	#L'anneau doit contenir deux noeuds n'étant liés avec aucunes antennes
 			nb_antenne = 0
 		else:
 			nb_antenne = int(random.uniform(1, 5))	#Au maximum 5 antennes
@@ -645,7 +644,9 @@ class Controleur:
 	#	@param slots_modele : Les slost du modèle de la simulation.
 	#	@param noeuds_vue : Les noeuds de la vue de la simulation.
 	#	@param noeuds_modele : Les noeuds du modèle de la simulation.
-	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele):
+	#	@param nb_noeud : Le nombre de noeud de la simulation.
+	#	@param nb_slot : Le nombre de slot de la simulation.
+	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot):
 		self.fenetre = fenetre
 		self.canvas = canvas
 		self.slots_vue = slots_vue
@@ -655,6 +656,8 @@ class Controleur:
 		self.continuer = False		#Booléen indiquant s'il faut effectuer d'autres tics ou non
 		self.entrys = {}	#Un dictionnaire des entry de l'interface
 		self.nb_tic = 0
+		self.nb_noeud_anneau = nb_noeud
+		self.nb_slot_anneau = nb_slot
 
 
 ###########################################################
@@ -671,7 +674,7 @@ def callback_click_noeud(event):
 
 	""" On récupére le noeud sur lequel l'utilisateur à cliqué """
 	i = 0
-	while i < NOMBRE_NOEUD -1 and controleur.noeuds_vue[i] != id_objet:
+	while i < controleur.nb_noeud_anneau -1 and controleur.noeuds_vue[i] != id_objet:
 		controleur.noeuds_vue[i]
 		i += 1
 
@@ -747,7 +750,7 @@ def reset():
 		controleur.fenetre.after_cancel(tache)
 
 	""" La méthode after permet ici de faire s'executer les threads en cours """
-	controleur.fenetre.after(TIC, initialisation, (fenetre) )
+	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau) )
 
 
 ##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
@@ -803,14 +806,12 @@ def diminuer_vitesse():
 ##	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas.
 def modifier_configuration():
 	global controleur
-	global NOMBRE_NOEUD
-	global NOMBRE_SLOT
 	global LAMBDA
 	global LAMBDA_BURST
 	global LIMITE_NOMBRE_MESSAGE_MIN
 
-	tmp_noeud = NOMBRE_NOEUD
-	tmp_slot = NOMBRE_SLOT
+	tmp_noeud = controleur.nb_noeud_anneau
+	tmp_slot = controleur.nb_slot_anneau
 	tmp_lambda = LAMBDA
 	tmp_limite_message = LIMITE_NOMBRE_MESSAGE_MIN
 	nb_champ_vide = 0
@@ -835,7 +836,7 @@ def modifier_configuration():
 			tkMessageBox.showerror("Erreur nombre de noeud !", message)
 			erreur = True
 		else:
-			NOMBRE_NOEUD = int_valeur_noeud
+			controleur.nb_noeud_anneau = int_valeur_noeud
 	else:
 		nb_champ_vide += 1
 
@@ -847,7 +848,7 @@ def modifier_configuration():
 			tkMessageBox.showerror("Erreur nombre de noeud !", message)
 			erreur = True
 		else:
-			NOMBRE_SLOT = int_valeur_slot
+			controleur.nb_slot_anneau = int_valeur_slot
 	else:
 		nb_champ_vide += 1
 
@@ -892,19 +893,18 @@ def modifier_configuration():
 		nb_champ_vide += 1
 
 	if erreur or nb_champ_vide == len(controleur.entrys):
-		NOMBRE_NOEUD = tmp_noeud
-		NOMBRE_SLOT = tmp_slot
+		controleur.nb_noeud_anneau = tmp_noeud
+		controleur.nb_slot_anneau = tmp_slot
 		LAMBDA = tmp_lambda
 		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		reset()
-		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration est en cours de chargement !;)")
+		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration a été chargé avec succès !;)")
 
 
 ##	Stop l'appli en faisant attention aux thread restants.
 def arreter_appli():
 	arreter_rotation()
-	afficher_stat_noeud()
 	fenetre.destroy()
 
 
@@ -965,7 +965,7 @@ def rotation_message():
 def entrer_message():
 	global controleur
 
-	for i in range (NOMBRE_SLOT):		#Parcours des slots de l'anneau
+	for i in range (controleur.nb_slot_anneau):		#Parcours des slots de l'anneau
 		slot = controleur.slots_modele[i]
 		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
@@ -1029,8 +1029,8 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 	milieu_x = COTE_CANVAS/2
 	milieu_y = COTE_CANVAS/2
 
-	destination_x = milieu_x + cos(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT
-	destination_y = milieu_y - sin(2*indice_slot*pi/NOMBRE_SLOT) * DISTANCE_SLOT
+	destination_x = milieu_x + cos(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
+	destination_y = milieu_y - sin(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
 
 	msg = controleur.slots_modele[indice_slot].paquet_message
 	if msg != None:
@@ -1063,11 +1063,11 @@ def calculer_vitesse():
 	milieu_y = COTE_CANVAS/2
 
 	""" Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots """
-	x1 = milieu_x + cos(0/NOMBRE_SLOT) * DISTANCE_SLOT
-	y1 = milieu_y - sin(0/NOMBRE_SLOT) * DISTANCE_SLOT
+	x1 = milieu_x + cos(0/controleur.nb_slot_anneau) * DISTANCE_SLOT
+	y1 = milieu_y - sin(0/controleur.nb_slot_anneau) * DISTANCE_SLOT
 
-	x2 = milieu_x + cos(2*pi/NOMBRE_SLOT) * DISTANCE_SLOT
-	y2 = milieu_y - sin(2*pi/NOMBRE_SLOT) * DISTANCE_SLOT
+	x2 = milieu_x + cos(2*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
+	y2 = milieu_y - sin(2*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
 
 	distance_max = max( abs(x1 - x2), abs(y1 - y2) ) #* matela_securite
 
@@ -1085,7 +1085,8 @@ def calculer_vitesse():
 
 ##	Met en place le canvas.
 #	@param fenetre : La fenetre sur laquelle on place le canvas.
-def initialisation(fenetre):
+#	@param nb_noeud : Le nombre de noeud à initialiser.
+def initialisation(fenetre, nb_noeud, nb_slot):
 	global controleur
 	global IMAGE_JASON
 
@@ -1097,17 +1098,17 @@ def initialisation(fenetre):
 	canvas = creer_canvas(fenetre)
 	IMAGE_JASON = PhotoImage(file="../images/jason_statham.png")
 
-	slots = placer_slots(fenetre, canvas)
+	slots = placer_slots(fenetre, canvas, nb_slot)
 	slots_modele = slots[0]
 	slots_vue = slots[1]
 
-	noeuds = placer_noeuds(fenetre, canvas, slots_modele, slots_vue)
+	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue)
 
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
 	slots_modele = noeuds[2]
 
-	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele)
+	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot)
 
 	calculer_vitesse()
 
@@ -1136,7 +1137,7 @@ def effectuer_tic():
 ##	Affiche l'état des slots de l'anneau.
 def afficher_message_anneau():
 	global controleur
-	for i in range (NOMBRE_SLOT):
+	for i in range (controleur.nb_slot_anneau):
 		if controleur.slots_modele[i].paquet_message == None:
 			print "Le slot ", controleur.slots_vue[i], " ne contient pas de message"
 		else:
@@ -1158,12 +1159,23 @@ def afficher_stat_noeud():
 
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
 
-if len(sys.argv) == 2:	#Un argument à été donnée
-	valeur_pour_statham = ["jason_statham", "Jason", "Statham", "Jason_Statham", "JASON", "STATHAM", "JASON_STATHAM", "STATHAM_MODE", "True", "true", "TRUE"]
+lire_fichier = False
 
-	if str(sys.argv[1]) in valeur_pour_statham:		#On active le STATHAM MDOE !!!
-		print "On active le STATHAM MDOE !!!"
-		STATHAM_MODE = True
+if len(sys.argv) > 1:	#Un argument à été donnée
+	valeur_pour_statham = ["-jason_statham", "-Jason", "-Statham", "-Jason_Statham", "-JASON", "-STATHAM", "-JASON_STATHAM", "-STATHAM_MODE", "-True", "-true", "-TRUE"]
+	for i in range( len(sys.argv) ):
+		argument = str( sys.argv[i] )
+		if argument in valeur_pour_statham:		#On active le STATHAM MDOE !!!
+			print "On active le STATHAM MDOE !!!"
+			STATHAM_MODE = True
+
+		elif argument == "-f":
+			if len(sys.argv) > i+1:
+				chemin_fichier = str(sys.argv[i+1])
+				lire_fichier = True
+				print "Lecture du fichier : \""+chemin_fichier+"\""
+			else:
+				print "Aucun chemin de fichier spécifié"
 
 global controleur
 controleur = None
@@ -1171,5 +1183,8 @@ controleur = None
 fenetre = creer_fenetre()
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
-initialisation(fenetre)
+nb_noeud = 5
+nb_slot = 25
+
+initialisation(fenetre, nb_noeud, nb_slot)
 fenetre.mainloop()
