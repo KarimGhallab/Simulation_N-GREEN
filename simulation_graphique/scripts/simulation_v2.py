@@ -246,7 +246,8 @@ def placer_panel_gauche(fenetre):
 
 	replay = Image.open("../images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
-	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(False), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
+	print ("chemin fichier : "+str(controleur.chemin_fichier))
+	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(controleur.lire_fichier), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
@@ -1166,6 +1167,7 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 			i += 1
 		for k in range( controleur.nb_noeud_anneau ):
 			print ("indice : "+str(k)+"Tics de sorties : "+str(controleur.noeuds_modele[k].tics_sorties))
+		controleur.chemin_fichier = chemin_fichier
 
 	calculer_vitesse()
 
