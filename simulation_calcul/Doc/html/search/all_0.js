@@ -5,9 +5,10 @@ var searchData=
   ['afficher_5fnoeuds',['afficher_noeuds',['../simulation_8h.html#a5404404e7fea824543c026995a06d79a',1,'simulation.h']]],
   ['afficher_5fpdf',['afficher_PDF',['../simulation_8h.html#a8de259e17277266238c08a6771cca036',1,'simulation.h']]],
   ['afficher_5fslots',['afficher_slots',['../simulation_8h.html#a2e17fdea3a85c6e772e7bdf68cdfed56',1,'simulation.h']]],
+  ['afficher_5ftableau_5fdynamique_5fdouble',['afficher_tableau_dynamique_double',['../TableauDynamiqueDouble_8h.html#a8dea9b5f4d952bc0a4df0c57537ae860',1,'TableauDynamiqueDouble.h']]],
   ['afficher_5ftableau_5fdynamique_5fentier',['afficher_tableau_dynamique_entier',['../TableauDynamiqueEntier_8h.html#a05557c29eb37069bc7da3cfeb2ddd907',1,'TableauDynamiqueEntier.h']]],
-  ['afficher_5ftableau_5fdynamique_5ffloat',['afficher_tableau_dynamique_float',['../TableauDynamiqueFloat_8h.html#aee5c4a87f0f1234464609a07add2c91c',1,'TableauDynamiqueFloat.h']]],
   ['ajouter_5fmessage',['ajouter_message',['../File_8h.html#abd5374fe780906a8e00ac9cf1deae28e',1,'File.h']]],
+  ['ajouter_5fvaleur_5ftableau_5fdynamique_5fdouble',['ajouter_valeur_tableau_dynamique_double',['../TableauDynamiqueDouble_8h.html#a433e859c33afe908258af6826450f01e',1,'TableauDynamiqueDouble.h']]],
   ['ajouter_5fvaleur_5ftableau_5fdynamique_5fentier',['ajouter_valeur_tableau_dynamique_entier',['../TableauDynamiqueEntier_8h.html#a14d055cb501e57af09aa12ebf0f2a546',1,'TableauDynamiqueEntier.h']]],
   ['anneau',['Anneau',['../structAnneau.html',1,'']]]
 ];

@@ -36,7 +36,7 @@ File* creer_file();
  */
 void ajouter_message(File *file, int nb_message, int message);
 
-/*! \fn int* supprimer_message(File *file, int nb_message)
+/*! \fn void supprimer_message(File *file, int nb_message, int *messages)
     \brief Retire plusieurs messages en debut de file et les ajoute au tableau de message.
     \param *file la file à laquelle on souhaite retirer les messages.
 	\param nb_message Le nombre de message que l'on souhaite retirer.

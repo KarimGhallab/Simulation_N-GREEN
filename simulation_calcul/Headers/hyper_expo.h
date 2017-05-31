@@ -1,4 +1,4 @@
-#include "TableauDynamiqueFloat.h"
+#include "TableauDynamiqueDouble.h"
 
 /*! \file hyper_expo.h
     \brief Header du fichier permettant d'exécuter des tirages et de réaliser l'hyper exponentielle.
@@ -54,26 +54,26 @@ float generer_aleatoire(float borne_min, float borne_max);
 int loi_de_poisson_naif(float u);
 
 
-/*! \fn int loi_de_poisson_opti(float u, TableauDynamique *tableau_poisson[])
+/*! \fn int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson);
     \brief Calcule optimisé du résultat d'une loi de poisson.
     \param u : Variable aléatoire.
     \param *tableau_poisson : Le tableau contenant les valeurs de la loi de poisson.
     \return Le résultat de la loi de poisson.
  */
-int loi_de_poisson_opti(float u, TableauDynamiqueFloat *tableau_poisson);
+int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson);
 
 
-/*! \fn TableauDynamique *initialiser_tableau_poisson
+/*! \fn TableauDynamiqueDouble *initialiser_tableau_poisson
     \brief Initialise le tableau avec les résultats de le loi de poisson.
 	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
-   	\return : le initialisé.
+   	\return : le tableau initialisé.
  */
-TableauDynamiqueFloat *initialiser_tableau_poisson();
+TableauDynamiqueDouble *initialiser_tableau_poisson();
 
 
-/*! \fn int hyper_expo(TableauDynamique *tableau_poisson)
+/*! \fn int hyper_expo(TableauDynamiqueDouble *tableau_poisson)
     \brief Hyper exponentielle.
 	\param *tableau_poisson Le tableau contenant les données pré-calculées pour la loi de poisson.
     \return Le nombre de message reçu via la loi hyper exponentielle.
  */
-int hyper_expo(TableauDynamiqueFloat *tableau_poisson);
+int hyper_expo(TableauDynamiqueDouble *tableau_poisson);

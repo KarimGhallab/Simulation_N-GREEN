@@ -1,11 +1,11 @@
 /*! \file TableauDynamiqueEntier.h
-    \brief Header du fichier de la structure de tableau dynamique.
+    \brief Header du fichier de la structure de tableau dynamique contenant des entiers.
  */
 
- /*! \def TAILLE_INITIALE_TABLEAU
+ /*! \def TAILLE_INITIALE_TABLEAU_ENTIER
      \brief La taille initiale du tableau de la structure TableauDynamiqueEntier.
   */
- #define TAILLE_INITIALE_TABLEAU 10000
+ #define TAILLE_INITIALE_TABLEAU_ENTIER 10000
 
 /*! \struct TableauDynamiqueEntier
     \brief Structure représentant tableau d'entier avec une taille dynamique.

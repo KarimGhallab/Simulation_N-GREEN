@@ -48,17 +48,17 @@ callgrind_pdf: compil_debug clear
 	kcachegrind &
 
 
-compil: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+compil: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_debug: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+compil_debug: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
 
-compil_openMP: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+compil_openMP: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_openMP_debug: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+compil_openMP_debug: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
 
 
 hyper_expo.o: hyper_expo.c
@@ -76,8 +76,8 @@ File.o: File.c
 TableauDynamiqueEntier.o: TableauDynamiqueEntier.c
 	$(compilateur) $(CFLAGS) TableauDynamiqueEntier.c
 
-TableauDynamiqueFloat.o: TableauDynamiqueFloat.c
-	$(compilateur) $(CFLAGS) TableauDynamiqueFloat.c
+TableauDynamiqueDouble.o: TableauDynamiqueDouble.c
+	$(compilateur) $(CFLAGS) TableauDynamiqueDouble.c
 
 main.o: main.c
 	$(compilateur) $(CFLAGS) main.c
@@ -86,9 +86,10 @@ main.o: main.c
 clear:
 	rm -f *.o
 	rm -f ../*.o
-	rm -f ../Headers/*.gch
 
 clear_all : resultat
 	rm resultat
 	rm -f *.o
+	rm -f ../*.o
+	rm -f ../Headers/*.gch
 	rm callgrind.out.*

@@ -5,8 +5,8 @@
 TableauDynamiqueEntier* initialiser_tableau_dynamique_entier()
 {
 	TableauDynamiqueEntier *td = (TableauDynamiqueEntier *) malloc( sizeof(TableauDynamiqueEntier) );
-	td->taille_tableau = TAILLE_INITIALE_TABLEAU;
-	td->tableau = (int *) calloc(TAILLE_INITIALE_TABLEAU, sizeof(int) );
+	td->taille_tableau = TAILLE_INITIALE_TABLEAU_ENTIER;
+	td->tableau = (int *) calloc(TAILLE_INITIALE_TABLEAU_ENTIER, sizeof(int) );
 	td->taille_utilisee = 0;
 	return td;
 }

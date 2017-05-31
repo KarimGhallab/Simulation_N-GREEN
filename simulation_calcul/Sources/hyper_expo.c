@@ -30,7 +30,7 @@ int loi_de_poisson_naif(float u)
 	return x;
 }
 
-int loi_de_poisson_opti(float u, TableauDynamiqueFloat *tableau_poisson )
+int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson )
 {
 	int maxi = tableau_poisson->taille_utilisee;
 	double *tableau = tableau_poisson->tableau;
@@ -41,7 +41,6 @@ int loi_de_poisson_opti(float u, TableauDynamiqueFloat *tableau_poisson )
 	if (u <= maxF)		//On peut trouver la valeur à l'aide du tableau
 	{
 		x = 0;
-		double somme = 0;
 		do
 		{
 			x++;
@@ -64,11 +63,10 @@ int loi_de_poisson_opti(float u, TableauDynamiqueFloat *tableau_poisson )
 	return x;
 }
 
-TableauDynamiqueFloat *initialiser_tableau_poisson()
+TableauDynamiqueDouble *initialiser_tableau_poisson()
 {
-	printf("Initialisation du tableau\n");
-	TableauDynamiqueFloat *tableau_poisson = initialiser_tableau_dynamique_float();
-	ajouter_valeur_tableau_dynamique_float(tableau_poisson, exp(-LAMBDA) );
+	TableauDynamiqueDouble *tableau_poisson = initialiser_tableau_dynamique_double();
+	ajouter_valeur_tableau_dynamique_double(tableau_poisson, exp(-LAMBDA) );
 
 	double p = tableau_poisson->tableau[0];
 	double seuil = 0.9999999;
@@ -79,8 +77,7 @@ TableauDynamiqueFloat *initialiser_tableau_poisson()
 	{
 		p = p*LAMBDA/compteur;
 		double nouvelle_valeur = tableau_poisson->tableau[ compteur-1 ]+p;
-		ajouter_valeur_tableau_dynamique_float(tableau_poisson, nouvelle_valeur);
-		//printf("Indice : %d  Valeur : %lf\n", tableau_poisson->taille_utilisee-1, nouvelle_valeur);
+		ajouter_valeur_tableau_dynamique_double(tableau_poisson, nouvelle_valeur);
 		somme = tableau_poisson->tableau[ compteur ];
 		compteur++;
 	}
@@ -88,7 +85,7 @@ TableauDynamiqueFloat *initialiser_tableau_poisson()
 	return tableau_poisson;
 }
 
-int hyper_expo(TableauDynamiqueFloat *tableau_poisson)
+int hyper_expo(TableauDynamiqueDouble *tableau_poisson)
 {
 	if (effectuer_tirage(PROBABILITE_BURST) == 1)		//Le tirage est tombé sur la faible proba
 		return NOMBRE_MESSAGE_BURST;

@@ -1,7 +1,7 @@
 <map id="Headers/simulation.h" name="Headers/simulation.h">
-<area shape="rect" id="node2" href="$File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="73,80,135,107"/>
-<area shape="rect" id="node4" href="$hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="199,80,307,107"/>
-<area shape="rect" id="node6" href="$TableauDynamiqueEntier_8h.html" title="Header du fichier de la structure de tableau dynamique. " alt="" coords="332,80,519,107"/>
+<area shape="rect" id="node2" href="$File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="74,80,137,107"/>
+<area shape="rect" id="node4" href="$hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="203,80,311,107"/>
+<area shape="rect" id="node6" href="$TableauDynamiqueEntier_8h.html" title="Header du fichier de la structure de tableau dynamique contenant des entiers. " alt="" coords="336,80,523,107"/>
 <area shape="rect" id="node3" href="$CoupleNombreValeur_8h.html" title="Header du fichier décrivant une structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeu..." alt="" coords="5,155,163,181"/>
-<area shape="rect" id="node5" href="$TableauDynamiqueFloat_8h.html" title="Header du fichier de la strcture de tableau dynamique contenant des flottants. " alt="" coords="187,155,362,181"/>
+<area shape="rect" id="node5" href="$TableauDynamiqueDouble_8h.html" title="Header du fichier de la strcture de tableau dynamique contenant des doubles. " alt="" coords="187,155,373,181"/>
 </map>

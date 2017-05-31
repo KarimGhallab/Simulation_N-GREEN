@@ -82,7 +82,7 @@ struct Anneau
 	double nb_message;
 	int nombre_slot;
 	int nombre_noeud;
-	TableauDynamiqueFloat *tableau_poisson;
+	TableauDynamiqueDouble *tableau_poisson;
 };
 typedef struct Anneau Anneau;
 
@@ -146,7 +146,7 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
  */
 void entrer_messages( Anneau *anneau, int tic );
 
-/*! \fn void void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
+/*! \fn void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td )
     \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
     \param *noeud Un pointeur vers le noeud qui transmet le paquet.
     \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
