@@ -128,7 +128,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -200,6 +200,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a369bd26809ccd919731c97de32244841"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a369bd26809ccd919731c97de32244841">initialiser_barre_chargement</a> (char *chargement, int taille_tableau, int nombre_chargement)</td></tr>
 <tr class="memdesc:a369bd26809ccd919731c97de32244841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise la chaine de caractère necessaire à l'affichage de la progression de la simulation.  <a href="#a369bd26809ccd919731c97de32244841">More...</a><br /></td></tr>
 <tr class="separator:a369bd26809ccd919731c97de32244841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57c87f5cea0142610999c1b74d83ce5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a57c87f5cea0142610999c1b74d83ce5d">ecrire_tics_sorties</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
+<tr class="memdesc:a57c87f5cea0142610999c1b74d83ce5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit dans un fichier csv les tics de sorties des messages des noeuds de l'anneau. Ce fichiers csv sera ensuite utilisable par la simulation graphique.  <a href="#a57c87f5cea0142610999c1b74d83ce5d">More...</a><br /></td></tr>
+<tr class="separator:a57c87f5cea0142610999c1b74d83ce5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4ffbd7d116c633fda2c1957ca42cadb9">cmpfunc</a> (const void *a, const void *b)</td></tr>
 <tr class="memdesc:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Méthode de comparaison pour la fonction qsort().  <a href="#a4ffbd7d116c633fda2c1957ca42cadb9">More...</a><br /></td></tr>
 <tr class="separator:a4ffbd7d116c633fda2c1957ca42cadb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -491,6 +494,30 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
     <tr><td class="paramname">*quantiles</td><td>Le tableau des données à sauvegarder. </td></tr>
     <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
     <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a57c87f5cea0142610999c1b74d83ce5d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_tics_sorties </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit dans un fichier csv les tics de sorties des messages des noeuds de l'anneau. Ce fichiers csv sera ensuite utilisable par la simulation graphique. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel on a effectué la simulation. </td></tr>
   </table>
   </dd>
 </dl>

@@ -673,6 +673,7 @@ class Controleur:
 		self.nb_slot_anneau = nb_slot
 		self.lire_fichier = lire_fichier
 		self.chemin_fichier = None
+		self.tics_restants = -1
 
 
 ###########################################################
@@ -974,7 +975,13 @@ def rotation_message():
 	if controleur.lire_fichier == False:
 		entrer_message()
 	else:
-		controleur.continuer = entrer_message_via_fichier()
+		if controleur.tics_restants == -1:
+			controleur.tics_restants = entrer_message_via_fichier()
+		elif controleur.tics_restants == 0:
+			arreter_rotation()
+		else:
+			controleur.tics_restants -= 1
+
 
 
 ##	Fait entrer dans l'anneau des messages.
@@ -1016,7 +1023,7 @@ def entrer_message():
 			noeud.update_file_noeud_graphique()
 
 ##	Envoie les messages dans l'anneau à partir d'un scénario de fichier.
-#	@return Un booléen indiquant si l'anneau doit continuer à tourner.
+#	@return le nombre de tic à attendre avant de finir la rotation, -1 si ce temps d'attente n'est pas encore déterminé.
 def entrer_message_via_fichier():
 	global controleur
 
@@ -1031,8 +1038,8 @@ def entrer_message_via_fichier():
 
 	for noeud in controleur.noeuds_modele:
 		if len(noeud.tics_sorties) > 0:
-			return True
-	return False
+			return -1
+	return len(controleur.slots_modele)
 
 
 ##	Fait sortir du système un mesage.

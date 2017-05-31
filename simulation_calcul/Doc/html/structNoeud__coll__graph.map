@@ -1,4 +1,5 @@
 <map id="Noeud" name="Noeud">
-<area shape="rect" id="node2" href="$structFile.html" title="Structure représentant une File de message. " alt="" coords="57,95,100,121"/>
-<area shape="rect" id="node3" href="$structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="5,5,152,32"/>
+<area shape="rect" id="node2" href="$structTableauDynamique.html" title="Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d&#39;entier..." alt="" coords="5,95,140,121"/>
+<area shape="rect" id="node3" href="$structFile.html" title="Structure représentant une File de message. " alt="" coords="202,95,245,121"/>
+<area shape="rect" id="node4" href="$structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="150,5,297,32"/>
 </map>
