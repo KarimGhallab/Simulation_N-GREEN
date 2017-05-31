@@ -25,7 +25,7 @@ int main ( int argc, char *argv[] )
 
 	struct timeval tb, te;
 	gettimeofday(&tb, NULL); // get current time
-    double beg_milliseconds = tb.tv_sec*1000LL + tb.tv_usec/1000; // caculate milliseconds
+    double beg_milliseconds = tb.tv_sec*1000LL + tb.tv_usec/1000; // calcule les miliseconde
 
 	#pragma omp parallel for
 	for (i=0; i<nombre_anneau; i++)
@@ -48,16 +48,11 @@ int main ( int argc, char *argv[] )
 	if (generer_pdf == 1)
 	{
 		printf("Génération des fichiers PDF...\n");
-		int copie_stdout = dup(1);
 		fermer_fichier_std();
 		int res = generer_PDF();
 		res = afficher_PDF();
 		if (res != 1)
-		{
-			dup2(copie_stdout, 1);
 			printf("Erreur lors de la génération ou l'affichage du PDF...\n");
-			close(1);
-		}
 	}
 	else
 		fermer_fichier_std();

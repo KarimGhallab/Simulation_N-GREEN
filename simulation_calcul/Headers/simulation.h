@@ -9,7 +9,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 1000000
+#define NOMBRE_TIC 100
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -47,6 +47,7 @@ struct Noeud
 	int attente_max;		//Le temps d'attente maximal dans le noeud
 	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
+	TableauDynamique *tableau_tics_envois;	//Les tics d'envoie du message
 };
 typedef struct Noeud Noeud;
 
@@ -186,6 +187,13 @@ void fermer_fichier_std();
     \param nombre_chargement Le nombre de caractère à mettre dans la chaine.
  */
 void initialiser_barre_chargement(char *chargement, int taille_tableau, int nombre_chargement);
+
+/*! \fn void ecrire_tics_sorties(Anneau *anneau)
+    \brief Ecrit dans un fichier csv les tics de sorties des messages des noeuds de l'anneau.
+	Ce fichiers csv sera ensuite utilisable par la simulation graphique.
+    \param *anneau L'anneau sur lequel on a effectué la simulation.
+ */
+void ecrire_tics_sorties(Anneau *anneau);
 
 /*! \fn int cmpfunc (const void * a, const void * b)
     \brief Méthode de comparaison pour la fonction qsort().

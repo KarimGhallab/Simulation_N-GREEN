@@ -74,10 +74,6 @@ void supprimer_message(File *file, int nb_message, int *messages)
 
 void liberer_file(File *file)
 {
-	int i;
-	/* Libère l'espace pris par les messages de la files */
-	/*for(i=0; i<file->indice_fin; i++)
-		free(&file->messages[i]);*/
 	free(file->messages);
 	free(file);
 }

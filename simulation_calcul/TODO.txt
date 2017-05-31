@@ -5,3 +5,5 @@ Placer des pourcentages sur l'histogramme (Fait !)
 Refaire l'organigramme
 Voir si l'on peut remplacer les pointeurs sur les slots par les slots directement (Fait !).
 Continuer rapport
+Pour la présentation, faire une démo de l'interface graphique + présenter des graphiques d'une simulation qui marche et qui pête
+Pour le rapport, Présenter de manière plus précise le contexte du problème (Il faut que l'on puisse programmer le problème à partir du contexte)

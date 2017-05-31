@@ -122,6 +122,7 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 		noeuds[j].indice_slot_ecriture = indice_slot_ecriture; noeuds[j].nb_antenne = nombre_antenne;
 		noeuds[j].debut_periode = debut_periode;
 		noeuds[j].attente_max = 0; noeuds[j].nb_message_total = 0; noeuds[j].attente_totale = 0;
+		noeuds[j].tableau_tics_envois = initialiser_tableau_dynamique();
 
 		noeuds[j].file_messages = creer_file();
 
@@ -204,6 +205,9 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 		nombre_tic_restant--;
 	}	//fin de la rotation
 	printf("\n");
+
+	ecrire_tics_sorties(anneau);
+
 	afficher_etat_anneau(anneau);
 
 	printf("\n\n\n");
@@ -276,6 +280,8 @@ void entrer_messages( Anneau *anneau, int tic )
 void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
+	//printf("\nAjout de la valeur %d au noeud numéro %d\n", tic, noeud->id);
+	ajouter_valeur(noeud->tableau_tics_envois, tic);
 	slot->noeud_emetteur_paquet = indice_noeud_emetteur;
 
 	/* Affecte le tableau de message */
@@ -377,6 +383,51 @@ void initialiser_barre_chargement(char *chargement, int taille_tableau, int nomb
 				chargement[i] = ' ';
 		}
 	}
+}
+
+void ecrire_tics_sorties(Anneau *anneau)
+{
+	int nombre_noeud = anneau->nombre_noeud; int nombre_slot = anneau->nombre_slot;
+	Noeud *noeuds = anneau->noeuds;
+	int numero_anneau = anneau->numero_anneau;
+	int i;
+
+	char *debut_nom_fichier = "../../fichiers_simulations/simulation";
+	char buffer[3];
+	char chemin_fichier[65];
+
+	strcpy(chemin_fichier, debut_nom_fichier);
+	sprintf(buffer, "%d", numero_anneau);
+	strcat(chemin_fichier, buffer);
+	strcat(chemin_fichier, ".csv");
+
+	/* Ouverture du fichier */
+	FILE *f = fopen(chemin_fichier, "w");
+	if (f != NULL)
+	{
+		/* Ecriture des nombre de noeuds et des slots */
+		fprintf(f, "%d\n%d\n", nombre_noeud, nombre_slot);
+
+		int j;
+		for(i=0; i<nombre_noeud; i++)
+		{
+			fprintf(f, "%d,", i);
+			TableauDynamique *td = noeuds[i].tableau_tics_envois;
+			int taille_utilisee = td->taille_utilisee;
+			for (j=0; j<taille_utilisee; j++)
+			{
+				//printf("Ecriture de la valeur : %d\n", );
+				if (j == taille_utilisee -1)
+					fprintf(f, "%d", td->tableau[j]);
+				else
+					fprintf(f, "%d,", td->tableau[j]);
+			}
+			fprintf(f, "\n");
+		}
+		fclose(f);
+	}
+	else
+		printf("Erreur ouverture du fichiers pour stocker les tics de sorties des noeuds\n");
 }
 
 int cmpfunc (const void * a, const void * b)
