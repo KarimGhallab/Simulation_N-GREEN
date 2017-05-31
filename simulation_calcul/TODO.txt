@@ -7,3 +7,4 @@ Voir si l'on peut remplacer les pointeurs sur les slots par les slots directemen
 Continuer rapport
 Pour la présentation, faire une démo de l'interface graphique + présenter des graphiques d'une simulation qui marche et qui pête
 Pour le rapport, Présenter de manière plus précise le contexte du problème (Il faut que l'on puisse programmer le problème à partir du contexte)
+Expliquer aussi la liberté en ce qui concerne la liberté de developpement

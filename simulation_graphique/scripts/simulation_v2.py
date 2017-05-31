@@ -343,9 +343,8 @@ def placer_panel_bas(fenetre):
 def ouvrir_fichier():
 	global controleur
 
-	chemin_fichier = tkFileDialog.askopenfilename()
-	print (chemin_fichier)
-	if chemin_fichier != "()" and chemin_fichier != "":
+	chemin_fichier = tkFileDialog.askopenfilename(initialdir="../../fichiers_simulations/")
+	if type(chemin_fichier) is not tuple:	#Si la variable est de type tuple, la fonction "askopenfilename" à renvoyé un champ vide
 		controleur.chemin_fichier = chemin_fichier
 		reset(True)
 		tkMessageBox.showinfo("Chargement", "La simulation va désormais exécuter le scénario du fichier fournis !;)")
@@ -975,7 +974,7 @@ def rotation_message():
 	if controleur.lire_fichier == False:
 		entrer_message()
 	else:
-		entrer_message_via_fichier()
+		controleur.continuer = entrer_message_via_fichier()
 
 
 ##	Fait entrer dans l'anneau des messages.
@@ -989,8 +988,8 @@ def entrer_message():
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
-			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
-				print ("C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes.")
+			"""if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
+				print ("C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes.")"""
 
 			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
@@ -1016,18 +1015,24 @@ def entrer_message():
 				placer_message( slot.indice_noeud_ecriture, messages )
 			noeud.update_file_noeud_graphique()
 
+##	Envoie les messages dans l'anneau à partir d'un scénario de fichier.
+#	@return Un booléen indiquant si l'anneau doit continuer à tourner.
 def entrer_message_via_fichier():
 	global controleur
 
 	tic_actuel = controleur.nb_tic
 	for i in range( len(controleur.noeuds_modele) ):
 		noeud = controleur.noeuds_modele[i]
-		print (str(noeud))
 		if len(noeud.tics_sorties) > 0:
 			if tic_actuel == int(noeud.tics_sorties[0]):
 				noeud.tics_sorties.pop(0)
 				message = [0] * LIMITE_NOMBRE_MESSAGE_MAX
 				placer_message(i, message)
+
+	for noeud in controleur.noeuds_modele:
+		if len(noeud.tics_sorties) > 0:
+			return True
+	return False
 
 
 ##	Fait sortir du système un mesage.
@@ -1130,7 +1135,6 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 		for ligne in reader:	#On ne parcours que les deux premieres lignes afin de recuperer les nombres de noeud et de slot
 			if i == 0:		#Le nombre de noeud de l'anneau
 				nb_noeud = int(ligne[0])
-				print(nb_noeud)
 			elif i == 1:	#le nombre de slot de l'anneau
 				nb_slot = int(ligne[0])
 			else:
@@ -1213,7 +1217,7 @@ def afficher_stat_noeud():
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
 			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max))
-	print ("")
+	print ("\n")
 
 
 # # # # # # # # # # # # # # # #		M A I N 	# # # # # # # # # # # # # # # #
