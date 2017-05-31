@@ -98,11 +98,12 @@ Collaboration diagram for Anneau:</div>
 <div class="dyncontent">
 <div class="center"><img src="structAnneau__coll__graph.png" border="0" usemap="#Anneau_coll__map" alt="Collaboration graph"/></div>
 <map name="Anneau_coll__map" id="Anneau_coll__map">
-<area shape="rect" id="node2" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="140,184,200,211"/>
-<area shape="rect" id="node3" href="structTableauDynamique.html" title="Structure représentant tableau de taille dynamique. Un tableau dynamique contient un tableau d&#39;entier..." alt="" coords="5,95,140,121"/>
-<area shape="rect" id="node4" href="structFile.html" title="Structure représentant une File de message. " alt="" coords="223,95,266,121"/>
-<area shape="rect" id="node5" href="structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="171,5,318,32"/>
-<area shape="rect" id="node6" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="225,184,270,211"/>
+<area shape="rect" id="node2" href="structTableauDynamiqueFloat.html" title="Structure représentant tableau de flottant avec une taille dynamique. " alt="" coords="5,184,168,211"/>
+<area shape="rect" id="node3" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="306,184,366,211"/>
+<area shape="rect" id="node4" href="structTableauDynamiqueEntier.html" title="Structure représentant tableau d&#39;entier avec une taille dynamique. Un tableau dynamique contient un t..." alt="" coords="155,95,323,121"/>
+<area shape="rect" id="node5" href="structFile.html" title="Structure représentant une File de message. " alt="" coords="389,95,432,121"/>
+<area shape="rect" id="node6" href="structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="337,5,484,32"/>
+<area shape="rect" id="node7" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="391,184,436,211"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -126,9 +127,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>decallage</b></td></tr
 <tr class="memitem:aa0f196f9386f4d705c5e70c5a0638ae8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0f196f9386f4d705c5e70c5a0638ae8"></a>
 <a class="el" href="structSlot.html">Slot</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>slots</b></td></tr>
 <tr class="separator:aa0f196f9386f4d705c5e70c5a0638ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5f29c02c4ef079cf22abdcbb96814ae"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa5f29c02c4ef079cf22abdcbb96814ae"></a>
-<a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>messages</b></td></tr>
-<tr class="separator:aa5f29c02c4ef079cf22abdcbb96814ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0e147440897b8bffa06e2b86a00f957"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0e147440897b8bffa06e2b86a00f957"></a>
+<a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>messages</b></td></tr>
+<tr class="separator:ae0e147440897b8bffa06e2b86a00f957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecc2abe53454f134eafcd735f4946762"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecc2abe53454f134eafcd735f4946762"></a>
 double&#160;</td><td class="memItemRight" valign="bottom"><b>nb_message</b></td></tr>
 <tr class="separator:aecc2abe53454f134eafcd735f4946762"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,6 +139,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nombre_slot</b></td></
 <tr class="memitem:af4b04ce3d78aad2e632dad13871dbbac"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af4b04ce3d78aad2e632dad13871dbbac"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>nombre_noeud</b></td></tr>
 <tr class="separator:af4b04ce3d78aad2e632dad13871dbbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aa99d92240035a3ef7c984a60e2248d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3aa99d92240035a3ef7c984a60e2248d"></a>
+<a class="el" href="structTableauDynamiqueFloat.html">TableauDynamiqueFloat</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>tableau_poisson</b></td></tr>
+<tr class="separator:a3aa99d92240035a3ef7c984a60e2248d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure représentant un anneau de la simulation Il contient des noeuds, des slots, un tableau dynamique de message ainsi qu'un nombre de messages ayant circulé dans l'anneau. </p>

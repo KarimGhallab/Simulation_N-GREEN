@@ -1,4 +1,4 @@
-#include "./CoupleNombreValeur.h"
+#include "CoupleNombreValeur.h"
 
 /*! \file File.h
     \brief Header du fichier contenant la structure représentant une file.

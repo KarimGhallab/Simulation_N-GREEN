@@ -48,17 +48,17 @@ callgrind_pdf: compil_debug clear
 	kcachegrind &
 
 
-compil: TableauDynamique.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+compil: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_debug: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
-	gcc -Wall TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+compil_debug: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
 
-compil_openMP: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+compil_openMP: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
 
-compil_openMP_debug: TableauDynamique.o hyper_expo.o CoupleNombreValeur.o simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamique.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+compil_openMP_debug: TableauDynamiqueEntier.o TableauDynamiqueFloat.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueFloat.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
 
 
 hyper_expo.o: hyper_expo.c
@@ -73,8 +73,11 @@ simulation.o: simulation.c
 File.o: File.c
 	$(compilateur) $(CFLAGS) File.c
 
-TableauDynamique.o: TableauDynamique.c
-	$(compilateur) $(CFLAGS) TableauDynamique.c
+TableauDynamiqueEntier.o: TableauDynamiqueEntier.c
+	$(compilateur) $(CFLAGS) TableauDynamiqueEntier.c
+
+TableauDynamiqueFloat.o: TableauDynamiqueFloat.c
+	$(compilateur) $(CFLAGS) TableauDynamiqueFloat.c
 
 main.o: main.c
 	$(compilateur) $(CFLAGS) main.c
@@ -82,6 +85,8 @@ main.o: main.c
 
 clear:
 	rm -f *.o
+	rm -f ../*.o
+	rm -f ../Headers/*.gch
 
 clear_all : resultat
 	rm resultat

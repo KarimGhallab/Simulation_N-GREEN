@@ -1,5 +1,6 @@
 #include "./File.h"
-#include "./TableauDynamique.h"
+#include "./hyper_expo.h"
+#include "./TableauDynamiqueEntier.h"
 #include <stdio.h>
 
 /*! \file simulation.h
@@ -9,7 +10,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 100
+#define NOMBRE_TIC 1000000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -47,7 +48,7 @@ struct Noeud
 	int attente_max;		//Le temps d'attente maximal dans le noeud
 	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
-	TableauDynamique *tableau_tics_envois;	//Les tics d'envoie du message
+	TableauDynamiqueEntier *tableau_tics_envois;	//Les tics d'envoie du message
 };
 typedef struct Noeud Noeud;
 
@@ -77,10 +78,11 @@ struct Anneau
 	int decallage;
 	Noeud *noeuds;
 	Slot *slots;
-	TableauDynamique *messages;
+	TableauDynamiqueEntier *messages;
 	double nb_message;
 	int nombre_slot;
 	int nombre_noeud;
+	TableauDynamiqueFloat *tableau_poisson;
 };
 typedef struct Anneau Anneau;
 
@@ -154,7 +156,7 @@ void entrer_messages( Anneau *anneau, int tic );
     \param tic Le tic actuel de l'anneau.
     \param *td Le tableau des tic de message de toute la simulation.
  */
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td );
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td );
 
 /*! \fn void decaler_messages( Anneau *anneau )
     \brief Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).

@@ -6,7 +6,7 @@
 #include <dirent.h>
 
 #include "../Headers/simulation.h"
-#include "../Headers/hyper_expo.h"
+
 
 Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
 {
@@ -18,9 +18,10 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
 	anneau->numero_anneau = numero; anneau->nb_message = 0; anneau->decallage = 0;
 	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
+	anneau->tableau_poisson = initialiser_tableau_poisson();
 
 	if (generer_pdf == 1)
-		anneau->messages = initialiser_tableau_dynamique();
+		anneau->messages = initialiser_tableau_dynamique_entier();
 	else
 		anneau->messages = NULL;
 
@@ -50,15 +51,6 @@ void afficher_etat_anneau(Anneau *anneau)
 	printf("Le nombre de message ayant circulé dans l'anneau est de : %d\n", nombre_message);
 	for(i=0; i<nombre_noeud;i++)
 		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->nb_message_file);
-
-	/*printf("Affichage des couples\n");
-	printf("Couple lecture\n");
-	for(i=0; i<nombre_noeud;i++)
-		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_lecture[i][0], anneau->couple_lecture[i][1]);
-
-	printf("Couple ecriture\n");
-	for(i=0; i<nombre_noeud;i++)
-		printf("Le Noeud [%d] Slot [%d] \n", anneau->couple_ecriture[i][0], anneau->couple_ecriture[i][1]);*/
 }
 
 void initialiser_slots( Anneau *anneau, int nombre_slot )
@@ -122,7 +114,7 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 		noeuds[j].indice_slot_ecriture = indice_slot_ecriture; noeuds[j].nb_antenne = nombre_antenne;
 		noeuds[j].debut_periode = debut_periode;
 		noeuds[j].attente_max = 0; noeuds[j].nb_message_total = 0; noeuds[j].attente_totale = 0;
-		noeuds[j].tableau_tics_envois = initialiser_tableau_dynamique();
+		noeuds[j].tableau_tics_envois = initialiser_tableau_dynamique_entier();
 
 		noeuds[j].file_messages = creer_file();
 
@@ -222,7 +214,7 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 
 void entrer_messages( Anneau *anneau, int tic )
 {
-	TableauDynamique *td = anneau->messages;
+	TableauDynamiqueEntier *td = anneau->messages;
 	int ** couple_ecriture = anneau->couple_ecriture;
 	int nombre_slot = anneau->nombre_slot;
 	int nombre_noeud = anneau->nombre_noeud;
@@ -243,7 +235,7 @@ void entrer_messages( Anneau *anneau, int tic )
 		/*if (tic % PERIODE_MESSAGE_ANTENNE == noeud->debut_periode)
 			printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud->debut_periode, noeud->nb_antenne);*/
 
-		nb_message = hyper_expo();
+		nb_message = hyper_expo(anneau->tableau_poisson);
 		//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
 
 		//On ajoute au noeud le tic d'arrivé des messages
@@ -277,11 +269,11 @@ void entrer_messages( Anneau *anneau, int tic )
 	}
 }
 
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamique *td )
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
 	//printf("\nAjout de la valeur %d au noeud numéro %d\n", tic, noeud->id);
-	ajouter_valeur(noeud->tableau_tics_envois, tic);
+	ajouter_valeur_tableau_dynamique_entier(noeud->tableau_tics_envois, tic);
 	slot->noeud_emetteur_paquet = indice_noeud_emetteur;
 
 	/* Affecte le tableau de message */
@@ -292,7 +284,7 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 	{
 		temps_attente_message = tic - messages[i];
 		if (td != NULL)
-			ajouter_valeur(td, temps_attente_message);
+			ajouter_valeur_tableau_dynamique_entier(td, temps_attente_message);
 
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
@@ -332,7 +324,7 @@ void sortir_messages( Anneau *anneau )
 void liberer_memoire_anneau( Anneau *anneau )
 {
 	Noeud *noeuds = anneau->noeuds;
-	TableauDynamique *td = anneau->messages;
+	TableauDynamiqueEntier *td = anneau->messages;
 	int nombre_noeud = anneau->nombre_noeud;
 	/* Libère la mémoire prise par les slots */
 	free(anneau->slots);
@@ -412,7 +404,7 @@ void ecrire_tics_sorties(Anneau *anneau)
 		for(i=0; i<nombre_noeud; i++)
 		{
 			fprintf(f, "%d,", i);
-			TableauDynamique *td = noeuds[i].tableau_tics_envois;
+			TableauDynamiqueEntier *td = noeuds[i].tableau_tics_envois;
 			int taille_utilisee = td->taille_utilisee;
 			for (j=0; j<taille_utilisee; j++)
 			{
@@ -441,7 +433,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 	//Ecriture de la répartition des temps d'attente (Min, Max, moyenne)
 	int i; int j = 0; int nombre_colonne = 4;
 	double max; double min; double somme_valeur = 0;
-	TableauDynamique *td = anneau->messages;
+	TableauDynamiqueEntier *td = anneau->messages;
 	int taille_utilisee = td->taille_utilisee;
 
 	/* Trie du tableau */

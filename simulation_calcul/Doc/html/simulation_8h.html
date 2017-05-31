@@ -98,16 +98,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Header du fichier principal contenant les fonctions et structures necessaires au main.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="File_8h_source.html">./File.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="TableauDynamique_8h_source.html">./TableauDynamique.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="hyper__expo_8h_source.html">./hyper_expo.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="TableauDynamiqueEntier_8h_source.html">./TableauDynamiqueEntier.h</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for simulation.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="simulation_8h__incl.png" border="0" usemap="#Headers_2simulation_8h" alt=""/></div>
 <map name="Headers_2simulation_8h" id="Headers_2simulation_8h">
-<area shape="rect" id="node2" href="File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="57,80,119,107"/>
-<area shape="rect" id="node4" href="TableauDynamique_8h.html" title="Header du fichier de la strcture de tableau dynamique. " alt="" coords="143,80,297,107"/>
-<area shape="rect" id="node3" href="CoupleNombreValeur_8h.html" title="Header du fichier décrivant une structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeu..." alt="" coords="5,155,171,181"/>
+<area shape="rect" id="node2" href="File_8h.html" title="Header du fichier contenant la structure représentant une file. " alt="" coords="73,80,135,107"/>
+<area shape="rect" id="node4" href="hyper__expo_8h.html" title="Header du fichier permettant d&#39;exécuter des tirages et de réaliser l&#39;hyper exponentielle. " alt="" coords="199,80,307,107"/>
+<area shape="rect" id="node6" href="TableauDynamiqueEntier_8h.html" title="Header du fichier de la structure de tableau dynamique. " alt="" coords="332,80,519,107"/>
+<area shape="rect" id="node3" href="CoupleNombreValeur_8h.html" title="Header du fichier décrivant une structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeu..." alt="" coords="5,155,163,181"/>
+<area shape="rect" id="node5" href="TableauDynamiqueFloat_8h.html" title="Header du fichier de la strcture de tableau dynamique contenant des flottants. " alt="" coords="187,155,362,181"/>
 </map>
 </div>
 </div>
@@ -128,7 +131,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;100</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -182,9 +185,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4fce2b9823444a58abbdbb90e5c53997"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a4fce2b9823444a58abbdbb90e5c53997">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamique.html">TableauDynamique</a> *td)</td></tr>
-<tr class="memdesc:a4fce2b9823444a58abbdbb90e5c53997"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a4fce2b9823444a58abbdbb90e5c53997">More...</a><br /></td></tr>
-<tr class="separator:a4fce2b9823444a58abbdbb90e5c53997"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae74d6ce8bd7475458737f1f00e561315"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae74d6ce8bd7475458737f1f00e561315"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>placer_message</b> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *td)</td></tr>
+<tr class="separator:ae74d6ce8bd7475458737f1f00e561315"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31b6056bb885b856013e2843c6d549be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a31b6056bb885b856013e2843c6d549be">decaler_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a31b6056bb885b856013e2843c6d549be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).  <a href="#a31b6056bb885b856013e2843c6d549be">More...</a><br /></td></tr>
 <tr class="separator:a31b6056bb885b856013e2843c6d549be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -811,76 +814,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau à libérer. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a4fce2b9823444a58abbdbb90e5c53997"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void void placer_message </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structNoeud.html">Noeud</a> *&#160;</td>
-          <td class="paramname"><em>noeud</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>indice_noeud_emetteur</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structSlot.html">Slot</a> *&#160;</td>
-          <td class="paramname"><em>slot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>messages</em>[], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>tic</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTableauDynamique.html">TableauDynamique</a> *&#160;</td>
-          <td class="paramname"><em>td</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Transmet un paquet de message d'un noeud vers son slot d'écriture. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
-    <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
-    <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
-    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
-    <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
-    <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
-    <tr><td class="paramname">*td</td><td>Le tableau des tic de message de toute la simulation. </td></tr>
   </table>
   </dd>
 </dl>

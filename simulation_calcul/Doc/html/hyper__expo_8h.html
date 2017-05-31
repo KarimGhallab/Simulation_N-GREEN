@@ -95,7 +95,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>Header du fichier permettant d'exécuter des tirages et de réaliser l'hyper exponentielle.  
 <a href="#details">More...</a></p>
-
+<div class="textblock"><code>#include &quot;<a class="el" href="TableauDynamiqueFloat_8h_source.html">TableauDynamiqueFloat.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for hyper_expo.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="hyper__expo_8h__incl.png" border="0" usemap="#Headers_2hyper__expo_8h" alt=""/></div>
+<map name="Headers_2hyper__expo_8h" id="Headers_2hyper__expo_8h">
+<area shape="rect" id="node2" href="TableauDynamiqueFloat_8h.html" title="Header du fichier de la strcture de tableau dynamique contenant des flottants. " alt="" coords="5,80,180,107"/>
+</map>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><img src="hyper__expo_8h__dep__incl.png" border="0" usemap="#Headers_2hyper__expo_8hdep" alt=""/></div>
+<map name="Headers_2hyper__expo_8hdep" id="Headers_2hyper__expo_8hdep">
+<area shape="rect" id="node2" href="simulation_8h.html" title="Header du fichier principal contenant les fonctions et structures necessaires au main. " alt="" coords="9,80,155,107"/>
+</map>
+</div>
+</div>
 <p><a href="hyper__expo_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
@@ -128,15 +145,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a36caeb1f4b4de1381a2dfe5d10b417ea">loi_de_poisson_naif</a> (float u)</td></tr>
 <tr class="memdesc:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule naif du résultat d'une loi de poisson.  <a href="#a36caeb1f4b4de1381a2dfe5d10b417ea">More...</a><br /></td></tr>
 <tr class="separator:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a27dbb7b267a6c442ac5b69a2e5dd8ba8">loi_de_poisson_opti</a> (float u, double tableau_poisson[])</td></tr>
-<tr class="memdesc:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule optimisé du résultat d'une loi de poisson.  <a href="#a27dbb7b267a6c442ac5b69a2e5dd8ba8">More...</a><br /></td></tr>
-<tr class="separator:a27dbb7b267a6c442ac5b69a2e5dd8ba8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae457618edd975e9f389d2be0c6c7dfa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ae457618edd975e9f389d2be0c6c7dfa7">initialiser_tableau</a> (double tableau_poisson[])</td></tr>
-<tr class="memdesc:ae457618edd975e9f389d2be0c6c7dfa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé.  <a href="#ae457618edd975e9f389d2be0c6c7dfa7">More...</a><br /></td></tr>
-<tr class="separator:ae457618edd975e9f389d2be0c6c7dfa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae017b78aee2eaf6663e7908e800c34cc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ae017b78aee2eaf6663e7908e800c34cc">hyper_expo</a> ()</td></tr>
-<tr class="memdesc:ae017b78aee2eaf6663e7908e800c34cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hyper exponentielle.  <a href="#ae017b78aee2eaf6663e7908e800c34cc">More...</a><br /></td></tr>
-<tr class="separator:ae017b78aee2eaf6663e7908e800c34cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ae338a8afea071674057984909d81d6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3ae338a8afea071674057984909d81d6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>loi_de_poisson_opti</b> (float u, <a class="el" href="structTableauDynamiqueFloat.html">TableauDynamiqueFloat</a> *tableau_poisson)</td></tr>
+<tr class="separator:a3ae338a8afea071674057984909d81d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85d9d447c3d869778bee31b3a30fe441"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTableauDynamiqueFloat.html">TableauDynamiqueFloat</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a85d9d447c3d869778bee31b3a30fe441">initialiser_tableau_poisson</a> ()</td></tr>
+<tr class="memdesc:a85d9d447c3d869778bee31b3a30fe441"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé.  <a href="#a85d9d447c3d869778bee31b3a30fe441">More...</a><br /></td></tr>
+<tr class="separator:a85d9d447c3d869778bee31b3a30fe441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8918d386e77b77598f560bf46cab1494"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8918d386e77b77598f560bf46cab1494"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>hyper_expo</b> (<a class="el" href="structTableauDynamiqueFloat.html">TableauDynamiqueFloat</a> *tableau_poisson)</td></tr>
+<tr class="separator:a8918d386e77b77598f560bf46cab1494"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header du fichier permettant d'exécuter des tirages et de réaliser l'hyper exponentielle. </p>
@@ -202,12 +219,12 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a class="anchor" id="ae017b78aee2eaf6663e7908e800c34cc"></a>
+<a class="anchor" id="a85d9d447c3d869778bee31b3a30fe441"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int hyper_expo </td>
+          <td class="memname">TableauDynamique * initialiser_tableau_poisson </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -215,32 +232,8 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Hyper exponentielle. </p>
-<dl class="section return"><dt>Returns</dt><dd>Le nombre de message reçu via la loi hyper exponentielle. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae457618edd975e9f389d2be0c6c7dfa7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void initialiser_tableau </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tableau_poisson</em>[]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
 <p>Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tableau_poisson[]</td><td>: le tableau à initialiser. </td></tr>
-  </table>
-  </dd>
-</dl>
+<dl class="section return"><dt>Returns</dt><dd>: le initialisé. </dd></dl>
 
 </div>
 </div>
@@ -262,42 +255,6 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Le résultat de la loi de poisson. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a27dbb7b267a6c442ac5b69a2e5dd8ba8"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int loi_de_poisson_opti </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>u</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>tableau_poisson</em>[]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calcule optimisé du résultat d'une loi de poisson. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
-    <tr><td class="paramname">tableau_poisson</td><td>: Le tableau contenant les valeurs de la loi de poisson. </td></tr>
   </table>
   </dd>
 </dl>
