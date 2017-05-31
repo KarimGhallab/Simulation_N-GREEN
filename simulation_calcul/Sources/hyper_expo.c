@@ -58,7 +58,6 @@ int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson )
 			p = p*LAMBDA/x;
 			f = f + p;
 		}
-		//printf("\nNb message %d \n", x);
 	}
 	return x;
 }

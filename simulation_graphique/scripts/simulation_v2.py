@@ -71,6 +71,11 @@ LIMITE_NOMBRE_MESSAGE_MAX = 80
 global LIMITE_NOMBRE_MESSAGE_MIN
 LIMITE_NOMBRE_MESSAGE_MIN = 60
 
+TAILLE_TABLEAU = 1000
+global TABLEAU_POISSON
+
+global TAILLE_UTILISEE_TABLEAU_POISSON
+
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
 ##	Créer une fenetre Tkinter avec son titre.
@@ -627,7 +632,8 @@ def hyper_expo():
 		return LAMBDA_BURST
 	else:
 		u = random.uniform(0, 1)
-		return loi_de_poisson_naif(u)
+		#return loi_de_poisson_naif(u)
+		return loi_de_poisson_opti(u)
 
 ##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.
 #	@param u : Le paramètre u de la loi de poisson.
@@ -640,6 +646,49 @@ def loi_de_poisson_naif(u):
 		p = p*LAMBDA/x
 		f += p
 	return x
+
+##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.
+#	@param u : Le paramètre u de la loi de poisson.
+def loi_de_poisson_opti(u):
+	""" Initialisation des variables """
+
+	maxi = TAILLE_UTILISEE_TABLEAU_POISSON
+	maxF = TABLEAU_POISSON[ maxi -1]
+	maxP = maxF
+
+	if u <= maxF:		#On peut trouver la valeur à l'aide du tableau
+		x = 1
+		while u > TABLEAU_POISSON[x]:
+			x += 1
+	else:
+		x = maxi
+		f = maxF
+		p = maxP
+
+		while u > f:
+			x += 1
+			p = p*LAMBDA/x
+			f = f + p
+	return x
+
+##	Initialise le tableau avec les résultats de le loi de poisson.
+#	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
+def initialiser_tableau():
+	global TABLEAU_POISSON
+	global TAILLE_UTILISEE_TABLEAU_POISSON
+
+	TABLEAU_POISSON = [0] * TAILLE_TABLEAU
+
+	TABLEAU_POISSON[0] = exp(-LAMBDA)
+	p = TABLEAU_POISSON[0]
+
+	i = 1
+	seuil = 0.99999
+	while TABLEAU_POISSON[i-1] < seuil:
+		p = p*LAMBDA/i
+		TABLEAU_POISSON[i] = TABLEAU_POISSON[i-1]+p
+		i+=1
+	TAILLE_UTILISEE_TABLEAU_POISSON = i
 
 
 # # # # # # # # # # # # # # # #		C O N T R O L E U R		# # # # # # # # # # # # # # # #
@@ -1184,6 +1233,8 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 
 	placer_panel_gauche(fenetre)
 	placer_panel_bas(fenetre)
+
+	initialiser_tableau()
 
 	effectuer_tic()
 

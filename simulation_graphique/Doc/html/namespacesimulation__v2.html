@@ -155,6 +155,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a9c232b56c2bd8fd84ad7a32b41ff00e3">loi_de_poisson_naif</a> (u)</td></tr>
 <tr class="memdesc:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.  <a href="#a9c232b56c2bd8fd84ad7a32b41ff00e3">More...</a><br /></td></tr>
 <tr class="separator:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c2e150bea1df93e0a667ae3daa7a865"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a6c2e150bea1df93e0a667ae3daa7a865">loi_de_poisson_opti</a> (u)</td></tr>
+<tr class="memdesc:a6c2e150bea1df93e0a667ae3daa7a865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.  <a href="#a6c2e150bea1df93e0a667ae3daa7a865">More...</a><br /></td></tr>
+<tr class="separator:a6c2e150bea1df93e0a667ae3daa7a865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#abd21c1256fe0dc5c0d89dc09322cbaf5">initialiser_tableau</a> ()</td></tr>
+<tr class="memdesc:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson.  <a href="#abd21c1256fe0dc5c0d89dc09322cbaf5">More...</a><br /></td></tr>
+<tr class="separator:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf06a5183231e49f8928e2c3795015e2"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#adf06a5183231e49f8928e2c3795015e2">callback_click_noeud</a> (event)</td></tr>
 <tr class="memdesc:adf06a5183231e49f8928e2c3795015e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction callback du click sur un noeud.  <a href="#adf06a5183231e49f8928e2c3795015e2">More...</a><br /></td></tr>
 <tr class="separator:adf06a5183231e49f8928e2c3795015e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -314,6 +320,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_
 <tr class="memitem:a6f82b015795dba974442b6b95d7365be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f82b015795dba974442b6b95d7365be"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MIN</b> = 60</td></tr>
 <tr class="separator:a6f82b015795dba974442b6b95d7365be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aee88d1635ac126104219e52c61ac6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6aee88d1635ac126104219e52c61ac6c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>TAILLE_TABLEAU</b> = 1000</td></tr>
+<tr class="separator:a6aee88d1635ac126104219e52c61ac6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c0ebe9c093798b2d11004dd870aefd3"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7c0ebe9c093798b2d11004dd870aefd3"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>lire_fichier</b> = False</td></tr>
 <tr class="separator:a7c0ebe9c093798b2d11004dd870aefd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -880,6 +889,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
+<a class="anchor" id="abd21c1256fe0dc5c0d89dc09322cbaf5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def simulation_v2.initialiser_tableau </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise le tableau avec les résultats de le loi de poisson. </p>
+<p>Cette fonction est utilisé dans le cadre de l'algorithme optimisé. </p>
+
+</div>
+</div>
 <a class="anchor" id="a9c232b56c2bd8fd84ad7a32b41ff00e3"></a>
 <div class="memitem">
 <div class="memproto">
@@ -898,6 +925,30 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>: Le paramètre u de la loi de poisson. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a6c2e150bea1df93e0a667ae3daa7a865"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def simulation_v2.loi_de_poisson_opti </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>u</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">u</td><td>: Le paramètre u de la loi de poisson. <pre class="fragment">Initialisation des variables </pre> </td></tr>
   </table>
   </dd>
 </dl>

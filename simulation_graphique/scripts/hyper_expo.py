@@ -67,7 +67,6 @@ def loi_de_poisson_opti(u):
 			x += 1
 			p = p*LAMBDA/x
 			f = f + p
-
 	return x
 
 ##	Initialise le tableau avec les résultats de le loi de poisson.
