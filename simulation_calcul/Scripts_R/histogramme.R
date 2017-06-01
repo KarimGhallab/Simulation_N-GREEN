@@ -46,12 +46,13 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	}
 	#print(pourcentages)
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-	p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$taux)) +
-	geom_histogram(stat = "identity",col="red", fill="green", alpha = .2 ) +
-	geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black") +
+	#p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$taux)) +
+	p <- ggplot(donnees, aes(x=donnees$interval, y=donnees$taux, fill=type)) +
+	geom_bar(stat="identity", position = "dodge") +
+	geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black", position = position_dodge(width =0.9)) +
 	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
 	scale_y_continuous(labels = percent, name = "Nombre de message") +
-	scale_x_discrete(name = "Interval") +
+	scale_x_discrete(name = "interval") +
 	labs(caption = texte_info) +
 	ggtitle(titre)
 

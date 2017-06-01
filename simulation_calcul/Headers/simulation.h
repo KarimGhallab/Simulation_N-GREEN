@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 10000
+#define NOMBRE_TIC 1000000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -95,10 +95,12 @@ struct Anneau
 	int politique_envoi;
 	int **couple_lecture;
 	int **couple_ecriture;
-	double nb_message;
+	double nb_messages_initaux;
+	double nb_messages_prioritaires;
 	Noeud *noeuds;
 	Slot *slots;
-	TableauDynamiqueEntier *messages;
+	TableauDynamiqueEntier *messages_initaux;
+	TableauDynamiqueEntier *messages_prioritaires;
 	TableauDynamiqueDouble *tableau_poisson;
 };
 typedef struct Anneau Anneau;
@@ -170,12 +172,15 @@ void entrer_messages( Anneau *anneau, int tic );
     \param *noeud Un pointeur vers le noeud qui transmet le paquet.
     \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
     \param *slot Un pointeur sur le slot qui recevra le paquet de message.
-    \param nombre_message Le nombre de message qui doit etre transmis.
-    \param messages[] Les messages du paquet. (contiennent le tic d'arrivé dans le noeud).
+    \param nombre_messages_initaux Le nombre de messages du tableau initial transmis en paramètre.
+	\param nombre_messages_prioritaires Le nombre de messages prioritaires transmis en paramètre.
+    \param *messages_initaux Les messages best effort du paquet du paquet. (Si la politique d'envoi est une politique de non priorité, alors le tableau contient les deux types de messages).
+	\param *messages_prioritaires Les messages prioritaires du paquet. (contiennent le tic d'arrivé dans le noeud).
     \param tic Le tic actuel de l'anneau.
-    \param *td Le tableau des tic de message de toute la simulation.
+    \param *td_initial Le tableau des tic des messages initaux de toute la simulation.
+	\param *td_prioritaire Le tableau des tic des messages prioritaires de toute la simulation.
  */
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td );
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_messages_initaux, int nombre_messages_prioritaires, int *messages_initaux, int *messages_prioritaires, int tic, TableauDynamiqueEntier *td_initial, TableauDynamiqueEntier *td_prioritaire );
 
 /*! \fn void decaler_messages( Anneau *anneau )
     \brief Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).
@@ -241,11 +246,12 @@ void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taill
 /*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau )
     \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.
     \param *anneau L'anneau pour lequel on souhaite écrire les temps d'attentes.
-	\param *quantiles Le tableau des données à sauvegarder.
+	\param *quantiles_initial Les quantiles des messages initiaux.
+	\param *quantiles_prioritaire Les quantiles des messages prioritaires.
 	\param *bornes Un tableau des bornes coresspondant aux quantiles.
 	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
 */
-void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau );
+void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau );
 
 /*! \fn int generer_PDF()
     \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV

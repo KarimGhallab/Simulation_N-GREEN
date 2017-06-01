@@ -1,0 +1,6 @@
+interval,type,taux,TIC,nb_slot,nb_noeud
+0:4,Tous type,0.514434,1000000,25,5
+5:8,Tous type,0.417177,1000000,25,5
+9:12,Tous type,0.066855,1000000,25,5
+13:16,Tous type,0.001529,1000000,25,5
+17:20,Tous type,0.000005,1000000,25,5

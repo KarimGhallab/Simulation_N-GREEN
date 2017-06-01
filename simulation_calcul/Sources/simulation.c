@@ -15,16 +15,25 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, 
 	Anneau *anneau = (Anneau*) malloc( sizeof(Anneau) );
 
 	anneau->nombre_slot = nombre_slot; anneau->nombre_noeud = nombre_noeud;
-	anneau->numero_anneau = numero; anneau->nb_message = 0; anneau->decallage = 0;
-	anneau->politique_envoi = politique_envoi;
+	anneau->numero_anneau = numero; anneau->nb_messages_initaux = 0; anneau->nb_messages_prioritaires = 0;
+	anneau->decallage = 0; anneau->politique_envoi = politique_envoi;
 	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->tableau_poisson = initialiser_tableau_poisson();
 
 	if (generer_pdf == 1)
-		anneau->messages = initialiser_tableau_dynamique_entier();
+	{
+		anneau->messages_initaux = initialiser_tableau_dynamique_entier();
+		if (politique_envoi == POLITIQUE_ENVOI_PRIORITAIRE)
+			anneau->messages_prioritaires = initialiser_tableau_dynamique_entier();
+		else
+			anneau->messages_prioritaires = NULL;
+	}
 	else
-		anneau->messages = NULL;
+	{
+		anneau->messages_initaux = NULL;
+		anneau->messages_prioritaires = NULL;
+	}
 
 
 	initialiser_slots(anneau, nombre_slot);
@@ -37,7 +46,8 @@ void afficher_etat_anneau(Anneau *anneau)
 {
 	Slot *slots = anneau->slots; Noeud *noeuds = anneau->noeuds;
 	int nombre_slot = anneau->nombre_slot; int nombre_noeud = anneau->nombre_noeud;
-	int nombre_message = anneau->nb_message; int nombre_slot_plein = 0;
+	int nombre_message = anneau->nb_messages_initaux + anneau->nb_messages_prioritaires;
+	int nombre_slot_plein = 0;
 
 
 	int i;
@@ -48,6 +58,11 @@ void afficher_etat_anneau(Anneau *anneau)
 			nombre_slot_plein++;
 	}
 	printf("Anneau numéro %d\n", anneau->numero_anneau);
+	if (anneau->politique_envoi == POLITIQUE_ENVOI_PRIORITAIRE)
+		printf("Politique d'envoi : prorité au C-RAN\n");
+	else
+		printf("Politique d'envoi : sans priorité\n");
+
 	if (nombre_slot_plein > 1)
 		printf("%d/%d slots sont pleins\n", nombre_slot_plein, nombre_slot);
 	else
@@ -227,9 +242,21 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 	}
 }
 
+void afficher_tableau(int *tab, int taille)
+{
+	int i;
+	for(i=0; i<taille; i++)
+	{
+		if (tab[i]<0)
+			printf("%d   ", tab[i]);
+	}
+	printf("\n");
+}
+
 void entrer_messages( Anneau *anneau, int tic )
 {
-	TableauDynamiqueEntier *td = anneau->messages;
+	TableauDynamiqueEntier *td_initial = anneau->messages_initaux;
+	TableauDynamiqueEntier *td_prioritaire = anneau->messages_prioritaires;
 	int ** couple_ecriture = anneau->couple_ecriture;
 	int nombre_slot = anneau->nombre_slot;
 	int nombre_noeud = anneau->nombre_noeud;
@@ -240,6 +267,8 @@ void entrer_messages( Anneau *anneau, int tic )
 	Slot *slot;
 	int nb_message_noeud, nb_message_best_effort, nb_message_prioritaires;		//Le nombre de message du noeud courant et les nombres de message reçus par la noeud courant.
 	int nb_message_par_antenne = 10;
+	int messages_initaux[LIMITE_NOMBRE_MESSAGE_MAX];
+	int messages_prioritaires[LIMITE_NOMBRE_MESSAGE_MAX];
 
 	int i;
 	for (i=0; i< nombre_noeud; i++)
@@ -288,78 +317,110 @@ void entrer_messages( Anneau *anneau, int tic )
 		{
 			if (nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX)	//On envoie le plus de message possible
 			{
-				int messages[LIMITE_NOMBRE_MESSAGE_MAX];
-				anneau->nb_message += LIMITE_NOMBRE_MESSAGE_MAX;
+				//int messages[LIMITE_NOMBRE_MESSAGE_MAX];
 				if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
 				{
 					if (noeud->nb_message_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX)	//On envoie que des messages prioritaire
-						supprimer_message( noeud->file_messages_prioritaires, LIMITE_NOMBRE_MESSAGE_MAX, messages, 0 );
+					{
+						anneau->nb_messages_prioritaires += LIMITE_NOMBRE_MESSAGE_MAX;
+						supprimer_message( noeud->file_messages_prioritaires, LIMITE_NOMBRE_MESSAGE_MAX, messages_prioritaires );
+						placer_message( noeud, noeud->id, slot, 0, LIMITE_NOMBRE_MESSAGE_MAX, messages_initaux, messages_prioritaires, tic, td_initial, td_prioritaire);
+					}
 					else	//Il faut envoyer tout les prioritaire + le reste en best effort
 					{
 						nb_message_prioritaires = noeud->nb_message_prioritaires;
 						nb_message_best_effort = LIMITE_NOMBRE_MESSAGE_MAX - nb_message_prioritaires;
 
-						supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages, 0 );
-						supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires );
+						supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages_prioritaires);
+						supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages_initaux );
 
 						noeud->nb_message_prioritaires -= nb_message_prioritaires;
 						noeud->nb_message_best_effort -= nb_message_best_effort;
+
+						anneau->nb_messages_prioritaires += nb_message_prioritaires;
+						anneau->nb_messages_initaux += nb_message_best_effort;
+
+						placer_message( noeud, noeud->id, slot, nb_message_best_effort, nb_message_prioritaires, messages_initaux, messages_prioritaires, tic, td_initial, td_prioritaire);
 					}
 				}
 				else
 				{
-					supprimer_message( noeud->file_messages_initiale, LIMITE_NOMBRE_MESSAGE_MAX, messages, 0 );
+					anneau->nb_messages_initaux += LIMITE_NOMBRE_MESSAGE_MAX;
+					supprimer_message( noeud->file_messages_initiale, LIMITE_NOMBRE_MESSAGE_MAX, messages_initaux);
 					noeud->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
+
+					placer_message( noeud, noeud->id, slot, LIMITE_NOMBRE_MESSAGE_MAX, 0, messages_initaux, NULL, tic, td_initial, td_prioritaire);
 				}
-				placer_message( noeud, noeud->id, slot, LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
 			}
 			else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
 			{
-				int messages[nb_message_noeud];
-				anneau->nb_message += nb_message_noeud;
 				if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
 				{
 					nb_message_prioritaires = noeud->nb_message_prioritaires;
 					nb_message_best_effort = noeud->nb_message_best_effort;
 
-					supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages, 0 );
-					supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires );
+					supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages_prioritaires);
+					supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages_initaux );
 
 					noeud->nb_message_best_effort = 0;
 					noeud->nb_message_prioritaires = 0;
+
+					//afficher_tableau(messages_prioritaires, nombre_messages_prioritaires);
+					placer_message( noeud, noeud->id, slot, nb_message_best_effort, nb_message_prioritaires, messages_initaux, messages_prioritaires, tic, td_initial, td_prioritaire );
+					anneau->nb_messages_initaux += nb_message_best_effort;
+					anneau->nb_messages_prioritaires += nb_message_prioritaires;
 				}
 				else
 				{
-					supprimer_message( noeud->file_messages_initiale, nb_message_noeud, messages, 0 );
+					supprimer_message( noeud->file_messages_initiale, nb_message_noeud, messages_initaux );
+					placer_message( noeud, noeud->id, slot, nb_message_noeud, 0, messages_initaux, NULL, tic, td_initial, td_prioritaire );
 					noeud->nb_message = 0;
+					anneau->nb_messages_initaux += nb_message_noeud;
 				}
-				placer_message( noeud, noeud->id, slot, nb_message_noeud, messages, tic, td );
 			}
 		}
 	}
 }
 
-void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td )
+void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_messages_initaux, int nombre_messages_prioritaires, int *messages_initaux, int *messages_prioritaires, int tic, TableauDynamiqueEntier *td_initial, TableauDynamiqueEntier *td_prioritaire )
 {
 	//printf("Le noeud %d envoie un message\n", noeud->id);
 	//printf("\nAjout de la valeur %d au noeud numéro %d\n", tic, noeud->id);
 	ajouter_valeur_tableau_dynamique_entier(noeud->tableau_tics_envois, tic);
 	slot->noeud_emetteur_paquet = indice_noeud_emetteur;
 
-	/* Affecte le tableau de message */
 	/* Met à jour les temps d'attentes du noeud qui envoie le message */
 	int i; int temps_attente_message;
 
-	for (i=0; i<nombre_message; i++)
+	/* Parcours du tableau de messages initiaux */
+	for (i=0; i<nombre_messages_initaux; i++)
 	{
-		temps_attente_message = tic - messages[i];
-		if (td != NULL)
-			ajouter_valeur_tableau_dynamique_entier(td, temps_attente_message);
+		temps_attente_message = tic - messages_initaux[i];
+		if (td_initial != NULL)
+			ajouter_valeur_tableau_dynamique_entier(td_initial, temps_attente_message);
 
 		if (temps_attente_message > noeud->attente_max)
 			noeud->attente_max = temps_attente_message;
 
 		noeud->attente_totale += temps_attente_message;
+	}
+
+	if (messages_prioritaires != NULL)	//Politique d'envoi de message prioritaire
+	{
+		afficher_tableau(messages_prioritaires, nombre_messages_prioritaires);
+		/* Parcours du tableau de messages prioritaires */
+		for (i=0; i<nombre_messages_prioritaires; i++)
+		{
+			temps_attente_message = tic - messages_prioritaires[i];
+			//printf("valeur %d\n", messages_prioritaires[i]);
+			if (td_prioritaire != NULL)
+				ajouter_valeur_tableau_dynamique_entier(td_prioritaire, temps_attente_message);
+
+			if (temps_attente_message > noeud->attente_max)
+				noeud->attente_max = temps_attente_message;
+
+			noeud->attente_totale += temps_attente_message;
+		}
 	}
 	slot->contient_message = 1;
 }
@@ -394,7 +455,9 @@ void sortir_messages( Anneau *anneau )
 void liberer_memoire_anneau( Anneau *anneau )
 {
 	Noeud *noeuds = anneau->noeuds;
-	TableauDynamiqueEntier *td = anneau->messages;
+	TableauDynamiqueEntier *td_initial = anneau->messages_initaux;
+	TableauDynamiqueEntier *td_prioritaire = anneau->messages_prioritaires;
+
 	free(anneau->tableau_poisson->tableau);
 	free(anneau->tableau_poisson);
 	int nombre_noeud = anneau->nombre_noeud;
@@ -418,10 +481,15 @@ void liberer_memoire_anneau( Anneau *anneau )
 	free(noeuds);
 
 	/* Libération de l'espace mémoire pris par le tableau dynamique */
-	if (td != NULL)
+	if (td_initial != NULL)
 	{
-		free(td->tableau);
-		free(td);
+		free(td_initial->tableau);
+		free(td_initial);
+	}
+	if (td_prioritaire != NULL)
+	{
+		free(td_prioritaire->tableau);
+		free(td_prioritaire);
 	}
 
 	free(anneau);
@@ -508,57 +576,73 @@ void ecrire_fichier_csv(Anneau *anneau)
 	//Ecriture de la répartition des temps d'attente (Min, Max, moyenne)
 	int i; int j = 0; int nombre_colonne = 4;
 	double max; double min; double somme_valeur = 0;
-	TableauDynamiqueEntier *td = anneau->messages;
-	int taille_utilisee = td->taille_utilisee;
 
-	/* Trie du tableau */
-	int *tableau = td->tableau;
-	qsort(tableau, taille_utilisee, sizeof(int), cmpfunc);
 
-	int val_max = tableau[taille_utilisee-1];
+	/* Trie des tableaux */
+	TableauDynamiqueEntier *td_initial = anneau->messages_initaux;
+	int taille_utilisee_td_initial = td_initial->taille_utilisee;
+	int *tableau_initial = td_initial->tableau;
+	qsort(tableau_initial, taille_utilisee_td_initial, sizeof(int), cmpfunc);
+
+	TableauDynamiqueEntier *td_prioritaire = anneau->messages_prioritaires;
+	int taille_utilisee_td_prioritaire; int *tableau_prioritaire;
+	if (td_prioritaire != NULL)
+	{
+		taille_utilisee_td_prioritaire = td_prioritaire->taille_utilisee;
+		tableau_prioritaire = td_prioritaire->tableau;
+		qsort(tableau_prioritaire, taille_utilisee_td_prioritaire, sizeof(int), cmpfunc);
+	}
+
+
+	int val_max = tableau_initial[ taille_utilisee_td_initial-1 ];
 	int bornes_superieures[nombre_quantile];
 
-	int interval = taille_utilisee / nombre_quantile+1;
+	int interval = taille_utilisee_td_initial / nombre_quantile+1;
 	for(i=1; i<=nombre_quantile; i++)
 		bornes_superieures[i-1] = i * interval;
-	if (bornes_superieures[nombre_quantile-1] < taille_utilisee)
-		bornes_superieures[nombre_quantile-1] = taille_utilisee;
+	if (bornes_superieures[nombre_quantile-1] < taille_utilisee_td_initial)
+		bornes_superieures[nombre_quantile-1] = taille_utilisee_td_initial;
 	int borne_superieure = bornes_superieures[0];
 
 	//Allocation du tableau
-	double **quantiles = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double **quantiles_initial = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double **quantiles_prioritaire = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 	for(i=0; i<nombre_quantile+1; i++)
-		quantiles[i] = (double *) calloc(nombre_colonne, sizeof(double));	//La premiere ligne du tableau
+	{
+		quantiles_initial[i] = (double *) calloc(nombre_colonne, sizeof(double));	//La premiere ligne du tableau
+		quantiles_prioritaire[i] = (double *) calloc(nombre_colonne, sizeof(double));	//La premiere ligne du tableau
+	}
 
-	min = tableau[0];
-	for (i=0; i<taille_utilisee; i++)
+	min = tableau_initial[0];
+	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
 		if ( (i % interval == 0) && (i != 0))
 		{
 			//Assignation des valeurs pour la borne précedente
-			max = tableau[i-1];
-			quantiles[j][2] = max; quantiles[j][3] = somme_valeur/quantiles[j][0];
+			max = tableau_initial[i-1];
+			quantiles_initial[j][2] = max; quantiles_initial[j][3] = somme_valeur/quantiles_initial[j][0];
 			somme_valeur = 0;
-			min = tableau[i];
+			min = tableau_initial[i];
 			j++;
 			if (j < nombre_quantile+1)
-				quantiles[j][1] = min;
+				quantiles_initial[j][1] = min;
 		}
-		somme_valeur += tableau[i];
+		somme_valeur += tableau_initial[i];
 		if (j < nombre_quantile+1)
-			quantiles[j][0]++;
+			quantiles_initial[j][0]++;
 	}
-	quantiles[nombre_quantile-1][2] = val_max;
-	quantiles[nombre_quantile-1][3] = somme_valeur/quantiles[j][0];
+	quantiles_initial[nombre_quantile-1][2] = val_max;
+	quantiles_initial[nombre_quantile-1][3] = somme_valeur/quantiles_initial[j][0];
 
-	ecrire_nb_message_attente_csv(anneau, quantiles, nombre_quantile, bornes_superieures);
+	ecrire_nb_message_attente_csv(anneau, quantiles_initial, nombre_quantile, bornes_superieures);
 	/* Libération de la mémoire du quantile */
 	for(i=0; i<nombre_quantile+1; i++)
-		free(quantiles[i]);
-	free(quantiles);
+		free(quantiles_initial[i]);
+	free(quantiles_initial);
 
 	//Ecriture du nombre de message ayant attendu selon un interval de TIC
-	double *quantiles_nb_message = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double *quantiles_nb_messages_initiaux = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double *quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 
 	j = 0;
 	interval = val_max / nombre_quantile;;
@@ -572,18 +656,38 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	borne_superieure = bornes_superieures[0];
 
-	min = tableau[0];
-	for (i=0; i<taille_utilisee; i++)
+	min = tableau_initial[0];
+	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
-		if ( (tableau[i] >= borne_superieure) && (j < nombre_quantile-1) )
+		if ( (tableau_initial[i] >= borne_superieure) && (j < nombre_quantile-1) )
 		{
 			j++;
 			borne_superieure = bornes_superieures[j];
 		}
-		quantiles_nb_message[j]++;
+		quantiles_nb_messages_initiaux[j]++;
 	}
-	ecrire_temps_attente_csv(anneau, quantiles_nb_message, bornes_superieures, nombre_quantile);
-	free(quantiles_nb_message);
+
+	if (td_prioritaire != NULL)
+	{
+		printf("Génération des quantiles de messages prioritaires\n");
+		j = 0;
+		for (i=0; i<taille_utilisee_td_prioritaire; i++)
+		{
+			//printf("Tableau : %d\n", tableau_initial[taille_utilisee_td_initial-1]);
+			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
+			{
+				//printf("Quantiles[j] : %lf\n", quantiles_nb_messages_prioritaire[j]);
+				j++;
+				borne_superieure = bornes_superieures[j];
+			}
+			quantiles_nb_messages_prioritaire[j]++;
+		}
+		printf("Quantiles[j] : %lf\n", quantiles_nb_messages_prioritaire[j]);
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, bornes_superieures, nombre_quantile);
+	}
+	else
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, bornes_superieures, nombre_quantile);
+	free(quantiles_nb_messages_initiaux);
 }
 
 void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes)
@@ -620,11 +724,12 @@ void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taill
 	fclose(f);
 }
 
-void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau )
+void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau )
 {
 	int nombre_noeud = anneau->nombre_noeud;
 	int nombre_slot = anneau->nombre_slot;
-	double nb_message_total = anneau->nb_message;
+	double nb_messages_initiaux_total = anneau->nb_messages_initaux;
+	double nb_messages_prioritaire_total = anneau->nb_messages_prioritaires;
 
 	/* Création du nom du fichier csv */
 	char *debut_nom_fichier = "../CSV/attente_anneau";
@@ -639,16 +744,27 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, i
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,taux,TIC,nb_slot,nb_noeud\n");
+	fprintf(f, "interval,type,taux,TIC,nb_slot,nb_noeud\n");
 	int i;
+	double pourcentage_initial, pourcentage_prioritaire;
 	int borne_inferieure = 0;
 	for (i=0; i<taille_tableau; i++)
 	{
 		int borne_superieure = bornes[i];
-		if (quantiles[i] == 0)
+		if ( (quantiles_initial[i] == 0) && ( (quantiles_prioritaire != NULL) || (quantiles_prioritaire[i] == 0) ) )
 			break;
-		double pourcentage = (quantiles[i] / nb_message_total);
-		fprintf(f, "%d:%d,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, pourcentage, NOMBRE_TIC, nombre_slot, nombre_noeud);
+		if (quantiles_prioritaire != NULL)
+		{
+			pourcentage_initial = (quantiles_initial[i] / nb_messages_initiaux_total);
+			pourcentage_prioritaire = (quantiles_prioritaire[i] / nb_messages_prioritaire_total);
+			fprintf(f, "%d:%d,Best effort,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud);
+			fprintf(f, "%d:%d,Prioritaire,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud);
+		}
+		else
+		{
+			pourcentage_initial = (quantiles_initial[i] / nb_messages_initiaux_total);
+			fprintf(f, "%d:%d,Tous type,%lf,%d,%d,%d\n", borne_inferieure, borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud);
+		}
 		borne_inferieure = borne_superieure+1;
 	}
 	fclose(f);

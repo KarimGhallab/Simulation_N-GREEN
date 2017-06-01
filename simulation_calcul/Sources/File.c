@@ -30,7 +30,7 @@ void ajouter_message(File *file, int nb_message, int message)
     file->indice_fin++;
 }
 
-void supprimer_message(File *file, int nb_message, int *messages, int indice_debut)
+void supprimer_message(File *file, int nb_message, int *messages)
 {
 	if (file->indice_debut >= file->taille)
 	{
@@ -41,7 +41,7 @@ void supprimer_message(File *file, int nb_message, int *messages, int indice_deb
 			free(ancien_pointeur);
 	}
 	int nb_message_restant = nb_message;
-	int indice_messages = indice_debut;
+	int indice_messages = 0;
 	int i;
 
 	while (nb_message_restant != 0)
@@ -52,6 +52,8 @@ void supprimer_message(File *file, int nb_message, int *messages, int indice_deb
 			for(i=0; i<file->messages[ file->indice_debut ].nombre_valeur; i++)
 			{
 				messages[indice_messages] = file->messages[ file->indice_debut ].valeur;
+				if (file->messages[ file->indice_debut ].valeur < 0)
+					printf("valeur : %d\n", file->messages[ file->indice_debut ].valeur);
 				indice_messages++;
 			}
 			file->indice_debut++;
@@ -62,6 +64,8 @@ void supprimer_message(File *file, int nb_message, int *messages, int indice_deb
 			for(i=0; i<nb_message_restant; i++)
 			{
 				messages[indice_messages] = file->messages[ file->indice_debut ].valeur;
+				if (file->messages[ file->indice_debut ].valeur < 0)
+					printf("valeur : %d\n", file->messages[ file->indice_debut ].valeur);
 				indice_messages++;
 			}
 			nb_message_restant = 0;
