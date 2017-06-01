@@ -58,10 +58,6 @@ void afficher_etat_anneau(Anneau *anneau)
 			nombre_slot_plein++;
 	}
 	printf("Anneau numéro %d\n", anneau->numero_anneau);
-	if (anneau->politique_envoi == POLITIQUE_ENVOI_PRIORITAIRE)
-		printf("Politique d'envoi : prorité au C-RAN\n");
-	else
-		printf("Politique d'envoi : sans priorité\n");
 
 	if (nombre_slot_plein > 1)
 		printf("%d/%d slots sont pleins\n", nombre_slot_plein, nombre_slot);
@@ -189,6 +185,10 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 	/* Affichage des paramètres de la simulation */
 	printf("\n");
 	printf("Nombre de TIC de la simulation : %d.\n", NOMBRE_TIC);
+	if (anneau->politique_envoi == POLITIQUE_ENVOI_PRIORITAIRE)
+		printf("Politique d'envoi : prorité au C-RAN\n");
+	else
+		printf("Politique d'envoi : sans priorité\n");
 	printf("Nombre de slot de l'anneau : %d.\n", anneau->nombre_slot);
 	printf("Nombre de noeud de l'anneau : %d.\n", anneau->nombre_noeud);
 	if (generer_pdf == 1)
@@ -197,19 +197,19 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 		printf("Generation des PDFs : Non.\n\n");
 
 	int nombre_tic_restant = NOMBRE_TIC;
-	int saut_interval = 40; int cmp = 1;
-	int interval = nombre_tic_restant / saut_interval;
+	int saut_intervalle = 40; int cmp = 1;
+	int intervalle = nombre_tic_restant / saut_intervalle;
 	int pourcentage;
-	char chargement[ saut_interval +3 ];
+	char chargement[ saut_intervalle +3 ];
 
 	while (nombre_tic_restant > 0)
 	{
 		//printf("Tic numéro %d\n", (NOMBRE_TIC - nombre_tic_restant) + 1);
 		/* Gestion de la barre de chargement */
-		if ((afficher_chargement == 1) && (nombre_tic_restant % interval == 0) )
+		if ((afficher_chargement == 1) && (nombre_tic_restant % intervalle == 0) )
 		{
-			initialiser_barre_chargement(chargement, saut_interval +2, cmp);
-			pourcentage = (cmp / (float) saut_interval) *100;
+			initialiser_barre_chargement(chargement, saut_intervalle +2, cmp);
+			pourcentage = (cmp / (float) saut_intervalle) *100;
 			printf("\r%s %d%%", chargement, pourcentage);
 			fflush(stdout);
 			cmp++;
@@ -240,17 +240,6 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 		printf("Ecriture des fichiers CSV...\n");
 		ecrire_fichier_csv(anneau);
 	}
-}
-
-void afficher_tableau(int *tab, int taille)
-{
-	int i;
-	for(i=0; i<taille; i++)
-	{
-		if (tab[i]<0)
-			printf("%d   ", tab[i]);
-	}
-	printf("\n");
 }
 
 void entrer_messages( Anneau *anneau, int tic )
@@ -407,7 +396,6 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 
 	if (messages_prioritaires != NULL)	//Politique d'envoi de message prioritaire
 	{
-		afficher_tableau(messages_prioritaires, nombre_messages_prioritaires);
 		/* Parcours du tableau de messages prioritaires */
 		for (i=0; i<nombre_messages_prioritaires; i++)
 		{
@@ -585,7 +573,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 	qsort(tableau_initial, taille_utilisee_td_initial, sizeof(int), cmpfunc);
 
 	TableauDynamiqueEntier *td_prioritaire = anneau->messages_prioritaires;
-	int taille_utilisee_td_prioritaire; int *tableau_prioritaire;
+	int taille_utilisee_td_prioritaire = 0; int *tableau_prioritaire;
 	if (td_prioritaire != NULL)
 	{
 		taille_utilisee_td_prioritaire = td_prioritaire->taille_utilisee;
@@ -597,9 +585,9 @@ void ecrire_fichier_csv(Anneau *anneau)
 	int val_max = tableau_initial[ taille_utilisee_td_initial-1 ];
 	int bornes_superieures[nombre_quantile];
 
-	int interval = taille_utilisee_td_initial / nombre_quantile+1;
+	int intervalle = taille_utilisee_td_initial / nombre_quantile+1;
 	for(i=1; i<=nombre_quantile; i++)
-		bornes_superieures[i-1] = i * interval;
+		bornes_superieures[i-1] = i * intervalle;
 	if (bornes_superieures[nombre_quantile-1] < taille_utilisee_td_initial)
 		bornes_superieures[nombre_quantile-1] = taille_utilisee_td_initial;
 	int borne_superieure = bornes_superieures[0];
@@ -616,7 +604,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 	min = tableau_initial[0];
 	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
-		if ( (i % interval == 0) && (i != 0))
+		if ( (i % intervalle == 0) && (i != 0))
 		{
 			//Assignation des valeurs pour la borne précedente
 			max = tableau_initial[i-1];
@@ -640,16 +628,16 @@ void ecrire_fichier_csv(Anneau *anneau)
 		free(quantiles_initial[i]);
 	free(quantiles_initial);
 
-	//Ecriture du nombre de message ayant attendu selon un interval de TIC
+	//Ecriture du nombre de message ayant attendu selon un intervalle de TIC
 	double *quantiles_nb_messages_initiaux = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 	double *quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 
 	j = 0;
-	interval = val_max / nombre_quantile;;
-	if (interval < 1)
-		interval = 1;
+	intervalle = val_max / nombre_quantile;;
+	if (intervalle < 1)
+		intervalle = 1;
 	for(i=1; i<=nombre_quantile; i++)
-		bornes_superieures[i-1] = i * interval;
+		bornes_superieures[i-1] = i * intervalle;
 
 	if (bornes_superieures[nombre_quantile-1] < val_max)
 		bornes_superieures[nombre_quantile-1] = val_max;
@@ -708,7 +696,7 @@ void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taill
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,type_valeur,valeur,TIC,nb_slot,nb_noeud\n");
+	fprintf(f, "intervalle,type_valeur,valeur,TIC,nb_slot,nb_noeud\n");
 	int i;
 	int borne_inferieure = 0;
 	for (i=0; i<taille_tableau; i++)
@@ -744,7 +732,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "interval,type,taux,TIC,nb_slot,nb_noeud\n");
+	fprintf(f, "intervalle,type,taux,TIC,nb_slot,nb_noeud\n");
 	int i;
 	double pourcentage_initial, pourcentage_prioritaire;
 	int borne_inferieure = 0;

@@ -16,8 +16,8 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	donnees = read.csv(chemin_fichier)
 
 	############# Trie des abscisses #############
-	donnees$interval <- as.character(donnees$interval)
-	donnees$interval <- factor(donnees$interval, levels=unique(donnees$interval))
+	donnees$intervalle <- as.character(donnees$intervalle)
+	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
 
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
 	nombre_slot = as.character(donnees$nb_slot[1])
@@ -46,13 +46,13 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	}
 	#print(pourcentages)
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-	#p <- ggplot(data=donnees, aes(x = donnees$interval, y = donnees$taux)) +
-	p <- ggplot(donnees, aes(x=donnees$interval, y=donnees$taux, fill=type)) +
+	#p <- ggplot(data=donnees, aes(x = donnees$intervalle, y = donnees$taux)) +
+	p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, fill=type)) +
 	geom_bar(stat="identity", position = "dodge") +
 	geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black", position = position_dodge(width =0.9)) +
 	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
 	scale_y_continuous(labels = percent, name = "Nombre de message") +
-	scale_x_discrete(name = "interval") +
+	scale_x_discrete(name = "Intervalle") +
 	labs(caption = texte_info) +
 	ggtitle(titre)
 
@@ -69,13 +69,13 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 
 	titre = "Temps d'attentes des messages"
 	############# Trie des abscisses #############
-	donnees$interval <- as.character(donnees$interval)
-	donnees$interval <- factor(donnees$interval, levels=unique(donnees$interval))
+	donnees$intervalle <- as.character(donnees$intervalle)
+	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
 
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
 
-	#p <- ggplot2.barplot(data=donnees, xName='interval', yName="valeur",groupName='type_valeur', position = position_dodge() )
-	p <- ggplot(donnees, aes(x=interval, y=valeur, fill=type_valeur)) +
+	#p <- ggplot2.barplot(data=donnees, xName='intervalle', yName="valeur",groupName='type_valeur', position = position_dodge() )
+	p <- ggplot(donnees, aes(x=intervalle, y=valeur, fill=type_valeur)) +
 	geom_bar(stat="identity", position = "dodge") +
 	scale_size_area("Type d'attente") +
 	ylab("Nombre de TIC") +
