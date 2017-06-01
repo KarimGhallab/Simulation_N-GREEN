@@ -126,6 +126,8 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 		noeuds[j].indice_slot_ecriture = indice_slot_ecriture; noeuds[j].nb_antenne = nombre_antenne;
 		noeuds[j].debut_periode = debut_periode;
 		noeuds[j].attente_max = 0; noeuds[j].nb_message_total = 0; noeuds[j].attente_totale = 0;
+		noeuds[j].nb_message_best_effort = 0; noeuds[j].nb_message_best_effort_total = 0;
+		noeuds[j].nb_message_prioritaires = 0; noeuds[j].nb_message_prioritaires_total = 0;
 		noeuds[j].tableau_tics_envois = initialiser_tableau_dynamique_entier();
 
 		noeuds[j].file_messages_initiale = creer_file();
@@ -254,7 +256,7 @@ void entrer_messages( Anneau *anneau, int tic )
 			{
 				ajouter_message( noeud->file_messages_prioritaires, nb_message_prioritaires, tic );
 				noeud->nb_message_prioritaires += nb_message_prioritaires;
-				noeud->nb_message_best_prioritaires_total += nb_message_prioritaires;
+				noeud->nb_message_prioritaires_total += nb_message_prioritaires;
 			}
 			else
 			{
@@ -272,17 +274,15 @@ void entrer_messages( Anneau *anneau, int tic )
 		{
 			noeud->nb_message_best_effort += nb_message_best_effort;
 			noeud->nb_message_best_effort_total += nb_message_best_effort;
+			nb_message_noeud = noeud->nb_message_best_effort + noeud->nb_message_prioritaires;
 		}
 		else
 		{
 			noeud->nb_message += nb_message_best_effort;
 			noeud->nb_message_total += nb_message_best_effort;
-		}
 
-		if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
-			nb_message_noeud = noeud->nb_message_best_effort + noeud->nb_message_prioritaires;
-		else
 			nb_message_noeud = noeud->nb_message;
+		}
 
 		if ( ( slot->contient_message == 0) && (nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN) )
 		{
@@ -300,7 +300,7 @@ void entrer_messages( Anneau *anneau, int tic )
 						nb_message_best_effort = LIMITE_NOMBRE_MESSAGE_MAX - nb_message_prioritaires;
 
 						supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages, 0 );
-						supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires-1 );
+						supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires );
 
 						noeud->nb_message_prioritaires -= nb_message_prioritaires;
 						noeud->nb_message_best_effort -= nb_message_best_effort;
@@ -395,6 +395,8 @@ void liberer_memoire_anneau( Anneau *anneau )
 {
 	Noeud *noeuds = anneau->noeuds;
 	TableauDynamiqueEntier *td = anneau->messages;
+	free(anneau->tableau_poisson->tableau);
+	free(anneau->tableau_poisson);
 	int nombre_noeud = anneau->nombre_noeud;
 	/* Libère la mémoire prise par les slots */
 	free(anneau->slots);
@@ -404,6 +406,10 @@ void liberer_memoire_anneau( Anneau *anneau )
 	for (i=0; i<nombre_noeud; i++)
 	{
 		liberer_file( noeuds[i].file_messages_initiale );
+		if (noeuds[i].file_messages_prioritaires != NULL)
+			liberer_file(noeuds[i].file_messages_prioritaires);
+		free(noeuds[i].tableau_tics_envois->tableau);
+		free(noeuds[i].tableau_tics_envois);
 		free(anneau->couple_lecture[i]);
 		free(anneau->couple_ecriture[i]);
 	}

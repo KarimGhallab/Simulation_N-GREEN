@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 1000000
+#define NOMBRE_TIC 10000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -62,7 +62,7 @@ struct Noeud
 	double nb_message_best_effort;
 	double nb_message_best_effort_total;	//Le nombre de message best effort ayant transité dans le noeud
 	double nb_message_prioritaires;
-	double nb_message_best_prioritaires_total;	//Le nombre de message prioritaires ayant transité dans le noeud
+	double nb_message_prioritaires_total;	//Le nombre de message prioritaires ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
 	TableauDynamiqueEntier *tableau_tics_envois;	//Les tics d'envoie du message
 };

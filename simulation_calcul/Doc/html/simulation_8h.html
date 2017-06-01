@@ -131,7 +131,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;10000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -146,6 +146,14 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a3afe421e20484e4c8524fcdefdc44783">LIMITE_NOMBRE_MESSAGE_MAX</a>&#160;&#160;&#160;80</td></tr>
 <tr class="memdesc:a3afe421e20484e4c8524fcdefdc44783"><td class="mdescLeft">&#160;</td><td class="mdescRight">La limite maximale avant un envoi de message depuis un noeud. <br /></td></tr>
 <tr class="separator:a3afe421e20484e4c8524fcdefdc44783"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c9ddf12dfc64f71736a906e3841de7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa4c9ddf12dfc64f71736a906e3841de7"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#aa4c9ddf12dfc64f71736a906e3841de7">POLITIQUE_ENVOI_PRIORITAIRE</a>&#160;&#160;&#160;1</td></tr>
+<tr class="memdesc:aa4c9ddf12dfc64f71736a906e3841de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique la politique d'envoie de l'anneau. <br /></td></tr>
+<tr class="separator:aa4c9ddf12dfc64f71736a906e3841de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9764c49e6f8aa18af2714e7a05d6c30"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab9764c49e6f8aa18af2714e7a05d6c30"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ab9764c49e6f8aa18af2714e7a05d6c30">POLITIQUE_ENVOI_NON_PRIORITAIRE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="memdesc:ab9764c49e6f8aa18af2714e7a05d6c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indique la politique d'envoie de l'anneau. <br /></td></tr>
+<tr class="separator:ab9764c49e6f8aa18af2714e7a05d6c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -161,9 +169,9 @@ typedef struct <a class="el" href="structAnneau.html">Anneau</a>&#160;</td><td c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae65ed7270de43c753e9edad47b0b3e27"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae65ed7270de43c753e9edad47b0b3e27">initialiser_anneau</a> (int nombre_slot, int nombre_noeud, int generer_pdf)</td></tr>
-<tr class="memdesc:ae65ed7270de43c753e9edad47b0b3e27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise un anneau.  <a href="#ae65ed7270de43c753e9edad47b0b3e27">More...</a><br /></td></tr>
-<tr class="separator:ae65ed7270de43c753e9edad47b0b3e27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8ddf14efed9daf5fc10c982ef7eccbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8ddf14efed9daf5fc10c982ef7eccbf"></a>
+<a class="el" href="structAnneau.html">Anneau</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_anneau</b> (int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi)</td></tr>
+<tr class="separator:ad8ddf14efed9daf5fc10c982ef7eccbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f874b6bd3b40c380beefb8c38045313"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313">afficher_etat_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a2f874b6bd3b40c380beefb8c38045313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'état actuel de l'anneau.  <a href="#a2f874b6bd3b40c380beefb8c38045313">More...</a><br /></td></tr>
 <tr class="separator:a2f874b6bd3b40c380beefb8c38045313"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -638,49 +646,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <p>Lance les scripts R afin de générer les PDF à partir des fichiers CSV. </p>
 <dl class="section return"><dt>Returns</dt><dd>-1 S'il y aune erreur ors de l'appel à la fonction system(), 0 sinon </dd></dl>
 <dl class="section pre"><dt>Precondition</dt><dd>la simulation à généré des fichiers CSV. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="ae65ed7270de43c753e9edad47b0b3e27"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structAnneau.html">Anneau</a> * initialiser_anneau </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_slot</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_noeud</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>generer_pdf</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialise un anneau. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">nombre_slot</td><td>Le nombre de slot de la simulation. </td></tr>
-    <tr><td class="paramname">nombre_noeud</td><td>Le nombre de noeud de la simulation. </td></tr>
-    <tr><td class="paramname">generer_pdf</td><td>Booléen indiquant la génération ou non-génération de PDF en fin de simulation. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Un pointeur sur l'anneau créé. </dd></dl>
 
 </div>
 </div>

@@ -34,14 +34,14 @@ callgrind_openMP_pdf: compil_openMP_debug clear
 
 
 memcheck: compil_debug clear
-	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes --track-origins=yes ./resultat
 
 callgrind: compil_debug clear
 	valgrind --tool=callgrind --dump-instr=yes --simulate-cache=yes --collect-jumps=yes ./resultat
 	kcachegrind &
 
 memcheck_pdf: compil_debug clear
-	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes ./resultat -PDF
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --num-callers=20 --track-fds=yes --track-origins=yes ./resultat -PDF
 
 callgrind_pdf: compil_debug clear
 	valgrind --tool=callgrind --dump-instr=yes --simulate-cache=yes --collect-jumps=yes ./resultat -PDF

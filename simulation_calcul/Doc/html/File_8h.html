@@ -144,9 +144,9 @@ Functions</h2></td></tr>
 <tr class="memitem:abd5374fe780906a8e00ac9cf1deae28e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="File_8h.html#abd5374fe780906a8e00ac9cf1deae28e">ajouter_message</a> (<a class="el" href="structFile.html">File</a> *file, int nb_message, int message)</td></tr>
 <tr class="memdesc:abd5374fe780906a8e00ac9cf1deae28e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ajoute un message en fin de file.  <a href="#abd5374fe780906a8e00ac9cf1deae28e">More...</a><br /></td></tr>
 <tr class="separator:abd5374fe780906a8e00ac9cf1deae28e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6764578e9f6c398757cec1f4cdbbd2ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="File_8h.html#a6764578e9f6c398757cec1f4cdbbd2ae">supprimer_message</a> (<a class="el" href="structFile.html">File</a> *file, int nb_message, int *messages)</td></tr>
-<tr class="memdesc:a6764578e9f6c398757cec1f4cdbbd2ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retire plusieurs messages en debut de file et les ajoute au tableau de message.  <a href="#a6764578e9f6c398757cec1f4cdbbd2ae">More...</a><br /></td></tr>
-<tr class="separator:a6764578e9f6c398757cec1f4cdbbd2ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a296175d536129c5c76ecdfbe63368f84"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a296175d536129c5c76ecdfbe63368f84"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>supprimer_message</b> (<a class="el" href="structFile.html">File</a> *file, int nb_message, int *messages, int indice_debut)</td></tr>
+<tr class="separator:a296175d536129c5c76ecdfbe63368f84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85978a96a85996bc69b22894c7f4c2f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="File_8h.html#a85978a96a85996bc69b22894c7f4c2f1">liberer_file</a> (<a class="el" href="structFile.html">File</a> *file)</td></tr>
 <tr class="memdesc:a85978a96a85996bc69b22894c7f4c2f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Libère l'espace mémoire pris par la file.  <a href="#a85978a96a85996bc69b22894c7f4c2f1">More...</a><br /></td></tr>
 <tr class="separator:a85978a96a85996bc69b22894c7f4c2f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,48 +259,6 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*file</td><td>la file pour laquelle on souhaite libèrer l'espace mémoire. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a6764578e9f6c398757cec1f4cdbbd2ae"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void supprimer_message </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="structFile.html">File</a> *&#160;</td>
-          <td class="paramname"><em>file</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nb_message</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int *&#160;</td>
-          <td class="paramname"><em>messages</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Retire plusieurs messages en debut de file et les ajoute au tableau de message. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">*file</td><td>la file à laquelle on souhaite retirer les messages. </td></tr>
-    <tr><td class="paramname">nb_message</td><td>Le nombre de message que l'on souhaite retirer. </td></tr>
-    <tr><td class="paramname">*messages</td><td>Le tableau de message à initialiser. </td></tr>
   </table>
   </dd>
 </dl>
