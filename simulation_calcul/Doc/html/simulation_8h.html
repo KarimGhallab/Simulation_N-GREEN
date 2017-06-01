@@ -131,7 +131,7 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:a92f9adbf8d155f054444fd73a0d0a387"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92f9adbf8d155f054444fd73a0d0a387"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;10000</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a92f9adbf8d155f054444fd73a0d0a387">NOMBRE_TIC</a>&#160;&#160;&#160;1000000</td></tr>
 <tr class="memdesc:a92f9adbf8d155f054444fd73a0d0a387"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le nombre de TIC sur lequel portera la simulation. <br /></td></tr>
 <tr class="separator:a92f9adbf8d155f054444fd73a0d0a387"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3a92c0c3d4878d475633f969fe0b8ca9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3a92c0c3d4878d475633f969fe0b8ca9"></a>
@@ -169,9 +169,9 @@ typedef struct <a class="el" href="structAnneau.html">Anneau</a>&#160;</td><td c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ad8ddf14efed9daf5fc10c982ef7eccbf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad8ddf14efed9daf5fc10c982ef7eccbf"></a>
-<a class="el" href="structAnneau.html">Anneau</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_anneau</b> (int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi)</td></tr>
-<tr class="separator:ad8ddf14efed9daf5fc10c982ef7eccbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae80ac7079a8f1dea9fe16881edac94f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae80ac7079a8f1dea9fe16881edac94f7">initialiser_anneau</a> (int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi)</td></tr>
+<tr class="memdesc:ae80ac7079a8f1dea9fe16881edac94f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise un anneau.  <a href="#ae80ac7079a8f1dea9fe16881edac94f7">More...</a><br /></td></tr>
+<tr class="separator:ae80ac7079a8f1dea9fe16881edac94f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f874b6bd3b40c380beefb8c38045313"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a2f874b6bd3b40c380beefb8c38045313">afficher_etat_anneau</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a2f874b6bd3b40c380beefb8c38045313"><td class="mdescLeft">&#160;</td><td class="mdescRight">Affiche l'état actuel de l'anneau.  <a href="#a2f874b6bd3b40c380beefb8c38045313">More...</a><br /></td></tr>
 <tr class="separator:a2f874b6bd3b40c380beefb8c38045313"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,9 +193,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8d67e657bbfd76bb6253965e4db4c8fa">entrer_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, int tic)</td></tr>
 <tr class="memdesc:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fait entrer des messages dans les noeuds de l'anneau selon l'hyper exponentielle et les place dans ses slots si cela doit se faire.  <a href="#a8d67e657bbfd76bb6253965e4db4c8fa">More...</a><br /></td></tr>
 <tr class="separator:a8d67e657bbfd76bb6253965e4db4c8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae74d6ce8bd7475458737f1f00e561315"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#ae74d6ce8bd7475458737f1f00e561315">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_message, int messages[], int tic, <a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *td)</td></tr>
-<tr class="memdesc:ae74d6ce8bd7475458737f1f00e561315"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#ae74d6ce8bd7475458737f1f00e561315">More...</a><br /></td></tr>
-<tr class="separator:ae74d6ce8bd7475458737f1f00e561315"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a3a4717cf5fac9c7a11a5f6cc365109"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a9a3a4717cf5fac9c7a11a5f6cc365109">placer_message</a> (<a class="el" href="structNoeud.html">Noeud</a> *noeud, int indice_noeud_emetteur, <a class="el" href="structSlot.html">Slot</a> *slot, int nombre_messages_initaux, int nombre_messages_prioritaires, int *messages_initaux, int *messages_prioritaires, int tic, <a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *td_initial, <a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *td_prioritaire)</td></tr>
+<tr class="memdesc:a9a3a4717cf5fac9c7a11a5f6cc365109"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmet un paquet de message d'un noeud vers son slot d'écriture.  <a href="#a9a3a4717cf5fac9c7a11a5f6cc365109">More...</a><br /></td></tr>
+<tr class="separator:a9a3a4717cf5fac9c7a11a5f6cc365109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31b6056bb885b856013e2843c6d549be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a31b6056bb885b856013e2843c6d549be">decaler_messages</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a31b6056bb885b856013e2843c6d549be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Décale les paquets de mesage des slots de l'anneau (décalage dans le sens des aiguilles d'une montre).  <a href="#a31b6056bb885b856013e2843c6d549be">More...</a><br /></td></tr>
 <tr class="separator:a31b6056bb885b856013e2843c6d549be"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,9 +223,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af66630edc14ed7f6a3172e7e81ae7bc7">ecrire_nb_message_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles, int taille_tableau, int *bornes)</td></tr>
 <tr class="memdesc:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#af66630edc14ed7f6a3172e7e81ae7bc7">More...</a><br /></td></tr>
 <tr class="separator:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a300b89929924dd233f53bfd0e1e8ef21"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a300b89929924dd233f53bfd0e1e8ef21">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles, int *bornes, int taille_tableau)</td></tr>
-<tr class="memdesc:a300b89929924dd233f53bfd0e1e8ef21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a300b89929924dd233f53bfd0e1e8ef21">More...</a><br /></td></tr>
-<tr class="separator:a300b89929924dd233f53bfd0e1e8ef21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a5e92da76b8a8226ed3b88cc766df0c17">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau)</td></tr>
+<tr class="memdesc:a5e92da76b8a8226ed3b88cc766df0c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a5e92da76b8a8226ed3b88cc766df0c17">More...</a><br /></td></tr>
+<tr class="separator:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8aaa907e94e5c4d11296e1da8ec51a80">generer_PDF</a> ()</td></tr>
 <tr class="memdesc:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a8aaa907e94e5c4d11296e1da8ec51a80">More...</a><br /></td></tr>
 <tr class="separator:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -462,7 +462,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="a300b89929924dd233f53bfd0e1e8ef21"></a>
+<a class="anchor" id="a5e92da76b8a8226ed3b88cc766df0c17"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -476,7 +476,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double *&#160;</td>
-          <td class="paramname"><em>quantiles</em>, </td>
+          <td class="paramname"><em>quantiles_initial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>quantiles_prioritaire</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -502,7 +508,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite écrire les temps d'attentes. </td></tr>
-    <tr><td class="paramname">*quantiles</td><td>Le tableau des données à sauvegarder. </td></tr>
+    <tr><td class="paramname">*quantiles_initial</td><td>Les quantiles des messages initiaux. </td></tr>
+    <tr><td class="paramname">*quantiles_prioritaire</td><td>Les quantiles des messages prioritaires. </td></tr>
     <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
     <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
   </table>
@@ -649,6 +656,56 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
+<a class="anchor" id="ae80ac7079a8f1dea9fe16881edac94f7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structAnneau.html">Anneau</a> * initialiser_anneau </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_slot</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nombre_noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>generer_pdf</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>politique_envoi</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialise un anneau. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nombre_slot</td><td>Le nombre de slot de la simulation. </td></tr>
+    <tr><td class="paramname">nombre_noeud</td><td>Le nombre de noeud de la simulation. </td></tr>
+    <tr><td class="paramname">generer_pdf</td><td>Booléen indiquant la génération ou non-génération de PDF en fin de simulation. </td></tr>
+    <tr><td class="paramname">politique_envoi</td><td>un entier indiquant la politique d'envoi des messages de l'anneau. 1 indique une politique d'envoi ou le messages C-RAN seront prioritaires, une autre valeur indique une politique avec aucune priorité. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Un pointeur sur l'anneau créé. </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a369bd26809ccd919731c97de32244841"></a>
 <div class="memitem">
 <div class="memproto">
@@ -785,7 +842,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="ae74d6ce8bd7475458737f1f00e561315"></a>
+<a class="anchor" id="a9a3a4717cf5fac9c7a11a5f6cc365109"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -811,13 +868,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>nombre_message</em>, </td>
+          <td class="paramname"><em>nombre_messages_initaux</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>messages</em>[], </td>
+          <td class="paramname"><em>nombre_messages_prioritaires</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>messages_initaux</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>messages_prioritaires</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -829,7 +898,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td>
-          <td class="paramname"><em>td</em>&#160;</td>
+          <td class="paramname"><em>td_initial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td>
+          <td class="paramname"><em>td_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -845,10 +920,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
     <tr><td class="paramname">*noeud</td><td>Un pointeur vers le noeud qui transmet le paquet. </td></tr>
     <tr><td class="paramname">indice_noeud_emetteur</td><td>L'indice du noeud qui envoie le message. </td></tr>
     <tr><td class="paramname">*slot</td><td>Un pointeur sur le slot qui recevra le paquet de message. </td></tr>
-    <tr><td class="paramname">nombre_message</td><td>Le nombre de message qui doit etre transmis. </td></tr>
-    <tr><td class="paramname">messages[]</td><td>Les messages du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
+    <tr><td class="paramname">nombre_messages_initaux</td><td>Le nombre de messages du tableau initial transmis en paramètre. </td></tr>
+    <tr><td class="paramname">nombre_messages_prioritaires</td><td>Le nombre de messages prioritaires transmis en paramètre. </td></tr>
+    <tr><td class="paramname">*messages_initaux</td><td>Les messages best effort du paquet du paquet. (Si la politique d'envoi est une politique de non priorité, alors le tableau contient les deux types de messages). </td></tr>
+    <tr><td class="paramname">*messages_prioritaires</td><td>Les messages prioritaires du paquet. (contiennent le tic d'arrivé dans le noeud). </td></tr>
     <tr><td class="paramname">tic</td><td>Le tic actuel de l'anneau. </td></tr>
-    <tr><td class="paramname">*td</td><td>Le tableau des tic de message de toute la simulation. </td></tr>
+    <tr><td class="paramname">*td_initial</td><td>Le tableau des tic des messages initaux de toute la simulation. </td></tr>
+    <tr><td class="paramname">*td_prioritaire</td><td>Le tableau des tic des messages prioritaires de toute la simulation. </td></tr>
   </table>
   </dd>
 </dl>

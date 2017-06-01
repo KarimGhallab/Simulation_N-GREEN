@@ -98,12 +98,12 @@ Collaboration diagram for Anneau:</div>
 <div class="dyncontent">
 <div class="center"><img src="structAnneau__coll__graph.png" border="0" usemap="#Anneau_coll__map" alt="Collaboration graph"/></div>
 <map name="Anneau_coll__map" id="Anneau_coll__map">
-<area shape="rect" id="node2" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="157,199,217,225"/>
+<area shape="rect" id="node2" href="structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="219,200,279,227"/>
 <area shape="rect" id="node3" href="structTableauDynamiqueEntier.html" title="Structure représentant tableau d&#39;entier avec une taille dynamique. Un tableau dynamique contient un t..." alt="" coords="5,95,173,121"/>
 <area shape="rect" id="node4" href="structFile.html" title="Structure représentant une File de message. " alt="" coords="240,95,283,121"/>
 <area shape="rect" id="node5" href="structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="188,5,335,32"/>
-<area shape="rect" id="node6" href="structTableauDynamiqueDouble.html" title="Structure représentant tableau de double avec une taille dynamique. " alt="" coords="241,199,415,225"/>
-<area shape="rect" id="node7" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="440,199,485,225"/>
+<area shape="rect" id="node6" href="structTableauDynamiqueDouble.html" title="Structure représentant tableau de double avec une taille dynamique. " alt="" coords="303,200,478,227"/>
+<area shape="rect" id="node7" href="structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="503,200,548,227"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -130,18 +130,24 @@ int **&#160;</td><td class="memItemRight" valign="bottom"><b>couple_lecture</b><
 <tr class="memitem:a0698e132e3cf8449d52d81cf17252e8c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0698e132e3cf8449d52d81cf17252e8c"></a>
 int **&#160;</td><td class="memItemRight" valign="bottom"><b>couple_ecriture</b></td></tr>
 <tr class="separator:a0698e132e3cf8449d52d81cf17252e8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aecc2abe53454f134eafcd735f4946762"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aecc2abe53454f134eafcd735f4946762"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>nb_message</b></td></tr>
-<tr class="separator:aecc2abe53454f134eafcd735f4946762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2679b328c8bcd130ec60fbbf747af84d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2679b328c8bcd130ec60fbbf747af84d"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>nb_messages_initaux</b></td></tr>
+<tr class="separator:a2679b328c8bcd130ec60fbbf747af84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fcafc7ce55119c4747d25b1320e2147"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5fcafc7ce55119c4747d25b1320e2147"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>nb_messages_prioritaires</b></td></tr>
+<tr class="separator:a5fcafc7ce55119c4747d25b1320e2147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a168d5a05e940ffb8651a9001b5fa03"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8a168d5a05e940ffb8651a9001b5fa03"></a>
 <a class="el" href="structNoeud.html">Noeud</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>noeuds</b></td></tr>
 <tr class="separator:a8a168d5a05e940ffb8651a9001b5fa03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0f196f9386f4d705c5e70c5a0638ae8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa0f196f9386f4d705c5e70c5a0638ae8"></a>
 <a class="el" href="structSlot.html">Slot</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>slots</b></td></tr>
 <tr class="separator:aa0f196f9386f4d705c5e70c5a0638ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0e147440897b8bffa06e2b86a00f957"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0e147440897b8bffa06e2b86a00f957"></a>
-<a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>messages</b></td></tr>
-<tr class="separator:ae0e147440897b8bffa06e2b86a00f957"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfd2ed1489adb3a9de9b62c3ee5893cd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adfd2ed1489adb3a9de9b62c3ee5893cd"></a>
+<a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>messages_initaux</b></td></tr>
+<tr class="separator:adfd2ed1489adb3a9de9b62c3ee5893cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e6d7abce0d25cffd85eff87ad779ef8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5e6d7abce0d25cffd85eff87ad779ef8"></a>
+<a class="el" href="structTableauDynamiqueEntier.html">TableauDynamiqueEntier</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>messages_prioritaires</b></td></tr>
+<tr class="separator:a5e6d7abce0d25cffd85eff87ad779ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a789b716b9d2f0e90b3a498871a58dace"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a789b716b9d2f0e90b3a498871a58dace"></a>
 <a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>tableau_poisson</b></td></tr>
 <tr class="separator:a789b716b9d2f0e90b3a498871a58dace"><td class="memSeparator" colspan="2">&#160;</td></tr>

@@ -109,7 +109,7 @@ typedef struct Anneau Anneau;
 ///////////////// Les fonctions /////////////////
 //////////////////////////////////////////////////
 
-/*! \fn Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf );
+/*! \fn Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi )
     \brief Initialise un anneau.
     \param nombre_slot Le nombre de slot de la simulation.
     \param nombre_noeud Le nombre de noeud de la simulation.
@@ -167,7 +167,7 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
  */
 void entrer_messages( Anneau *anneau, int tic );
 
-/*! \fn void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_message, int messages[], int tic, TableauDynamiqueEntier *td )
+/*! \fn void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int nombre_messages_initaux, int nombre_messages_prioritaires, int *messages_initaux, int *messages_prioritaires, int tic, TableauDynamiqueEntier *td_initial, TableauDynamiqueEntier *td_prioritaire )
     \brief Transmet un paquet de message d'un noeud vers son slot d'écriture.
     \param *noeud Un pointeur vers le noeud qui transmet le paquet.
     \param indice_noeud_emetteur L'indice du noeud qui envoie le message.
@@ -243,7 +243,7 @@ void ecrire_fichier_csv(Anneau *anneau);
  */
 void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes);
 
-/*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles, int *bornes, int taille_tableau )
+/*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau )
     \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.
     \param *anneau L'anneau pour lequel on souhaite écrire les temps d'attentes.
 	\param *quantiles_initial Les quantiles des messages initiaux.

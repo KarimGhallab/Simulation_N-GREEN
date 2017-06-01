@@ -1,8 +1,8 @@
 <map id="Anneau" name="Anneau">
-<area shape="rect" id="node2" href="$structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="157,199,217,225"/>
+<area shape="rect" id="node2" href="$structNoeud.html" title="Structure représentant un Noeud de l&#39;anneau. Elle contient un nombre de message, les indices des slot..." alt="" coords="219,200,279,227"/>
 <area shape="rect" id="node3" href="$structTableauDynamiqueEntier.html" title="Structure représentant tableau d&#39;entier avec une taille dynamique. Un tableau dynamique contient un t..." alt="" coords="5,95,173,121"/>
 <area shape="rect" id="node4" href="$structFile.html" title="Structure représentant une File de message. " alt="" coords="240,95,283,121"/>
 <area shape="rect" id="node5" href="$structCoupleNombreValeur.html" title="Structure à deux entrées spécifiant le nombre d&#39;occurence d&#39;une valeur et la valeur. " alt="" coords="188,5,335,32"/>
-<area shape="rect" id="node6" href="$structTableauDynamiqueDouble.html" title="Structure représentant tableau de double avec une taille dynamique. " alt="" coords="241,199,415,225"/>
-<area shape="rect" id="node7" href="$structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="440,199,485,225"/>
+<area shape="rect" id="node6" href="$structTableauDynamiqueDouble.html" title="Structure représentant tableau de double avec une taille dynamique. " alt="" coords="303,200,478,227"/>
+<area shape="rect" id="node7" href="$structSlot.html" title="Structure représentant un slot dans l&#39;anneau. Un Slot est caractérisé par un id (unique), un booléen insiquant si le slot contient un message ou non, ainsi que les indices du noeud lié au slot s&#39;il y en a un. " alt="" coords="503,200,548,227"/>
 </map>
