@@ -8,7 +8,7 @@
 #include "../Headers/simulation.h"
 
 
-Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
+Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi )
 {
 	static int numero = 0;
 	numero++;
@@ -16,6 +16,7 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf )
 
 	anneau->nombre_slot = nombre_slot; anneau->nombre_noeud = nombre_noeud;
 	anneau->numero_anneau = numero; anneau->nb_message = 0; anneau->decallage = 0;
+	anneau->politique_envoi = politique_envoi;
 	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->tableau_poisson = initialiser_tableau_poisson();
@@ -47,10 +48,21 @@ void afficher_etat_anneau(Anneau *anneau)
 			nombre_slot_plein++;
 	}
 	printf("Anneau numéro %d\n", anneau->numero_anneau);
-	printf("%d/%d slots sont plein\n", nombre_slot_plein, nombre_slot);
+	if (nombre_slot_plein > 1)
+		printf("%d/%d slots sont pleins\n", nombre_slot_plein, nombre_slot);
+	else
+		printf("%d/%d slot est plein\n", nombre_slot_plein, nombre_slot);
 	printf("Le nombre de message ayant circulé dans l'anneau est de : %d\n", nombre_message);
-	for(i=0; i<nombre_noeud;i++)
-		printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].file_messages->nb_message_file);
+	if (anneau->politique_envoi == POLITIQUE_ENVOI_NON_PRIORITAIRE)
+	{
+		for(i=0; i<nombre_noeud;i++)
+			printf("Le Noeud numéro %d contient %lf message(s)\n", i, noeuds[i].nb_message);
+	}
+	else
+	{
+		for(i=0; i<nombre_noeud;i++)
+			printf("Le Noeud numéro %d contient %lf message(s) Best effort et %lf message(s) prioritaire(s)\n", i, noeuds[i].nb_message_best_effort, noeuds[i].nb_message_prioritaires);
+	}
 }
 
 void initialiser_slots( Anneau *anneau, int nombre_slot )
@@ -116,7 +128,13 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 		noeuds[j].attente_max = 0; noeuds[j].nb_message_total = 0; noeuds[j].attente_totale = 0;
 		noeuds[j].tableau_tics_envois = initialiser_tableau_dynamique_entier();
 
-		noeuds[j].file_messages = creer_file();
+		noeuds[j].file_messages_initiale = creer_file();
+
+		/* Gestion des cas en fonction de la politique d'envoi */
+		if (anneau->politique_envoi == POLITIQUE_ENVOI_PRIORITAIRE)
+			noeuds[j].file_messages_prioritaires = creer_file();
+		else
+			noeuds[j].file_messages_prioritaires = NULL;
 
 		/* Met à jour les indices des slots */
 		slots[ indice_slot_lecture ].indice_noeud_lecture = j;
@@ -146,12 +164,7 @@ void afficher_noeuds( Anneau *anneau )
 
 	int i;
 	for (i = 0; i < nombre_noeud; i++)
-	{
-		//Version complete
-		//printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Nombre d'antenne : %d    Décalage : %d    Attente max : %d    nb message total : %d    attente total : %d\n\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].nb_antenne, noeuds[i].debut_periode, noeuds[i].attente_max, noeuds[i].nb_message_total, noeuds[i].attente_totale);
-		//version courte
-		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %d    Indice en lecture : %d    Indice en écriture : %d    Attente max : %d    nb message total : %lf    attente total : %lf\n\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].attente_max, noeuds[i].nb_message_total, noeuds[i].attente_totale);
-	}
+		printf("Indice du tableau : %d     Id du noeud : %d    Nombre de message : %lf    Indice en lecture : %d    Indice en écriture : %d    Attente max : %d    nb message total : %lf    attente total : %lf\n\n", i, noeuds[i].id, noeuds[i].nb_message, noeuds[i].indice_slot_lecture, noeuds[i].indice_slot_ecriture, noeuds[i].attente_max, noeuds[i].nb_message_total, noeuds[i].attente_totale);
 }
 
 void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargement)
@@ -218,52 +231,109 @@ void entrer_messages( Anneau *anneau, int tic )
 	int ** couple_ecriture = anneau->couple_ecriture;
 	int nombre_slot = anneau->nombre_slot;
 	int nombre_noeud = anneau->nombre_noeud;
+	int position_slot;
+	int politique_anneau = anneau->politique_envoi;
 
 	Noeud *noeud;	//Le noeud courant
 	Slot *slot;
-	int nb_message;		//Le nombre de message envoyé par le noeud courant
+	int nb_message_noeud, nb_message_best_effort, nb_message_prioritaires;		//Le nombre de message du noeud courant et les nombres de message reçus par la noeud courant.
+	int nb_message_par_antenne = 10;
 
 	int i;
-
 	for (i=0; i< nombre_noeud; i++)
 	{
 		noeud = &(anneau->noeuds[ couple_ecriture[i][0] ]);
-		int position_slot = (couple_ecriture[i][1] + anneau->decallage) % nombre_slot;
+		position_slot = (couple_ecriture[i][1] + anneau->decallage) % nombre_slot;
 		slot = &(anneau->slots[position_slot]);
 
-		//Le noeud affiche si c'est sa période de réception de message provenant des antennes
-		/*if (tic % PERIODE_MESSAGE_ANTENNE == noeud->debut_periode)
-			printf ("C'est le moment ! Periode du noeud : %d. Je recois un message provenant de mes %d antennes.\n", noeud->debut_periode, noeud->nb_antenne);*/
-
-		nb_message = hyper_expo(anneau->tableau_poisson);
-		//printf("Le noeud %d recois %d messages\n", noeud->id, nb_message);
-
-		//On ajoute au noeud le tic d'arrivé des messages
-		ajouter_message( noeud->file_messages, nb_message, tic );
-
-		noeud->nb_message += nb_message;
-		noeud->nb_message_total += nb_message;
-
-		if ( ( slot->contient_message == 0) && (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MIN) )
+		/* Ajout des messages provenant des antennes */
+		if (tic % PERIODE_MESSAGE_ANTENNE == noeud->debut_periode)
 		{
-			if (noeud->nb_message >= LIMITE_NOMBRE_MESSAGE_MAX)
+			nb_message_prioritaires = nb_message_par_antenne * noeud->nb_antenne;
+			if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
 			{
-				/* On enleve les messages du noeud */
+				ajouter_message( noeud->file_messages_prioritaires, nb_message_prioritaires, tic );
+				noeud->nb_message_prioritaires += nb_message_prioritaires;
+				noeud->nb_message_best_prioritaires_total += nb_message_prioritaires;
+			}
+			else
+			{
+				ajouter_message( noeud->file_messages_initiale, nb_message_prioritaires, tic );
+				noeud->nb_message += nb_message_prioritaires;
+				noeud->nb_message_total += nb_message_prioritaires;
+			}
+		}
+
+		/* Ajout des messages best effort */
+		nb_message_best_effort = hyper_expo(anneau->tableau_poisson);
+		ajouter_message( noeud->file_messages_initiale, nb_message_best_effort, tic );
+
+		if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
+		{
+			noeud->nb_message_best_effort += nb_message_best_effort;
+			noeud->nb_message_best_effort_total += nb_message_best_effort;
+		}
+		else
+		{
+			noeud->nb_message += nb_message_best_effort;
+			noeud->nb_message_total += nb_message_best_effort;
+		}
+
+		if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
+			nb_message_noeud = noeud->nb_message_best_effort + noeud->nb_message_prioritaires;
+		else
+			nb_message_noeud = noeud->nb_message;
+
+		if ( ( slot->contient_message == 0) && (nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN) )
+		{
+			if (nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX)	//On envoie le plus de message possible
+			{
 				int messages[LIMITE_NOMBRE_MESSAGE_MAX];
-				supprimer_message( noeud->file_messages, LIMITE_NOMBRE_MESSAGE_MAX, messages );
 				anneau->nb_message += LIMITE_NOMBRE_MESSAGE_MAX;
+				if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
+				{
+					if (noeud->nb_message_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX)	//On envoie que des messages prioritaire
+						supprimer_message( noeud->file_messages_prioritaires, LIMITE_NOMBRE_MESSAGE_MAX, messages, 0 );
+					else	//Il faut envoyer tout les prioritaire + le reste en best effort
+					{
+						nb_message_prioritaires = noeud->nb_message_prioritaires;
+						nb_message_best_effort = LIMITE_NOMBRE_MESSAGE_MAX - nb_message_prioritaires;
+
+						supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages, 0 );
+						supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires-1 );
+
+						noeud->nb_message_prioritaires -= nb_message_prioritaires;
+						noeud->nb_message_best_effort -= nb_message_best_effort;
+					}
+				}
+				else
+				{
+					supprimer_message( noeud->file_messages_initiale, LIMITE_NOMBRE_MESSAGE_MAX, messages, 0 );
+					noeud->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
+				}
 				placer_message( noeud, noeud->id, slot, LIMITE_NOMBRE_MESSAGE_MAX, messages, tic, td);
-				noeud->nb_message -= LIMITE_NOMBRE_MESSAGE_MAX;
 			}
 			else	//Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud.
 			{
-				//On enleve les messages du noeud
-				int nb_messages_noeud = noeud->nb_message;
-				int messages[nb_messages_noeud];
-				supprimer_message( noeud->file_messages, nb_messages_noeud, messages );
-				anneau->nb_message += nb_messages_noeud;
-				placer_message( noeud, noeud->id, slot, nb_messages_noeud, messages, tic, td );
-				noeud->nb_message = 0;
+				int messages[nb_message_noeud];
+				anneau->nb_message += nb_message_noeud;
+				if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
+				{
+					nb_message_prioritaires = noeud->nb_message_prioritaires;
+					nb_message_best_effort = noeud->nb_message_best_effort;
+
+					supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages, 0 );
+					supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages, nb_message_prioritaires );
+
+					noeud->nb_message_best_effort = 0;
+					noeud->nb_message_prioritaires = 0;
+				}
+				else
+				{
+					supprimer_message( noeud->file_messages_initiale, nb_message_noeud, messages, 0 );
+					noeud->nb_message = 0;
+				}
+				placer_message( noeud, noeud->id, slot, nb_message_noeud, messages, tic, td );
 			}
 		}
 	}
@@ -333,7 +403,7 @@ void liberer_memoire_anneau( Anneau *anneau )
 	int i;
 	for (i=0; i<nombre_noeud; i++)
 	{
-		liberer_file( noeuds[i].file_messages );
+		liberer_file( noeuds[i].file_messages_initiale );
 		free(anneau->couple_lecture[i]);
 		free(anneau->couple_ecriture[i]);
 	}
@@ -408,7 +478,6 @@ void ecrire_tics_sorties(Anneau *anneau)
 			int taille_utilisee = td->taille_utilisee;
 			for (j=0; j<taille_utilisee; j++)
 			{
-				//printf("Ecriture de la valeur : %d\n", );
 				if (j == taille_utilisee -1)
 					fprintf(f, "%d", td->tableau[j]);
 				else

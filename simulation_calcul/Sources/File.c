@@ -6,7 +6,6 @@ File* creer_file()
 {
 	File *file = (File *) malloc(sizeof(File));
 	file->taille = TAILLE_INITIALE;
-	file->nb_message_file = 0;
 	file->indice_fin = 0;
 	file->indice_debut = 0;
 
@@ -29,12 +28,10 @@ void ajouter_message(File *file, int nb_message, int message)
 	CoupleNombreValeur cnv = initialiser_couple_nombre_valeur(nb_message, message);
 	file->messages[file->indice_fin] = cnv;
     file->indice_fin++;
-	file->nb_message_file += nb_message;
 }
 
-void supprimer_message(File *file, int nb_message, int *messages)
+void supprimer_message(File *file, int nb_message, int *messages, int indice_debut)
 {
-	file->nb_message_file -= nb_message;
 	if (file->indice_debut >= file->taille)
 	{
 		File *ancien_pointeur = file;
@@ -44,7 +41,7 @@ void supprimer_message(File *file, int nb_message, int *messages)
 			free(ancien_pointeur);
 	}
 	int nb_message_restant = nb_message;
-	int indice_messages = 0;
+	int indice_messages = indice_debut;
 	int i;
 
 	while (nb_message_restant != 0)
@@ -81,10 +78,9 @@ void liberer_file(File *file)
 void afficher_messages_file(File *file)
 {
 	int i;
-	for(i=0; i<file->taille; i++)
+	for(i=file->indice_debut; i<file->indice_fin; i++)
 	{
-		/*if (file->messages[i] != NULL)
-			printf("Nombre de message[%d], Valeur des messages [%d]\n", file->messages[i][0], file->messages[i][1]);*/
+		printf("Nombre de message[%d], Valeur des messages [%d]\n", file->messages[i].nombre_valeur, file->messages[i].valeur);
 	}
 	printf("\n");
 }

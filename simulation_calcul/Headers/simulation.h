@@ -27,6 +27,17 @@
  */
 #define LIMITE_NOMBRE_MESSAGE_MAX 80
 
+/*! \def POLITIQUE_ENVOI_PRIORITAIRE
+    \brief Indique la politique d'envoie de l'anneau.
+ */
+#define POLITIQUE_ENVOI_PRIORITAIRE 1
+
+/*! \def POLITIQUE_ENVOI_NON_PRIORITAIRE
+    \brief Indique la politique d'envoie de l'anneau.
+ */
+#define POLITIQUE_ENVOI_NON_PRIORITAIRE 0
+
+
 //////////////////////////////////////////////////
 ///////////////// Les structures /////////////////
 //////////////////////////////////////////////////
@@ -39,14 +50,19 @@
 struct Noeud
 {
 	int id;
-	int nb_message;
 	int indice_slot_lecture;
 	int indice_slot_ecriture;
 	int nb_antenne;		//Indique le nombre d'antenne auquel est lié le noeuds
 	int debut_periode;		//Le décalage selon lequel le noeud recoit des messages des antennes
-	File *file_messages;		//File FIFO contenant les TIC d'arrivé des messages
+	File *file_messages_initiale;		//File contenant les TIC d'arrivé de tout les messages si la politique d'envoi ne prend pas en compte les messages prioritaire, dans le cas contraire, elle ne contient que les messages Best effort
+	File *file_messages_prioritaires;		//File contenant les TIC d'arrivé des messages C-RAN où prioritaire si la politique est spécifiée.
 	int attente_max;		//Le temps d'attente maximal dans le noeud
-	double nb_message_total;	//Le nombre de message ayant transité dans le noeud
+	double nb_message;
+	double nb_message_total;
+	double nb_message_best_effort;
+	double nb_message_best_effort_total;	//Le nombre de message best effort ayant transité dans le noeud
+	double nb_message_prioritaires;
+	double nb_message_best_prioritaires_total;	//Le nombre de message prioritaires ayant transité dans le noeud
 	double attente_totale;		//Le temps d'attente total des messages
 	TableauDynamiqueEntier *tableau_tics_envois;	//Les tics d'envoie du message
 };
@@ -73,15 +89,16 @@ typedef struct Slot Slot;
 struct Anneau
 {
 	int numero_anneau;
+	int nombre_slot;
+	int nombre_noeud;
+	int decallage;
+	int politique_envoi;
 	int **couple_lecture;
 	int **couple_ecriture;
-	int decallage;
+	double nb_message;
 	Noeud *noeuds;
 	Slot *slots;
 	TableauDynamiqueEntier *messages;
-	double nb_message;
-	int nombre_slot;
-	int nombre_noeud;
 	TableauDynamiqueDouble *tableau_poisson;
 };
 typedef struct Anneau Anneau;
@@ -95,9 +112,11 @@ typedef struct Anneau Anneau;
     \param nombre_slot Le nombre de slot de la simulation.
     \param nombre_noeud Le nombre de noeud de la simulation.
     \param generer_pdf Booléen indiquant la génération ou non-génération de PDF en fin de simulation.
+	\param politique_envoi un entier indiquant la politique d'envoi des messages de l'anneau.
+	1 indique une politique d'envoi ou le messages C-RAN seront prioritaires, une autre valeur indique une politique avec aucune priorité.
     \return Un pointeur sur l'anneau créé.
  */
-Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf );
+Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, int politique_envoi );
 
 /*! \fn void afficher_etat_anneau(Anneau *anneau)
     \brief Affiche l'état actuel de l'anneau.
