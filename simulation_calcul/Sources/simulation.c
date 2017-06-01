@@ -657,14 +657,11 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	if (td_prioritaire != NULL)
 	{
-		printf("Génération des quantiles de messages prioritaires\n");
 		j = 0;
 		for (i=0; i<taille_utilisee_td_prioritaire; i++)
 		{
-			//printf("Tableau : %d\n", tableau_initial[taille_utilisee_td_initial-1]);
 			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
 			{
-				//printf("Quantiles[j] : %lf\n", quantiles_nb_messages_prioritaire[j]);
 				j++;
 				borne_superieure = bornes_superieures[j];
 			}
