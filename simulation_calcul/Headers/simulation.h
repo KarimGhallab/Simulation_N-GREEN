@@ -10,7 +10,7 @@
 /*! \def NOMBRE_TIC
     \brief Représente le nombre de TIC sur lequel portera la simulation.
  */
-#define NOMBRE_TIC 10000
+#define NOMBRE_TIC 1000000
 
 /*! \def PERIODE_MESSAGE_ANTENNE
     \brief Indique la période selon laquelle les antennes enverront des messages aux noeuds.
@@ -234,14 +234,15 @@ int cmpfunc (const void * a, const void * b);
  */
 void ecrire_fichier_csv(Anneau *anneau);
 
-/*! \fn void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes)
+/*! \fn void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes)
 	\brief Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.
 	\param *anneau L'anneau sur lequel porte les données à ecrire.
-	\param **quantiles Les quantiles à écrire dans le fichier.
+	\param **quantiles_initiaux Les quantiles des messages initiaux à écrire dans le fichier.
+	\param **quantiles_prioritaires Les quantiles des messages prioritaires à écrire dans le fichier.
     \param taille_tableau La taille du tableau des quantiles.
     \param *bornes Un tableau des bornes coresspondant aux quantiles.
  */
-void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles, int taille_tableau, int *bornes);
+void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes);
 
 /*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau )
     \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.

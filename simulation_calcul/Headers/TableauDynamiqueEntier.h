@@ -5,7 +5,7 @@
  /*! \def TAILLE_INITIALE_TABLEAU_ENTIER
      \brief La taille initiale du tableau de la structure TableauDynamiqueEntier.
   */
- #define TAILLE_INITIALE_TABLEAU_ENTIER 10000
+ #define TAILLE_INITIALE_TABLEAU_ENTIER 100
 
 /*! \struct TableauDynamiqueEntier
     \brief Structure représentant tableau d'entier avec une taille dynamique.

@@ -220,9 +220,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a14c47dd7a54fa1ab2104ba3cb9bbd383">ecrire_fichier_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau)</td></tr>
 <tr class="memdesc:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les fichiers CSVs avc les données obtenus par la simulation d'un anneau.  <a href="#a14c47dd7a54fa1ab2104ba3cb9bbd383">More...</a><br /></td></tr>
 <tr class="separator:a14c47dd7a54fa1ab2104ba3cb9bbd383"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#af66630edc14ed7f6a3172e7e81ae7bc7">ecrire_nb_message_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles, int taille_tableau, int *bornes)</td></tr>
-<tr class="memdesc:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#af66630edc14ed7f6a3172e7e81ae7bc7">More...</a><br /></td></tr>
-<tr class="separator:af66630edc14ed7f6a3172e7e81ae7bc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a447418628ab20dc2ccd70762943cba67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a447418628ab20dc2ccd70762943cba67">ecrire_nb_message_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes)</td></tr>
+<tr class="memdesc:a447418628ab20dc2ccd70762943cba67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#a447418628ab20dc2ccd70762943cba67">More...</a><br /></td></tr>
+<tr class="separator:a447418628ab20dc2ccd70762943cba67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a5e92da76b8a8226ed3b88cc766df0c17">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau)</td></tr>
 <tr class="memdesc:a5e92da76b8a8226ed3b88cc766df0c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a5e92da76b8a8226ed3b88cc766df0c17">More...</a><br /></td></tr>
 <tr class="separator:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,7 +413,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 
 </div>
 </div>
-<a class="anchor" id="af66630edc14ed7f6a3172e7e81ae7bc7"></a>
+<a class="anchor" id="a447418628ab20dc2ccd70762943cba67"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -427,7 +427,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">double **&#160;</td>
-          <td class="paramname"><em>quantiles</em>, </td>
+          <td class="paramname"><em>quantiles_initiaux</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double **&#160;</td>
+          <td class="paramname"><em>quantiles_prioritaires</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -453,7 +459,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">*anneau</td><td>L'anneau sur lequel porte les données à ecrire. </td></tr>
-    <tr><td class="paramname">**quantiles</td><td>Les quantiles à écrire dans le fichier. </td></tr>
+    <tr><td class="paramname">**quantiles_initiaux</td><td>Les quantiles des messages initiaux à écrire dans le fichier. </td></tr>
+    <tr><td class="paramname">**quantiles_prioritaires</td><td>Les quantiles des messages prioritaires à écrire dans le fichier. </td></tr>
     <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
     <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
   </table>
