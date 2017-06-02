@@ -55,7 +55,7 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	if (politique_prioritaire == 1)
 		p <- p + geom_bar(stat="identity", position = "dodge")
 	else
-		geom_bar(stat="identity", position = "dodge", col="red", fill="green", alpha = .2)
+		p <- p + geom_bar(stat="identity", position = "dodge", col="red", fill="green", alpha = .2)
 
 	p <- p + geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black", position = position_dodge(width =0.9)) +
 	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +

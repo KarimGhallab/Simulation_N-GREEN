@@ -30,7 +30,7 @@ global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
 COTE_MESSAGE = 4
 
-LONGUEUR_BOUTON = COTE_CANVAS/60
+LONGUEUR_BOUTON = COTE_CANVAS/31
 LONGUEUR_ENTRY = COTE_CANVAS/60
 
 NOMBRE_LIGNE_CANVAS = 50
@@ -100,7 +100,7 @@ def creer_canvas(fenetre):
 	canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
 	canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
 
-	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=4)
+	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=3)
 
 	return canvas
 
@@ -141,13 +141,13 @@ def placer_slots(fenetre, canvas, nb_slot):
 #	@param slots_modele : Les slots du modele
 #	@param slots_vue : Les slots de la vue
 #	@return En indice 0 les noeuds du modèle, en indice 1 les noeuds de la vue, en indice 2 les slots du modèle.
-def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue):
+def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire):
 	global TEXTS_NOEUDS
 	global DICT_TEXTES_NOEUDS
 
-	noeuds_vue = [None] * nb_noeud
+	noeuds_vue = [0] * nb_noeud
 	noeuds_modele = [None] * nb_noeud
-	TEXTS_NOEUDS = [None] * nb_noeud
+	TEXTS_NOEUDS = []
 
 	pas = nb_slot // nb_noeud
 
@@ -188,11 +188,24 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue):
 		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
 		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click_noeud)
 
-		""" #le texte du rectangle """
-		TEXTS_NOEUDS[j] = canvas.create_text(x, y, text="0")
-		canvas.tag_bind(TEXTS_NOEUDS[j], "<Button-1>", callback_click_texte)
+		sous_tab = []
+		""" le texte du rectangle """
+		if politique_prioritaire == True:
+			texte_messages_initaux = canvas.create_text(x-10, y, text="0")
+			texte_messages_prioritaires = canvas.create_text(x+10, y, text="0")
 
-		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[j] ] = noeuds_modele[j]
+			sous_tab.append(texte_messages_initaux)
+			sous_tab.append(texte_messages_prioritaires)
+
+			canvas.tag_bind(texte_messages_prioritaires, "<Button-1>", callback_click_texte)
+			DICT_TEXTES_NOEUDS[ texte_messages_prioritaires ] = noeuds_modele[j]
+		else:
+			texte_messages_initaux = canvas.create_text(x, y, text="0")
+			sous_tab.append(texte_messages_initaux)
+
+		TEXTS_NOEUDS.append(sous_tab)
+		canvas.tag_bind(texte_messages_initaux, "<Button-1>", callback_click_texte)
+		DICT_TEXTES_NOEUDS[ texte_messages_initaux ] = noeuds_modele[j]
 
 	return noeuds_modele, noeuds_vue, slots_modele
 
@@ -251,7 +264,6 @@ def placer_panel_gauche(fenetre):
 
 	replay = Image.open("../images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
-	print ("chemin fichier : "+str(controleur.chemin_fichier))
 	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(controleur.lire_fichier), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
@@ -300,9 +312,9 @@ def placer_panel_bas(fenetre):
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
-	label_nouveau_lambda = Label(fenetre, text = "Nouvelle valeur du lambda : ")
-	label_nouveau_lambda_burst = Label(fenetre, text = "Nouvelle valeur du lambda Burst : ")
-	label_nouvelle_limite = Label(fenetre, text = "Nouvelle valeur pour le nombre de message minimum : ")
+	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda : ")
+	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda Burst : ")
+	label_nouvelle_limite = Label(fenetre, text = "Nouveau nombre de message minimum : ")
 
 	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
 	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
@@ -330,21 +342,24 @@ def placer_panel_bas(fenetre):
 	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
 	controleur.entrys[CLE_ENTRY_LIMITE_MESSAGE] = entry_limite_message
 
-	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky='W')
-	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky='W')
-	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky='W')
-	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky='W')
-	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky='W')
+	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky="E"+"W")
+	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky="E"+"W")
+	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky="E"+"W")
+	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky="E"+"W")
+	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky="E"+"W")
 
 	""" les boutons """
-	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White", width=LONGUEUR_BOUTON)
+	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White", width=LONGUEUR_BOUTON)
+	bouton_politique.grid(row=NOMBRE_LIGNE_CANVAS+7, column=2, sticky='W')
+
+	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White", width=LONGUEUR_BOUTON)
 	bouton_explorer.grid(row=NOMBRE_LIGNE_CANVAS+7, column=3, sticky='E')
 
-	bouton_reset = Button(fenetre, text ="Valider", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+7, column=4, sticky='E')
+	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
+	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+8, column=2, sticky="N"+"S"+"E"+"W",columnspan=2)
 
-##	Fonction callback ouvrant un fichier selectinné depuis un explorateur.
-#	Le fichier ouvert doit être un fichier de configuration au format txt.
+##	Fonction callback ouvrant un fichier selectionné depuis un explorateur.
+#	Le fichier ouvert doit être un fichier de configuration au format csv.
 def ouvrir_fichier():
 	global controleur
 
@@ -353,6 +368,11 @@ def ouvrir_fichier():
 		controleur.chemin_fichier = chemin_fichier
 		reset(True)
 		tkMessageBox.showinfo("Chargement", "La simulation va désormais exécuter le scénario du fichier fournis !;)")
+
+
+##	Fonction callback changant la politique d'envoi de message de l'anneau
+def changer_politique():
+	print ("Chagement de politique")
 
 
 ##	Met a jour le label du panel bas affichant le TIC en millisecondes.
@@ -466,13 +486,15 @@ class Noeud:
 	#	@param nb_antenne : Le nombre d'antenne du noeud.
 	#	@param debut_periode : Le début de la période du noeud pour recevoir des messages des antennes.
 	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, debut_periode):
-		self.nb_message = 0
+		self.nb_messages_initaux = 0
+		self.nb_messages_prioritaires = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
 		self.couleur = couleur
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debut_periode = debut_periode		#Le décalage selon lequel le noeud recoit des messages des antennes
-		self.messages = deque()		#File FIFO contenant les TIC d'arrivé des messages
+		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
+		self.messages_prioritaires = deque()
 		self.attente_max = 0		#Le temps d'attente maximal dans le noeud
 		self.nb_message_total = 0
 		self.attente_totale = 0
@@ -490,8 +512,19 @@ class Noeud:
 	##	Ajoute un message au noeud.
 	#	@param self : Le noeud.
 	#	@param message : Le message à ajouter au noeud.
-	def ajouter_message(self, message):
-		self.messages.append(message)
+	def ajouter_messages_initiaux(self, message):
+		self.messages_initiaux.append(message)
+		self.nb_message_total += 1
+		self.nb_messages_initaux += 1
+
+
+	def ajouter_messages_prioritaires(self, message):
+		if controleur.politique_prioritaire == True:
+			self.messages_prioritaires.append(message)
+			self.nb_messages_prioritaires += 1
+		else:
+			self.messages_initiaux.append(message)
+			self.nb_messages_initaux += 1
 		self.nb_message_total += 1
 
 
@@ -514,12 +547,18 @@ class Noeud:
 		x = controleur.canvas.coords(noeud_graphique)[0] + COTE_NOEUD
 		y = controleur.canvas.coords(noeud_graphique)[1] + COTE_NOEUD
 
-		controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud])
+		controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][0])
 
-		TEXTS_NOEUDS[indice_noeud] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_message) )
-		controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud], "<Button-1>", callback_click_texte)
+		if controleur.politique_prioritaire == True:
+			controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][1])
+			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-10, y, text= str(noeud_modele.nb_messages_prioritaires) )
+			DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][1] ] = controleur.noeuds_modele [indice_noeud]
+			controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][1], "<Button-1>", callback_click_texte)
 
-		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud] ] = controleur.noeuds_modele [indice_noeud]
+		TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+10, y, text= str(noeud_modele.nb_messages_initaux) )
+		controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][0], "<Button-1>", callback_click_texte)
+
+		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][0] ] = controleur.noeuds_modele [indice_noeud]
 
 
 	##	Renvoie le noeud sous forme de chaine de caractères.
@@ -531,7 +570,10 @@ class Noeud:
 	##	Met à jour le temps d'attente des messages du noeud.
 	#	@param self : Le noeud.
 	def update_attente(self):
-		for message in self.messages:
+		if controleur.politique_prioritaire == True:
+			for message in self.messages_prioritaires:
+				self.attente_totale += 1
+		for message in self.messages_initiaux:
 			self.attente_totale += 1
 
 
@@ -708,7 +750,8 @@ class Controleur:
 	#	@param nb_noeud : Le nombre de noeud de la simulation.
 	#	@param nb_slot : Le nombre de slot de la simulation.
 	#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
-	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier):
+	#	@param politique_prioritaire : Un booléen indiquant si le type d'envoi de message se fait vie une priorité ou non.
+	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique_prioritaire):
 		self.fenetre = fenetre
 		self.canvas = canvas
 		self.slots_vue = slots_vue
@@ -723,6 +766,7 @@ class Controleur:
 		self.lire_fichier = lire_fichier
 		self.chemin_fichier = None
 		self.tics_restants = -1
+		self.politique_prioritaire = politique_prioritaire
 
 
 ###########################################################
@@ -1044,30 +1088,55 @@ def entrer_message():
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
-			"""if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
-				print ("C'est le moment ! Periode du noeud : ", noeud.debut_periode, ". Je recois un message provenant de mes ", noeud.nb_antenne, " antennes.")"""
+			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
+				nb_messages_prioritaires = 10 * noeud.nb_antenne
+				for i in range(nb_messages_prioritaires):
+					noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
 
-			nb_message = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
+			nb_messages_best_effort = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
 			""" On ajoute au noeud le tic d'arrivé des messages """
-			for i in range(nb_message):
-					noeud.ajouter_message( MessageN(controleur.nb_tic) )
+			for i in range(nb_messages_best_effort):
+				noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
 
-			noeud.nb_message += nb_message
-			if slot.paquet_message == None and noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut en envoyer un
-				if noeud.nb_message >= LIMITE_NOMBRE_MESSAGE_MAX:
-					""" On enleve les messages du noeud """
-					messages = [None] * LIMITE_NOMBRE_MESSAGE_MAX
-					for i in range(LIMITE_NOMBRE_MESSAGE_MAX):
-						messages.append( noeud.messages.popleft() )
+			if controleur.politique_prioritaire == True:
+				nb_message_noeud = noeud.nb_messages_prioritaires + noeud.nb_messages_initaux
+			else:
+				nb_message_noeud = noeud.nb_messages_initaux
 
-					noeud.nb_message -= LIMITE_NOMBRE_MESSAGE_MAX
-				else:		#Le nombre de message est compris entre le minimum est le maximum, on vide donc le noeud
+			if slot.paquet_message == None and nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut en envoyer un
+				if controleur.politique_prioritaire == True:	#Politique prioritaire
+					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
+						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
+					else:												#on vide le noeud
+						nb_message_a_envoyer = noeud.nb_messages_initaux
+					messages = [None] * nb_message_a_envoyer
+					nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
+					#nb_messages_best_effort = noeud.nb_messages_best_effort
+					if nb_messages_prioritaire_noeud >= nb_message_a_envoyer:	 #On envoie uniquement des prioritaires
+						for i in range(nb_message_a_envoyer):
+							messages.append( noeud.messages_prioritaires.popleft() )
+						noeud.nb_messages_prioritaires -= nb_message_a_envoyer
+
+					else:													#On envoie tous les prioritaires et le reste en best effort
+						for i in range(nb_messages_prioritaire_noeud):
+							messages.append( noeud.messages_prioritaires.popleft() )
+						for i in range(nb_message_a_envoyer - nb_messages_prioritaire_noeud):
+							messages.append( noeud.messages_initiaux.popleft() )
+						noeud.nb_messages_prioritaires -= nb_messages_prioritaire_noeud
+						noeud.nb_messages_initaux -= (nb_message_a_envoyer - nb_messages_prioritaire_noeud)
+
+				else:	#Politique sans priorité
+					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
+						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
+					else:												#on vide le noeud
+						nb_message_a_envoyer = noeud.nb_messages_initaux
 					""" On enleve les messages du noeud """
-					messages = [None] * noeud.nb_message
-					for i in range(noeud.nb_message):
-							messages.append( noeud.messages.popleft() )
-					noeud.nb_message = 0
+					messages = [None] * nb_message_a_envoyer
+					for i in range(nb_message_a_envoyer):
+						messages.append( noeud.messages_initiaux.popleft() )
+
+					noeud.nb_messages_initaux -= nb_message_a_envoyer
 				placer_message( slot.indice_noeud_ecriture, messages )
 			noeud.update_file_noeud_graphique()
 
@@ -1208,12 +1277,14 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 	slots_modele = slots[0]
 	slots_vue = slots[1]
 
-	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue)
+	politique_prioritaire = True
+
+	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire)
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
 	slots_modele = noeuds[2]
 
-	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier)
+	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique_prioritaire)
 
 	if lire_fichier:
 		fichier = open(chemin_fichier, 'r')

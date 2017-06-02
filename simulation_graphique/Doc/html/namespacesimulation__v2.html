@@ -122,9 +122,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a927ae634060620dce624452f942bb618"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a927ae634060620dce624452f942bb618">placer_slots</a> (fenetre, canvas, nb_slot)</td></tr>
 <tr class="memdesc:a927ae634060620dce624452f942bb618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant : En indice 0 les slots du modele En indice 1 les slots de la vue.  <a href="#a927ae634060620dce624452f942bb618">More...</a><br /></td></tr>
 <tr class="separator:a927ae634060620dce624452f942bb618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91cc1d2803506e5983b4d65a84f47a9d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a91cc1d2803506e5983b4d65a84f47a9d">placer_noeuds</a> (fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue)</td></tr>
-<tr class="memdesc:a91cc1d2803506e5983b4d65a84f47a9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place sur la toile les noeuds et renvoie un tableau contenant : En indice 0 les noeuds du modele.  <a href="#a91cc1d2803506e5983b4d65a84f47a9d">More...</a><br /></td></tr>
-<tr class="separator:a91cc1d2803506e5983b4d65a84f47a9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af664e5b06c444df90131aaf3806187e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#af664e5b06c444df90131aaf3806187e7">placer_noeuds</a> (fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire)</td></tr>
+<tr class="memdesc:af664e5b06c444df90131aaf3806187e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place sur la toile les noeuds et renvoie un tableau contenant : En indice 0 les noeuds du modele.  <a href="#af664e5b06c444df90131aaf3806187e7">More...</a><br /></td></tr>
+<tr class="separator:af664e5b06c444df90131aaf3806187e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeca478d149301caeff190b5a72fb9ec0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#aeca478d149301caeff190b5a72fb9ec0">placer_message_graphique</a> (canvas, depart, arrive, couleur_message)</td></tr>
 <tr class="memdesc:aeca478d149301caeff190b5a72fb9ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.  <a href="#aeca478d149301caeff190b5a72fb9ec0">More...</a><br /></td></tr>
 <tr class="separator:aeca478d149301caeff190b5a72fb9ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,8 +135,12 @@ Functions</h2></td></tr>
 <tr class="memdesc:a4068a1e97aea1a5222aecb62cc577ab2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:  <a href="#a4068a1e97aea1a5222aecb62cc577ab2">More...</a><br /></td></tr>
 <tr class="separator:a4068a1e97aea1a5222aecb62cc577ab2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad0e69239103a73018b3aa98f7651347"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#aad0e69239103a73018b3aa98f7651347">ouvrir_fichier</a> ()</td></tr>
-<tr class="memdesc:aad0e69239103a73018b3aa98f7651347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction callback ouvrant un fichier selectinné depuis un explorateur.  <a href="#aad0e69239103a73018b3aa98f7651347">More...</a><br /></td></tr>
+<tr class="memdesc:aad0e69239103a73018b3aa98f7651347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction callback ouvrant un fichier selectionné depuis un explorateur.  <a href="#aad0e69239103a73018b3aa98f7651347">More...</a><br /></td></tr>
 <tr class="separator:aad0e69239103a73018b3aa98f7651347"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78a5fdbf6b433364ebf737b189ea391b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a78a5fdbf6b433364ebf737b189ea391b"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a78a5fdbf6b433364ebf737b189ea391b">changer_politique</a> ()</td></tr>
+<tr class="memdesc:a78a5fdbf6b433364ebf737b189ea391b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fonction callback changant la politique d'envoi de message de l'anneau. <br /></td></tr>
+<tr class="separator:a78a5fdbf6b433364ebf737b189ea391b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a79b2ad503e8bcef0a56bb0c84c2e07f0">update_label_TIC</a> (fenetre, ligne, colonne)</td></tr>
 <tr class="memdesc:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met a jour le label du panel bas affichant le TIC en millisecondes.  <a href="#a79b2ad503e8bcef0a56bb0c84c2e07f0">More...</a><br /></td></tr>
 <tr class="separator:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -261,7 +265,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>VITESSE_LATENCE_MESS
 int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_MESSAGE</b> = 4</td></tr>
 <tr class="separator:aa300ba288f69a7fb4a81f192de821a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ec2f5736b877c425596c88df16eb2cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ec2f5736b877c425596c88df16eb2cc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_BOUTON</b> = COTE_CANVAS/60</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_BOUTON</b> = COTE_CANVAS/31</td></tr>
 <tr class="separator:a9ec2f5736b877c425596c88df16eb2cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a384b1eebb2098291c47855839312caf2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a384b1eebb2098291c47855839312caf2"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_ENTRY</b> = COTE_CANVAS/60</td></tr>
@@ -985,8 +989,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
       </table>
 </div><div class="memdoc">
 
-<p>Fonction callback ouvrant un fichier selectinné depuis un explorateur. </p>
-<p>Le fichier ouvert doit être un fichier de configuration au format txt. </p>
+<p>Fonction callback ouvrant un fichier selectionné depuis un explorateur. </p>
+<p>Le fichier ouvert doit être un fichier de configuration au format csv. </p>
 
 </div>
 </div>
@@ -1069,7 +1073,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="a91cc1d2803506e5983b4d65a84f47a9d"></a>
+<a class="anchor" id="af664e5b06c444df90131aaf3806187e7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1107,7 +1111,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>slots_vue</em>&#160;</td>
+          <td class="paramname"><em>slots_vue</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>politique_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -100,9 +100,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2be19ca8831580d536873acbcd104980"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Controleur.html#a2be19ca8831580d536873acbcd104980">__init__</a> (self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier)</td></tr>
-<tr class="memdesc:a2be19ca8831580d536873acbcd104980"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>.  <a href="#a2be19ca8831580d536873acbcd104980">More...</a><br /></td></tr>
-<tr class="separator:a2be19ca8831580d536873acbcd104980"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedaa705b595cf64d4d993fd53865a8e8"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Controleur.html#aedaa705b595cf64d4d993fd53865a8e8">__init__</a> (self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique_prioritaire)</td></tr>
+<tr class="memdesc:aedaa705b595cf64d4d993fd53865a8e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un <a class="el" href="classsimulation__v2_1_1Controleur.html" title="Classe représentant le système que l&#39;on souhaite modéliser dans sa globalité Elle fait l&#39;intermédiair...">Controleur</a>.  <a href="#aedaa705b595cf64d4d993fd53865a8e8">More...</a><br /></td></tr>
+<tr class="separator:aedaa705b595cf64d4d993fd53865a8e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -148,11 +148,14 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a005d90ab917d5a48fb065d46dc874e73"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a005d90ab917d5a48fb065d46dc874e73"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>tics_restants</b></td></tr>
 <tr class="separator:a005d90ab917d5a48fb065d46dc874e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b244c165f5f09743396d99bbf6a6b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a74b244c165f5f09743396d99bbf6a6b4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>politique_prioritaire</b></td></tr>
+<tr class="separator:a74b244c165f5f09743396d99bbf6a6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Classe représentant le système que l'on souhaite modéliser dans sa globalité Elle fait l'intermédiaire entre le modèle et la vue. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2be19ca8831580d536873acbcd104980"></a>
+<a class="anchor" id="aedaa705b595cf64d4d993fd53865a8e8"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -214,7 +217,13 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>lire_fichier</em>&#160;</td>
+          <td class="paramname"><em>lire_fichier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>politique_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -237,6 +246,7 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">nb_noeud</td><td>: Le nombre de noeud de la simulation. </td></tr>
     <tr><td class="paramname">nb_slot</td><td>: Le nombre de slot de la simulation. </td></tr>
     <tr><td class="paramname">lire_fichier</td><td>: Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier. </td></tr>
+    <tr><td class="paramname">politique_prioritaire</td><td>: Un booléen indiquant si le type d'envoi de message se fait vie une priorité ou non. </td></tr>
   </table>
   </dd>
 </dl>
