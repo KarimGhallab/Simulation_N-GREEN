@@ -100,9 +100,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a842c95f93aba9b25517d39c840d518f7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Noeud.html#a842c95f93aba9b25517d39c840d518f7">__init__</a> (self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, debut_periode)</td></tr>
-<tr class="memdesc:a842c95f93aba9b25517d39c840d518f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructeur d'un noeud.  <a href="#a842c95f93aba9b25517d39c840d518f7">More...</a><br /></td></tr>
-<tr class="separator:a842c95f93aba9b25517d39c840d518f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4740c4ac77d2f99cb0386ab8ec05829"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Noeud.html#ae4740c4ac77d2f99cb0386ab8ec05829">__init__</a> (self, indice_slot_lecture, indice_slot_ecriture, couleur_noeud, couleur_noeud_claire, couleur_noeud_foncee, nb_antenne, debut_periode)</td></tr>
+<tr class="memdesc:ae4740c4ac77d2f99cb0386ab8ec05829"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructeur d'un noeud.  <a href="#ae4740c4ac77d2f99cb0386ab8ec05829">More...</a><br /></td></tr>
+<tr class="separator:ae4740c4ac77d2f99cb0386ab8ec05829"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b802b864141cba8422abc1988e98954"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Noeud.html#a0b802b864141cba8422abc1988e98954">equals</a> (self, autre_noeud)</td></tr>
 <tr class="memdesc:a0b802b864141cba8422abc1988e98954"><td class="mdescLeft">&#160;</td><td class="mdescRight">renvoie l'équalité entres deux noeuds.  <a href="#a0b802b864141cba8422abc1988e98954">More...</a><br /></td></tr>
 <tr class="separator:a0b802b864141cba8422abc1988e98954"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -136,9 +136,15 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a9ef4c00f4ae5b55bad721fe3352ff1c0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ef4c00f4ae5b55bad721fe3352ff1c0"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>indice_slot_ecriture</b></td></tr>
 <tr class="separator:a9ef4c00f4ae5b55bad721fe3352ff1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e2b345a39d2c1c6ed51324782a54261"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e2b345a39d2c1c6ed51324782a54261"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>couleur</b></td></tr>
-<tr class="separator:a7e2b345a39d2c1c6ed51324782a54261"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55011a0c4965e17cbf0227d3be64d426"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55011a0c4965e17cbf0227d3be64d426"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>couleur_noeud</b></td></tr>
+<tr class="separator:a55011a0c4965e17cbf0227d3be64d426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf5f6c961e1feac47c99d5b4331e2899"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="abf5f6c961e1feac47c99d5b4331e2899"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>couleur_noeud_claire</b></td></tr>
+<tr class="separator:abf5f6c961e1feac47c99d5b4331e2899"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92bf087418ade59080bcf44798edb969"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a92bf087418ade59080bcf44798edb969"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>couleur_noeud_foncee</b></td></tr>
+<tr class="separator:a92bf087418ade59080bcf44798edb969"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e76e7d9af5a9d54968a3ff6f97927c4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9e76e7d9af5a9d54968a3ff6f97927c4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>nb_antenne</b></td></tr>
 <tr class="separator:a9e76e7d9af5a9d54968a3ff6f97927c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,7 +173,7 @@ Public Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Représente un noeud dans le système, un noeuds peux stocker des messages. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a842c95f93aba9b25517d39c840d518f7"></a>
+<a class="anchor" id="ae4740c4ac77d2f99cb0386ab8ec05829"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -193,7 +199,19 @@ Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>couleur</em>, </td>
+          <td class="paramname"><em>couleur_noeud</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>couleur_noeud_claire</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>couleur_noeud_foncee</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -221,7 +239,9 @@ Public Attributes</h2></td></tr>
     <tr><td class="paramname">self</td><td>: L'objet de la classe. </td></tr>
     <tr><td class="paramname">indice_slot_lecture</td><td>: L'indice du slot en lecture. </td></tr>
     <tr><td class="paramname">indice_slot_ecriture</td><td>: L'indice du slot en ecriture. </td></tr>
-    <tr><td class="paramname">couleur</td><td>: La couleur graphique du noeud. </td></tr>
+    <tr><td class="paramname">couleur_noeud</td><td>: La couleur graphique du noeud. </td></tr>
+    <tr><td class="paramname">couleur_noeud_claire</td><td>: Une couleur plus claire pour les messages prioritaires </td></tr>
+    <tr><td class="paramname">couleur_noeud_foncee</td><td>: Une couleur plus foncée pour les messages prioritaires </td></tr>
     <tr><td class="paramname">nb_antenne</td><td>: Le nombre d'antenne du noeud. </td></tr>
     <tr><td class="paramname">debut_periode</td><td>: Le début de la période du noeud pour recevoir des messages des antennes. </td></tr>
   </table>

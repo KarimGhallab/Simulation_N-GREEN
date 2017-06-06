@@ -107,6 +107,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html">PaquetMessage</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, l'id du paquet le représentant graphiquement ainsi que la taille du paquet.  <a href="classsimulation__v2_1_1PaquetMessage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessageGraphique.html">PaquetMessageGraphique</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Slot.html">Slot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.  <a href="classsimulation__v2_1_1Slot.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,9 +127,9 @@ Functions</h2></td></tr>
 <tr class="memitem:af664e5b06c444df90131aaf3806187e7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#af664e5b06c444df90131aaf3806187e7">placer_noeuds</a> (fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire)</td></tr>
 <tr class="memdesc:af664e5b06c444df90131aaf3806187e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place sur la toile les noeuds et renvoie un tableau contenant : En indice 0 les noeuds du modele.  <a href="#af664e5b06c444df90131aaf3806187e7">More...</a><br /></td></tr>
 <tr class="separator:af664e5b06c444df90131aaf3806187e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeca478d149301caeff190b5a72fb9ec0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#aeca478d149301caeff190b5a72fb9ec0">placer_message_graphique</a> (canvas, depart, arrive, couleur_message)</td></tr>
-<tr class="memdesc:aeca478d149301caeff190b5a72fb9ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.  <a href="#aeca478d149301caeff190b5a72fb9ec0">More...</a><br /></td></tr>
-<tr class="separator:aeca478d149301caeff190b5a72fb9ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb361269ddc0c0b39e2e73cf316e9e33"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#abb361269ddc0c0b39e2e73cf316e9e33">placer_message_graphique</a> (canvas, depart, arrive, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)</td></tr>
+<tr class="memdesc:abb361269ddc0c0b39e2e73cf316e9e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.  <a href="#abb361269ddc0c0b39e2e73cf316e9e33">More...</a><br /></td></tr>
+<tr class="separator:abb361269ddc0c0b39e2e73cf316e9e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab28b46a677b9326de5438b2b352bc9e0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#ab28b46a677b9326de5438b2b352bc9e0">placer_panel_gauche</a> (fenetre)</td></tr>
 <tr class="memdesc:ab28b46a677b9326de5438b2b352bc9e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">place le panel gauche de la fenetre contenant les boutons:  <a href="#ab28b46a677b9326de5438b2b352bc9e0">More...</a><br /></td></tr>
 <tr class="separator:ab28b46a677b9326de5438b2b352bc9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -177,9 +179,9 @@ def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="names
 <tr class="memitem:a80ced036d33d32401fef3d561562c030"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a80ced036d33d32401fef3d561562c030">callback_validation_configuration</a> (event)</td></tr>
 <tr class="memdesc:a80ced036d33d32401fef3d561562c030"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gére les inputs au clavier d'un utilisteur lorsqu'il saisie une nouvelle configuration pour l'anneau.  <a href="#a80ced036d33d32401fef3d561562c030">More...</a><br /></td></tr>
 <tr class="separator:a80ced036d33d32401fef3d561562c030"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14819a775e0bb09835294b9f50222430"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a14819a775e0bb09835294b9f50222430">reset</a> (lire_fichier)</td></tr>
-<tr class="memdesc:a14819a775e0bb09835294b9f50222430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback au bouton demandant un reset de l'application.  <a href="#a14819a775e0bb09835294b9f50222430">More...</a><br /></td></tr>
-<tr class="separator:a14819a775e0bb09835294b9f50222430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06c296942e0342b42a775997398f5a12"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a06c296942e0342b42a775997398f5a12">reset</a> ()</td></tr>
+<tr class="memdesc:a06c296942e0342b42a775997398f5a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback au bouton demandant un reset de l'application.  <a href="#a06c296942e0342b42a775997398f5a12">More...</a><br /></td></tr>
+<tr class="separator:a06c296942e0342b42a775997398f5a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae224f3fc4f8786e5967881001e3b6e9d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#ae224f3fc4f8786e5967881001e3b6e9d">commencer_rotation</a> ()</td></tr>
 <tr class="memdesc:ae224f3fc4f8786e5967881001e3b6e9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Commence la rotaion.  <a href="#ae224f3fc4f8786e5967881001e3b6e9d">More...</a><br /></td></tr>
 <tr class="separator:ae224f3fc4f8786e5967881001e3b6e9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,9 +200,9 @@ def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="names
 <tr class="memitem:a1098961410266ce62c459f0c13e0ff71"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a1098961410266ce62c459f0c13e0ff71">arreter_appli</a> ()</td></tr>
 <tr class="memdesc:a1098961410266ce62c459f0c13e0ff71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop l'appli en faisant attention aux thread restants.  <a href="#a1098961410266ce62c459f0c13e0ff71">More...</a><br /></td></tr>
 <tr class="separator:a1098961410266ce62c459f0c13e0ff71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67908ca42bbc7d8a602516b7a0bd4a91"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a67908ca42bbc7d8a602516b7a0bd4a91">placer_message</a> (indice_noeud, messages)</td></tr>
-<tr class="memdesc:a67908ca42bbc7d8a602516b7a0bd4a91"><td class="mdescLeft">&#160;</td><td class="mdescRight">Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.  <a href="#a67908ca42bbc7d8a602516b7a0bd4a91">More...</a><br /></td></tr>
-<tr class="separator:a67908ca42bbc7d8a602516b7a0bd4a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac77036b05633c877e5a093f31bc4d8c7"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#ac77036b05633c877e5a093f31bc4d8c7">placer_message</a> (indice_noeud, messages, proportion_message_prioritaire)</td></tr>
+<tr class="memdesc:ac77036b05633c877e5a093f31bc4d8c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.  <a href="#ac77036b05633c877e5a093f31bc4d8c7">More...</a><br /></td></tr>
+<tr class="separator:ac77036b05633c877e5a093f31bc4d8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a18b9b982c5ef2a17e75f2b01e01f21"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a1a18b9b982c5ef2a17e75f2b01e01f21">rotation_message</a> ()</td></tr>
 <tr class="memdesc:a1a18b9b982c5ef2a17e75f2b01e01f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exécute une rotation des messages dans l'anneau.  <a href="#a1a18b9b982c5ef2a17e75f2b01e01f21">More...</a><br /></td></tr>
 <tr class="separator:a1a18b9b982c5ef2a17e75f2b01e01f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,9 +224,9 @@ def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="names
 <tr class="memitem:a40c91ad97e1bbfe377005f8ae6c82224"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a40c91ad97e1bbfe377005f8ae6c82224">calculer_vitesse</a> ()</td></tr>
 <tr class="memdesc:a40c91ad97e1bbfe377005f8ae6c82224"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message Le calcul prend en compte la distance à parcourir entre chaque déplacement.  <a href="#a40c91ad97e1bbfe377005f8ae6c82224">More...</a><br /></td></tr>
 <tr class="separator:a40c91ad97e1bbfe377005f8ae6c82224"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e4bf09a4b67dcc004013ba61cda9d73"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a1e4bf09a4b67dcc004013ba61cda9d73">initialisation</a> (fenetre, nb_noeud, nb_slot, lire_fichier)</td></tr>
-<tr class="memdesc:a1e4bf09a4b67dcc004013ba61cda9d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met en place le canvas.  <a href="#a1e4bf09a4b67dcc004013ba61cda9d73">More...</a><br /></td></tr>
-<tr class="separator:a1e4bf09a4b67dcc004013ba61cda9d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85c4365c225c58da03dcb3485eb967e6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a85c4365c225c58da03dcb3485eb967e6">initialisation</a> (fenetre, nb_noeud, nb_slot, lire_fichier, politique_prioritaire)</td></tr>
+<tr class="memdesc:a85c4365c225c58da03dcb3485eb967e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met en place le canvas.  <a href="#a85c4365c225c58da03dcb3485eb967e6">More...</a><br /></td></tr>
+<tr class="separator:a85c4365c225c58da03dcb3485eb967e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8dabe64b8e5657b9cb84cec6d233d0d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#ab8dabe64b8e5657b9cb84cec6d233d0d">effectuer_tic</a> ()</td></tr>
 <tr class="memdesc:ab8dabe64b8e5657b9cb84cec6d233d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attend un TIC et effectue une rotation des messages.  <a href="#ab8dabe64b8e5657b9cb84cec6d233d0d">More...</a><br /></td></tr>
 <tr class="separator:ab8dabe64b8e5657b9cb84cec6d233d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,7 +243,7 @@ Variables</h2></td></tr>
 list&#160;</td><td class="memItemRight" valign="bottom"><b>IMAGES</b> = []</td></tr>
 <tr class="separator:afd6ac2d963fc7f585ca3f6c4dd2904e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba3b6f5b61d3e180c849dbb75a5763a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afba3b6f5b61d3e180c849dbb75a5763a"></a>
-list&#160;</td><td class="memItemRight" valign="bottom"><b>COULEURS_MESSAGE</b> = [&quot;yellowgreen&quot;, &quot;orange&quot;, &quot;turquoise&quot;, &quot;royalblue&quot;, &quot;purple&quot;, &quot;teal&quot;, &quot;tan&quot;, &quot;snow&quot;, &quot;mediumseagreen&quot;, &quot;LightCoral&quot;, &quot;Chartreuse&quot;, &quot;CornflowerBlue&quot;, &quot;DarkGray&quot;, &quot;DarkOliveGreen&quot;, &quot;DarkMagenta&quot;, &quot;Lavender&quot;, &quot;SandyBrown&quot;, &quot;Black&quot;]</td></tr>
+list&#160;</td><td class="memItemRight" valign="bottom"><b>COULEURS_MESSAGE</b> = []</td></tr>
 <tr class="separator:afba3b6f5b61d3e180c849dbb75a5763a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af16d4a5cc9fab24640e1ef4d692f85cf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af16d4a5cc9fab24640e1ef4d692f85cf"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_CANVAS</b> = 700</td></tr>
@@ -262,7 +264,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>DISTANCE_NOEUD</b> = D
 float&#160;</td><td class="memItemRight" valign="bottom"><b>VITESSE_LATENCE_MESSAGE</b> = 0.002</td></tr>
 <tr class="separator:a0e294f6eed84f8101efdf0ec6c111c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa300ba288f69a7fb4a81f192de821a60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa300ba288f69a7fb4a81f192de821a60"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_MESSAGE</b> = 4</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_MESSAGE</b> = 5</td></tr>
 <tr class="separator:aa300ba288f69a7fb4a81f192de821a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ec2f5736b877c425596c88df16eb2cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ec2f5736b877c425596c88df16eb2cc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_BOUTON</b> = COTE_CANVAS/31</td></tr>
@@ -346,10 +348,10 @@ list&#160;</td><td class="memItemRight" valign="bottom"><b>valeur_pour_statham</
 &#160;</td><td class="memItemRight" valign="bottom"><b>fenetre</b> = <a class="el" href="namespacesimulation__v2.html#a10832edd42c140de23ebbf784212e7da">creer_fenetre</a>()</td></tr>
 <tr class="separator:a88a5ce93cfa05f797b660f21f23e50a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6332aba737c29709349398f114bb9649"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6332aba737c29709349398f114bb9649"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud</b> = 5</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud</b> = 10</td></tr>
 <tr class="separator:a6332aba737c29709349398f114bb9649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabed046e23aa163c33d31cb59e6725bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabed046e23aa163c33d31cb59e6725bc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 40</td></tr>
 <tr class="separator:aabed046e23aa163c33d31cb59e6725bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -726,7 +728,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
     <tr><td class="paramname">canvas</td><td>: Le canvas sur lequel se situe l'objet que l'on souhaite déplacer. </td></tr>
     <tr><td class="paramname">objet</td><td>: L'objet que l'on souhaite déplacer. </td></tr>
     <tr><td class="paramname">arrivee_x</td><td>: Le point d'arrivé x que l'on souhaite pour l'objet. </td></tr>
-    <tr><td class="paramname">arrivee_y</td><td>: Le point d'arrivé y que l'on souhaite pour l'objet. <pre class="fragment">Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours </pre> </td></tr>
+    <tr><td class="paramname">arrivee_y</td><td>: Le point d'arrivé y que l'on souhaite pour l'objet. </td></tr>
   </table>
   </dd>
 </dl>
@@ -845,7 +847,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="a1e4bf09a4b67dcc004013ba61cda9d73"></a>
+<a class="anchor" id="a85c4365c225c58da03dcb3485eb967e6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -871,7 +873,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>lire_fichier</em>&#160;</td>
+          <td class="paramname"><em>lire_fichier</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>politique_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -994,7 +1002,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="a67908ca42bbc7d8a602516b7a0bd4a91"></a>
+<a class="anchor" id="ac77036b05633c877e5a093f31bc4d8c7"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1008,7 +1016,13 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>messages</em>&#160;</td>
+          <td class="paramname"><em>messages</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proportion_message_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1022,7 +1036,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="aeca478d149301caeff190b5a72fb9ec0"></a>
+<a class="anchor" id="abb361269ddc0c0b39e2e73cf316e9e33"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -1048,7 +1062,19 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>couleur_message</em>&#160;</td>
+          <td class="paramname"><em>couleur_messages_prioritaires</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>couleur_messages_best_effort</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proportion_message_prioritaire</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1248,27 +1274,21 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="a14819a775e0bb09835294b9f50222430"></a>
+<a class="anchor" id="a06c296942e0342b42a775997398f5a12"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">def simulation_v2.reset </td>
           <td>(</td>
-          <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>lire_fichier</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Callback au bouton demandant un reset de l'application. </p>
-<p>Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">lire_fichier</td><td>: Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration. </p>
 
 </div>
 </div>

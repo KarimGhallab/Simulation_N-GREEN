@@ -15,8 +15,26 @@ from collections import deque
 # # # # # # # # # # # # # # # #		C O N S T A N T E	 # # # # # # # # # # # # # # # #
 
 IMAGES = []
+COULEURS_MESSAGE = []
+COULEURS_MESSAGE.append( ["yellowgreen", "#aed75b", "#8ab92d"] )
+COULEURS_MESSAGE.append( ["orange", "#ffc14d", "#e69500"] )
+COULEURS_MESSAGE.append( ["turquoise", "#91ede4", "#24dbc9"] )
+COULEURS_MESSAGE.append( ["royalblue", "#6585e7", "#3862e0"] )
+COULEURS_MESSAGE.append( ["purple", "#b300b3", "#660066"] )
+COULEURS_MESSAGE.append( ["teal", "#00b3b3", "#006666"] )
+COULEURS_MESSAGE.append( ["tan", "#dbc3a3", "#cdab7e" ] )
+COULEURS_MESSAGE.append( ["snow", "#ffffff", "#ffe6e6"] )
+COULEURS_MESSAGE.append( ["mediumseagreen", "#1affa7", "#00cc7e"] )
+COULEURS_MESSAGE.append( ["LightCoral", "#f4a4a4", "#ef7676"] )
+COULEURS_MESSAGE.append( ["Chartreuse", "#99ff33", "#73e600"] )
+COULEURS_MESSAGE.append( ["CornflowerBlue", "#8db0f2", "#5f91ec"] )
+COULEURS_MESSAGE.append( ["DarkGray", "#bfbfbf", "#a6a6a6"] )
+COULEURS_MESSAGE.append( ["DarkOliveGreen", "#718e3e", "#465927"] )
+COULEURS_MESSAGE.append( ["DarkMagenta", "#b300b3", "#800080"] )
+COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#d4d4f7"] )
+COULEURS_MESSAGE.append( ["SandyBrown", "#f7bc88", "#f3a158"] )
+COULEURS_MESSAGE.append( ["Black", "#666666", "#404040"] )
 
-COULEURS_MESSAGE = ["yellowgreen", "orange", "turquoise", "royalblue", "purple", "teal", "tan", "snow", "mediumseagreen", "LightCoral", "Chartreuse", "CornflowerBlue", "DarkGray", "DarkOliveGreen", "DarkMagenta", "Lavender", "SandyBrown", "Black"]
 
 COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
 
@@ -28,7 +46,7 @@ DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'ax
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
-COTE_MESSAGE = 4
+COTE_MESSAGE = 5
 
 LONGUEUR_BOUTON = COTE_CANVAS/31
 LONGUEUR_ENTRY = COTE_CANVAS/60
@@ -77,6 +95,31 @@ global TABLEAU_POISSON
 global TAILLE_UTILISEE_TABLEAU_POISSON
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
+
+class PaquetMessageGraphique:
+
+	def __init__(self, depart_x, depart_y, couleur1, couleur2, proportion_message_prioritaire):
+		self.couleur1 = couleur1
+		self.couleur2 = couleur2
+		self.proportion_message_prioritaire = proportion_message_prioritaire
+
+		self.conteneur = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE)
+		self.sous_rectangle1 = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, (depart_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * proportion_message_prioritaire), depart_y+COTE_MESSAGE, fill=couleur1)
+		self.sous_rectangle2 = controleur.canvas.create_rectangle((depart_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * proportion_message_prioritaire), depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur2)
+
+
+	##	Methode permettant de bouger un paquet de message
+	#	@param self : Le paquet à bouger.
+	#	@param ajout_x : la valeur de x à ajouter au paquet.
+	#	@param ajout_y : la valeur de y à ajouter au paquet.
+	def move_paquet(self, ajout_x, ajout_y):
+		#controleur.canvas.coords(self.conteneur, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
+		pass
+		controleur.canvas.move(self.conteneur, ajout_x, ajout_y)
+		controleur.canvas.move(self.sous_rectangle1, ajout_x, ajout_y)
+		controleur.canvas.move(self.sous_rectangle2, ajout_x, ajout_y)
+
+
 
 ##	Créer une fenetre Tkinter avec son titre.
 #	@return La fenêtre Tkinter créée.
@@ -154,20 +197,20 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 	for j in range(nb_noeud):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
 
-		debut_periode = int(random.uniform(0, 99))	#Le décalage entre chaque récéption de message émis par les antennes
+		debut_periode = int(random.uniform(1, 10))	#Le décalage entre chaque récéption de message émis par les antennes
 
 		if j == 0 or j == nb_noeud-1:	#L'anneau doit contenir deux noeuds n'étant liés avec aucunes antennes
 			nb_antenne = 0
 		else:
 			nb_antenne = int(random.uniform(1, 5))	#Au maximum 5 antennes
 
-		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j], nb_antenne, debut_periode)
+		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], nb_antenne, debut_periode)
 
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible -1 ].indice_noeud_ecriture = j
 
 		""" Modification des couleur des slots """
-		couleur = noeuds_modele[j].couleur
+		couleur = noeuds_modele[j].couleur_noeud
 		canvas.itemconfig(slots_vue[indice_slot_accessible], outline=couleur)
 		canvas.itemconfig(slots_vue[indice_slot_accessible-1], outline=couleur)
 
@@ -185,7 +228,7 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 		y2 = milieu_y - slots_modele [ indice_slot_accessible -1 ].val_sin * DISTANCE_NOEUD
 		y = (y1 + y2) / 2
 
-		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j] )
+		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j][0] )
 		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click_noeud)
 
 		sous_tab = []
@@ -218,7 +261,7 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 #	@param couleur_message : La couleur du message.
 #	@return L'id du message créé.
 
-def placer_message_graphique(canvas, depart, arrive, couleur_message):
+def placer_message_graphique(canvas, depart, arrive, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire):
 	coordonnees = canvas.coords(depart)
 
 	depart_x = (coordonnees[0] + coordonnees[2])/2
@@ -231,7 +274,8 @@ def placer_message_graphique(canvas, depart, arrive, couleur_message):
 
 	""" Le point est placé """
 	if not STATHAM_MODE:
-		objet = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
+		#objet = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
+		objet = PaquetMessageGraphique(depart_x, depart_y, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)
 	else:
 		objet = canvas.create_image(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, image=IMAGE_JASON)
 	""" On fait se déplacer le message """
@@ -264,7 +308,7 @@ def placer_panel_gauche(fenetre):
 
 	replay = Image.open("../images/restart.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
-	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(controleur.lire_fichier), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
+	bouton_reset = Button(fenetre, text ="Recommencer", command= lambda: reset(), image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_reset.grid(row=4)
 	label_restart = Label(fenetre, text="Recommencer")
 	label_restart.grid(row=5)
@@ -348,6 +392,13 @@ def placer_panel_bas(fenetre):
 	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky="E"+"W")
 	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky="E"+"W")
 
+	if controleur.politique_prioritaire == True:
+		resultat = "Priorité aux messages prioritaires"
+	else:
+		resultat = "Non gestion des messages prioritaires"
+	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
+	label_politique_actuel.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
+
 	""" les boutons """
 	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White", width=LONGUEUR_BOUTON)
 	bouton_politique.grid(row=NOMBRE_LIGNE_CANVAS+7, column=2, sticky='W')
@@ -366,13 +417,25 @@ def ouvrir_fichier():
 	chemin_fichier = tkFileDialog.askopenfilename(initialdir="../../fichiers_simulations/")
 	if type(chemin_fichier) is not tuple:	#Si la variable est de type tuple, la fonction "askopenfilename" à renvoyé un champ vide
 		controleur.chemin_fichier = chemin_fichier
-		reset(True)
+		controleur.lire_fichier = True
+		reset()
 		tkMessageBox.showinfo("Chargement", "La simulation va désormais exécuter le scénario du fichier fournis !;)")
+		commencer_rotation()
 
 
 ##	Fonction callback changant la politique d'envoi de message de l'anneau
 def changer_politique():
-	print ("Chagement de politique")
+	global controleur
+
+	arreter_rotation()
+	controleur.politique_prioritaire = not controleur.politique_prioritaire
+	controleur.lire_fichier = False
+	reset()
+	if controleur.politique_prioritaire == True:
+		message = "La simulation va désormais prendre en compte la priorité des messages provenants des antennes."
+	else:
+		message = "Les messages prioritaires seront désormais traités de la même manière que les Best effort."
+	tkMessageBox.showinfo("Changement de politique", message)
 
 
 ##	Met a jour le label du panel bas affichant le TIC en millisecondes.
@@ -399,6 +462,10 @@ def update_label_TIC(fenetre, ligne, colonne):
 #	@param arrivee_x : Le point d'arrivé x que l'on souhaite pour l'objet.
 #	@param arrivee_y : Le point d'arrivé y que l'on souhaite pour l'objet.
 def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
+	if not STATHAM_MODE:
+		paquet = objet
+		objet = paquet.conteneur
+
 	""" Convertie les coordonnees en int afin de récupérer la partie entiere des nombres, ainsi les coordonnees coïncideront toujours """
 	objet_x = int(canvas.coords(objet)[0])
 	objet_y = int(canvas.coords(objet)[1])
@@ -407,6 +474,8 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 
 	if not STATHAM_MODE:
 		canvas.coords(objet, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
+		canvas.coords(paquet.sous_rectangle1, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, (objet_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * paquet.proportion_message_prioritaire), objet_y + COTE_MESSAGE)
+		canvas.coords(paquet.sous_rectangle2, (objet_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * paquet.proportion_message_prioritaire), objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
 		arrivee_x = int(arrivee_x) - COTE_MESSAGE
 		arrivee_y = int(arrivee_y) - COTE_MESSAGE
 	else:
@@ -415,14 +484,25 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 		arrivee_y = int(arrivee_y) + COTE_SLOT/8		#Il faut donc réajuster son point d'arrivé.
 
 	while objet_x != arrivee_x or objet_y != arrivee_y:
-		if objet_x < arrivee_x:
-			canvas.move(objet, 1, 0)
-		elif objet_x > arrivee_x:
-			canvas.move(objet, -1, 0)
-		if objet_y < arrivee_y:
-			canvas.move(objet, 0, 1)
-		elif objet_y > arrivee_y:
-			canvas.move(objet, 0, -1)
+		if not STATHAM_MODE:
+			if objet_x < arrivee_x:
+				paquet.move_paquet(1, 0)
+			elif objet_x > arrivee_x:
+				paquet.move_paquet(-1, 0)
+			if objet_y < arrivee_y:
+				paquet.move_paquet(0, 1)
+			elif objet_y > arrivee_y:
+				paquet.move_paquet(0, -1)
+			objet = paquet.conteneur
+		else:
+			if objet_x < arrivee_x:
+				canvas.move(objet, 1, 0)
+			elif objet_x > arrivee_x:
+				canvas.move(objet, -1, 0)
+			if objet_y < arrivee_y:
+				canvas.move(objet, 0, 1)
+			elif objet_y > arrivee_y:
+				canvas.move(objet, 0, -1)
 		objet_x = canvas.coords(objet)[0]
 		objet_y = canvas.coords(objet)[1]
 
@@ -434,8 +514,12 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 #	@param message : Le message que l'on souhaite sortir.
 def sortir_message_graphique(canvas, message):
 	""" L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas """
+
 	time.sleep( float(TIC) / float(1000) )
 
+	if not STATHAM_MODE:
+		paquet = message
+		message = paquet.conteneur
 	x = int(canvas.coords(message)[0])
 	y = int(canvas.coords(message)[1])
 
@@ -461,7 +545,11 @@ def sortir_message_graphique(canvas, message):
 		objectif_y = y
 
 	while x != objectif_x or y != objectif_y:
-		canvas.move(message, direction_x, direction_y)
+		if STATHAM_MODE:
+			paquet.move_paquet(direction_x, direction_y)
+			message = paquet.conteneur
+		else:
+			canvas.move(message, direction_x, direction_y)
 		x = int(canvas.coords(message)[0])
 		y = int(canvas.coords(message)[1])
 
@@ -482,15 +570,19 @@ class Noeud:
 	#	@param self : L'objet de la classe.
 	#	@param indice_slot_lecture : L'indice du slot en lecture.
 	#	@param indice_slot_ecriture : L'indice du slot en ecriture.
-	#	@param couleur : La couleur graphique du noeud.
+	#	@param couleur_noeud : La couleur graphique du noeud.
+	#	@param couleur_noeud_claire : Une couleur plus claire pour les messages prioritaires
+	#	@param couleur_noeud_foncee : Une couleur plus foncée pour les messages prioritaires
 	#	@param nb_antenne : Le nombre d'antenne du noeud.
 	#	@param debut_periode : Le début de la période du noeud pour recevoir des messages des antennes.
-	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur, nb_antenne, debut_periode):
+	def __init__(self, indice_slot_lecture, indice_slot_ecriture, couleur_noeud, couleur_noeud_claire, couleur_noeud_foncee, nb_antenne, debut_periode):
 		self.nb_messages_initaux = 0
 		self.nb_messages_prioritaires = 0
 		self.indice_slot_lecture = indice_slot_lecture
 		self.indice_slot_ecriture = indice_slot_ecriture
-		self.couleur = couleur
+		self.couleur_noeud = couleur_noeud
+		self.couleur_noeud_claire = couleur_noeud_claire
+		self.couleur_noeud_foncee = couleur_noeud_foncee
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debut_periode = debut_periode		#Le décalage selon lequel le noeud recoit des messages des antennes
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
@@ -506,7 +598,7 @@ class Noeud:
 	#	@param autre_noeud : Le second noeud.
 	#	@return True si les noeuds sont les mêmes, False sinon.
 	def equals(self, autre_noeud):
-		return self.couleur == autre_noeud.couleur
+		return self.couleur_noeud == autre_noeud.couleur_noeud
 
 
 	##	Ajoute un message au noeud.
@@ -554,8 +646,10 @@ class Noeud:
 			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-10, y, text= str(noeud_modele.nb_messages_prioritaires) )
 			DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][1] ] = controleur.noeuds_modele [indice_noeud]
 			controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][1], "<Button-1>", callback_click_texte)
+			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+10, y, text= str(noeud_modele.nb_messages_initaux) )
+		else:
+			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_messages_initaux) )
 
-		TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+10, y, text= str(noeud_modele.nb_messages_initaux) )
 		controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][0], "<Button-1>", callback_click_texte)
 
 		DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][0] ] = controleur.noeuds_modele [indice_noeud]
@@ -565,7 +659,7 @@ class Noeud:
 	#	@param self : Le noeud.
 	#	@return Le noeud sous forme de chaine de caractères.
 	def __str__(self):
-		return str(self.couleur)
+		return str(self.couleur_noeud)
 
 	##	Met à jour le temps d'attente des messages du noeud.
 	#	@param self : Le noeud.
@@ -622,15 +716,6 @@ class PaquetMessage:
 		self.y = None
 		self.taille = None	#La taille du paquet
 		self.messages = messages
-
-
-	##	Met a jour la position graphique du message.
-	#	@param self : le PaquetMessage.
-	#	@param nouveau_x : La nouvelle coordonnée X du message.
-	#	@param nouveau_y : La nouvelle coordonnée Y du message.
-	def update_position(self, nouveau_x, nouveau_y):
-		self.x = nouveau_x
-		self.y = nouveau_y
 
 	##	Renvoie le paquet sous forme de chaine de caractères.
 	#	@param self : le PaquetMessage.
@@ -820,7 +905,7 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 		attente_max = noeud.attente_max
 
 		if attente_moyenne_arrondie > 0 and attente_max > 0:
-			message = "Nombre de message : "+str( noeud.nb_message )
+			message = "Nombre de message : "+str( noeud.nb_messages_initaux + noeud.nb_messages_prioritaires )
 			message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)
 			message += "\nAttente maximale des messages : "+str(attente_max)+"."
 		else:
@@ -844,8 +929,7 @@ def callback_validation_configuration(event):
 
 ##	Callback au bouton demandant un reset de l'application.
 #	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
-#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
-def reset(lire_fichier):
+def reset():
 	global controleur
 	global tache
 
@@ -860,7 +944,7 @@ def reset(lire_fichier):
 		controleur.fenetre.after_cancel(tache)
 
 	""" La méthode after permet ici de faire s'executer les threads en cours """
-	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, lire_fichier) )
+	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, controleur.lire_fichier, controleur.politique_prioritaire) )
 
 
 ##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
@@ -1008,7 +1092,8 @@ def modifier_configuration():
 		LAMBDA = tmp_lambda
 		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
-		reset(False)
+		controleur.lire_fichier = False
+		reset()
 		tkMessageBox.showinfo("Chargement", "Votre nouvelle configuration a été chargé avec succès !;)")
 
 
@@ -1019,44 +1104,31 @@ def arreter_appli():
 
 
 ##	Action de faire entrer un paquet de message d'un noeud jusqu'à son slot.
-def placer_message(indice_noeud, messages):
+def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 	global controleur
 
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
-	slot_modele = controleur.slots_modele[ indice_slot ]
-	message = ""
-	erreur = False
-	if slot_modele == 1:
-		erreur = True
-		message = "Le slot est déjà remplis, "
-	if noeud_modele == 0:
-		erreur = True
-		message += "Le noeud est vide"
-	if not erreur:
-		""" Récupération des valeurs """
-		canvas = controleur.canvas
-		noeud_graphique = controleur.noeuds_vue[ indice_noeud ]
-		slot_graphique = controleur.slots_vue[indice_slot]
-		couleur_message = controleur.noeuds_modele[ indice_noeud ].couleur
 
-		""" Création du message """
-		id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_message)
-		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), messages)
+	""" Récupération des valeurs """
+	canvas = controleur.canvas
+	noeud_graphique = controleur.noeuds_vue[ indice_noeud ]
+	slot_graphique = controleur.slots_vue[indice_slot]
+	couleur_messages_prioritaires = controleur.noeuds_modele[ indice_noeud ].couleur_noeud_claire
+	couleur_messages_best_effort = controleur.noeuds_modele[ indice_noeud ].couleur_noeud_foncee
 
-		""" Mise à jour de la distance """
-		message_x = canvas.coords(id_message_graphique)[0]
-		message_y = canvas.coords(id_message_graphique)[1]
-		controleur.slots_modele[indice_slot].paquet_message.update_position(message_x, message_y)
+	""" Création du message """
+	id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)
+	controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), messages)
 
-		""" Met à jour les temps d'attentes du noeud qui envoi le message """
-		if controleur.lire_fichier == False:
-			for message in messages:
-				if message != None:
-					temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
-					if temps_attente_message > noeud_modele.attente_max:
-						noeud_modele.attente_max = temps_attente_message
-					noeud_modele.attente_totale += temps_attente_message
+	""" Met à jour les temps d'attentes du noeud qui envoi le message """
+	if controleur.lire_fichier == False:
+		for message in messages:
+			if message != None:
+				temps_attente_message = (controleur.nb_tic - message.TIC_arrive)
+				if temps_attente_message > noeud_modele.attente_max:
+					noeud_modele.attente_max = temps_attente_message
+				noeud_modele.attente_totale += temps_attente_message
 
 
 ##	Exécute une rotation des messages dans l'anneau.
@@ -1117,6 +1189,7 @@ def entrer_message():
 						for i in range(nb_message_a_envoyer):
 							messages.append( noeud.messages_prioritaires.popleft() )
 						noeud.nb_messages_prioritaires -= nb_message_a_envoyer
+						proportion_message_prioritaire = 1
 
 					else:													#On envoie tous les prioritaires et le reste en best effort
 						for i in range(nb_messages_prioritaire_noeud):
@@ -1125,8 +1198,14 @@ def entrer_message():
 							messages.append( noeud.messages_initiaux.popleft() )
 						noeud.nb_messages_prioritaires -= nb_messages_prioritaire_noeud
 						noeud.nb_messages_initaux -= (nb_message_a_envoyer - nb_messages_prioritaire_noeud)
+						if nb_messages_prioritaire_noeud == 0:
+							proportion_message_prioritaire = 0
+						else:
+							proportion_message_prioritaire = nb_messages_prioritaire_noeud/float(nb_message_a_envoyer)
+							print("valeur division : ", proportion_message_prioritaire)
 
 				else:	#Politique sans priorité
+					proportion_message_prioritaire = 1
 					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
 						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
 					else:												#on vide le noeud
@@ -1137,7 +1216,7 @@ def entrer_message():
 						messages.append( noeud.messages_initiaux.popleft() )
 
 					noeud.nb_messages_initaux -= nb_message_a_envoyer
-				placer_message( slot.indice_noeud_ecriture, messages )
+				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
 			noeud.update_file_noeud_graphique()
 
 ##	Envoie les messages dans l'anneau à partir d'un scénario de fichier.
@@ -1152,7 +1231,7 @@ def entrer_message_via_fichier():
 			if tic_actuel == int(noeud.tics_sorties[0]):
 				noeud.tics_sorties.pop(0)
 				message = [0] * LIMITE_NOMBRE_MESSAGE_MAX
-				placer_message(i, message)
+				placer_message(i, message, 1)
 
 	for noeud in controleur.noeuds_modele:
 		if len(noeud.tics_sorties) > 0:
@@ -1248,7 +1327,7 @@ def calculer_vitesse():
 #	@param fenetre : La fenetre sur laquelle on place le canvas.
 #	@param nb_noeud : Le nombre de noeud à initialiser.
 #	@param lire_fichier : Un booléen indiquant si la simulation se fait via une lecture de fichier ou non.
-def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
+def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique_prioritaire):
 	global controleur
 	global IMAGE_JASON
 
@@ -1277,8 +1356,6 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 	slots_modele = slots[0]
 	slots_vue = slots[1]
 
-	politique_prioritaire = True
-
 	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire)
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
@@ -1296,8 +1373,6 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier):
 				for j in range(1, len(ligne)):
 					controleur.noeuds_modele[indice_noeud].tics_sorties.append(ligne[j])
 			i += 1
-		for k in range( controleur.nb_noeud_anneau ):
-			print ("indice : "+str(k)+"Tics de sorties : "+str(controleur.noeuds_modele[k].tics_sorties))
 		controleur.chemin_fichier = chemin_fichier
 
 	calculer_vitesse()
@@ -1316,7 +1391,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print ("Nombre de TIC : ", controleur.nb_tic)
+		print("Nombre de TIC : ", controleur.nb_tic)
 
 		rotation_message()
 
@@ -1345,7 +1420,7 @@ def afficher_stat_noeud():
 		if noeud.nb_message_total != 0:
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
-			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max))
+			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)+"intervalle antenne : "+str(noeud.debut_periode)+" nb antennes : "+str(noeud.nb_antenne))
 	print ("\n")
 
 
@@ -1375,8 +1450,8 @@ controleur = None
 fenetre = creer_fenetre()
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
-nb_noeud = 5
-nb_slot = 25
+nb_noeud = 10
+nb_slot = 40
 
-initialisation(fenetre, nb_noeud, nb_slot, lire_fichier)
+initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
 fenetre.mainloop()
