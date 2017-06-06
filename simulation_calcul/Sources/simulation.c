@@ -242,6 +242,13 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 	}
 }
 
+void afficher_tableau(int *tab, int taille)
+{
+	int i;
+	for (i=0; i<taille; i++)
+		printf("[%d] ", tab[i]);
+}
+
 void entrer_messages( Anneau *anneau, int tic )
 {
 	TableauDynamiqueEntier *td_initial = anneau->messages_initaux;
@@ -581,6 +588,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 		tableau_prioritaire = td_prioritaire->tableau;
 		qsort(tableau_prioritaire, taille_utilisee_td_prioritaire, sizeof(int), cmpfunc);
 	}
+	afficher_tableau(tableau_prioritaire, taille_utilisee_td_prioritaire);
 
 
 	int val_max = tableau_initial[ taille_utilisee_td_initial-1 ];
@@ -664,6 +672,8 @@ void ecrire_fichier_csv(Anneau *anneau)
 	double *quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 
 	j = 0;
+	val_max = tableau_initial[taille_utilisee_td_initial-1];
+
 	intervalle = val_max / nombre_quantile;;
 	if (intervalle < 1)
 		intervalle = 1;
@@ -674,8 +684,6 @@ void ecrire_fichier_csv(Anneau *anneau)
 		bornes_superieures[nombre_quantile-1] = val_max;
 
 	borne_superieure = bornes_superieures[0];
-
-	min = tableau_initial[0];
 	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
 		if ( (tableau_initial[i] >= borne_superieure) && (j < nombre_quantile-1) )
@@ -686,13 +694,15 @@ void ecrire_fichier_csv(Anneau *anneau)
 		quantiles_nb_messages_initiaux[j]++;
 	}
 
+
 	if (td_prioritaire != NULL)
 	{
-		j = 0;
+		j = 0; borne_superieure = bornes_superieures[0];
 		for (i=0; i<taille_utilisee_td_prioritaire; i++)
 		{
 			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
 			{
+				printf("Nombre de message compris entre %d et %d : %lf\n", bornes_superieures[j], bornes_superieures[j-1], quantiles_nb_messages_prioritaire[j]);
 				j++;
 				borne_superieure = bornes_superieures[j];
 			}
