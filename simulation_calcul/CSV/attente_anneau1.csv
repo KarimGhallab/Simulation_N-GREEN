@@ -1,11 +1,6 @@
 intervalle,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire
-0:4,Best effort,0.514186,1000000,25,5,1
-0:4,Prioritaire,0.772233,1000000,25,5,1
-5:8,Best effort,0.417542,1000000,25,5,1
-5:8,Prioritaire,0.219567,1000000,25,5,1
-9:12,Best effort,0.066698,1000000,25,5,1
-9:12,Prioritaire,0.008067,1000000,25,5,1
-13:16,Best effort,0.001561,1000000,25,5,1
-13:16,Prioritaire,0.000133,1000000,25,5,1
-17:21,Best effort,0.000013,1000000,25,5,1
-17:21,Prioritaire,0.000000,1000000,25,5,1
+0:2,Tous type,0.235310,10000,25,5,0
+3:4,Tous type,0.291557,10000,25,5,0
+5:6,Tous type,0.278209,10000,25,5,0
+7:8,Tous type,0.134511,10000,25,5,0
+9:14,Tous type,0.060414,10000,25,5,0

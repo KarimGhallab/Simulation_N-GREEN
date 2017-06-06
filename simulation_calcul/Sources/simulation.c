@@ -581,14 +581,13 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 
 	TableauDynamiqueEntier *td_prioritaire = anneau->messages_prioritaires;
-	int taille_utilisee_td_prioritaire = 0; int *tableau_prioritaire;
+	int taille_utilisee_td_prioritaire = 0; int *tableau_prioritaire = NULL;
 	if (td_prioritaire != NULL)
 	{
 		taille_utilisee_td_prioritaire = td_prioritaire->taille_utilisee;
 		tableau_prioritaire = td_prioritaire->tableau;
 		qsort(tableau_prioritaire, taille_utilisee_td_prioritaire, sizeof(int), cmpfunc);
 	}
-	afficher_tableau(tableau_prioritaire, taille_utilisee_td_prioritaire);
 
 
 	int val_max = tableau_initial[ taille_utilisee_td_initial-1 ];
@@ -603,7 +602,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	//Allocation du tableau
 	double **quantiles_initiaux = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
-	double **quantiles_prioritaires = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double **quantiles_prioritaires = quantiles_prioritaires = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 	for(i=0; i<nombre_quantile+1; i++)
 	{
 		quantiles_initiaux[i] = (double *) calloc(nombre_colonne, sizeof(double));	//La premiere ligne du tableau
@@ -653,11 +652,12 @@ void ecrire_fichier_csv(Anneau *anneau)
 				quantiles_prioritaires[j][0]++;
 		}
 		quantiles_prioritaires[nombre_quantile-1][2] = val_max;
-		//printf("%lf/%lf = %f\n", somme_valeur, quantiles_prioritaires[j][0], somme_valeur/quantiles_prioritaires[j][0]);
 		quantiles_prioritaires[nombre_quantile-1][3] = somme_valeur/quantiles_prioritaires[j][0];
 	}
-
-	ecrire_nb_message_attente_csv(anneau, quantiles_initiaux, quantiles_prioritaires, nombre_quantile, bornes_superieures);
+	if (td_prioritaire != NULL)
+		ecrire_nb_message_attente_csv(anneau, quantiles_initiaux, quantiles_prioritaires, nombre_quantile, bornes_superieures);
+	else
+		ecrire_nb_message_attente_csv(anneau, quantiles_initiaux, NULL, nombre_quantile, bornes_superieures);
 	/* Libération de la mémoire du quantile */
 	for(i=0; i<nombre_quantile+1; i++)
 	{
@@ -669,7 +669,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	//Ecriture du nombre de message ayant attendu selon un intervalle de TIC
 	double *quantiles_nb_messages_initiaux = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
-	double *quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
+	double *quantiles_nb_messages_prioritaire = NULL;
 
 	j = 0;
 	val_max = tableau_initial[taille_utilisee_td_initial-1];
@@ -697,18 +697,19 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	if (td_prioritaire != NULL)
 	{
+		quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));
 		j = 0; borne_superieure = bornes_superieures[0];
 		for (i=0; i<taille_utilisee_td_prioritaire; i++)
 		{
 			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
 			{
-				printf("Nombre de message compris entre %d et %d : %lf\n", bornes_superieures[j], bornes_superieures[j-1], quantiles_nb_messages_prioritaire[j]);
 				j++;
 				borne_superieure = bornes_superieures[j];
 			}
 			quantiles_nb_messages_prioritaire[j]++;
 		}
 		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, bornes_superieures, nombre_quantile);
+		free(quantiles_nb_messages_prioritaire);
 	}
 	else
 		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, bornes_superieures, nombre_quantile);
