@@ -58,10 +58,10 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 		p <- p + geom_bar(stat="identity", position = "dodge", col="red", fill="green", alpha = .2)
 
 	p <- p + geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black", position = position_dodge(width =0.9)) +
-	theme(axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
-	scale_y_continuous(labels = percent, name = "Nombre de message") +
+	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
+	scale_y_continuous(labels = percent, name = "Nombre de messages") +
 	scale_x_discrete(name = "Intervalle") +
-	labs(caption = texte_info) +
+	labs(caption = texte_info, aesthetic = "Type de message") +
 	ggtitle(titre)
 
 	print(p)
@@ -92,7 +92,7 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	}
 	p <- p +geom_bar(stat="identity", position = "dodge") +
 	scale_size_area("Type d'attente") +
-	ylab("Nombre de TIC d'attente") +
+	ylab("Nombre de TICs d'attentes") +
 	xlab("Quantile") +
 	geom_text(aes(label=donnees$valeur, y = donnees$valeur), size = 3, position = position_dodge(width =0.9), hjust=0.5, vjust=0.5, color="black") +
 	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic"), axis.text.x=element_blank(),) +

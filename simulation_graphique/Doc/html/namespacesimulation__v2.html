@@ -108,6 +108,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, l'id du paquet le représentant graphiquement ainsi que la taille du paquet.  <a href="classsimulation__v2_1_1PaquetMessage.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessageGraphique.html">PaquetMessageGraphique</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente graphiquement un paquet de message se déplaçant dans l'anneau.  <a href="classsimulation__v2_1_1PaquetMessageGraphique.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1Slot.html">Slot</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.  <a href="classsimulation__v2_1_1Slot.html#details">More...</a><br /></td></tr>
@@ -146,6 +147,9 @@ def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="names
 <tr class="memitem:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a79b2ad503e8bcef0a56bb0c84c2e07f0">update_label_TIC</a> (fenetre, ligne, colonne)</td></tr>
 <tr class="memdesc:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met a jour le label du panel bas affichant le TIC en millisecondes.  <a href="#a79b2ad503e8bcef0a56bb0c84c2e07f0">More...</a><br /></td></tr>
 <tr class="separator:a79b2ad503e8bcef0a56bb0c84c2e07f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08d2fbf05f34bda040bdd65bfb92fc4c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a08d2fbf05f34bda040bdd65bfb92fc4c"></a>
+def&#160;</td><td class="memItemRight" valign="bottom"><b>afficher_aide</b> ()</td></tr>
+<tr class="separator:a08d2fbf05f34bda040bdd65bfb92fc4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb9126f5d35fd9eba71fd50110d3d0ab"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#aeb9126f5d35fd9eba71fd50110d3d0ab">deplacer_vers</a> (canvas, objet, arrivee_x, arrivee_y)</td></tr>
 <tr class="memdesc:aeb9126f5d35fd9eba71fd50110d3d0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y.  <a href="#aeb9126f5d35fd9eba71fd50110d3d0ab">More...</a><br /></td></tr>
 <tr class="separator:aeb9126f5d35fd9eba71fd50110d3d0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -264,7 +268,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>DISTANCE_NOEUD</b> = D
 float&#160;</td><td class="memItemRight" valign="bottom"><b>VITESSE_LATENCE_MESSAGE</b> = 0.002</td></tr>
 <tr class="separator:a0e294f6eed84f8101efdf0ec6c111c61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa300ba288f69a7fb4a81f192de821a60"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa300ba288f69a7fb4a81f192de821a60"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_MESSAGE</b> = 5</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_MESSAGE</b> = 7</td></tr>
 <tr class="separator:aa300ba288f69a7fb4a81f192de821a60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9ec2f5736b877c425596c88df16eb2cc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ec2f5736b877c425596c88df16eb2cc"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_BOUTON</b> = COTE_CANVAS/31</td></tr>
@@ -348,10 +352,10 @@ list&#160;</td><td class="memItemRight" valign="bottom"><b>valeur_pour_statham</
 &#160;</td><td class="memItemRight" valign="bottom"><b>fenetre</b> = <a class="el" href="namespacesimulation__v2.html#a10832edd42c140de23ebbf784212e7da">creer_fenetre</a>()</td></tr>
 <tr class="separator:a88a5ce93cfa05f797b660f21f23e50a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6332aba737c29709349398f114bb9649"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6332aba737c29709349398f114bb9649"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud</b> = 10</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud</b> = 5</td></tr>
 <tr class="separator:a6332aba737c29709349398f114bb9649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabed046e23aa163c33d31cb59e6725bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabed046e23aa163c33d31cb59e6725bc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 40</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td></tr>
 <tr class="separator:aabed046e23aa163c33d31cb59e6725bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>

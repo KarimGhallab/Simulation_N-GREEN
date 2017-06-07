@@ -16,24 +16,24 @@ from collections import deque
 
 IMAGES = []
 COULEURS_MESSAGE = []
-COULEURS_MESSAGE.append( ["yellowgreen", "#aed75b", "#8ab92d"] )
-COULEURS_MESSAGE.append( ["orange", "#ffc14d", "#e69500"] )
-COULEURS_MESSAGE.append( ["turquoise", "#91ede4", "#24dbc9"] )
-COULEURS_MESSAGE.append( ["royalblue", "#6585e7", "#3862e0"] )
-COULEURS_MESSAGE.append( ["purple", "#b300b3", "#660066"] )
+COULEURS_MESSAGE.append( ["yellowgreen", "#b8dc6f", "#7ba428"] )
+COULEURS_MESSAGE.append( ["orange", "#ffc14d", "#cc8500"] )
+COULEURS_MESSAGE.append( ["turquoise", "#7beadf", "#20c5b5"] )
+COULEURS_MESSAGE.append( ["royalblue", "#7b97ea", "#1f49c7"] )
+COULEURS_MESSAGE.append( ["purple", "#cc00cc", "#660066"] )
 COULEURS_MESSAGE.append( ["teal", "#00b3b3", "#006666"] )
-COULEURS_MESSAGE.append( ["tan", "#dbc3a3", "#cdab7e" ] )
-COULEURS_MESSAGE.append( ["snow", "#ffffff", "#ffe6e6"] )
-COULEURS_MESSAGE.append( ["mediumseagreen", "#1affa7", "#00cc7e"] )
-COULEURS_MESSAGE.append( ["LightCoral", "#f4a4a4", "#ef7676"] )
-COULEURS_MESSAGE.append( ["Chartreuse", "#99ff33", "#73e600"] )
-COULEURS_MESSAGE.append( ["CornflowerBlue", "#8db0f2", "#5f91ec"] )
-COULEURS_MESSAGE.append( ["DarkGray", "#bfbfbf", "#a6a6a6"] )
-COULEURS_MESSAGE.append( ["DarkOliveGreen", "#718e3e", "#465927"] )
-COULEURS_MESSAGE.append( ["DarkMagenta", "#b300b3", "#800080"] )
-COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#d4d4f7"] )
-COULEURS_MESSAGE.append( ["SandyBrown", "#f7bc88", "#f3a158"] )
-COULEURS_MESSAGE.append( ["Black", "#666666", "#404040"] )
+COULEURS_MESSAGE.append( ["tan", "#e2cfb6", "#bf935a" ] )
+COULEURS_MESSAGE.append( ["snow", "#ffffff", "#ffb3b3"] )
+COULEURS_MESSAGE.append( ["mediumseagreen", "#33ffb1", "#00b36e"] )
+COULEURS_MESSAGE.append( ["LightCoral", "#f7bbbb", "#ea4848"] )
+COULEURS_MESSAGE.append( ["Chartreuse", "#a6ff4d", "#66cc00"] )
+COULEURS_MESSAGE.append( ["CornflowerBlue", "#a4c0f4", "#3271e7"] )
+COULEURS_MESSAGE.append( ["DarkGray", "#cccccc", "#8c8c8c"] )
+COULEURS_MESSAGE.append( ["DarkOliveGreen", "#7fa046", "#38471f"] )
+COULEURS_MESSAGE.append( ["DarkMagenta", "#cc00cc", "#660066"] )
+COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#aaaaee"] )
+COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
+COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
 
 COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
@@ -46,7 +46,7 @@ DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'ax
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
-COTE_MESSAGE = 5
+COTE_MESSAGE = 7
 
 LONGUEUR_BOUTON = COTE_CANVAS/31
 LONGUEUR_ENTRY = COTE_CANVAS/60
@@ -96,8 +96,16 @@ global TAILLE_UTILISEE_TABLEAU_POISSON
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
+##	Représente graphiquement un paquet de message se déplaçant dans l'anneau.
 class PaquetMessageGraphique:
 
+	##	Constructeur
+	#	@param self : L'objet en train d'être construit.
+	#	@param depart_x : la coordonée x ou placé le paquet.
+	#	@param depart_y : la coordonée y ou placé le paquet.
+	#	@param couleur1 : la couleur des messages prioritaires.
+	#	@param couleur2 : la couleur des messages best effort.
+	#	@param proportion_message_prioritaire : la proportion des messages prioritaires dans le paquet.
 	def __init__(self, depart_x, depart_y, couleur1, couleur2, proportion_message_prioritaire):
 		self.couleur1 = couleur1
 		self.couleur2 = couleur2
@@ -325,6 +333,11 @@ def placer_panel_gauche(fenetre):
 	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
 	bouton_down.grid(row=9)
 
+	aide = Image.open("../images/help.png")
+	IMAGES.append( ImageTk.PhotoImage(aide) )
+	bouton_aide = Button(fenetre, text ="Aide ?", command = afficher_aide, image = IMAGES[ len(IMAGES) -1 ])
+	bouton_aide.grid(row=NOMBRE_LIGNE_CANVAS + 8, sticky="W")
+
 
 ##	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
 #	- Le nombre de slot utilisé.
@@ -454,6 +467,15 @@ def update_label_TIC(fenetre, ligne, colonne):
 		message = "TIC : "+str(TIC)+" millisecondes"
 	LABEL_TIC = Label(fenetre, text = message)
 	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
+
+
+def afficher_aide():
+	message = "Cette fenêtre a pour but de fournir une petite explication des points pouvant parraitre peu claire sur l'interface graphique de la simulation."
+	message += "\n\nLors d'une politique d'envoi prioritaire des messages, chaque noeud dispose de deux labels différents. "
+	message += "Le label situé à droite du noeud indique le nombre de messages best effort du noeud, alors que le label à gauche indique le nombre de messages prioritaires."
+	message += "\nLors d'un envoi de messages, un paquet de message contient deux couleurs. La couleur la plus claire représente la proportion de messages prioritaires du paquet, alors que la couleur la plus foncée représente la proportion de message best effort."
+	message += "\n\nDans le cas ou est appliquée une politique ne prenant pas en charge l'aspect prioritaire de certains messages, un seul label par noeud indique le nombre de messages contenus dans le noeud, et une seule couleur est utilisée pour un paquet de message."
+	tkMessageBox.showinfo("Aide", message)
 
 
 ##	Déplace dans le canvas un objet vers un point d'arrivé définit par arrivee_x et arrivee_y.
@@ -1202,7 +1224,6 @@ def entrer_message():
 							proportion_message_prioritaire = 0
 						else:
 							proportion_message_prioritaire = nb_messages_prioritaire_noeud/float(nb_message_a_envoyer)
-							print("valeur division : ", proportion_message_prioritaire)
 
 				else:	#Politique sans priorité
 					proportion_message_prioritaire = 1
@@ -1391,7 +1412,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print("Nombre de TIC : ", controleur.nb_tic)
+		#print("Nombre de TIC : ", controleur.nb_tic)
 
 		rotation_message()
 
@@ -1420,7 +1441,7 @@ def afficher_stat_noeud():
 		if noeud.nb_message_total != 0:
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
-			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)+"intervalle antenne : "+str(noeud.debut_periode)+" nb antennes : "+str(noeud.nb_antenne))
+			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)+" Intervalle antenne : "+str(noeud.debut_periode)+" nb antennes : "+str(noeud.nb_antenne))
 	print ("\n")
 
 
@@ -1450,8 +1471,8 @@ controleur = None
 fenetre = creer_fenetre()
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
-nb_noeud = 10
-nb_slot = 40
+nb_noeud = 5
+nb_slot = 25
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
 fenetre.mainloop()

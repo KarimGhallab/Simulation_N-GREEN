@@ -189,8 +189,8 @@ void effectuer_simulation(Anneau *anneau, int generer_pdf, int afficher_chargeme
 		printf("Politique d'envoi : prorité au C-RAN\n");
 	else
 		printf("Politique d'envoi : sans priorité\n");
-	printf("Nombre de slot de l'anneau : %d.\n", anneau->nombre_slot);
-	printf("Nombre de noeud de l'anneau : %d.\n", anneau->nombre_noeud);
+	printf("Nombre de slots de l'anneau : %d.\n", anneau->nombre_slot);
+	printf("Nombre de noeuds de l'anneau : %d.\n", anneau->nombre_noeud);
 	if (generer_pdf == 1)
 		printf("Generation des PDFs : Oui.\n\n");
 	else
