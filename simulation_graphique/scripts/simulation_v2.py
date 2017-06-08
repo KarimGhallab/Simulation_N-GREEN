@@ -1441,7 +1441,7 @@ def afficher_stat_noeud():
 		if noeud.nb_message_total != 0:
 			attente_moyenne = float(noeud.attente_totale) / float(noeud.nb_message_total)
 			attente_moyenne_arrondie = format(attente_moyenne, '.2f')
-			print ("Noeud "+str(noeud)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max)+" Intervalle antenne : "+str(noeud.debut_periode)+" nb antennes : "+str(noeud.nb_antenne))
+			print ("Noeud "+str(noeud)+" Nombre de message : "+str(noeud.nb_messages_prioritaires + noeud.nb_messages_initaux)+" Attente moyenne : "+str( attente_moyenne_arrondie )+" Attente max : "+str(noeud.attente_max))
 	print ("\n")
 
 
