@@ -35,21 +35,12 @@ COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#aaaaee"] )
 COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
 COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
-
-COTE_CANVAS = 700	#Définit la hauteur/largeur de la toile sur laquelle seront déssinés les slots et les noeuds
-
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
-DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
-
 COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
-DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
 COTE_MESSAGE = 7
-
-LONGUEUR_BOUTON = COTE_CANVAS/31
-LONGUEUR_ENTRY = COTE_CANVAS/60
 
 NOMBRE_LIGNE_CANVAS = 50
 
@@ -1469,6 +1460,16 @@ global controleur
 controleur = None
 
 fenetre = creer_fenetre()
+
+# # # # # # # # # # # # 	VALEUR POUR LA TAILLE DU CANVAS 	# # # # # # # # # # # #
+COTE_CANVAS = int(fenetre.winfo_screenheight() * (5.0/8))
+
+DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
+DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
+
+LONGUEUR_BOUTON = COTE_CANVAS/31
+LONGUEUR_ENTRY = COTE_CANVAS/60
+
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 nb_noeud = 5
