@@ -16,7 +16,7 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, 
 
 	anneau->nombre_slot = nombre_slot; anneau->nombre_noeud = nombre_noeud;
 	anneau->numero_anneau = numero; anneau->nb_messages_initaux = 0; anneau->nb_messages_prioritaires = 0;
-	anneau->decallage = 0; anneau->politique_envoi = politique_envoi;
+	anneau->decalage = 0; anneau->politique_envoi = politique_envoi;
 	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->tableau_poisson = initialiser_tableau_poisson();
@@ -270,7 +270,7 @@ void entrer_messages( Anneau *anneau, int tic )
 	for (i=0; i< nombre_noeud; i++)
 	{
 		noeud = &(anneau->noeuds[ couple_ecriture[i][0] ]);
-		position_slot = (couple_ecriture[i][1] + anneau->decallage) % nombre_slot;
+		position_slot = (couple_ecriture[i][1] + anneau->decalage) % nombre_slot;
 		slot = &(anneau->slots[position_slot]);
 
 		/* Ajout des messages provenant des antennes */
@@ -423,8 +423,8 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 void decaler_messages( Anneau *anneau )
 {
 	int nombre_slot = anneau->nombre_slot;
-	anneau->decallage++;
-	anneau->decallage = anneau->decallage % nombre_slot;
+	anneau->decalage++;
+	anneau->decalage = anneau->decalage % nombre_slot;
 }
 
 void sortir_messages( Anneau *anneau )
@@ -438,7 +438,7 @@ void sortir_messages( Anneau *anneau )
 	for (i=0; i< nombre_noeud; i++)
 	{
 		noeud = &(anneau->noeuds[ couple_lecture[i][0] ]);
-		int position_slot = (couple_lecture[i][1] + anneau->decallage) % nombre_slot;
+		int position_slot = (couple_lecture[i][1] + anneau->decalage) % nombre_slot;
 
 		slot = &(anneau->slots[position_slot]);
 

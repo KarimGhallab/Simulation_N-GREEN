@@ -91,7 +91,7 @@ struct Anneau
 	int numero_anneau;
 	int nombre_slot;
 	int nombre_noeud;
-	int decallage;
+	int decalage;
 	int politique_envoi;
 	int **couple_lecture;
 	int **couple_ecriture;
