@@ -61,7 +61,7 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
 	scale_y_continuous(labels = percent, name = "Nombre de messages") +
 	scale_x_discrete(name = "Intervalle (en TIC)") +
-	labs(caption = texte_info, aesthetic = "Type de message") +
+	labs(caption = texte_info) +
 	ggtitle(titre)
 
 	print(p)
