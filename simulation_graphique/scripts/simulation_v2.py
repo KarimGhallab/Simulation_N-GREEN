@@ -100,7 +100,7 @@ class PaquetMessageGraphique:
 	def __init__(self, depart_x, depart_y, couleur1, couleur2, proportion_message_prioritaire):
 		self.couleur1 = couleur1
 		self.couleur2 = couleur2
-		self.proportion_message_prioritaire = proportion_message_prioritaire
+		self.proportion_message_prioritaire = 1#proportion_message_prioritaire
 
 		self.conteneur = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE)
 		self.sous_rectangle1 = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, (depart_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * proportion_message_prioritaire), depart_y+COTE_MESSAGE, fill=couleur1)
@@ -112,11 +112,21 @@ class PaquetMessageGraphique:
 	#	@param ajout_x : la valeur de x à ajouter au paquet.
 	#	@param ajout_y : la valeur de y à ajouter au paquet.
 	def move_paquet(self, ajout_x, ajout_y):
-		#controleur.canvas.coords(self.conteneur, objet_x - COTE_MESSAGE, objet_y - COTE_MESSAGE, objet_x + COTE_MESSAGE, objet_y + COTE_MESSAGE)
-		pass
 		controleur.canvas.move(self.conteneur, ajout_x, ajout_y)
 		controleur.canvas.move(self.sous_rectangle1, ajout_x, ajout_y)
 		controleur.canvas.move(self.sous_rectangle2, ajout_x, ajout_y)
+
+	##	Methode permettant de téléporter un paquet de message.
+	#	@param self : Le paquet à téléporter.
+	#	@param ajout_x : Le x d'arrivée.
+	#	@param ajout_y : Le y d'arrivée.
+	def teleporter_paquet(self, destination_x, destination_y):
+		deplacement_x = (destination_x - controleur.canvas.coords(self.conteneur)[0]) - COTE_MESSAGE
+		deplacement_y = (destination_y - controleur.canvas.coords(self.conteneur)[1]) - COTE_MESSAGE
+		controleur.canvas.move(self.conteneur, deplacement_x, deplacement_y)
+		controleur.canvas.move(self.sous_rectangle1, deplacement_x, deplacement_y)
+		controleur.canvas.move(self.sous_rectangle2, deplacement_x, deplacement_y)
+
 
 
 
@@ -1287,8 +1297,13 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 	msg = controleur.slots_modele[indice_slot].paquet_message
 	if msg != None:
 		""" On déplace le message """
-		t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
-		t.start()
+		if STATHAM_MODE:
+			t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
+			t.start()
+		else:
+			paquet = msg.id_message_graphique
+			paquet.teleporter_paquet(destination_x, destination_y)
+
 
 	if indice_slot-1 < 0:
 		nouvelle_indice = len(controleur.slots_modele) - 1
@@ -1463,6 +1478,7 @@ fenetre = creer_fenetre()
 
 # # # # # # # # # # # # 	VALEUR POUR LA TAILLE DU CANVAS 	# # # # # # # # # # # #
 COTE_CANVAS = int(fenetre.winfo_screenheight() * (5.0/8))
+#COTE_CANVAS = 2000
 
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
 DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas

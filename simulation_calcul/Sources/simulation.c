@@ -718,7 +718,6 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes)
 {
-	printf("Ecriture des min max dans le fichier\n");
 	int numero_anneau = anneau->numero_anneau;
 	int nombre_noeud = anneau->nombre_noeud;
 	int nombre_slot = anneau->nombre_slot;
@@ -799,7 +798,6 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 			pourcentage_prioritaire = (quantiles_prioritaire[i] / nb_messages_prioritaire_total);
 			if ( (i == taille_tableau-1) || ( (quantiles_initial[i+1] == 0) && (quantiles_prioritaire[i+1] == 0) ) )
 			{
-				printf("Yo\n");
 				fprintf(f, "%d:+,Best effort,%lf,%d,%d,%d,%d\n", borne_inferieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 				fprintf(f, "%d:+,Prioritaire,%lf,%d,%d,%d,%d\n", borne_inferieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 			}
