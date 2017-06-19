@@ -791,7 +791,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 	fprintf(f, "valeur,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire\n");
 	int i;
 	double pourcentage_initial, pourcentage_prioritaire;
-	double valmax_prioritaire;
+	double valmax_prioritaire = 0;
 
 	// Ecrit dans le fichier le début et recupere la valeur max des quantiles prioritaires si necessaire
 	if (quantiles_prioritaire == NULL)

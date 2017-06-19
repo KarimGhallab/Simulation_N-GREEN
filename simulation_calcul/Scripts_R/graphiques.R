@@ -34,37 +34,40 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	else
 		texte_info = paste(texte_info, "et une politique d'envoi non prioritaire")
 
-	titre = "Répartition des temps d'attentes des messages"
-
-    nb_val = 10
-    nombre_valeur = nrow(donnees)
-	print(donnees$valeur)
-    intervalle = round(nombre_valeur / nb_val)
-	print(intervalle)
-    labels_x = c()
-    i = 0
-    for (valeur in donnees$valeur)
-    {
-        if (i %% intervalle == 0)
-        {
-			print(i)
-            labels_x = c(labels_x, valeur)
-        }
-        i = i+1
-    }
+	titre = "Fonction de répartition des temps d'attente des messages"
 
 	maxi = max(donnees$valeur)
-    print(donnees$valeur)
-
+	if (maxi >= 100)
+	{
+		pas = 10** (ceiling(log10(maxi))-1)
+	    intervalle = round(maxi / pas)
+	    labels_x = c(0)
+	    i = 0
+	    for(i in 1:intervalle)
+		{
+			if ((i+1)*pas < maxi)
+			{
+				labels_x = c(labels_x, i*pas)
+			}
+		}
+		labels_x = c(labels_x, maxi)
+	}
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
     p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
  	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
  	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
- 	theme(axis.text.x = element_text(size=7)) +
- 	theme(axis.text.y = element_text(size=7)) +
- 	scale_y_continuous(labels = percent, name = "Pourcentage de message") +
- 	scale_x_continuous(name = "TIC d'attente", breaks = labels_x) +
- 	labs(caption = texte_info) +
+ 	theme(axis.text.x = element_text(size=10)) +
+ 	theme(axis.text.y = element_text(size=10)) +
+ 	scale_y_continuous(labels = percent, name = "Pourcentage de message")
+	if (maxi >= 100)
+ 	{
+		p <- p + scale_x_continuous(name = "TIC d'attente", breaks = labels_x)
+	}
+	else
+	{
+		p <- p + scale_x_continuous(name = "TIC d'attente")
+	}
+ 	p <- p + labs(caption = texte_info) +
  	ggtitle(titre)
 
 	print(p)
