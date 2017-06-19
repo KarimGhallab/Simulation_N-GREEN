@@ -223,9 +223,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a447418628ab20dc2ccd70762943cba67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a447418628ab20dc2ccd70762943cba67">ecrire_nb_message_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes)</td></tr>
 <tr class="memdesc:a447418628ab20dc2ccd70762943cba67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit un fichier .csv qui contiendra les nombres de messages ayant attendu un temps d'attente contenu dans un interval.  <a href="#a447418628ab20dc2ccd70762943cba67">More...</a><br /></td></tr>
 <tr class="separator:a447418628ab20dc2ccd70762943cba67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa53923f8e5a0dbd167d30d7b2b1e5dfc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa53923f8e5a0dbd167d30d7b2b1e5dfc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ecrire_temps_attente_csv</b> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double **quantiles_initial, double **quantiles_prioritaire, int taille_tableau_initial, int taille_tableau_prioritaire)</td></tr>
-<tr class="separator:aa53923f8e5a0dbd167d30d7b2b1e5dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a5e92da76b8a8226ed3b88cc766df0c17">ecrire_temps_attente_csv</a> (<a class="el" href="structAnneau.html">Anneau</a> *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau)</td></tr>
+<tr class="memdesc:a5e92da76b8a8226ed3b88cc766df0c17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Ecrit les differents temps d'attentes de la simulation selon des quantiles.  <a href="#a5e92da76b8a8226ed3b88cc766df0c17">More...</a><br /></td></tr>
+<tr class="separator:a5e92da76b8a8226ed3b88cc766df0c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simulation_8h.html#a8aaa907e94e5c4d11296e1da8ec51a80">generer_PDF</a> ()</td></tr>
 <tr class="memdesc:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Lance les scripts R afin de générer les PDF à partir des fichiers CSV.  <a href="#a8aaa907e94e5c4d11296e1da8ec51a80">More...</a><br /></td></tr>
 <tr class="separator:a8aaa907e94e5c4d11296e1da8ec51a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -463,6 +463,62 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="simu
     <tr><td class="paramname">**quantiles_prioritaires</td><td>Les quantiles des messages prioritaires à écrire dans le fichier. </td></tr>
     <tr><td class="paramname">taille_tableau</td><td>La taille du tableau des quantiles. </td></tr>
     <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a5e92da76b8a8226ed3b88cc766df0c17"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ecrire_temps_attente_csv </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structAnneau.html">Anneau</a> *&#160;</td>
+          <td class="paramname"><em>anneau</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>quantiles_initial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double *&#160;</td>
+          <td class="paramname"><em>quantiles_prioritaire</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>bornes</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>taille_tableau</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Ecrit les differents temps d'attentes de la simulation selon des quantiles. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*anneau</td><td>L'anneau pour lequel on souhaite écrire les temps d'attentes. </td></tr>
+    <tr><td class="paramname">*quantiles_initial</td><td>Les quantiles des messages initiaux. </td></tr>
+    <tr><td class="paramname">*quantiles_prioritaire</td><td>Les quantiles des messages prioritaires. </td></tr>
+    <tr><td class="paramname">*bornes</td><td>Un tableau des bornes coresspondant aux quantiles. </td></tr>
+    <tr><td class="paramname">numero_anneau</td><td>Le numéro de l'anneau utilisé pour le nom de fichier. </td></tr>
   </table>
   </dd>
 </dl>
