@@ -57,6 +57,7 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
     print(donnees$valeur)
 
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
+<<<<<<< HEAD
     p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
  	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
  	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
@@ -66,6 +67,18 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
  	scale_x_continuous(name = "TIC d'attente", breaks = labels_x) +
  	labs(caption = texte_info) +
  	ggtitle(titre)
+=======
+
+	p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
+	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
+	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
+	theme(axis.text.x = element_text(size=10)) +
+	theme(axis.text.y = element_text(size=10)) +
+	scale_y_continuous(labels = percent, name = "Pourcentage de message") +
+	scale_x_continuous(name = "TIC d'attente") +
+	labs(caption = texte_info) +
+	ggtitle(titre)
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 
 	print(p)
 
@@ -77,6 +90,10 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 
 	#On cmmence avec la lecture du fichiers indiquant les nombres de messages
 	donnees = read.csv(chemin_fichier)
+
+	############# Trie des abscisses #############
+	donnees$intervalle <- as.character(donnees$intervalle)
+	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
 
 	titre = "Temps d'attentes des messages"
 	############# Trie des abscisses #############

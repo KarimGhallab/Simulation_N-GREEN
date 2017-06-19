@@ -598,7 +598,6 @@ void ecrire_fichier_csv(Anneau *anneau)
 		bornes_superieures[i-1] = i * intervalle;
 	if (bornes_superieures[nombre_quantile-1] < taille_utilisee_td_initial)
 		bornes_superieures[nombre_quantile-1] = taille_utilisee_td_initial;
-	int borne_superieure = bornes_superieures[0];
 
 	//Allocation du tableau
 	double **quantiles_initiaux = (double **) calloc(nombre_quantile+1, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
@@ -658,6 +657,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 		ecrire_nb_message_attente_csv(anneau, quantiles_initiaux, quantiles_prioritaires, nombre_quantile, bornes_superieures);
 	else
 		ecrire_nb_message_attente_csv(anneau, quantiles_initiaux, NULL, nombre_quantile, bornes_superieures);
+
 	/* Libération de la mémoire du quantile */
 	for(i=0; i<nombre_quantile+1; i++)
 	{
@@ -667,6 +667,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 	free(quantiles_initiaux);
 	free(quantiles_prioritaires);
 
+<<<<<<< HEAD
 	//Ecriture du nombre de message ayant attendu selon un intervalle de TIC
 	nombre_quantile = 30;
 	val_max = tableau_initial[taille_utilisee_td_initial-1];
@@ -674,8 +675,15 @@ void ecrire_fichier_csv(Anneau *anneau)
 		nombre_quantile = val_max;
 	double *quantiles_nb_messages_initiaux = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 	double *quantiles_nb_messages_prioritaire = NULL;
+=======
+	double **quantiles_nb_messages_initiaux = (double **) calloc(taille_utilisee_td_initial, sizeof(double*));
+	quantiles_nb_messages_initiaux[0] = (double *) calloc(2, sizeof(double));
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 
+	double **quantiles_nb_messages_prioritaire = NULL;
+	double ancienne_valeur = 0;
 	j = 0;
+<<<<<<< HEAD
 	int bornes_superieures2[nombre_quantile];
 	intervalle = val_max / nombre_quantile;;
 	if (intervalle < 1)
@@ -687,37 +695,85 @@ void ecrire_fichier_csv(Anneau *anneau)
 		bornes_superieures2[nombre_quantile-1] = val_max;
 
 	borne_superieure = bornes_superieures2[0];
+=======
+	quantiles_nb_messages_initiaux[0][0] = 0;
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
-		if ( (tableau_initial[i] >= borne_superieure) && (j < nombre_quantile-1) )
+		if (tableau_initial[i] != ancienne_valeur)
 		{
 			j++;
+<<<<<<< HEAD
 			borne_superieure = bornes_superieures2[j];
 			quantiles_nb_messages_initiaux[j] = quantiles_nb_messages_initiaux[j-1];
+=======
+			quantiles_nb_messages_initiaux[j] = (double *) calloc(2, sizeof(double));
+			quantiles_nb_messages_initiaux[j][0] = tableau_initial[i];
+			quantiles_nb_messages_initiaux[j][1] = quantiles_nb_messages_initiaux[j-1][1];
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 		}
-		quantiles_nb_messages_initiaux[j]++;
+		quantiles_nb_messages_initiaux[j][1]++;
+		ancienne_valeur = tableau_initial[i];
 	}
-
-
+	int taille_tableau_initial = j+1;
 	if (td_prioritaire != NULL)
 	{
+<<<<<<< HEAD
 		quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));
 		j = 0; borne_superieure = bornes_superieures2[0];
+=======
+		ancienne_valeur = 0;
+		quantiles_nb_messages_prioritaire = (double **) calloc(taille_utilisee_td_prioritaire, sizeof(double*));
+		quantiles_nb_messages_prioritaire[0] = (double *) calloc(2, sizeof(double));
+		j = 0;
+		quantiles_nb_messages_prioritaire[j][0] = 0;
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 		for (i=0; i<taille_utilisee_td_prioritaire; i++)
 		{
-			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
+			if (tableau_prioritaire[i] != ancienne_valeur)
 			{
 				j++;
+<<<<<<< HEAD
 				borne_superieure = bornes_superieures2[j];
 				quantiles_nb_messages_prioritaire[j] = quantiles_nb_messages_prioritaire[j-1];
+=======
+				quantiles_nb_messages_prioritaire[j] = (double *) calloc(2, sizeof(double));
+				quantiles_nb_messages_prioritaire[j][0] = tableau_prioritaire[i];
+				quantiles_nb_messages_prioritaire[j][1] = quantiles_nb_messages_prioritaire[j-1][1];
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 			}
-			quantiles_nb_messages_prioritaire[j]++;
+			quantiles_nb_messages_prioritaire[j][1]++;
+			ancienne_valeur = tableau_prioritaire[i];
 		}
+		int taille_tableau_prioritaire = j+1;
+
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, taille_tableau_initial, taille_tableau_prioritaire);
+		for (i=0; i<taille_tableau_prioritaire; i++)
+		{
+			if (quantiles_nb_messages_prioritaire[i] == NULL)
+				break;
+			else
+				free(quantiles_nb_messages_prioritaire[i]);
+		}
+<<<<<<< HEAD
 		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, bornes_superieures2, nombre_quantile);
 		free(quantiles_nb_messages_prioritaire);
 	}
 	else
 		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, bornes_superieures2, nombre_quantile);
+=======
+		free(quantiles_nb_messages_prioritaire);
+	}
+	else
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, taille_tableau_initial, 0);
+	for (i=0; i<taille_tableau_initial; i++)
+	{
+		if (quantiles_nb_messages_initiaux[i] == NULL)
+			break;
+		else
+			free(quantiles_nb_messages_initiaux[i]);
+	}
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 	free(quantiles_nb_messages_initiaux);
 }
 
@@ -767,8 +823,9 @@ void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles_initiaux, 
 	fclose(f);
 }
 
-void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau )
+void ecrire_temps_attente_csv( Anneau *anneau, double **quantiles_initial, double **quantiles_prioritaire, int taille_tableau_initial, int taille_tableau_prioritaire )
 {
+	printf("yo\n");
 	int nombre_noeud = anneau->nombre_noeud;
 	int nombre_slot = anneau->nombre_slot;
 	int politique_prioritaire = anneau->politique_envoi;
@@ -790,21 +847,32 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 
 	fprintf(f, "valeur,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire\n");
 	int i;
-	double pourcentage_initial, pourcentage_prioritaire;
-	double valmax_prioritaire;
+	double pourcentage_initial, pourcentage_prioritaire, valeur_prioritaire;
 
+<<<<<<< HEAD
 	// Ecrit dans le fichier le début et recupere la valeur max des quantiles prioritaires si necessaire
 	if (quantiles_prioritaire == NULL)
 		fprintf(f, "0,Tous type,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 	else
+=======
+	for (i=0; i<taille_tableau_initial; i++)
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 	{
-		for (int k=taille_tableau-1; k>=0; k--)
+		pourcentage_initial = (quantiles_initial[i][1] / nb_messages_initiaux_total);
+		if (quantiles_prioritaire != NULL)
 		{
-			if (quantiles_prioritaire[k] > 0)
+			if (i >= taille_tableau_prioritaire)
 			{
-				valmax_prioritaire = quantiles_prioritaire[k];
-				break;
+				pourcentage_prioritaire = (quantiles_prioritaire[taille_tableau_prioritaire-1][1] / nb_messages_prioritaire_total);
+				valeur_prioritaire = quantiles_prioritaire[taille_tableau_prioritaire-1][0];
+				printf("yo2\n");
 			}
+			else
+			{
+				pourcentage_prioritaire = (quantiles_prioritaire[i][1] / nb_messages_prioritaire_total);
+				valeur_prioritaire = quantiles_prioritaire[i][0];
+			}
+<<<<<<< HEAD
 		}
 		fprintf(f, "0,Best effort,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		fprintf(f, "0,Prioritaire,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
@@ -818,10 +886,11 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 		{
 			pourcentage_initial = (quantiles_initial[i] / nb_messages_initiaux_total);
 			pourcentage_prioritaire = (quantiles_prioritaire[i] / nb_messages_prioritaire_total);
+=======
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 
-			if (pourcentage_prioritaire == 0)
-				pourcentage_prioritaire = valmax_prioritaire / nb_messages_prioritaire_total;
 
+<<<<<<< HEAD
 			fprintf(f, "%d,Best effort,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 			fprintf(f, "%d,Prioritaire,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		}
@@ -830,6 +899,13 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 			pourcentage_initial = (quantiles_initial[i] / nb_messages_initiaux_total);
 			fprintf(f, "%d,Tous type,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		}
+=======
+			fprintf(f, "%lf,Best effort,%lf,%d,%d,%d,%d\n", quantiles_initial[i][0], pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+			fprintf(f, "%lf,Prioritaire,%lf,%d,%d,%d,%d\n", valeur_prioritaire, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+		}
+		else
+			fprintf(f, "%lf,Tous type,%lf,%d,%d,%d,%d\n", quantiles_initial[i][0], pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+>>>>>>> 0b0392b6a798e4a86a5d358ceac6515ef0ebbade
 	}
 	fclose(f);
 }

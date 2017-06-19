@@ -21,8 +21,8 @@ int main ( int argc, char *argv[] )
 	Anneau *anneaux[nombre_anneau];
 
 	for (i=0; i<nombre_anneau; i++)
-		anneaux[i] = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf, POLITIQUE_ENVOI_NON_PRIORITAIRE);
-		//anneaux[i] = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf, POLITIQUE_ENVOI_PRIORITAIRE);
+		//anneaux[i] = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf, POLITIQUE_ENVOI_NON_PRIORITAIRE);
+		anneaux[i] = initialiser_anneau(nombre_slot, nombre_noeud, generer_pdf, POLITIQUE_ENVOI_PRIORITAIRE);
 
 	struct timeval tb, te;
 	gettimeofday(&tb, NULL); // get current time
