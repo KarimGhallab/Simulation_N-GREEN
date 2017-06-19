@@ -668,29 +668,31 @@ void ecrire_fichier_csv(Anneau *anneau)
 	free(quantiles_prioritaires);
 
 	//Ecriture du nombre de message ayant attendu selon un intervalle de TIC
+	nombre_quantile = 30;
+	val_max = tableau_initial[taille_utilisee_td_initial-1];
+	if (nombre_quantile > val_max)
+		nombre_quantile = val_max;
 	double *quantiles_nb_messages_initiaux = (double *) calloc(nombre_quantile, sizeof(double));	//tableau de la forme: nombre_message, min, max, moyenne
 	double *quantiles_nb_messages_prioritaire = NULL;
 
 	j = 0;
-	val_max = tableau_initial[taille_utilisee_td_initial-1];
-
+	int bornes_superieures2[nombre_quantile];
 	intervalle = val_max / nombre_quantile;;
 	if (intervalle < 1)
 		intervalle = 1;
 	for(i=1; i<=nombre_quantile; i++)
-		bornes_superieures[i-1] = i * intervalle;
+		bornes_superieures2[i-1] = i * intervalle;
 
-	if (bornes_superieures[nombre_quantile-1] < val_max)
-		bornes_superieures[nombre_quantile-1] = val_max;
+	if (bornes_superieures2[nombre_quantile-1] < val_max)
+		bornes_superieures2[nombre_quantile-1] = val_max;
 
-	//int valmax_initial = val_max;
-	borne_superieure = bornes_superieures[0];
+	borne_superieure = bornes_superieures2[0];
 	for (i=0; i<taille_utilisee_td_initial; i++)
 	{
 		if ( (tableau_initial[i] >= borne_superieure) && (j < nombre_quantile-1) )
 		{
 			j++;
-			borne_superieure = bornes_superieures[j];
+			borne_superieure = bornes_superieures2[j];
 			quantiles_nb_messages_initiaux[j] = quantiles_nb_messages_initiaux[j-1];
 		}
 		quantiles_nb_messages_initiaux[j]++;
@@ -699,24 +701,23 @@ void ecrire_fichier_csv(Anneau *anneau)
 
 	if (td_prioritaire != NULL)
 	{
-		//int valmax_prioritaire = tableau_prioritaire[taille_utilisee_td_prioritaire-1];
 		quantiles_nb_messages_prioritaire = (double *) calloc(nombre_quantile, sizeof(double));
-		j = 0; borne_superieure = bornes_superieures[0];
+		j = 0; borne_superieure = bornes_superieures2[0];
 		for (i=0; i<taille_utilisee_td_prioritaire; i++)
 		{
 			if ( (tableau_prioritaire[i] >= borne_superieure) && (j < nombre_quantile-1) )
 			{
 				j++;
-				borne_superieure = bornes_superieures[j];
+				borne_superieure = bornes_superieures2[j];
 				quantiles_nb_messages_prioritaire[j] = quantiles_nb_messages_prioritaire[j-1];
 			}
 			quantiles_nb_messages_prioritaire[j]++;
 		}
-		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, bornes_superieures, nombre_quantile);
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, quantiles_nb_messages_prioritaire, bornes_superieures2, nombre_quantile);
 		free(quantiles_nb_messages_prioritaire);
 	}
 	else
-		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, bornes_superieures, nombre_quantile);
+		ecrire_temps_attente_csv(anneau, quantiles_nb_messages_initiaux, NULL, bornes_superieures2, nombre_quantile);
 	free(quantiles_nb_messages_initiaux);
 }
 
@@ -787,14 +788,14 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 	/* Ouverture du fichier */
 	FILE *f = fopen(chemin_fichier, "w");
 
-	fprintf(f, "intervalle,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire\n");
+	fprintf(f, "valeur,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire\n");
 	int i;
 	double pourcentage_initial, pourcentage_prioritaire;
 	double valmax_prioritaire;
 
 	// Ecrit dans le fichier le début et recupere la valeur max des quantiles prioritaires si necessaire
 	if (quantiles_prioritaire == NULL)
-		fprintf(f, "0:0,Tous type,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+		fprintf(f, "0,Tous type,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 	else
 	{
 		for (int k=taille_tableau-1; k>=0; k--)
@@ -805,8 +806,8 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 				break;
 			}
 		}
-		fprintf(f, "0:0,Best effort,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
-		fprintf(f, "0:0,Prioritaire,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+		fprintf(f, "0,Best effort,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+		fprintf(f, "0,Prioritaire,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 	}
 	for (i=0; i<taille_tableau; i++)
 	{
@@ -821,13 +822,13 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 			if (pourcentage_prioritaire == 0)
 				pourcentage_prioritaire = valmax_prioritaire / nb_messages_prioritaire_total;
 
-			fprintf(f, "0:%d,Best effort,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
-			fprintf(f, "0:%d,Prioritaire,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+			fprintf(f, "%d,Best effort,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+			fprintf(f, "%d,Prioritaire,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		}
 		else
 		{
 			pourcentage_initial = (quantiles_initial[i] / nb_messages_initiaux_total);
-			fprintf(f, "0:%d,Tous type,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+			fprintf(f, "%d,Tous type,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		}
 	}
 	fclose(f);

@@ -15,10 +15,6 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	#On cmmence avec la lecture du fichiers indiquant les nombres de messages
 	donnees = read.csv(chemin_fichier)
 
-	############# Trie des abscisses #############
-	donnees$intervalle <- as.character(donnees$intervalle)
-	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
-
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
 	nombre_slot = as.character(donnees$nb_slot[1])
 	nombre_noeud = as.character(donnees$nb_noeud[1])
@@ -40,35 +36,36 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 
 	titre = "Répartition des temps d'attentes des messages"
 
-	############# Obtention des pourcentages #############
-	pourcentages = NULL
-	for (valeur in donnees$taux)
-	{
-		pourcentage = valeur * 100
-		pourcentage = format(pourcentage, digits=3)
-		abscisse = paste(pourcentage, "%", sep="")
-		pourcentages <- c(pourcentages, abscisse)
-	}
+    nb_val = 10
+    nombre_valeur = nrow(donnees)
+	print(donnees$valeur)
+    intervalle = round(nombre_valeur / nb_val)
+	print(intervalle)
+    labels_x = c()
+    i = 0
+    for (valeur in donnees$valeur)
+    {
+        if (i %% intervalle == 0)
+        {
+			print(i)
+            labels_x = c(labels_x, valeur)
+        }
+        i = i+1
+    }
+
+	maxi = max(donnees$valeur)
+    print(donnees$valeur)
+
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-# p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, group= 1)) +
-	p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, group = type, colour = type)) +
-		geom_point() +
-	  geom_line(data=donnees, aes(x=donnees$intervalle, y=donnees$taux))
-
-
-#	p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, fill=type))
-#	if (politique_prioritaire == 1)
-#		p <- p + geom_bar(stat="identity")
-#	else
-#		p <- p + geom_bar(stat="identity", col="red", fill="green", alpha = .2)
-
-#	p <- p + geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black") +
-#	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
-#	scale_y_continuous(labels = percent, name = "Pourcentage de messages") +
-#	scale_x_discrete(name = "Intervalle (en TIC)") +
-#	labs(caption = texte_info) +
-#	geom_density(aes(y=donnees$taux)) +
-#	ggtitle(titre)
+    p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
+ 	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
+ 	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
+ 	theme(axis.text.x = element_text(size=7)) +
+ 	theme(axis.text.y = element_text(size=7)) +
+ 	scale_y_continuous(labels = percent, name = "Pourcentage de message") +
+ 	scale_x_continuous(name = "TIC d'attente", breaks = labels_x) +
+ 	labs(caption = texte_info) +
+ 	ggtitle(titre)
 
 	print(p)
 
