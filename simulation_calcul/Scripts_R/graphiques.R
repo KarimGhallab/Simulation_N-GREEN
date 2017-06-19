@@ -15,10 +15,6 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	#On cmmence avec la lecture du fichiers indiquant les nombres de messages
 	donnees = read.csv(chemin_fichier)
 
-	############# Trie des abscisses #############
-	donnees$intervalle <- as.character(donnees$intervalle)
-	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
-
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
 	nombre_slot = as.character(donnees$nb_slot[1])
 	nombre_noeud = as.character(donnees$nb_noeud[1])
@@ -50,25 +46,16 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 		pourcentages <- c(pourcentages, abscisse)
 	}
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-# p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, group= 1)) +
-	p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, group = type, colour = type)) +
-		geom_point() +
-	  geom_line(data=donnees, aes(x=donnees$intervalle, y=donnees$taux))
 
-
-#	p <- ggplot(donnees, aes(x=donnees$intervalle, y=donnees$taux, fill=type))
-#	if (politique_prioritaire == 1)
-#		p <- p + geom_bar(stat="identity")
-#	else
-#		p <- p + geom_bar(stat="identity", col="red", fill="green", alpha = .2)
-
-#	p <- p + geom_text(aes(label=pourcentages, y = donnees$taux), size = 3, hjust=0.5, vjust=-0.5, color="black") +
-#	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
-#	scale_y_continuous(labels = percent, name = "Pourcentage de messages") +
-#	scale_x_discrete(name = "Intervalle (en TIC)") +
-#	labs(caption = texte_info) +
-#	geom_density(aes(y=donnees$taux)) +
-#	ggtitle(titre)
+	p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
+	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
+	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
+	theme(axis.text.x = element_text(size=10)) +
+	theme(axis.text.y = element_text(size=10)) +
+	scale_y_continuous(labels = percent, name = "Pourcentage de message") +
+	scale_x_continuous(name = "TIC d'attente") +
+	labs(caption = texte_info) +
+	ggtitle(titre)
 
 	print(p)
 
@@ -80,6 +67,10 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 
 	#On cmmence avec la lecture du fichiers indiquant les nombres de messages
 	donnees = read.csv(chemin_fichier)
+
+	############# Trie des abscisses #############
+	donnees$intervalle <- as.character(donnees$intervalle)
+	donnees$intervalle <- factor(donnees$intervalle, levels=unique(donnees$intervalle))
 
 	titre = "Temps d'attentes des messages"
 	############# Trie des abscisses #############

@@ -244,15 +244,15 @@ void ecrire_fichier_csv(Anneau *anneau);
  */
 void ecrire_nb_message_attente_csv(Anneau *anneau, double **quantiles_initiaux, double **quantiles_prioritaires, int taille_tableau, int *bornes);
 
-/*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau )
+/*! \fn void ecrire_temps_attente_csv( Anneau *anneau, double **quantiles_initial, double **quantiles_prioritaire, int *bornes, int taille_tableau_initial, int taille_tableau_prioritaire );
     \brief Ecrit les differents temps d'attentes de la simulation selon des quantiles.
     \param *anneau L'anneau pour lequel on souhaite écrire les temps d'attentes.
-	\param *quantiles_initial Les quantiles des messages initiaux.
-	\param *quantiles_prioritaire Les quantiles des messages prioritaires.
-	\param *bornes Un tableau des bornes coresspondant aux quantiles.
-	\param numero_anneau Le numéro de l'anneau utilisé pour le nom de fichier.
+	\param **quantiles_initial Les quantiles des messages initiaux.
+	\param **quantiles_prioritaire Les quantiles des messages prioritaires.
+	\param taille_tableau_initial La taille du tableau des valeurs des temps d'attentes initiaux.
+	\param taille_tableau_prioritaire La taille du tableau des valeurs des temps d'attentes prioritaires.
 */
-void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double *quantiles_prioritaire, int *bornes, int taille_tableau );
+void ecrire_temps_attente_csv( Anneau *anneau, double **quantiles_initial, double **quantiles_prioritaire, int taille_tableau_initial, int taille_tableau_prioritaire );
 
 /*! \fn int generer_PDF()
     \brief Lance les scripts R afin de générer les PDF à partir des fichiers CSV
