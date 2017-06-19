@@ -100,7 +100,7 @@ class PaquetMessageGraphique:
 	def __init__(self, depart_x, depart_y, couleur1, couleur2, proportion_message_prioritaire):
 		self.couleur1 = couleur1
 		self.couleur2 = couleur2
-		self.proportion_message_prioritaire = 1#proportion_message_prioritaire
+		self.proportion_message_prioritaire = proportion_message_prioritaire
 
 		self.conteneur = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE)
 		self.sous_rectangle1 = controleur.canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, (depart_x - COTE_MESSAGE) + ((2 * COTE_MESSAGE) * proportion_message_prioritaire), depart_y+COTE_MESSAGE, fill=couleur1)
@@ -1418,7 +1418,6 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		#print("Nombre de TIC : ", controleur.nb_tic)
 
 		rotation_message()
 

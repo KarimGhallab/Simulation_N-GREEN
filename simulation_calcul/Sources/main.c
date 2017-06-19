@@ -16,7 +16,7 @@ int main ( int argc, char *argv[] )
 	int generer_pdf = ( (argc == 2) && ( ( strcmp(argv[1], "-pdf") == 0 ) || ( strcmp(argv[1], "-PDF") == 0 ) ) );
 
 	/* Initialisation des anneaux */
-	int nombre_slot = 25; int nombre_noeud = 10;
+	int nombre_slot = 25; int nombre_noeud = 5;
 	int nombre_anneau = 1; int i;
 	Anneau *anneaux[nombre_anneau];
 
