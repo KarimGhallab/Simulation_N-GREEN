@@ -146,7 +146,7 @@ def creer_fenetre():
 #	@param fenetre : La fenetre Tkinter ou le canvas sera ajouté.
 #	@return Le canvas créé.
 def creer_canvas(fenetre):
-	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#909090')
+	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#ffffff')
 
 	#Création de la croix au centre du canvas
 	canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
