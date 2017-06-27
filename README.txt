@@ -9,4 +9,4 @@ Pour la simulation en Python:
         "sudo pip install Pillow"
     Lancer la simulation :
         Aller dans le répertoire : simulation_graphique/script
-        executer "python simulation_v2.py"
+        Executer "python simulation_v2.py"
