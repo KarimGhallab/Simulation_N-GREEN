@@ -5,5 +5,8 @@ Pour la simulation en C:
 
 Pour la simulation en Python:
     Installer le module Tkinter (package 'python-tk')
-    installer La bibliotheque de traitement d'image de Python (Python Imaging Library)
+    Installer La bibliotheque de traitement d'image de Python (Python Imaging Library)
         "sudo pip install Pillow"
+    Lancer la simulation :
+        Aller dans le répertoire : simulation_graphique/script
+        executer "python simulation_v2.py"
