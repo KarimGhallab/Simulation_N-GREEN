@@ -121,7 +121,7 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 	for (j=0; j<nombre_noeud; j++)
 	{
 		/* Génére le nombre d'antenne pour le noeud courant */
-		nombre_antenne = 4; //( rand() % 4 ) +1;	//Génére un entier entre 1 et 5
+		nombre_antenne = 5;
 		int debut_periode = rand() % 99;
 
 		int indice_slot_lecture = (( (j*pas) + ((j+1)*pas) ) / 2) - 1;
@@ -407,19 +407,13 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 		/* Parcours du tableau de messages prioritaires */
 		for (i=0; i<nombre_messages_prioritaires; i++)
 		{
-			if (i+1 < nombre_messages_prioritaires)
-			{
-				if (messages_prioritaires[i] != messages_prioritaires[i+1])
-				{
-					temps_attente_message = tic - messages_prioritaires[i];
-					if (td_prioritaire != NULL)
-						ajouter_valeur_tableau_dynamique_entier(td_prioritaire, temps_attente_message);
-					if (temps_attente_message > noeud->attente_max)
-						noeud->attente_max = temps_attente_message;
+			temps_attente_message = tic - messages_prioritaires[i];
+			if (td_prioritaire != NULL)
+				ajouter_valeur_tableau_dynamique_entier(td_prioritaire, temps_attente_message);
+			if (temps_attente_message > noeud->attente_max)
+				noeud->attente_max = temps_attente_message;
 
-						noeud->attente_totale += temps_attente_message;
-				}
-			}
+				noeud->attente_totale += temps_attente_message;
 		}
 	}
 	slot->contient_message = 1;
