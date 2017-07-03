@@ -36,7 +36,7 @@ COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
 COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
 COTE_SLOT = 15		#La hauteur/largeur d'un slot
-COTE_NOEUD = COTE_SLOT + 5		#La hauteur/largeur d'un noeud
+COTE_NOEUD = COTE_SLOT + 10		#La hauteur/largeur d'un noeud
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
@@ -65,20 +65,22 @@ global DICT_TEXTES_NOEUDS
 DICT_TEXTES_NOEUDS = {}
 
 PERIODE_MESSAGE_ANTENNE = 100
+
+TAILLE_MESSAGE_BE = 15
 STATHAM_MODE = False
 
 """ Les variables pour l'hyper exponentielle """
-PROBABILITE_BURST = 0.01
+PROBABILITE_BURST = 0.05
 global LAMBDA
-LAMBDA = 10
+LAMBDA = 8
 
 global LAMBDA_BURST
-LAMBDA_BURST = 140
+LAMBDA_BURST = 60
 
-LIMITE_NOMBRE_MESSAGE_MAX = 80
+LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
 global LIMITE_NOMBRE_MESSAGE_MIN
-LIMITE_NOMBRE_MESSAGE_MIN = 60
+LIMITE_NOMBRE_MESSAGE_MIN = LIMITE_NOMBRE_MESSAGE_MAX * 0.7
 
 TAILLE_TABLEAU = 1000
 global TABLEAU_POISSON
@@ -243,8 +245,8 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 		sous_tab = []
 		""" le texte du rectangle """
 		if politique_prioritaire == True:
-			texte_messages_initaux = canvas.create_text(x-10, y, text="0")
-			texte_messages_prioritaires = canvas.create_text(x+10, y, text="0")
+			texte_messages_initaux = canvas.create_text(x-20, y, text="0")
+			texte_messages_prioritaires = canvas.create_text(x+20, y, text="0")
 
 			sous_tab.append(texte_messages_initaux)
 			sous_tab.append(texte_messages_prioritaires)
@@ -356,8 +358,8 @@ def placer_panel_bas(fenetre):
 	""" Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde """
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
-	label_lambda_actuel = Label(fenetre, text = "Lambda actuel : "+str(LAMBDA) )
-	label_lambda_burst_actuel = Label(fenetre, text = "Lambda Burst : "+str(LAMBDA_BURST) )
+	label_lambda_actuel = Label(fenetre, text = "Lambda petit : "+str(LAMBDA) )
+	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_BURST) )
 	label_limite_taille_message_min = Label(fenetre, text = "Nombre de message minimum : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
 
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
@@ -666,10 +668,10 @@ class Noeud:
 
 		if controleur.politique_prioritaire == True:
 			controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][1])
-			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-10, y, text= str(noeud_modele.nb_messages_prioritaires) )
+			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-20, y, text= str(noeud_modele.nb_messages_prioritaires) )
 			DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][1] ] = controleur.noeuds_modele [indice_noeud]
 			controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][1], "<Button-1>", callback_click_texte)
-			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+10, y, text= str(noeud_modele.nb_messages_initaux) )
+			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+20, y, text= str(noeud_modele.nb_messages_initaux) )
 		else:
 			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_messages_initaux) )
 
@@ -779,11 +781,10 @@ def effectuer_tirage(probabilite):
 ##	Réalise le tirage selon l'hyper exponentielle.
 def hyper_expo():
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
-		return LAMBDA_BURST
+		return LAMBDA_BURST * TAILLE_MESSAGE_BE
 	else:
 		u = random.uniform(0, 1)
-		#return loi_de_poisson_naif(u)
-		return loi_de_poisson_opti(u)
+		return loi_de_poisson_opti(u) * TAILLE_MESSAGE_BE
 
 ##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.
 #	@param u : Le paramètre u de la loi de poisson.
@@ -1184,7 +1185,7 @@ def entrer_message():
 
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
 			if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debut_periode:		#C'est la periode du noeud, il reçoit un message de ses antennes
-				nb_messages_prioritaires = 10 * noeud.nb_antenne
+				nb_messages_prioritaires = 500 * noeud.nb_antenne
 				for i in range(nb_messages_prioritaires):
 					noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
 

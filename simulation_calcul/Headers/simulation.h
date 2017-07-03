@@ -20,12 +20,22 @@
 /*! \def LIMITE_NOMBRE_MESSAGE_MIN
     \brief La limite minimale avant un envoi de message depuis un noeud.
  */
-#define LIMITE_NOMBRE_MESSAGE_MIN 60
+#define LIMITE_NOMBRE_MESSAGE_MIN 700
 
 /*! \def LIMITE_NOMBRE_MESSAGE_MAX
     \brief La limite maximale avant un envoi de message depuis un noeud.
  */
-#define LIMITE_NOMBRE_MESSAGE_MAX 80
+#define LIMITE_NOMBRE_MESSAGE_MAX 1000
+
+/*! \def TAILLE_MESSAGE_BE
+    \brief La taille d'un message best effort.
+ */
+#define TAILLE_MESSAGE_BE 15
+
+/*! \def NB_MESSAGE_CRAN
+    \brief Le nombre de message C-RAN envoyé par une antenne.
+ */
+#define NB_MESSAGE_CRAN 500
 
 /*! \def POLITIQUE_ENVOI_PRIORITAIRE
     \brief Indique la politique d'envoie de l'anneau.

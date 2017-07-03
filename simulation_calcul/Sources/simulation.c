@@ -121,10 +121,7 @@ void initialiser_noeuds( Anneau *anneau, int nombre_noeud )
 	for (j=0; j<nombre_noeud; j++)
 	{
 		/* Génére le nombre d'antenne pour le noeud courant */
-		if ( (j == 0) || (j == nombre_noeud -1) )
-				nombre_antenne = 0;
-		else
-				nombre_antenne = ( rand() % 4 ) +1;	//Génére un entier entre 1 et 5
+		nombre_antenne = 4; //( rand() % 4 ) +1;	//Génére un entier entre 1 et 5
 		int debut_periode = rand() % 99;
 
 		int indice_slot_lecture = (( (j*pas) + ((j+1)*pas) ) / 2) - 1;
@@ -262,7 +259,6 @@ void entrer_messages( Anneau *anneau, int tic )
 	Noeud *noeud;	//Le noeud courant
 	Slot *slot;
 	int nb_message_noeud, nb_message_best_effort, nb_message_prioritaires;		//Le nombre de message du noeud courant et les nombres de message reçus par la noeud courant.
-	int nb_message_par_antenne = 10;
 	int messages_initaux[LIMITE_NOMBRE_MESSAGE_MAX];
 	int messages_prioritaires[LIMITE_NOMBRE_MESSAGE_MAX];
 
@@ -276,7 +272,8 @@ void entrer_messages( Anneau *anneau, int tic )
 		/* Ajout des messages provenant des antennes */
 		if (tic % PERIODE_MESSAGE_ANTENNE == noeud->debut_periode)
 		{
-			nb_message_prioritaires = nb_message_par_antenne * noeud->nb_antenne;
+			nb_message_prioritaires = noeud->nb_antenne * NB_MESSAGE_CRAN;
+			//printf("\nReception de %d messages CRAN pour le noeud %d\n\n", nb_message_prioritaires, noeud->id);
 			if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
 			{
 				ajouter_message( noeud->file_messages_prioritaires, nb_message_prioritaires, tic );
@@ -292,7 +289,7 @@ void entrer_messages( Anneau *anneau, int tic )
 		}
 
 		/* Ajout des messages best effort */
-		nb_message_best_effort = hyper_expo(anneau->tableau_poisson);
+		nb_message_best_effort = hyper_expo(anneau->tableau_poisson) * TAILLE_MESSAGE_BE;;
 		ajouter_message( noeud->file_messages_initiale, nb_message_best_effort, tic );
 
 		if (politique_anneau == POLITIQUE_ENVOI_PRIORITAIRE)
@@ -318,8 +315,10 @@ void entrer_messages( Anneau *anneau, int tic )
 				{
 					if (noeud->nb_message_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX)	//On envoie que des messages prioritaire
 					{
+						//printf("Noeud : %d Envoi de %d C-RAN\n", noeud->id, LIMITE_NOMBRE_MESSAGE_MAX);
 						anneau->nb_messages_prioritaires += LIMITE_NOMBRE_MESSAGE_MAX;
 						supprimer_message( noeud->file_messages_prioritaires, LIMITE_NOMBRE_MESSAGE_MAX, messages_prioritaires );
+						noeud->nb_message_prioritaires -= LIMITE_NOMBRE_MESSAGE_MAX;
 						placer_message( noeud, noeud->id, slot, 0, LIMITE_NOMBRE_MESSAGE_MAX, messages_initaux, messages_prioritaires, tic, td_initial, td_prioritaire);
 					}
 					else	//Il faut envoyer tout les prioritaire + le reste en best effort
@@ -355,7 +354,9 @@ void entrer_messages( Anneau *anneau, int tic )
 					nb_message_prioritaires = noeud->nb_message_prioritaires;
 					nb_message_best_effort = noeud->nb_message_best_effort;
 
+					//printf("Debut suppression2 : noeud %d\n", noeud->id);
 					supprimer_message( noeud->file_messages_prioritaires, nb_message_prioritaires, messages_prioritaires);
+					//printf("Fin suppression2 : noeud %d\n", noeud->id);
 					supprimer_message( noeud->file_messages_initiale, nb_message_best_effort, messages_initaux );
 
 					noeud->nb_message_best_effort = 0;
@@ -406,15 +407,19 @@ void placer_message( Noeud *noeud, int indice_noeud_emetteur, Slot *slot, int no
 		/* Parcours du tableau de messages prioritaires */
 		for (i=0; i<nombre_messages_prioritaires; i++)
 		{
-			temps_attente_message = tic - messages_prioritaires[i];
-			//printf("valeur %d\n", messages_prioritaires[i]);
-			if (td_prioritaire != NULL)
-				ajouter_valeur_tableau_dynamique_entier(td_prioritaire, temps_attente_message);
+			if (i+1 < nombre_messages_prioritaires)
+			{
+				if (messages_prioritaires[i] != messages_prioritaires[i+1])
+				{
+					temps_attente_message = tic - messages_prioritaires[i];
+					if (td_prioritaire != NULL)
+						ajouter_valeur_tableau_dynamique_entier(td_prioritaire, temps_attente_message);
+					if (temps_attente_message > noeud->attente_max)
+						noeud->attente_max = temps_attente_message;
 
-			if (temps_attente_message > noeud->attente_max)
-				noeud->attente_max = temps_attente_message;
-
-			noeud->attente_totale += temps_attente_message;
+						noeud->attente_totale += temps_attente_message;
+				}
+			}
 		}
 	}
 	slot->contient_message = 1;
@@ -693,7 +698,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 		{
 			j++;
 			borne_superieure = bornes_superieures2[j];
-			quantiles_nb_messages_initiaux[j] = quantiles_nb_messages_initiaux[j-1];
+			//quantiles_nb_messages_initiaux[j] = quantiles_nb_messages_initiaux[j-1];
 		}
 		quantiles_nb_messages_initiaux[j]++;
 	}
@@ -709,7 +714,7 @@ void ecrire_fichier_csv(Anneau *anneau)
 			{
 				j++;
 				borne_superieure = bornes_superieures2[j];
-				quantiles_nb_messages_prioritaire[j] = quantiles_nb_messages_prioritaire[j-1];
+				//quantiles_nb_messages_prioritaire[j] = quantiles_nb_messages_prioritaire[j-1];
 			}
 			quantiles_nb_messages_prioritaire[j]++;
 		}
@@ -806,7 +811,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 				break;
 			}
 		}
-		fprintf(f, "0,Best effort,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+		//fprintf(f, "0,Best effort,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		fprintf(f, "0,Prioritaire,0,%d,%d,%d,%d\n", NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 	}
 	for (i=0; i<taille_tableau; i++)
@@ -822,7 +827,7 @@ void ecrire_temps_attente_csv( Anneau *anneau, double *quantiles_initial, double
 			if (pourcentage_prioritaire == 0)
 				pourcentage_prioritaire = valmax_prioritaire / nb_messages_prioritaire_total;
 
-			fprintf(f, "%d,Best effort,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
+			//fprintf(f, "%d,Best effort,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_initial, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 			fprintf(f, "%d,Prioritaire,%lf,%d,%d,%d,%d\n", borne_superieure, pourcentage_prioritaire, NOMBRE_TIC, nombre_slot, nombre_noeud, politique_prioritaire);
 		}
 		else

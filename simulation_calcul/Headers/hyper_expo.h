@@ -8,19 +8,19 @@
  /*! \def PROBABILITE_BURST
      \brief Représente la probabilité de réaliser un burst dans l'hyper exponentielle.
   */
-#define PROBABILITE_BURST 0.01
+#define PROBABILITE_BURST 0.05
 
 
 /*! \def NOMBRE_MESSAGE_BURST
     \brief Représente lle nombre de message qui arrive dans un noeud lors d'un burst.
  */
-#define NOMBRE_MESSAGE_BURST 80	//300 avant
+#define NOMBRE_MESSAGE_BURST 60
 
 
 /*! \def LAMBDA
     \brief Représente le facteur lambda de la loi de poisson.
  */
-#define LAMBDA 10
+#define LAMBDA 8
 
 
 /*! \def TAILLE_TABLEAU

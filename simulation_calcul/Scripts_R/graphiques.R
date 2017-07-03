@@ -14,6 +14,7 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 
 	#On cmmence avec la lecture du fichiers indiquant les nombres de messages
 	donnees = read.csv(chemin_fichier)
+	donnees2 = read.csv("../CSV/attente_anneau2.csv")
 
 	nombre_tic = comma(donnees$TIC[1])	#Le nombre de tic de la simulation
 	nombre_slot = as.character(donnees$nb_slot[1])
@@ -54,7 +55,8 @@ for (numero_fichier in 1:(nombre_fichiers/2) )
 	}
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
     p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
- 	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux)) +
+ 	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux, col = "~50%")) +
+	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees2$taux, col = "~30%")) +
  	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
  	theme(axis.text.x = element_text(size=10)) +
  	theme(axis.text.y = element_text(size=10)) +
