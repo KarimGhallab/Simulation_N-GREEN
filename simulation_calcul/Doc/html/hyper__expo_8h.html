@@ -121,14 +121,14 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a8c7d1ee37c7632af492f0e8052b8bf41">PROBABILITE_BURST</a>&#160;&#160;&#160;0.05</td></tr>
 <tr class="memdesc:a8c7d1ee37c7632af492f0e8052b8bf41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente la probabilité de réaliser un burst dans l'hyper exponentielle. <br /></td></tr>
 <tr class="separator:a8c7d1ee37c7632af492f0e8052b8bf41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae2e8e426841c3f8b84addf1ff01c4cb1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae2e8e426841c3f8b84addf1ff01c4cb1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ae2e8e426841c3f8b84addf1ff01c4cb1">NOMBRE_MESSAGE_BURST</a>&#160;&#160;&#160;60</td></tr>
-<tr class="memdesc:ae2e8e426841c3f8b84addf1ff01c4cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente lle nombre de message qui arrive dans un noeud lors d'un burst. <br /></td></tr>
-<tr class="separator:ae2e8e426841c3f8b84addf1ff01c4cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a738607799d6938e1b15f463688029cd5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a738607799d6938e1b15f463688029cd5"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a738607799d6938e1b15f463688029cd5">LAMBDA</a>&#160;&#160;&#160;8</td></tr>
-<tr class="memdesc:a738607799d6938e1b15f463688029cd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le facteur lambda de la loi de poisson. <br /></td></tr>
-<tr class="separator:a738607799d6938e1b15f463688029cd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac91d2c243b9b21dd24f915ffb8fc2564"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac91d2c243b9b21dd24f915ffb8fc2564"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ac91d2c243b9b21dd24f915ffb8fc2564">LAMBDA_GRAND</a>&#160;&#160;&#160;27</td></tr>
+<tr class="memdesc:ac91d2c243b9b21dd24f915ffb8fc2564"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente lle nombre de message qui arrive dans un noeud lors d'un burst. <br /></td></tr>
+<tr class="separator:ac91d2c243b9b21dd24f915ffb8fc2564"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6c7c842dd5dc6bc028bf7ded1199d77"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae6c7c842dd5dc6bc028bf7ded1199d77"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ae6c7c842dd5dc6bc028bf7ded1199d77">LAMBDA_PETIT</a>&#160;&#160;&#160;7</td></tr>
+<tr class="memdesc:ae6c7c842dd5dc6bc028bf7ded1199d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente le facteur lambda de la loi de poisson. <br /></td></tr>
+<tr class="separator:ae6c7c842dd5dc6bc028bf7ded1199d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2db7ddbaa1ae7b60bc685a19cccd5d42"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2db7ddbaa1ae7b60bc685a19cccd5d42"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a2db7ddbaa1ae7b60bc685a19cccd5d42">TAILLE_TABLEAU</a>&#160;&#160;&#160;10</td></tr>
 <tr class="memdesc:a2db7ddbaa1ae7b60bc685a19cccd5d42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Représente la taille du tableau nécéssaire au calcul de la loi de poisson optimisée. <br /></td></tr>
@@ -142,15 +142,15 @@ Functions</h2></td></tr>
 <tr class="memitem:ade06cfe741c7cc0de6e43552f3a0756b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#ade06cfe741c7cc0de6e43552f3a0756b">generer_aleatoire</a> (float borne_min, float borne_max)</td></tr>
 <tr class="memdesc:ade06cfe741c7cc0de6e43552f3a0756b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Génére un nombre aléatoir situé entre la borne min et la borne max.  <a href="#ade06cfe741c7cc0de6e43552f3a0756b">More...</a><br /></td></tr>
 <tr class="separator:ade06cfe741c7cc0de6e43552f3a0756b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a36caeb1f4b4de1381a2dfe5d10b417ea">loi_de_poisson_naif</a> (float u)</td></tr>
-<tr class="memdesc:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule naif du résultat d'une loi de poisson.  <a href="#a36caeb1f4b4de1381a2dfe5d10b417ea">More...</a><br /></td></tr>
-<tr class="separator:a36caeb1f4b4de1381a2dfe5d10b417ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29c343ba2df3001d4caecc9841c74803"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a29c343ba2df3001d4caecc9841c74803">loi_de_poisson_opti</a> (float u, <a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *tableau_poisson)</td></tr>
-<tr class="memdesc:a29c343ba2df3001d4caecc9841c74803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule optimisé du résultat d'une loi de poisson.  <a href="#a29c343ba2df3001d4caecc9841c74803">More...</a><br /></td></tr>
-<tr class="separator:a29c343ba2df3001d4caecc9841c74803"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5cc51f69b1f615c5e3663141351c9264"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a5cc51f69b1f615c5e3663141351c9264">initialiser_tableau_poisson</a> ()</td></tr>
-<tr class="memdesc:a5cc51f69b1f615c5e3663141351c9264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé.  <a href="#a5cc51f69b1f615c5e3663141351c9264">More...</a><br /></td></tr>
-<tr class="separator:a5cc51f69b1f615c5e3663141351c9264"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3e5074d945f982b68d7967a781505b4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae3e5074d945f982b68d7967a781505b4"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>loi_de_poisson_naif</b> (float u, float lambda)</td></tr>
+<tr class="separator:ae3e5074d945f982b68d7967a781505b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3bc573b8040091a69f71912240441c2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa3bc573b8040091a69f71912240441c2"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>loi_de_poisson_opti</b> (float u, float lambda, <a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *tableau_poisson)</td></tr>
+<tr class="separator:aa3bc573b8040091a69f71912240441c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64bb7b50eac60894ebc6e1ebc5a9d403"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64bb7b50eac60894ebc6e1ebc5a9d403"></a>
+<a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>initialiser_tableau_poisson</b> (float lambda)</td></tr>
+<tr class="separator:a64bb7b50eac60894ebc6e1ebc5a9d403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f4594dd129f6385f47c52a05ab8aa16"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="hyper__expo_8h.html#a1f4594dd129f6385f47c52a05ab8aa16">hyper_expo</a> (<a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *tableau_poisson)</td></tr>
 <tr class="memdesc:a1f4594dd129f6385f47c52a05ab8aa16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hyper exponentielle.  <a href="#a1f4594dd129f6385f47c52a05ab8aa16">More...</a><br /></td></tr>
 <tr class="separator:a1f4594dd129f6385f47c52a05ab8aa16"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,85 +241,6 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Le nombre de message reçu via la loi hyper exponentielle. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a5cc51f69b1f615c5e3663141351c9264"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> * initialiser_tableau_poisson </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialise le tableau avec les résultats de le loi de poisson. Cette fonction est utilisé dans le cadre de l'algorithme optimisé. </p>
-<dl class="section return"><dt>Returns</dt><dd>: le tableau initialisé. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a36caeb1f4b4de1381a2dfe5d10b417ea"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int loi_de_poisson_naif </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>u</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calcule naif du résultat d'une loi de poisson. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Le résultat de la loi de poisson. </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a29c343ba2df3001d4caecc9841c74803"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int loi_de_poisson_opti </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>u</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structTableauDynamiqueDouble.html">TableauDynamiqueDouble</a> *&#160;</td>
-          <td class="paramname"><em>tableau_poisson</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Calcule optimisé du résultat d'une loi de poisson. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">u</td><td>: Variable aléatoire. </td></tr>
-    <tr><td class="paramname">*tableau_poisson</td><td>: Le tableau contenant les valeurs de la loi de poisson. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Le résultat de la loi de poisson. </dd></dl>
 
 </div>
 </div>

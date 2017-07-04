@@ -49,16 +49,16 @@ callgrind_pdf: compil_debug clear
 
 
 compil: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -lm
 
 compil_debug: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+	gcc -Wall TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -lm -g
 
 compil_openMP: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -lm
 
 compil_openMP_debug: TableauDynamiqueEntier.o TableauDynamiqueDouble.o hyper_expo.o CoupleNombreValeur.c simulation.o File.o main.o
-	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -g
+	gcc -Wall -fopenmp TableauDynamiqueEntier.c TableauDynamiqueDouble.c hyper_expo.c CoupleNombreValeur.c simulation.c File.c main.c -o resultat -lm -g
 
 
 hyper_expo.o: hyper_expo.c

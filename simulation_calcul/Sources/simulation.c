@@ -19,7 +19,7 @@ Anneau* initialiser_anneau( int nombre_slot, int nombre_noeud, int generer_pdf, 
 	anneau->decalage = 0; anneau->politique_envoi = politique_envoi;
 	anneau->couple_lecture = (int **) malloc(nombre_noeud * sizeof(int *) );
 	anneau->couple_ecriture = (int **) malloc(nombre_noeud * sizeof(int *) );
-	anneau->tableau_poisson = initialiser_tableau_poisson();
+	anneau->tableau_poisson = initialiser_tableau_poisson(LAMBDA_PETIT);
 
 	if (generer_pdf == 1)
 	{

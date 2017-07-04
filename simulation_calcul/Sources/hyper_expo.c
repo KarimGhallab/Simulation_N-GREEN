@@ -16,21 +16,21 @@ float generer_aleatoire(float borne_min, float borne_max)
 	return tirage;
 }
 
-int loi_de_poisson_naif(float u)
+int loi_de_poisson_naif(float u, float lambda)
 {
-	double p = exp (- LAMBDA);
+	double p = exp (- lambda);
 	int x = 0;
 	double f = p;
 	do
 	{
 		x += 1;
-		p = p*LAMBDA/x;
+		p = p*lambda/x;
 		f += p;
 	} while (u > f);
 	return x;
 }
 
-int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson )
+int loi_de_poisson_opti(float u, float lambda, TableauDynamiqueDouble *tableau_poisson)
 {
 	int maxi = tableau_poisson->taille_utilisee;
 	double *tableau = tableau_poisson->tableau;
@@ -55,17 +55,17 @@ int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson )
 		while (u > f)
 		{
 			x++;
-			p = p*LAMBDA/x;
+			p = p*lambda/x;
 			f = f + p;
 		}
 	}
 	return x;
 }
 
-TableauDynamiqueDouble *initialiser_tableau_poisson()
+TableauDynamiqueDouble *initialiser_tableau_poisson(float lambda)
 {
 	TableauDynamiqueDouble *tableau_poisson = initialiser_tableau_dynamique_double();
-	ajouter_valeur_tableau_dynamique_double(tableau_poisson, exp(-LAMBDA) );
+	ajouter_valeur_tableau_dynamique_double(tableau_poisson, exp(-lambda) );
 
 	double p = tableau_poisson->tableau[0];
 	double seuil = 0.9999999;
@@ -74,7 +74,7 @@ TableauDynamiqueDouble *initialiser_tableau_poisson()
 	int compteur = 1;
 	while (somme < seuil)
 	{
-		p = p*LAMBDA/compteur;
+		p = p*lambda/compteur;
 		double nouvelle_valeur = tableau_poisson->tableau[ compteur-1 ]+p;
 		ajouter_valeur_tableau_dynamique_double(tableau_poisson, nouvelle_valeur);
 		somme = tableau_poisson->tableau[ compteur ];
@@ -86,12 +86,11 @@ TableauDynamiqueDouble *initialiser_tableau_poisson()
 
 int hyper_expo(TableauDynamiqueDouble *tableau_poisson)
 {
-	if (effectuer_tirage(PROBABILITE_BURST) == 1)		//Le tirage est tombé sur la faible proba
-		return NOMBRE_MESSAGE_BURST;
-	else
+	float u = generer_aleatoire(0, 1.0f);
+	if (effectuer_tirage(PROBABILITE_BURST) == 1)	//Lambda grand
+		return (loi_de_poisson_opti(u, LAMBDA_GRAND, tableau_poisson));
+	else											//lambda petit
 	{
-		float u = generer_aleatoire(0, 1.0f);
-		int nb_message = loi_de_poisson_opti(u, tableau_poisson);
-		return nb_message;
+		return (loi_de_poisson_opti(u, LAMBDA_PETIT, tableau_poisson));
 	}
 }

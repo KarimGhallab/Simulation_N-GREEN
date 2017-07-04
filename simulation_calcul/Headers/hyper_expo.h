@@ -11,16 +11,16 @@
 #define PROBABILITE_BURST 0.05
 
 
-/*! \def NOMBRE_MESSAGE_BURST
+/*! \def LAMBDA_GRAND
     \brief Représente lle nombre de message qui arrive dans un noeud lors d'un burst.
  */
-#define NOMBRE_MESSAGE_BURST 27
+#define LAMBDA_GRAND 27
 
 
-/*! \def LAMBDA
+/*! \def LAMBDA_PETIT
     \brief Représente le facteur lambda de la loi de poisson.
  */
-#define LAMBDA 7
+#define LAMBDA_PETIT 7
 
 
 /*! \def TAILLE_TABLEAU
@@ -49,26 +49,29 @@ float generer_aleatoire(float borne_min, float borne_max);
 /*! \fn int loi_de_poisson_naif(float u)
     \brief Calcule naif du résultat d'une loi de poisson.
     \param u : Variable aléatoire.
+	\param lambda : Le paramètre lambda à utiliser.
     \return Le résultat de la loi de poisson.
  */
-int loi_de_poisson_naif(float u);
+int loi_de_poisson_naif(float u, float lambda);
 
 
 /*! \fn int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson);
     \brief Calcule optimisé du résultat d'une loi de poisson.
     \param u : Variable aléatoire.
+	\param lambda : Le paramètre lambda à utiliser.
     \param *tableau_poisson : Le tableau contenant les valeurs de la loi de poisson.
     \return Le résultat de la loi de poisson.
  */
-int loi_de_poisson_opti(float u, TableauDynamiqueDouble *tableau_poisson);
+int loi_de_poisson_opti(float u, float lambda, TableauDynamiqueDouble *tableau_poisson);
 
 
 /*! \fn TableauDynamiqueDouble *initialiser_tableau_poisson
     \brief Initialise le tableau avec les résultats de le loi de poisson.
 	Cette fonction est utilisé dans le cadre de l'algorithme optimisé.
+	\param lambda : Le paramètre lambda petit de la loi de poisson
    	\return : le tableau initialisé.
  */
-TableauDynamiqueDouble *initialiser_tableau_poisson();
+TableauDynamiqueDouble *initialiser_tableau_poisson(float lambda);
 
 
 /*! \fn int hyper_expo(TableauDynamiqueDouble *tableau_poisson)
