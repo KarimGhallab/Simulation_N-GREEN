@@ -71,11 +71,11 @@ STATHAM_MODE = False
 
 """ Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.05
-global LAMBDA
-LAMBDA = 8
+global LAMBDA_PETIT
+LAMBDA_PETIT = 8
 
-global LAMBDA_BURST
-LAMBDA_BURST = 60
+global LAMBDA_GRAND
+LAMBDA_GRAND = 60
 
 LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
@@ -245,8 +245,8 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 		sous_tab = []
 		""" le texte du rectangle """
 		if politique_prioritaire == True:
-			texte_messages_initaux = canvas.create_text(x-20, y, text="0")
-			texte_messages_prioritaires = canvas.create_text(x+20, y, text="0")
+			texte_messages_initaux = canvas.create_text(x-15, y, text="0")
+			texte_messages_prioritaires = canvas.create_text(x+15, y, text="0")
 
 			sous_tab.append(texte_messages_initaux)
 			sous_tab.append(texte_messages_prioritaires)
@@ -358,8 +358,8 @@ def placer_panel_bas(fenetre):
 	""" Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde """
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
-	label_lambda_actuel = Label(fenetre, text = "Lambda petit : "+str(LAMBDA) )
-	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_BURST) )
+	label_lambda_actuel = Label(fenetre, text = "Lambda petit : "+str(LAMBDA_PETIT) )
+	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_GRAND) )
 	label_limite_taille_message_min = Label(fenetre, text = "Nombre de message minimum : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
 
 	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
@@ -668,10 +668,10 @@ class Noeud:
 
 		if controleur.politique_prioritaire == True:
 			controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][1])
-			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-20, y, text= str(noeud_modele.nb_messages_prioritaires) )
+			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-15, y, text= str(noeud_modele.nb_messages_prioritaires) )
 			DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][1] ] = controleur.noeuds_modele [indice_noeud]
 			controleur.canvas.tag_bind(TEXTS_NOEUDS [indice_noeud][1], "<Button-1>", callback_click_texte)
-			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+20, y, text= str(noeud_modele.nb_messages_initaux) )
+			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x+15, y, text= str(noeud_modele.nb_messages_initaux) )
 		else:
 			TEXTS_NOEUDS[indice_noeud][0] = controleur.canvas.create_text(x, y, text= str(noeud_modele.nb_messages_initaux) )
 
@@ -780,27 +780,29 @@ def effectuer_tirage(probabilite):
 
 ##	Réalise le tirage selon l'hyper exponentielle.
 def hyper_expo():
+	u = random.uniform(0, 1)
 	if effectuer_tirage(PROBABILITE_BURST) == True:		#Le tirage est tombé sur la faible proba
-		return LAMBDA_BURST * TAILLE_MESSAGE_BE
+		return loi_de_poisson_opti(u, LAMBDA_GRAND) * TAILLE_MESSAGE_BE
 	else:
-		u = random.uniform(0, 1)
-		return loi_de_poisson_opti(u) * TAILLE_MESSAGE_BE
+		return loi_de_poisson_opti(u, LAMBDA_PETIT) * TAILLE_MESSAGE_BE
 
 ##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.
 #	@param u : Le paramètre u de la loi de poisson.
-def loi_de_poisson_naif(u):
-	p = exp (- LAMBDA)
+#	@param lamb : Le parametre lambda de la loi de poisson.
+def loi_de_poisson_naif(u, lamb):
+	p = exp (- lamb)
 	x = 0
 	f = p
 	while (u > f):
 		x += 1
-		p = p*LAMBDA/x
+		p = p*lamb/x
 		f += p
 	return x
 
 ##	Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.
 #	@param u : Le paramètre u de la loi de poisson.
-def loi_de_poisson_opti(u):
+#	@param lamb : Le parametre lambda de la loi de poisson.
+def loi_de_poisson_opti(u, lamb):
 	""" Initialisation des variables """
 
 	maxi = TAILLE_UTILISEE_TABLEAU_POISSON
@@ -818,7 +820,7 @@ def loi_de_poisson_opti(u):
 
 		while u > f:
 			x += 1
-			p = p*LAMBDA/x
+			p = p*lamb/x
 			f = f + p
 	return x
 
@@ -830,13 +832,13 @@ def initialiser_tableau():
 
 	TABLEAU_POISSON = [0] * TAILLE_TABLEAU
 
-	TABLEAU_POISSON[0] = exp(-LAMBDA)
+	TABLEAU_POISSON[0] = exp(-LAMBDA_PETIT)
 	p = TABLEAU_POISSON[0]
 
 	i = 1
 	seuil = 0.99999
 	while TABLEAU_POISSON[i-1] < seuil:
-		p = p*LAMBDA/i
+		p = p*LAMBDA_PETIT/i
 		TABLEAU_POISSON[i] = TABLEAU_POISSON[i-1]+p
 		i+=1
 	TAILLE_UTILISEE_TABLEAU_POISSON = i
@@ -1024,13 +1026,13 @@ def diminuer_vitesse():
 ##	Modifie la configuration de l'anneau en fonction des données saisies dans le panel bas.
 def modifier_configuration():
 	global controleur
-	global LAMBDA
-	global LAMBDA_BURST
+	global LAMBDA_PETIT
+	global LAMBDA_GRAND
 	global LIMITE_NOMBRE_MESSAGE_MIN
 
 	tmp_noeud = controleur.nb_noeud_anneau
 	tmp_slot = controleur.nb_slot_anneau
-	tmp_lambda = LAMBDA
+	tmp_lambda = LAMBDA_PETIT
 	tmp_limite_message = LIMITE_NOMBRE_MESSAGE_MIN
 	nb_champ_vide = 0
 
@@ -1083,7 +1085,7 @@ def modifier_configuration():
 			tkMessageBox.showerror("Erreur valeur lambda !", message)
 			erreur = True
 		else:
-			LAMBDA = valeur_lambda
+			LAMBDA_PETIT = valeur_lambda
 	else:
 		nb_champ_vide += 1
 
@@ -1095,7 +1097,7 @@ def modifier_configuration():
 			tkMessageBox.showerror("Erreur valeur lambda burst !", message)
 			erreur = True
 		else:
-			LAMBDA_BURST = valeur_lambda_burst
+			LAMBDA_GRAND = valeur_lambda_burst
 	else:
 		nb_champ_vide += 1
 
@@ -1113,7 +1115,7 @@ def modifier_configuration():
 	if erreur or nb_champ_vide == len(controleur.entrys):
 		controleur.nb_noeud_anneau = tmp_noeud
 		controleur.nb_slot_anneau = tmp_slot
-		LAMBDA = tmp_lambda
+		LAMBDA_PETIT = tmp_lambda
 		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		controleur.lire_fichier = False

@@ -162,12 +162,12 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>afficher_aide</b> ()</
 <tr class="memitem:af060f93fc787eec8e2322b5cc440f84c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#af060f93fc787eec8e2322b5cc440f84c">hyper_expo</a> ()</td></tr>
 <tr class="memdesc:af060f93fc787eec8e2322b5cc440f84c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Réalise le tirage selon l'hyper exponentielle.  <a href="#af060f93fc787eec8e2322b5cc440f84c">More...</a><br /></td></tr>
 <tr class="separator:af060f93fc787eec8e2322b5cc440f84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a9c232b56c2bd8fd84ad7a32b41ff00e3">loi_de_poisson_naif</a> (u)</td></tr>
-<tr class="memdesc:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.  <a href="#a9c232b56c2bd8fd84ad7a32b41ff00e3">More...</a><br /></td></tr>
-<tr class="separator:a9c232b56c2bd8fd84ad7a32b41ff00e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c2e150bea1df93e0a667ae3daa7a865"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a6c2e150bea1df93e0a667ae3daa7a865">loi_de_poisson_opti</a> (u)</td></tr>
-<tr class="memdesc:a6c2e150bea1df93e0a667ae3daa7a865"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.  <a href="#a6c2e150bea1df93e0a667ae3daa7a865">More...</a><br /></td></tr>
-<tr class="separator:a6c2e150bea1df93e0a667ae3daa7a865"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0078326ae4d8865e8f6e6c0d01c3f913"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a0078326ae4d8865e8f6e6c0d01c3f913">loi_de_poisson_naif</a> (u, lamb)</td></tr>
+<tr class="memdesc:a0078326ae4d8865e8f6e6c0d01c3f913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme naif de la loi de poisson.  <a href="#a0078326ae4d8865e8f6e6c0d01c3f913">More...</a><br /></td></tr>
+<tr class="separator:a0078326ae4d8865e8f6e6c0d01c3f913"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fe3e356c41b32781a51cfe841326b43"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a3fe3e356c41b32781a51cfe841326b43">loi_de_poisson_opti</a> (u, lamb)</td></tr>
+<tr class="memdesc:a3fe3e356c41b32781a51cfe841326b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson.  <a href="#a3fe3e356c41b32781a51cfe841326b43">More...</a><br /></td></tr>
+<tr class="separator:a3fe3e356c41b32781a51cfe841326b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#abd21c1256fe0dc5c0d89dc09322cbaf5">initialiser_tableau</a> ()</td></tr>
 <tr class="memdesc:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialise le tableau avec les résultats de le loi de poisson.  <a href="#abd21c1256fe0dc5c0d89dc09322cbaf5">More...</a><br /></td></tr>
 <tr class="separator:abd21c1256fe0dc5c0d89dc09322cbaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -253,7 +253,7 @@ list&#160;</td><td class="memItemRight" valign="bottom"><b>COULEURS_MESSAGE</b> 
 int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_SLOT</b> = 15</td></tr>
 <tr class="separator:adb4455a8f64dc1c3ce30925001b6462e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dc37a8cc8ae720394f02d61bc74304e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8dc37a8cc8ae720394f02d61bc74304e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_NOEUD</b> = COTE_SLOT+5</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>COTE_NOEUD</b> = COTE_SLOT+10</td></tr>
 <tr class="separator:a8dc37a8cc8ae720394f02d61bc74304e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e294f6eed84f8101efdf0ec6c111c61"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0e294f6eed84f8101efdf0ec6c111c61"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>VITESSE_LATENCE_MESSAGE</b> = 0.002</td></tr>
@@ -297,24 +297,27 @@ dictionary&#160;</td><td class="memItemRight" valign="bottom"><b>DICT_TEXTES_NOE
 <tr class="memitem:a59ae5fc7c5b8ac91cb74774ccdeea479"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a59ae5fc7c5b8ac91cb74774ccdeea479"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>PERIODE_MESSAGE_ANTENNE</b> = 100</td></tr>
 <tr class="separator:a59ae5fc7c5b8ac91cb74774ccdeea479"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af57cfed112962e37bea71069b907d7e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af57cfed112962e37bea71069b907d7e8"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>TAILLE_MESSAGE_BE</b> = 15</td></tr>
+<tr class="separator:af57cfed112962e37bea71069b907d7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab37d691b396a795780e2bcff8d24af0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab37d691b396a795780e2bcff8d24af0"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>STATHAM_MODE</b> = False</td></tr>
 <tr class="separator:aab37d691b396a795780e2bcff8d24af0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b7a889f8d469d7e64b97ea31511f63c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8b7a889f8d469d7e64b97ea31511f63c"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>PROBABILITE_BURST</b> = 0.01</td></tr>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>PROBABILITE_BURST</b> = 0.05</td></tr>
 <tr class="separator:a8b7a889f8d469d7e64b97ea31511f63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfb0103c1d6081a239ce1b3547eea7ff"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acfb0103c1d6081a239ce1b3547eea7ff"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA</b> = 10</td></tr>
-<tr class="separator:acfb0103c1d6081a239ce1b3547eea7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a44ceb37e8f0820d086e63eabb4c34600"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a44ceb37e8f0820d086e63eabb4c34600"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_BURST</b> = 140</td></tr>
-<tr class="separator:a44ceb37e8f0820d086e63eabb4c34600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec87de677b9332768e2d6dee04ed0831"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec87de677b9332768e2d6dee04ed0831"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_PETIT</b> = 8</td></tr>
+<tr class="separator:aec87de677b9332768e2d6dee04ed0831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3a9de833bac5c685b15b0fa28601147"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a9de833bac5c685b15b0fa28601147"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_GRAND</b> = 60</td></tr>
+<tr class="separator:ab3a9de833bac5c685b15b0fa28601147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8acf1290518b6024f92b00dd57cdcc12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8acf1290518b6024f92b00dd57cdcc12"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MAX</b> = 80</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MAX</b> = 1000</td></tr>
 <tr class="separator:a8acf1290518b6024f92b00dd57cdcc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f82b015795dba974442b6b95d7365be"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6f82b015795dba974442b6b95d7365be"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MIN</b> = 60</td></tr>
-<tr class="separator:a6f82b015795dba974442b6b95d7365be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64eb5f3fba08db32de9c9d946c36825a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a64eb5f3fba08db32de9c9d946c36825a"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MIN</b> = LIMITE_NOMBRE_MESSAGE_MAX*0.7</td></tr>
+<tr class="separator:a64eb5f3fba08db32de9c9d946c36825a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aee88d1635ac126104219e52c61ac6c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6aee88d1635ac126104219e52c61ac6c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TAILLE_TABLEAU</b> = 1000</td></tr>
 <tr class="separator:a6aee88d1635ac126104219e52c61ac6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -923,7 +926,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 
 </div>
 </div>
-<a class="anchor" id="a9c232b56c2bd8fd84ad7a32b41ff00e3"></a>
+<a class="anchor" id="a0078326ae4d8865e8f6e6c0d01c3f913"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -931,8 +934,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="memname">def simulation_v2.loi_de_poisson_naif </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>u</em></td><td>)</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>lamb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -941,13 +954,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">u</td><td>: Le paramètre u de la loi de poisson. </td></tr>
+    <tr><td class="paramname">lamb</td><td>: Le parametre lambda de la loi de poisson. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a6c2e150bea1df93e0a667ae3daa7a865"></a>
+<a class="anchor" id="a3fe3e356c41b32781a51cfe841326b43"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -955,8 +969,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
           <td class="memname">def simulation_v2.loi_de_poisson_opti </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>u</em></td><td>)</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>lamb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -964,7 +988,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
 <p>Calcule le nombre de message Best Effort transmis par un noeud selon l'algorithme optimisé de la loi de poisson. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">u</td><td>: Le paramètre u de la loi de poisson. <pre class="fragment">Initialisation des variables </pre> </td></tr>
+    <tr><td class="paramname">u</td><td>: Le paramètre u de la loi de poisson. </td></tr>
+    <tr><td class="paramname">lamb</td><td>: Le parametre lambda de la loi de poisson. <pre class="fragment">Initialisation des variables </pre> </td></tr>
   </table>
   </dd>
 </dl>
