@@ -88,9 +88,15 @@ int hyper_expo(TableauDynamiqueDouble *tableau_poisson)
 {
 	float u = generer_aleatoire(0, 1.0f);
 	if (effectuer_tirage(PROBABILITE_BURST) == 1)	//Lambda grand
-		return (loi_de_poisson_opti(u, LAMBDA_GRAND, tableau_poisson));
+	{
+		int message =  loi_de_poisson_naif(u, LAMBDA_GRAND);
+		printf("Burst : %d\n", message);
+		return message;
+	}
 	else											//lambda petit
 	{
-		return (loi_de_poisson_opti(u, LAMBDA_PETIT, tableau_poisson));
+		int message =  (loi_de_poisson_opti(u, LAMBDA_PETIT, tableau_poisson));
+		printf("Normal : %d\n", message);
+		return message;
 	}
 }

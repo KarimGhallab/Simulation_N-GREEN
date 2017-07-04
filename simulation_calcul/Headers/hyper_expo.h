@@ -14,13 +14,13 @@
 /*! \def LAMBDA_GRAND
     \brief Représente lle nombre de message qui arrive dans un noeud lors d'un burst.
  */
-#define LAMBDA_GRAND 27
+#define LAMBDA_GRAND 49
 
 
 /*! \def LAMBDA_PETIT
     \brief Représente le facteur lambda de la loi de poisson.
  */
-#define LAMBDA_PETIT 7
+#define LAMBDA_PETIT 3
 
 
 /*! \def TAILLE_TABLEAU

@@ -1,32 +1,32 @@
 valeur,type,taux,TIC,nb_slot,nb_noeud,politique_prioritaire
-0,Prioritaire,0,500000,25,5,1
-1,Prioritaire,0.428840,500000,25,5,1
-2,Prioritaire,0.236440,500000,25,5,1
-3,Prioritaire,0.141600,500000,25,5,1
-4,Prioritaire,0.094520,500000,25,5,1
-5,Prioritaire,0.053400,500000,25,5,1
-6,Prioritaire,0.024600,500000,25,5,1
-7,Prioritaire,0.012080,500000,25,5,1
-8,Prioritaire,0.004960,500000,25,5,1
-9,Prioritaire,0.002120,500000,25,5,1
-10,Prioritaire,0.001080,500000,25,5,1
-11,Prioritaire,0.000240,500000,25,5,1
-12,Prioritaire,0.000120,500000,25,5,1
-13,Prioritaire,0.000120,500000,25,5,1
-14,Prioritaire,0.000120,500000,25,5,1
-15,Prioritaire,0.000120,500000,25,5,1
-16,Prioritaire,0.000120,500000,25,5,1
-17,Prioritaire,0.000120,500000,25,5,1
-18,Prioritaire,0.000120,500000,25,5,1
-19,Prioritaire,0.000120,500000,25,5,1
-20,Prioritaire,0.000120,500000,25,5,1
-21,Prioritaire,0.000120,500000,25,5,1
-22,Prioritaire,0.000120,500000,25,5,1
-23,Prioritaire,0.000120,500000,25,5,1
-24,Prioritaire,0.000120,500000,25,5,1
-25,Prioritaire,0,500000,25,5,1
-26,Prioritaire,0,500000,25,5,1
-27,Prioritaire,0,500000,25,5,1
-28,Prioritaire,0,500000,25,5,1
-29,Prioritaire,0,500000,25,5,1
-33,Prioritaire,0,500000,25,5,1
+0,Best effort,0,500000,25,5,1
+1,Best effort,0.203943,500000,25,5,1
+2,Best effort,0.162299,500000,25,5,1
+3,Best effort,0.144433,500000,25,5,1
+4,Best effort,0.129919,500000,25,5,1
+5,Best effort,0.114242,500000,25,5,1
+6,Best effort,0.091225,500000,25,5,1
+7,Best effort,0.065872,500000,25,5,1
+8,Best effort,0.041284,500000,25,5,1
+9,Best effort,0.023429,500000,25,5,1
+10,Best effort,0.012502,500000,25,5,1
+11,Best effort,0.006237,500000,25,5,1
+12,Best effort,0.002798,500000,25,5,1
+13,Best effort,0.001147,500000,25,5,1
+14,Best effort,0.000427,500000,25,5,1
+15,Best effort,0.000160,500000,25,5,1
+16,Best effort,0.000062,500000,25,5,1
+17,Best effort,0.000017,500000,25,5,1
+18,Best effort,0.000003,500000,25,5,1
+19,Best effort,0.000001,500000,25,5,1
+20,Best effort,0,500000,25,5,1
+21,Best effort,0,500000,25,5,1
+22,Best effort,0,500000,25,5,1
+23,Best effort,0,500000,25,5,1
+24,Best effort,0,500000,25,5,1
+25,Best effort,0,500000,25,5,1
+26,Best effort,0,500000,25,5,1
+27,Best effort,0,500000,25,5,1
+28,Best effort,0,500000,25,5,1
+29,Best effort,0,500000,25,5,1
+30,Best effort,0,500000,25,5,1

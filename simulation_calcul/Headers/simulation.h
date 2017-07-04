@@ -20,7 +20,7 @@
 /*! \def LIMITE_NOMBRE_MESSAGE_MIN
     \brief La limite minimale avant un envoi de message depuis un noeud.
  */
-#define LIMITE_NOMBRE_MESSAGE_MIN 700
+#define LIMITE_NOMBRE_MESSAGE_MIN 350
 
 /*! \def LIMITE_NOMBRE_MESSAGE_MAX
     \brief La limite maximale avant un envoi de message depuis un noeud.
@@ -36,6 +36,11 @@
     \brief Le nombre de message C-RAN envoyé par une antenne.
  */
 #define NB_MESSAGE_CRAN 500
+
+/*! \def NB_ANTENNE
+    \brief Le nombre d'antennes par noeud.
+ */
+#define NB_ANTENNE 5
 
 /*! \def POLITIQUE_ENVOI_PRIORITAIRE
     \brief Indique la politique d'envoie de l'anneau.
@@ -63,7 +68,7 @@ struct Noeud
 	int indice_slot_lecture;
 	int indice_slot_ecriture;
 	int nb_antenne;		//Indique le nombre d'antenne auquel est lié le noeuds
-	int debut_periode;		//Le décalage selon lequel le noeud recoit des messages des antennes
+	int *debuts_periodes;		//Le TIC d'envoi des messages prioritaires
 	File *file_messages_initiale;		//File contenant les TIC d'arrivé de tout les messages si la politique d'envoi ne prend pas en compte les messages prioritaire, dans le cas contraire, elle ne contient que les messages Best effort
 	File *file_messages_prioritaires;		//File contenant les TIC d'arrivé des messages C-RAN où prioritaire si la politique est spécifiée.
 	int attente_max;		//Le temps d'attente maximal dans le noeud

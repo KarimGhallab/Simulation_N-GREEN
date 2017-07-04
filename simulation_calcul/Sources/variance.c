@@ -3,7 +3,7 @@
 #include <time.h>
 #include <math.h>
 
-#define LAMBDA_PETIT 8
+#define LAMBDA_PETIT 7
 #define LAMBDA_GRAND 27
 #define PROBABILITE_BURST 0.05
 
@@ -48,7 +48,7 @@ int main()
 	double variance = 0.0;
 	double moyenne = 0.0;
 
-	int nb_simuls = 1000000;
+	int nb_simuls = 20000000;
 	int result;
 	float tirage;
 	for(int i=0;i<nb_simuls;i++)

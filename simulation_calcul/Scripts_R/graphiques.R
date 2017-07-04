@@ -25,11 +25,10 @@ for (numero_fichier in 1:1 )
 	############# On écrit un petit message récapitulatif de la simulation #############
 	texte_info = ""
 	if (politique_prioritaire == 1)
-		texte_info = paste(texte_info, "C-RAN priority")
+		texte_info = paste(texte_info, "Best effort messages with a C-RAN priority, fill rate : 35%.")
 	else
 		texte_info = paste(texte_info, "No priority")
 
-	titre = "Message distribution"
 
 	maxi = max(donnees$valeur)
 	if (maxi >= 100)
@@ -48,10 +47,13 @@ for (numero_fichier in 1:1 )
 		labels_x = c(labels_x, maxi)
 	}
 	############# Génération du graphique indiquant le nombre de message ayant attendu #############
-    p <- ggplot(donnees, aes(x=donnees$valeur, y=donnees$taux, group = type, colour = type)) +
- 	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux, col = "~60% C-RAN=12.5")) +
-	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees2$taux, col = "~60% C-RAN=2.5")) +
+	valeur_max = max (c(donnees$valeur, donnees2$valeur, donnees3$valeur) )
+	line_colors = c("#009E73", "#D55E00", "#56B4E9")
+    p <- ggplot(donnees, aes(x=valeur_max, y=donnees$taux, group = type, colour = type)) +
 	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees3$taux, col = "~40% C-RAN=2.5")) +
+	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees2$taux, col = "~60% C-RAN=2.5")) +
+	geom_line(data=donnees, aes(x=donnees$valeur, y=donnees$taux, col = "~60% C-RAN=12.5")) +
+	scale_colour_manual(values=line_colors) +
  	theme(legend.background = element_rect(fill="lightblue", size = 0.5, linetype="solid"), axis.text=element_text(size=7), axis.title=element_text(size=12,face="bold"), plot.caption=element_text(size=8, face="italic")) +
  	theme(axis.text.x = element_text(size=10)) +
  	theme(axis.text.y = element_text(size=10)) +
@@ -64,8 +66,7 @@ for (numero_fichier in 1:1 )
 	{
 		p <- p + scale_x_continuous(name = "Slots")
 	}
- 	p <- p + labs(caption = texte_info) +
- 	ggtitle(titre)
+ 	p <- p + labs(caption = texte_info)
 
 	print(p)
 
