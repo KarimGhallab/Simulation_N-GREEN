@@ -87,7 +87,9 @@ global TABLEAU_POISSON
 
 global TAILLE_UTILISEE_TABLEAU_POISSON
 
-NB_ANTENNE = 5
+NB_ANTENNE = 1
+
+INDICE_DATA_CENTER = 0
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
@@ -209,8 +211,10 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 
 	for j in range(nb_noeud):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
-
-		noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], NB_ANTENNE)
+		if i == INDICE_DATA_CENTER:
+			noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], 0)
+		else:
+			noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], NB_ANTENNE)
 
 		slots_modele[ indice_slot_accessible ].indice_noeud_lecture = j
 		slots_modele[ indice_slot_accessible -1 ].indice_noeud_ecriture = j
@@ -608,7 +612,9 @@ class Noeud:
 		self.couleur_noeud_foncee = couleur_noeud_foncee
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debuts_periodes = [0] * nb_antenne
+		print("NB antenne : ", nb_antenne)
 		for i in range(nb_antenne):
+			print("Boucle")
 			self.debuts_periodes[i] = int(random.uniform(0, 100))		#Le décalage selon lequel l'antenne envoi une requête au noeud
 		print("Décalage des antennes pour le noeud ", couleur_noeud, " : ", self.debuts_periodes)
 
