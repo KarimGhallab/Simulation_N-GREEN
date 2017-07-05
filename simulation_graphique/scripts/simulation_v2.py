@@ -72,10 +72,10 @@ STATHAM_MODE = False
 """ Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.05
 global LAMBDA_PETIT
-LAMBDA_PETIT = 8
+LAMBDA_PETIT = 3
 
 global LAMBDA_GRAND
-LAMBDA_GRAND = 60
+LAMBDA_GRAND = 49
 
 LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
@@ -87,7 +87,7 @@ global TABLEAU_POISSON
 
 global TAILLE_UTILISEE_TABLEAU_POISSON
 
-NB_ANTENNE = 5
+NB_ANTENNE = 1
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
@@ -610,7 +610,6 @@ class Noeud:
 		self.debuts_periodes = [0] * nb_antenne
 		for i in range(nb_antenne):
 			self.debuts_periodes[i] = int(random.uniform(0, 100))		#Le décalage selon lequel l'antenne envoi une requête au noeud
-		print("Décalage des antennes pour le noeud ", couleur_noeud, " : ", self.debuts_periodes)
 
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
 		self.messages_prioritaires = deque()
@@ -1190,7 +1189,6 @@ def entrer_message():
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
 			for k in range (NB_ANTENNE):
 				if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[k]:		#C'est la periode du noeud, il reçoit un message de ses antennes
-					print("Envoie de l'antenne ",k+1," du noeud ", str(noeud))
 					nb_messages_prioritaires = 500
 					for i in range(nb_messages_prioritaires):
 						noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
@@ -1425,7 +1423,6 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print("Tic : ", controleur.nb_tic)
 
 		rotation_message()
 
@@ -1495,8 +1492,8 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
-nb_noeud = 3
-nb_slot = 6
+nb_noeud = 5
+nb_slot = 25
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
 fenetre.mainloop()
