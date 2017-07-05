@@ -35,12 +35,12 @@ COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#aaaaee"] )
 COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
 COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
-COTE_SLOT = 15		#La hauteur/largeur d'un slot
+COTE_SLOT = 7		#La hauteur/largeur d'un slot
 COTE_NOEUD = COTE_SLOT + 10		#La hauteur/largeur d'un noeud
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
-COTE_MESSAGE = 7
+COTE_MESSAGE = 5
 
 NOMBRE_LIGNE_CANVAS = 50
 
@@ -75,7 +75,7 @@ global LAMBDA_PETIT
 LAMBDA_PETIT = 8
 
 global LAMBDA_GRAND
-LAMBDA_GRAND = 60
+LAMBDA_GRAND = 27
 
 LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
@@ -211,7 +211,7 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 
 	for j in range(nb_noeud):
 		indice_slot_accessible = (( (j*pas) + ((j+1)*pas) ) / 2) - 1
-		if i == INDICE_DATA_CENTER:
+		if j == INDICE_DATA_CENTER:
 			noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], 0)
 		else:
 			noeuds_modele[j] = Noeud(indice_slot_accessible, indice_slot_accessible-1, COULEURS_MESSAGE[j][0], COULEURS_MESSAGE[j][1], COULEURS_MESSAGE[j][2], NB_ANTENNE)
@@ -238,7 +238,10 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 		y2 = milieu_y - slots_modele [ indice_slot_accessible -1 ].val_sin * DISTANCE_NOEUD
 		y = (y1 + y2) / 2
 
-		noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j][0] )
+		if j == INDICE_DATA_CENTER:
+			noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j][0], dash=(2,4))
+		else:
+			noeuds_vue[j] = canvas.create_rectangle( x - COTE_NOEUD, y - COTE_NOEUD, x + COTE_NOEUD, y + COTE_NOEUD, fill=COULEURS_MESSAGE[j][0] )
 		canvas.tag_bind(noeuds_vue[j], "<Button-1>", callback_click_noeud)
 
 		sous_tab = []
@@ -612,11 +615,9 @@ class Noeud:
 		self.couleur_noeud_foncee = couleur_noeud_foncee
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debuts_periodes = [0] * nb_antenne
-		print("NB antenne : ", nb_antenne)
-		for i in range(nb_antenne):
-			print("Boucle")
+		for i in range(0, nb_antenne):
 			self.debuts_periodes[i] = int(random.uniform(0, 100))		#Le décalage selon lequel l'antenne envoi une requête au noeud
-		print("Décalage des antennes pour le noeud ", couleur_noeud, " : ", self.debuts_periodes)
+		print("Debuts periode du noeud ", couleur_noeud, " : ", self.debuts_periodes)
 
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
 		self.messages_prioritaires = deque()
@@ -742,12 +743,13 @@ class PaquetMessage:
 	#	@param indice_noeud_emetteur : L'indice du noeud emetteur du paquet.
 	#	@param taille : La taille du paquet.
 	#	@param messages : Les messages du paquet.
-	def __init__(self, id_message, indice_noeud_emetteur, taille, messages):
+	def __init__(self, id_message, indice_noeud_emetteur, taille, proportion_message_prioritaire, messages):
 		self.id_message_graphique = id_message
 		self.indice_noeud_emetteur = indice_noeud_emetteur
 		self.x = None
 		self.y = None
-		self.taille = None	#La taille du paquet
+		self.taille = taille	#La taille du paquet
+		self.proportion_message_prioritaire = proportion_message_prioritaire
 		self.messages = messages
 
 	##	Renvoie le paquet sous forme de chaine de caractères.
@@ -755,7 +757,7 @@ class PaquetMessage:
 	#	@return Le paquet sous forme de chaine de caractères.
 	def __str__(self):
 		global controleur
-		return "Message envoyé par le noeud  : "+str(controleur.noeuds_modele[self.indice_noeud_emetteur].couleur)
+		return "Paquet envoyé par le noeud  : "+str(controleur.noeuds_modele[self.indice_noeud_emetteur].couleur_noeud)+"\nLa taille du paquet est de "+str(self.taille)+" et sa proportion de message prioritaire est de "+str(self.proportion_message_prioritaire)
 
 
 	##	Retourne l'equalité entre deux messages.
@@ -1144,6 +1146,10 @@ def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
 
+	print("Taille ", len(messages))
+	print("Proportion ", proportion_message_prioritaire)
+	print("le noeud ", noeud_modele.couleur_noeud, " envoi ", len(messages) * proportion_message_prioritaire, "messages C-RANs")
+
 	""" Récupération des valeurs """
 	canvas = controleur.canvas
 	noeud_graphique = controleur.noeuds_vue[ indice_noeud ]
@@ -1153,7 +1159,10 @@ def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 
 	""" Création du message """
 	id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)
-	controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), messages)
+	if controleur.politique_prioritaire == True:
+		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), proportion_message_prioritaire, messages)
+	else:
+		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), 0, messages)
 
 	""" Met à jour les temps d'attentes du noeud qui envoi le message """
 	if controleur.lire_fichier == False:
@@ -1188,23 +1197,22 @@ def rotation_message():
 def entrer_message():
 	global controleur
 
-	for i in range (controleur.nb_slot_anneau):		#Parcours des slots de l'anneau
+	for i in range (0, controleur.nb_slot_anneau):		#Parcours des slots de l'anneau
 		slot = controleur.slots_modele[i]
 		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
 
 			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
-			for k in range (NB_ANTENNE):
-				if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[k]:		#C'est la periode du noeud, il reçoit un message de ses antennes
-					print("Envoie de l'antenne ",k+1," du noeud ", str(noeud))
-					nb_messages_prioritaires = 500
-					for i in range(nb_messages_prioritaires):
-						noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
-
+			if slot.indice_noeud_ecriture != INDICE_DATA_CENTER:
+				for j in range (0, NB_ANTENNE):
+					if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[j]:		#C'est la periode du noeud, il reçoit un message de ses antennes
+						nb_messages_prioritaires = 500
+						for k in range(0, nb_messages_prioritaires):
+							noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
 			nb_messages_best_effort = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
 			""" On ajoute au noeud le tic d'arrivé des messages """
-			for i in range(nb_messages_best_effort):
+			for j in range(0, nb_messages_best_effort):
 				noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
 
 			if controleur.politique_prioritaire == True:
@@ -1217,20 +1225,22 @@ def entrer_message():
 					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
 						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
 					else:												#on vide le noeud
-						nb_message_a_envoyer = noeud.nb_messages_initaux
-					messages = [None] * nb_message_a_envoyer
+						nb_message_a_envoyer = nb_message_noeud
+					messages = []
 					nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
 					#nb_messages_best_effort = noeud.nb_messages_best_effort
 					if nb_messages_prioritaire_noeud >= nb_message_a_envoyer:	 #On envoie uniquement des prioritaires
-						for i in range(nb_message_a_envoyer):
+						for k in range(0, nb_message_a_envoyer):
 							messages.append( noeud.messages_prioritaires.popleft() )
 						noeud.nb_messages_prioritaires -= nb_message_a_envoyer
 						proportion_message_prioritaire = 1
 
 					else:													#On envoie tous les prioritaires et le reste en best effort
-						for i in range(nb_messages_prioritaire_noeud):
+						k = 0
+						for k in range(0, nb_messages_prioritaire_noeud):
 							messages.append( noeud.messages_prioritaires.popleft() )
-						for i in range(nb_message_a_envoyer - nb_messages_prioritaire_noeud):
+						k = 0
+						for k in range(0, nb_message_a_envoyer - nb_messages_prioritaire_noeud):
 							messages.append( noeud.messages_initiaux.popleft() )
 						noeud.nb_messages_prioritaires -= nb_messages_prioritaire_noeud
 						noeud.nb_messages_initaux -= (nb_message_a_envoyer - nb_messages_prioritaire_noeud)
@@ -1246,8 +1256,8 @@ def entrer_message():
 					else:												#on vide le noeud
 						nb_message_a_envoyer = noeud.nb_messages_initaux
 					""" On enleve les messages du noeud """
-					messages = [None] * nb_message_a_envoyer
-					for i in range(nb_message_a_envoyer):
+					messages = []
+					for k in range(0, nb_message_a_envoyer):
 						messages.append( noeud.messages_initiaux.popleft() )
 
 					noeud.nb_messages_initaux -= nb_message_a_envoyer
@@ -1282,10 +1292,23 @@ def sortir_message():
 	for slot in controleur.slots_modele:
 		paquet_message = slot.paquet_message
 
+		#Il y a un message sur le slot de lecture du noeud emetteur
 		if paquet_message and slot.indice_noeud_lecture != None and paquet_message.indice_noeud_emetteur == slot.indice_noeud_lecture:
 			t = Thread(target=sortir_message_graphique, args=(controleur.canvas, slot.paquet_message.id_message_graphique) )
 			t.start()
 			slot.paquet_message = None
+		#Ici on gére le cas ou des messages prioritaires passent devant le BBU
+		elif controleur.politique_prioritaire == True and paquet_message and slot.indice_noeud_lecture != None and slot.indice_noeud_lecture == INDICE_DATA_CENTER:
+			print("Taille ", paquet_message.taille)
+			print("Proportion ", paquet_message.proportion_message_prioritaire)
+			nb_messages_prioritaires = int(paquet_message.taille * paquet_message.proportion_message_prioritaire)
+			print("Nb mesage prioritaires : ", nb_messages_prioritaires)
+
+			print("J'ajoute des message dans le noeud ", controleur.noeuds_modele[INDICE_DATA_CENTER].couleur_noeud)
+			for k in range(0, nb_messages_prioritaires):
+				print(k)
+				controleur.noeuds_modele[INDICE_DATA_CENTER].ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
+			controleur.noeuds_modele[INDICE_DATA_CENTER].update_file_noeud_graphique()
 
 
 ##	Methode appelant une methode récursive qui décale d'un slot les message du système.
@@ -1431,7 +1454,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print("Tic : ", controleur.nb_tic)
+		print("TIC : ", controleur.nb_tic)
 
 		rotation_message()
 
@@ -1491,6 +1514,7 @@ fenetre = creer_fenetre()
 
 # # # # # # # # # # # # 	VALEUR POUR LA TAILLE DU CANVAS 	# # # # # # # # # # # #
 COTE_CANVAS = int(fenetre.winfo_screenheight() * (5.0/8))
+COTE_CANVAS = 800
 #COTE_CANVAS = 2000
 
 DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
@@ -1501,8 +1525,8 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
-nb_noeud = 3
-nb_slot = 6
+nb_noeud = 5
+nb_slot = 25
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
 fenetre.mainloop()
