@@ -7,7 +7,7 @@ from __future__ import print_function
 
 import tkMessageBox, tkFileDialog, time, random, sys, os, csv
 
-from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
+from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage, WORD
 from math import cos, sin, pi, exp
 from threading import Thread
 from PIL import Image, ImageTk
@@ -43,6 +43,7 @@ VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque dé
 COTE_MESSAGE = 5
 
 NOMBRE_LIGNE_CANVAS = 50
+NOMBRE_COLONNE_CANVAS = 3
 
 CLE_ENTRY_SLOT = 1		#La clé de l'entry du slot pour le dictionnaire des entrys
 CLE_ENTRY_NOEUD = 2		#La clé de l'entry du noeud pour le dictionnaire des entrys
@@ -158,7 +159,7 @@ def creer_canvas(fenetre):
 	canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
 	canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
 
-	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=3)
+	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=NOMBRE_COLONNE_CANVAS)
 
 	return canvas
 
@@ -344,7 +345,7 @@ def placer_panel_gauche(fenetre):
 	bouton_aide.grid(row=NOMBRE_LIGNE_CANVAS + 8, sticky="W")
 
 
-##	Place le panel bas affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
+##	Place le panel droit affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
 #	- Le nombre de slot utilisé.
 #	- Le nombre de Noeud présent.
 #	- Le lambda actuellement utilisé.
@@ -353,36 +354,40 @@ def placer_panel_gauche(fenetre):
 #	Le panel contient aussi un bouton de validation des données.
 #	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
 #	@param fenetre : La fenetre sur laquelle on place le panel gauche.
-def placer_panel_bas(fenetre):
+def placer_panel_droit(fenetre):
 	nombre_slot = len( controleur.slots_modele )
 	nombre_noeud = len( controleur.noeuds_modele )
+
+	left_padding = 15
+	right_padding = 15
+	x_padding = (left_padding, right_padding)
 
 	""" Les labels présentant les nombres de slots, de noeuds, le lambda actuel ainsi que le TIC en milliseconde """
 	label_slot_actuel = Label(fenetre, text = "Nombre de slot : "+str(nombre_slot) )
 	label_noeud_actuel = Label(fenetre, text = "Nombre de noeud : "+str(nombre_noeud) )
 	label_lambda_actuel = Label(fenetre, text = "Lambda petit : "+str(LAMBDA_PETIT) )
 	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_GRAND) )
-	label_limite_taille_message_min = Label(fenetre, text = "Nombre de message minimum : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
+	label_limite_taille_message_min = Label(fenetre, text = "Seul min de message : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
 
-	label_slot_actuel.grid(row=NOMBRE_LIGNE_CANVAS+1, column=1, sticky='W')
-	label_noeud_actuel.grid(row=NOMBRE_LIGNE_CANVAS+2, column=1, sticky='W')
-	label_lambda_actuel.grid(row=NOMBRE_LIGNE_CANVAS+3, column=1, sticky='W')
-	label_lambda_burst_actuel.grid(row=NOMBRE_LIGNE_CANVAS+4, column=1, sticky='W')
-	label_limite_taille_message_min.grid(row=NOMBRE_LIGNE_CANVAS+5, column=1, sticky='W')
-	update_label_TIC(fenetre, NOMBRE_LIGNE_CANVAS+6, 1)
+	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_noeud_actuel.grid(row=2, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_lambda_actuel.grid(row=4, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_lambda_burst_actuel.grid(row=6, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_limite_taille_message_min.grid(row=8, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	update_label_TIC(fenetre, 10, NOMBRE_COLONNE_CANVAS+1)
 
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
-	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot : ")
-	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud : ")
-	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda : ")
-	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda Burst : ")
-	label_nouvelle_limite = Label(fenetre, text = "Nouveau nombre de message minimum : ")
+	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot :")
+	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud :")
+	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda :")
+	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda Burst :")
+	label_nouvelle_limite = Label(fenetre, text = "Nouveau seuil min de message :")
 
-	label_nouveau_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=2, sticky='W')
-	label_nouveau_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=2, sticky='W')
-	label_nouveau_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=2, sticky='W')
-	label_nouveau_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=2, sticky='W')
-	label_nouvelle_limite.grid(row=NOMBRE_LIGNE_CANVAS+5, column=2, sticky='W')
+	label_nouveau_slot.grid(row=1, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_noeud.grid(row=3, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_lambda.grid(row=5, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_lambda_burst.grid(row=7, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouvelle_limite.grid(row=9, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 
 	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
@@ -404,28 +409,28 @@ def placer_panel_bas(fenetre):
 	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
 	controleur.entrys[CLE_ENTRY_LIMITE_MESSAGE] = entry_limite_message
 
-	entry_slot.grid(row=NOMBRE_LIGNE_CANVAS+1, column=3, sticky="E"+"W")
-	entry_noeud.grid(row=NOMBRE_LIGNE_CANVAS+2, column=3, sticky="E"+"W")
-	entry_lambda.grid(row=NOMBRE_LIGNE_CANVAS+3, column=3, sticky="E"+"W")
-	entry_lambda_burst.grid(row=NOMBRE_LIGNE_CANVAS+4, column=3, sticky="E"+"W")
-	entry_limite_message.grid(row=NOMBRE_LIGNE_CANVAS+5, column=3, sticky="E"+"W")
+	entry_slot.grid(row=1, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+	entry_noeud.grid(row=3, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+	entry_lambda.grid(row=5, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+	entry_lambda_burst.grid(row=7, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+	entry_limite_message.grid(row=9, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
 
 	if controleur.politique_prioritaire == True:
-		resultat = "Priorité aux messages prioritaires"
+		resultat = "Priorité aux C-RAN"
 	else:
-		resultat = "Non gestion des messages prioritaires"
+		resultat = "Aucune priorité"
 	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
-	label_politique_actuel.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
+	label_politique_actuel.grid(row=11, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
 
 	""" les boutons """
-	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_politique.grid(row=NOMBRE_LIGNE_CANVAS+7, column=2, sticky='W')
+	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White")
+	bouton_politique.grid(row=12, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
 
-	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White", width=LONGUEUR_BOUTON)
-	bouton_explorer.grid(row=NOMBRE_LIGNE_CANVAS+7, column=3, sticky='E')
+	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White")
+	bouton_explorer.grid(row=12, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
 
 	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
-	bouton_reset.grid(row=NOMBRE_LIGNE_CANVAS+8, column=2, sticky="N"+"S"+"E"+"W",columnspan=2)
+	bouton_reset.grid(row=13, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
 
 ##	Fonction callback ouvrant un fichier selectionné depuis un explorateur.
 #	Le fichier ouvert doit être un fichier de configuration au format csv.
@@ -471,7 +476,7 @@ def update_label_TIC(fenetre, ligne, colonne):
 	else:
 		message = "TIC : "+str(TIC)+" millisecondes"
 	LABEL_TIC = Label(fenetre, text = message)
-	LABEL_TIC.grid(row=NOMBRE_LIGNE_CANVAS+6, column=1, sticky='W')
+	LABEL_TIC.grid(row=ligne, column=colonne, sticky='W', padx=(15, 15))
 
 
 def afficher_aide():
@@ -1146,9 +1151,9 @@ def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
 
-	print("Taille ", len(messages))
-	print("Proportion ", proportion_message_prioritaire)
-	print("le noeud ", noeud_modele.couleur_noeud, " envoi ", len(messages) * proportion_message_prioritaire, "messages C-RANs")
+	#print("Taille ", len(messages))
+	#print("Proportion ", proportion_message_prioritaire)
+	#print("le noeud ", noeud_modele.couleur_noeud, " envoi ", len(messages) * proportion_message_prioritaire, "messages C-RANs")
 
 	""" Récupération des valeurs """
 	canvas = controleur.canvas
@@ -1441,7 +1446,7 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique_prioritai
 	calculer_vitesse()
 
 	placer_panel_gauche(fenetre)
-	placer_panel_bas(fenetre)
+	placer_panel_droit(fenetre)
 
 	initialiser_tableau()
 
@@ -1513,12 +1518,18 @@ controleur = None
 fenetre = creer_fenetre()
 
 # # # # # # # # # # # # 	VALEUR POUR LA TAILLE DU CANVAS 	# # # # # # # # # # # #
-COTE_CANVAS = int(fenetre.winfo_screenheight() * (5.0/8))
-COTE_CANVAS = 800
+hauteur_ecran = fenetre.winfo_screenheight()
+print ("Hauteur écran : ", hauteur_ecran)
+if hauteur_ecran > 800:
+	print("Supérieur à 800, on fixe le max")
+	COTE_CANVAS = 800
+else:
+	print("Inferieur à 800, on prend la hauteur totale")
+	COTE_CANVAS = hauteur_ecran - 150
 #COTE_CANVAS = 2000
 
-DISTANCE_SLOT = COTE_CANVAS/3	#La distance d'un slot par rapport à l'axe central du canvas
-DISTANCE_NOEUD = DISTANCE_SLOT + 50		#La distance d'un noeud par rapport à l'axe central du canvas
+DISTANCE_SLOT = COTE_CANVAS/2.5	#La distance d'un slot par rapport à l'axe central du canvas
+DISTANCE_NOEUD = DISTANCE_SLOT + 40		#La distance d'un noeud par rapport à l'axe central du canvas
 
 LONGUEUR_BOUTON = COTE_CANVAS/31
 LONGUEUR_ENTRY = COTE_CANVAS/60
@@ -1526,7 +1537,7 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 nb_noeud = 5
-nb_slot = 25
+nb_slot = 100
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
 fenetre.mainloop()
