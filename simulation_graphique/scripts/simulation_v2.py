@@ -45,11 +45,14 @@ COTE_MESSAGE = 5
 NOMBRE_LIGNE_CANVAS = 50
 NOMBRE_COLONNE_CANVAS = 3
 
-CLE_ENTRY_SLOT = 1		#La clé de l'entry du slot pour le dictionnaire des entrys
-CLE_ENTRY_NOEUD = 2		#La clé de l'entry du noeud pour le dictionnaire des entrys
-CLE_ENTRY_LAMBDA = 3		#La clé de l'entry du lambda pour le dictionnaire des entrys
-CLE_ENTRY_LAMBDA_BURST = 4		#La clé de l'entry du lambda burst pour le dictionnaire des entrys
-CLE_ENTRY_LIMITE_MESSAGE = 5	#La clé de l'entry de la limite minimal du nombre de message
+CLE_ENTRY_SLOT = 1				#La clé de l'entry du slot pour le dictionnaire des entrys
+CLE_ENTRY_NOEUD = 2					#La clé de l'entry du noeud pour le dictionnaire des entrys
+CLE_ENTRY_LAMBDA = 3				#La clé de l'entry du lambda pour le dictionnaire des entrys
+CLE_ENTRY_LAMBDA_BURST = 4			#La clé de l'entry du lambda burst pour le dictionnaire des entrys
+CLE_ENTRY_LIMITE_MESSAGE = 5		#La clé de l'entry de la limite minimal du nombre de message
+CLE_ENTRY_NB_ANTENNE = 6			#La clé de l'entry du nombre d'antenne par noeud
+CLE_ENTRY_TAILLE_MESSAGE_BE = 7		#La clé de l'entry de la taille d'un message best effort
+CLE_ENTRY_NB_MESSAGE_REQUETE = 8	#La clé de l'entry du nombre de message par requete C-RAN
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -66,17 +69,22 @@ global DICT_TEXTES_NOEUDS
 DICT_TEXTES_NOEUDS = {}
 
 PERIODE_MESSAGE_ANTENNE = 100
+global NB_ANTENNE
+NB_ANTENNE = 1
 
-TAILLE_MESSAGE_BE = 15
-STATHAM_MODE = False
+global TAILLE_MESSAGE_BE
+TAILLE_MESSAGE_BE = 5
+
+global NB_MESSAGE_CRAN
+NB_MESSAGE_CRAN = 500
 
 """ Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.05
 global LAMBDA_PETIT
-LAMBDA_PETIT = 8
+LAMBDA_PETIT = 9
 
 global LAMBDA_GRAND
-LAMBDA_GRAND = 27
+LAMBDA_GRAND = 147
 
 LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
@@ -88,14 +96,13 @@ global TABLEAU_POISSON
 
 global TAILLE_UTILISEE_TABLEAU_POISSON
 
-NB_ANTENNE = 1
-
 INDICE_DATA_CENTER = 0
 
 POLITIQUE_SANS_PRIORITE = 0
 POLITIQUE_PRIORITAIRE = 1
 POLITIQUE_PRIORITE_ABSOLUE = 2
 
+STATHAM_MODE = False
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
 ##	Représente graphiquement un paquet de message se déplaçant dans l'anneau.
@@ -372,6 +379,9 @@ def placer_panel_droit(fenetre):
 	label_lambda_actuel = Label(fenetre, text = "Lambda petit : "+str(LAMBDA_PETIT) )
 	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_GRAND) )
 	label_limite_taille_message_min = Label(fenetre, text = "Seul min de message : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
+	label_nb_antenne = Label(fenetre, text = "Nombre d'antennes par noeud : "+str(NB_ANTENNE) )
+	label_taille_message_BE = Label(fenetre, text = "Taille d'un message Best effort : "+str(TAILLE_MESSAGE_BE) )
+	label_nb_message_requete = Label(fenetre, text = "Nombre de messages d'une requête : "+str(NB_MESSAGE_CRAN) )
 
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot :")
@@ -379,6 +389,9 @@ def placer_panel_droit(fenetre):
 	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda petit :")
 	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda grand :")
 	label_nouvelle_limite = Label(fenetre, text = "Nouveau seuil min de message :")
+	label_nouveau_nb_antenne = Label(fenetre, text = "Nouveau nombre d'antennes par noeud :")
+	label_nouvelle_taille_message_BE = Label(fenetre, text = "Nouvelle taille d'un message Best effort :")
+	label_nouveau_nb_message_requete = Label(fenetre, text = "Nouveau nombre de messages d'une requête :")
 
 	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
@@ -386,6 +399,9 @@ def placer_panel_droit(fenetre):
 	entry_lambda = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_lambda_burst = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_limite_message = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_nb_antenne = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_taille_message_BE = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_nb_message_requete = Entry(fenetre, width=LONGUEUR_ENTRY)
 
 	""" Ajout d'un event """
 	entry_slot.bind("<Key>", callback_validation_configuration)
@@ -393,12 +409,18 @@ def placer_panel_droit(fenetre):
 	entry_lambda.bind("<Key>", callback_validation_configuration)
 	entry_lambda_burst.bind("<Key>", callback_validation_configuration)
 	entry_limite_message.bind("<Key>", callback_validation_configuration)
+	entry_nb_antenne.bind("<Key>", callback_validation_configuration)
+	entry_taille_message_BE.bind("<Key>", callback_validation_configuration)
+	entry_nb_message_requete.bind("<Key>", callback_validation_configuration)
 
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
 	controleur.entrys[CLE_ENTRY_LAMBDA] = entry_lambda
 	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
 	controleur.entrys[CLE_ENTRY_LIMITE_MESSAGE] = entry_limite_message
+	controleur.entrys[CLE_ENTRY_NB_ANTENNE] = entry_nb_antenne
+	controleur.entrys[CLE_ENTRY_TAILLE_MESSAGE_BE] = entry_taille_message_BE
+	controleur.entrys[CLE_ENTRY_NB_MESSAGE_REQUETE] = entry_nb_message_requete
 
 
 	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
@@ -420,8 +442,20 @@ def placer_panel_droit(fenetre):
 	label_limite_taille_message_min.grid(row=8, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	label_nouvelle_limite.grid(row=9, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_limite_message.grid(row=9, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+	###
+	label_nb_antenne.grid(row=10, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_nb_antenne.grid(row=12, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	entry_nb_antenne.grid(row=12, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
 
-	update_label_TIC(fenetre, 10, NOMBRE_COLONNE_CANVAS+1)
+	label_taille_message_BE.grid(row=14, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouvelle_taille_message_BE.grid(row=16, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	entry_taille_message_BE.grid(row=16, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	label_nb_message_requete.grid(row=18, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_nb_message_requete.grid(row=20, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	entry_nb_message_requete.grid(row=20, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	update_label_TIC(fenetre, 22, NOMBRE_COLONNE_CANVAS+1)
 
 	if controleur.politique == POLITIQUE_PRIORITAIRE:
 		resultat = "Priorité aux C-RAN"
@@ -430,17 +464,17 @@ def placer_panel_droit(fenetre):
 	else:
 		resultat = "Aucune priorité"
 	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
-	label_politique_actuel.grid(row=11, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
+	label_politique_actuel.grid(row=24, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
 
 	""" les boutons """
 	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White")
-	bouton_politique.grid(row=12, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
+	bouton_politique.grid(row=26, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
 
 	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White")
-	bouton_explorer.grid(row=12, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
+	bouton_explorer.grid(row=26, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
 
 	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
-	bouton_reset.grid(row=13, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
+	bouton_reset.grid(row=27, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
 
 ##	Fonction callback ouvrant un fichier selectionné depuis un explorateur.
 #	Le fichier ouvert doit être un fichier de configuration au format csv.
@@ -967,9 +1001,18 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 			message += "\nAttente maximale des messages : "+str(attente_max)+"."
 		else:
 			message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
-
 	else:
-		message = "Ce noeud n'a encore reçu aucun message."
+		message = "Ce noeud n'a encore reçu aucun message.\n"
+
+	if noeud.nb_antenne == 0:
+		message += "Ce noeud est relié à des BBU."
+	else:
+		message += "TICs de réception de requête C-RAN : ["
+		for k in range(0, noeud.nb_antenne):
+			if k == noeud.nb_antenne-1:
+				message += str(noeud.debuts_periodes[k])+"]\n"
+			else:
+				message += str(noeud.debuts_periodes[k])+", "
 	titre = str(noeud)
 
 	""" Si l'anneau était en marche, on reprend le mouvement une fois que l'utilisateur a cliqué sur le bouton de la boite de dîalogue """
@@ -1229,8 +1272,7 @@ def entrer_message():
 			if slot.indice_noeud_ecriture != INDICE_DATA_CENTER:
 				for j in range (0, NB_ANTENNE):
 					if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[j]:		#C'est la periode du noeud, il reçoit un message de ses antennes
-						nb_messages_prioritaires = 500
-						for k in range(0, nb_messages_prioritaires):
+						for k in range(0, NB_MESSAGE_CRAN):
 							noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
 			nb_messages_best_effort = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
 
