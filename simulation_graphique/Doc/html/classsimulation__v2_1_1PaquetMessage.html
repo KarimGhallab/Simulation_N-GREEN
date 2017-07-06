@@ -100,9 +100,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a9f7f61de2a361e186dfec6a2dc523bbd">__init__</a> (self, id_message, indice_noeud_emetteur, taille, messages)</td></tr>
-<tr class="memdesc:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un paquet de message.  <a href="#a9f7f61de2a361e186dfec6a2dc523bbd">More...</a><br /></td></tr>
-<tr class="separator:a9f7f61de2a361e186dfec6a2dc523bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74bad985b784d88af9032f4ccb482a70"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a74bad985b784d88af9032f4ccb482a70">__init__</a> (self, id_message, indice_noeud_emetteur, taille, proportion_message_prioritaire, messages)</td></tr>
+<tr class="memdesc:a74bad985b784d88af9032f4ccb482a70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Le constructeur d'un paquet de message.  <a href="#a74bad985b784d88af9032f4ccb482a70">More...</a><br /></td></tr>
+<tr class="separator:a74bad985b784d88af9032f4ccb482a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f1d561adb996726291e6c05a2c63602"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsimulation__v2_1_1PaquetMessage.html#a3f1d561adb996726291e6c05a2c63602">__str__</a> (self)</td></tr>
 <tr class="memdesc:a3f1d561adb996726291e6c05a2c63602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renvoie le paquet sous forme de chaine de caractères.  <a href="#a3f1d561adb996726291e6c05a2c63602">More...</a><br /></td></tr>
 <tr class="separator:a3f1d561adb996726291e6c05a2c63602"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,6 +127,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:afe73717dc7f514968b1cb7cb2cbc387b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe73717dc7f514968b1cb7cb2cbc387b"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>taille</b></td></tr>
 <tr class="separator:afe73717dc7f514968b1cb7cb2cbc387b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d57776858a37168ef289cd99cc40971"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d57776858a37168ef289cd99cc40971"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>proportion_message_prioritaire</b></td></tr>
+<tr class="separator:a6d57776858a37168ef289cd99cc40971"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad55d919937881389f90642f529a23c7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ad55d919937881389f90642f529a23c7c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>messages</b></td></tr>
 <tr class="separator:ad55d919937881389f90642f529a23c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -135,7 +138,7 @@ Public Attributes</h2></td></tr>
 <div class="textblock"><p>Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient, l'id du paquet le représentant graphiquement ainsi que la taille du paquet. </p>
 <p>Il contient aussi un tableau contenant les messages du paquet. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a9f7f61de2a361e186dfec6a2dc523bbd"></a>
+<a class="anchor" id="a74bad985b784d88af9032f4ccb482a70"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -162,6 +165,12 @@ Public Attributes</h2></td></tr>
           <td></td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>taille</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>proportion_message_prioritaire</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

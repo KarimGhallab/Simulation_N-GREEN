@@ -7,7 +7,7 @@ from __future__ import print_function
 
 import tkMessageBox, tkFileDialog, time, random, sys, os, csv
 
-from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage, WORD
+from Tkinter import Tk, Canvas, Button, Label, Entry, PhotoImage
 from math import cos, sin, pi, exp
 from threading import Thread
 from PIL import Image, ImageTk
@@ -91,6 +91,10 @@ global TAILLE_UTILISEE_TABLEAU_POISSON
 NB_ANTENNE = 1
 
 INDICE_DATA_CENTER = 0
+
+POLITIQUE_SANS_PRIORITE = 0
+POLITIQUE_PRIORITAIRE = 1
+POLITIQUE_PRIORITE_ABSOLUE = 2
 
 # # # # # # # # # # # # # # # #		V U E	# # # # # # # # # # # # # # # #
 
@@ -200,7 +204,7 @@ def placer_slots(fenetre, canvas, nb_slot):
 #	@param slots_modele : Les slots du modele
 #	@param slots_vue : Les slots de la vue
 #	@return En indice 0 les noeuds du modèle, en indice 1 les noeuds de la vue, en indice 2 les slots du modèle.
-def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire):
+def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique):
 	global TEXTS_NOEUDS
 	global DICT_TEXTES_NOEUDS
 
@@ -247,7 +251,7 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 
 		sous_tab = []
 		""" le texte du rectangle """
-		if politique_prioritaire == True:
+		if politique == POLITIQUE_PRIORITAIRE or politique == POLITIQUE_PRIORITE_ABSOLUE:
 			texte_messages_initaux = canvas.create_text(x-15, y, text="0")
 			texte_messages_prioritaires = canvas.create_text(x+15, y, text="0")
 
@@ -369,25 +373,12 @@ def placer_panel_droit(fenetre):
 	label_lambda_burst_actuel = Label(fenetre, text = "Lambda grand : "+str(LAMBDA_GRAND) )
 	label_limite_taille_message_min = Label(fenetre, text = "Seul min de message : "+str(LIMITE_NOMBRE_MESSAGE_MIN) )
 
-	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_noeud_actuel.grid(row=2, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_lambda_actuel.grid(row=4, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_lambda_burst_actuel.grid(row=6, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_limite_taille_message_min.grid(row=8, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	update_label_TIC(fenetre, 10, NOMBRE_COLONNE_CANVAS+1)
-
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot :")
 	label_nouveau_noeud = Label(fenetre, text = "Nouveau nombre de noeud :")
-	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda :")
-	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda Burst :")
+	label_nouveau_lambda = Label(fenetre, text = "Nouveau lambda petit :")
+	label_nouveau_lambda_burst = Label(fenetre, text = "Nouveau lambda grand :")
 	label_nouvelle_limite = Label(fenetre, text = "Nouveau seuil min de message :")
-
-	label_nouveau_slot.grid(row=1, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_nouveau_noeud.grid(row=3, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_nouveau_lambda.grid(row=5, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_nouveau_lambda_burst.grid(row=7, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
-	label_nouvelle_limite.grid(row=9, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 
 	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
@@ -409,14 +400,33 @@ def placer_panel_droit(fenetre):
 	controleur.entrys[CLE_ENTRY_LAMBDA_BURST] = entry_lambda_burst
 	controleur.entrys[CLE_ENTRY_LIMITE_MESSAGE] = entry_limite_message
 
+
+	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_slot.grid(row=1, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_slot.grid(row=1, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	label_noeud_actuel.grid(row=2, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_noeud.grid(row=3, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_noeud.grid(row=3, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	label_lambda_actuel.grid(row=4, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_lambda.grid(row=5, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_lambda.grid(row=5, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	label_lambda_burst_actuel.grid(row=6, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_lambda_burst.grid(row=7, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_lambda_burst.grid(row=7, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	label_limite_taille_message_min.grid(row=8, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouvelle_limite.grid(row=9, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_limite_message.grid(row=9, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
 
-	if controleur.politique_prioritaire == True:
+	update_label_TIC(fenetre, 10, NOMBRE_COLONNE_CANVAS+1)
+
+	if controleur.politique == POLITIQUE_PRIORITAIRE:
 		resultat = "Priorité aux C-RAN"
+	elif controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
+		resultat = "Priorité absolue aux C-RAN"
 	else:
 		resultat = "Aucune priorité"
 	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
@@ -451,11 +461,17 @@ def changer_politique():
 	global controleur
 
 	arreter_rotation()
-	controleur.politique_prioritaire = not controleur.politique_prioritaire
+	#On change de politique
+	if controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
+		controleur.politique = POLITIQUE_SANS_PRIORITE
+	else:
+		controleur.politique = controleur.politique + 1
 	controleur.lire_fichier = False
 	reset()
-	if controleur.politique_prioritaire == True:
-		message = "La simulation va désormais prendre en compte la priorité des messages provenants des antennes."
+	if controleur.politique == POLITIQUE_PRIORITAIRE:
+		message = "La simulation va désormais prendre en compte la priorité des messages provenants des antennes en leur fixant un seuil prenant aussi en compte le nombre de messages Best effort."
+	elif controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
+		message = "La simulation va désormais prendre en compte la priorité des messages C-RAN et cherchera à les envoyer des que possible"
 	else:
 		message = "Les messages prioritaires seront désormais traités de la même manière que les Best effort."
 	tkMessageBox.showinfo("Changement de politique", message)
@@ -621,7 +637,7 @@ class Noeud:
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debuts_periodes = [0] * nb_antenne
 		for i in range(0, nb_antenne):
-			self.debuts_periodes[i] = int(random.uniform(0, 100))		#Le décalage selon lequel l'antenne envoi une requête au noeud
+			self.debuts_periodes[i] = int(random.uniform(0, 10))		#Le décalage selon lequel l'antenne envoi une requête au noeud
 		print("Debuts periode du noeud ", couleur_noeud, " : ", self.debuts_periodes)
 
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
@@ -650,7 +666,7 @@ class Noeud:
 
 
 	def ajouter_messages_prioritaires(self, message):
-		if controleur.politique_prioritaire == True:
+		if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 			self.messages_prioritaires.append(message)
 			self.nb_messages_prioritaires += 1
 		else:
@@ -680,7 +696,7 @@ class Noeud:
 
 		controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][0])
 
-		if controleur.politique_prioritaire == True:
+		if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 			controleur.canvas.delete(TEXTS_NOEUDS[indice_noeud][1])
 			TEXTS_NOEUDS[indice_noeud][1] = controleur.canvas.create_text(x-15, y, text= str(noeud_modele.nb_messages_prioritaires) )
 			DICT_TEXTES_NOEUDS[ TEXTS_NOEUDS[indice_noeud][1] ] = controleur.noeuds_modele [indice_noeud]
@@ -703,7 +719,7 @@ class Noeud:
 	##	Met à jour le temps d'attente des messages du noeud.
 	#	@param self : Le noeud.
 	def update_attente(self):
-		if controleur.politique_prioritaire == True:
+		if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 			for message in self.messages_prioritaires:
 				self.attente_totale += 1
 		for message in self.messages_initiaux:
@@ -876,8 +892,8 @@ class Controleur:
 	#	@param nb_noeud : Le nombre de noeud de la simulation.
 	#	@param nb_slot : Le nombre de slot de la simulation.
 	#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
-	#	@param politique_prioritaire : Un booléen indiquant si le type d'envoi de message se fait vie une priorité ou non.
-	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique_prioritaire):
+	#	@param politique : Un entier indiquant si le type d'envoi de message se fait vie une priorité ou non.
+	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique):
 		self.fenetre = fenetre
 		self.canvas = canvas
 		self.slots_vue = slots_vue
@@ -892,7 +908,7 @@ class Controleur:
 		self.lire_fichier = lire_fichier
 		self.chemin_fichier = None
 		self.tics_restants = -1
-		self.politique_prioritaire = politique_prioritaire
+		self.politique = politique
 
 
 ###########################################################
@@ -985,7 +1001,7 @@ def reset():
 		controleur.fenetre.after_cancel(tache)
 
 	""" La méthode after permet ici de faire s'executer les threads en cours """
-	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, controleur.lire_fichier, controleur.politique_prioritaire) )
+	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, controleur.lire_fichier, controleur.politique) )
 
 
 ##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
@@ -1164,7 +1180,7 @@ def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 
 	""" Création du message """
 	id_message_graphique = placer_message_graphique(canvas, noeud_graphique, slot_graphique, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)
-	if controleur.politique_prioritaire == True:
+	if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), proportion_message_prioritaire, messages)
 	else:
 		controleur.slots_modele[indice_slot].paquet_message = PaquetMessage( id_message_graphique, indice_noeud, len(messages), 0, messages)
@@ -1220,20 +1236,64 @@ def entrer_message():
 			for j in range(0, nb_messages_best_effort):
 				noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
 
-			if controleur.politique_prioritaire == True:
+			if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 				nb_message_noeud = noeud.nb_messages_prioritaires + noeud.nb_messages_initaux
 			else:
 				nb_message_noeud = noeud.nb_messages_initaux
 
+			#Cas spéciale pour la politique de priorité absolue
+			#Ici on a des prioritaire
+			if slot.paquet_message == None and controleur.politique == POLITIQUE_PRIORITE_ABSOLUE and noeud.nb_messages_prioritaires > 0:
+				messages = []
+				nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
+				if noeud.nb_messages_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX:		#On place uniquement des C-RAN
+					proportion_message_prioritaire = 1
+					for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
+						messages.append( noeud.messages_prioritaires.popleft() )
+					noeud.nb_messages_prioritaires -= LIMITE_NOMBRE_MESSAGE_MAX
+				else:	#On place des C-RAN et le reste de Best effort
+					nb_messages_best_effort_noeud = noeud.nb_messages_initaux
+					for k in range(0, nb_messages_prioritaire_noeud):
+						messages.append( noeud.messages_prioritaires.popleft() )
+					noeud.nb_messages_prioritaires = 0
+
+					if nb_messages_prioritaire_noeud + nb_messages_best_effort_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On a plus de BE que necessaire
+						nb_BE_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
+						for k in range(0, nb_BE_a_envoyer):
+							messages.append( noeud.messages_initiaux.popleft() )
+						noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
+
+					else:	#On place tous nos BE
+						nb_BE_a_envoyer = nb_messages_best_effort_noeud
+						for k in range(0, nb_BE_a_envoyer):
+							messages.append( noeud.messages_initiaux.popleft() )
+						noeud.nb_messages_initaux = 0
+					proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_BE_a_envoyer + nb_messages_prioritaire_noeud)
+				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
+			#Ici on a pas de prioritaire, mais les BE on attenit le seuil
+			elif slot.paquet_message == None and controleur.politique == POLITIQUE_PRIORITE_ABSOLUE and noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MIN:
+				messages = []
+				nb_messages_best_effort_noeud = noeud.nb_messages_initaux
+				proportion_message_prioritaire = 0
+				if noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MAX:		#On envoie autant de BE que possible
+					for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
+						messages.append( noeud.messages_initiaux.popleft() )
+					noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX
+				else:	#On vide les be
+					for k in range(0, nb_messages_best_effort_noeud):
+						messages.append( noeud.messages_initiaux.popleft() )
+					noeud.nb_messages_initaux = 0
+				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
+
+
 			if slot.paquet_message == None and nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut en envoyer un
-				if controleur.politique_prioritaire == True:	#Politique prioritaire
+				if controleur.politique == POLITIQUE_PRIORITAIRE:	#Politique prioritaire
 					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
 						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
 					else:												#on vide le noeud
 						nb_message_a_envoyer = nb_message_noeud
 					messages = []
 					nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
-					#nb_messages_best_effort = noeud.nb_messages_best_effort
 					if nb_messages_prioritaire_noeud >= nb_message_a_envoyer:	 #On envoie uniquement des prioritaires
 						for k in range(0, nb_message_a_envoyer):
 							messages.append( noeud.messages_prioritaires.popleft() )
@@ -1252,10 +1312,10 @@ def entrer_message():
 						if nb_messages_prioritaire_noeud == 0:
 							proportion_message_prioritaire = 0
 						else:
-							proportion_message_prioritaire = nb_messages_prioritaire_noeud/float(nb_message_a_envoyer)
+							proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_message_a_envoyer)
 
-				else:	#Politique sans priorité
-					proportion_message_prioritaire = 1
+				elif controleur.politique == POLITIQUE_SANS_PRIORITE:	#Politique sans priorité
+					proportion_message_prioritaire = 0
 					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
 						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
 					else:												#on vide le noeud
@@ -1266,6 +1326,7 @@ def entrer_message():
 						messages.append( noeud.messages_initiaux.popleft() )
 
 					noeud.nb_messages_initaux -= nb_message_a_envoyer
+				print("Noeud ", noeud.couleur_noeud, "placer message")
 				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
 			noeud.update_file_noeud_graphique()
 
@@ -1303,7 +1364,7 @@ def sortir_message():
 			t.start()
 			slot.paquet_message = None
 		#Ici on gére le cas ou des messages prioritaires passent devant le BBU
-		elif controleur.politique_prioritaire == True and paquet_message and slot.indice_noeud_lecture != None and slot.indice_noeud_lecture == INDICE_DATA_CENTER:
+		elif (controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE) and (paquet_message and slot.indice_noeud_lecture != None and slot.indice_noeud_lecture == INDICE_DATA_CENTER):
 			print("Taille ", paquet_message.taille)
 			print("Proportion ", paquet_message.proportion_message_prioritaire)
 			nb_messages_prioritaires = int(paquet_message.taille * paquet_message.proportion_message_prioritaire)
@@ -1395,7 +1456,7 @@ def calculer_vitesse():
 #	@param fenetre : La fenetre sur laquelle on place le canvas.
 #	@param nb_noeud : Le nombre de noeud à initialiser.
 #	@param lire_fichier : Un booléen indiquant si la simulation se fait via une lecture de fichier ou non.
-def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique_prioritaire):
+def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique):
 	global controleur
 	global IMAGE_JASON
 
@@ -1424,12 +1485,12 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique_prioritai
 	slots_modele = slots[0]
 	slots_vue = slots[1]
 
-	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique_prioritaire)
+	noeuds = placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique)
 	noeuds_modele = noeuds[0]
 	noeuds_vue = noeuds[1]
 	slots_modele = noeuds[2]
 
-	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique_prioritaire)
+	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique)
 
 	if lire_fichier:
 		fichier = open(chemin_fichier, 'r')
@@ -1539,5 +1600,5 @@ fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un
 nb_noeud = 5
 nb_slot = 100
 
-initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, True)
+initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, POLITIQUE_PRIORITE_ABSOLUE)
 fenetre.mainloop()
