@@ -1222,8 +1222,10 @@ def entrer_message():
 		slot = controleur.slots_modele[i]
 		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
 			noeud = controleur.noeuds_modele[ slot.indice_noeud_ecriture ]
-
-			""" Le slot affiche si c'est sa période de réception de message provenant des antennes """
+			# # # # # # # # # # # # #
+			# RECEPTION DES MESSAGES PAR LE NOEUD
+			# # # # # # # # # # # # #
+			""" Envoi de mesage par une antenne """
 			if slot.indice_noeud_ecriture != INDICE_DATA_CENTER:
 				for j in range (0, NB_ANTENNE):
 					if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[j]:		#C'est la periode du noeud, il reçoit un message de ses antennes
@@ -1240,95 +1242,107 @@ def entrer_message():
 				nb_message_noeud = noeud.nb_messages_prioritaires + noeud.nb_messages_initaux
 			else:
 				nb_message_noeud = noeud.nb_messages_initaux
+			# # # # # # # # # # # # #
+			# ENVOI DES MESSAGES PAR LE NOEUD
+			# # # # # # # # # # # # #
 
-			#Cas spéciale pour la politique de priorité absolue
-			#Ici on a des prioritaire
-			if slot.paquet_message == None and controleur.politique == POLITIQUE_PRIORITE_ABSOLUE and noeud.nb_messages_prioritaires > 0:
-				messages = []
-				nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
-				if noeud.nb_messages_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX:		#On place uniquement des C-RAN
-					proportion_message_prioritaire = 1
-					for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
-						messages.append( noeud.messages_prioritaires.popleft() )
-					noeud.nb_messages_prioritaires -= LIMITE_NOMBRE_MESSAGE_MAX
-				else:	#On place des C-RAN et le reste de Best effort
-					nb_messages_best_effort_noeud = noeud.nb_messages_initaux
-					for k in range(0, nb_messages_prioritaire_noeud):
-						messages.append( noeud.messages_prioritaires.popleft() )
-					noeud.nb_messages_prioritaires = 0
+			if slot.paquet_message == None: 		#Le slot est disponible en ecriture
 
-					if nb_messages_prioritaire_noeud + nb_messages_best_effort_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On a plus de BE que necessaire
-						nb_BE_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
-						for k in range(0, nb_BE_a_envoyer):
-							messages.append( noeud.messages_initiaux.popleft() )
-						noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
+				# # # # # # # # # # # # #
+				# POLITIQUE DE PRIORITE ABSOLUE
+				# # # # # # # # # # # # #
+				if controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:	#Politique de priorité absolue
+					if noeud.nb_messages_prioritaires > 0:
+						messages = []
+						nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
+						if noeud.nb_messages_prioritaires >= LIMITE_NOMBRE_MESSAGE_MAX:		#On place uniquement des C-RAN
+							proportion_message_prioritaire = 1
+							for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
+								messages.append( noeud.messages_prioritaires.popleft() )
+							noeud.nb_messages_prioritaires -= LIMITE_NOMBRE_MESSAGE_MAX
+						else:	#On place des C-RAN et le reste de Best effort
+							nb_messages_best_effort_noeud = noeud.nb_messages_initaux
+							for k in range(0, nb_messages_prioritaire_noeud):
+								messages.append( noeud.messages_prioritaires.popleft() )
+							noeud.nb_messages_prioritaires = 0
 
-					else:	#On place tous nos BE
-						nb_BE_a_envoyer = nb_messages_best_effort_noeud
-						for k in range(0, nb_BE_a_envoyer):
-							messages.append( noeud.messages_initiaux.popleft() )
-						noeud.nb_messages_initaux = 0
-					proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_BE_a_envoyer + nb_messages_prioritaire_noeud)
-				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
-			#Ici on a pas de prioritaire, mais les BE on attenit le seuil
-			elif slot.paquet_message == None and controleur.politique == POLITIQUE_PRIORITE_ABSOLUE and noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MIN:
-				messages = []
-				nb_messages_best_effort_noeud = noeud.nb_messages_initaux
-				proportion_message_prioritaire = 0
-				if noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MAX:		#On envoie autant de BE que possible
-					for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
-						messages.append( noeud.messages_initiaux.popleft() )
-					noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX
-				else:	#On vide les be
-					for k in range(0, nb_messages_best_effort_noeud):
-						messages.append( noeud.messages_initiaux.popleft() )
-					noeud.nb_messages_initaux = 0
-				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
+							if nb_messages_prioritaire_noeud + nb_messages_best_effort_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On a plus de BE que necessaire
+								nb_BE_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
+								for k in range(0, nb_BE_a_envoyer):
+									messages.append( noeud.messages_initiaux.popleft() )
+								noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX - nb_messages_prioritaire_noeud
 
+							else:	#On place tous nos BE
+								nb_BE_a_envoyer = nb_messages_best_effort_noeud
+								for k in range(0, nb_BE_a_envoyer):
+									messages.append( noeud.messages_initiaux.popleft() )
+								noeud.nb_messages_initaux = 0
+							proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_BE_a_envoyer + nb_messages_prioritaire_noeud)
+						placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
 
-			if slot.paquet_message == None and nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le slot peut recevoir un message et le noeud peut en envoyer un
-				if controleur.politique == POLITIQUE_PRIORITAIRE:	#Politique prioritaire
-					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
-						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
-					else:												#on vide le noeud
-						nb_message_a_envoyer = nb_message_noeud
-					messages = []
-					nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
-					if nb_messages_prioritaire_noeud >= nb_message_a_envoyer:	 #On envoie uniquement des prioritaires
+					#Ici on a pas de prioritaire, mais les BE on attenit le seuil
+					elif noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MIN:
+						messages = []
+						nb_messages_best_effort_noeud = noeud.nb_messages_initaux
+						proportion_message_prioritaire = 0
+						if noeud.nb_messages_initaux >= LIMITE_NOMBRE_MESSAGE_MAX:		#On envoie autant de BE que possible
+							for k in range(0, LIMITE_NOMBRE_MESSAGE_MAX):
+								messages.append( noeud.messages_initiaux.popleft() )
+							noeud.nb_messages_initaux -= LIMITE_NOMBRE_MESSAGE_MAX
+						else:	#On vide les be
+							for k in range(0, nb_messages_best_effort_noeud):
+								messages.append( noeud.messages_initiaux.popleft() )
+							noeud.nb_messages_initaux = 0
+						placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
+
+				# # # # # # # # # # # # #
+				# POLITIQUE PRIORITAIRE
+				# # # # # # # # # # # # #
+				elif controleur.politique == POLITIQUE_PRIORITAIRE:
+					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le noeud peut emettre un message
+						if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
+							nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
+						else:												#on vide le noeud
+							nb_message_a_envoyer = nb_message_noeud
+						messages = []
+						nb_messages_prioritaire_noeud = noeud.nb_messages_prioritaires
+						if nb_messages_prioritaire_noeud >= nb_message_a_envoyer:	 #On envoie uniquement des prioritaires
+							for k in range(0, nb_message_a_envoyer):
+								messages.append( noeud.messages_prioritaires.popleft() )
+							noeud.nb_messages_prioritaires -= nb_message_a_envoyer
+							proportion_message_prioritaire = 1
+						else:		#On envoie tous les prioritaires et le reste en best effort
+							for k in range(0, nb_messages_prioritaire_noeud):
+								messages.append( noeud.messages_prioritaires.popleft() )
+							for k in range(0, nb_message_a_envoyer - nb_messages_prioritaire_noeud):
+								messages.append( noeud.messages_initiaux.popleft() )
+							noeud.nb_messages_prioritaires -= nb_messages_prioritaire_noeud
+							noeud.nb_messages_initaux -= (nb_message_a_envoyer - nb_messages_prioritaire_noeud)
+							if nb_messages_prioritaire_noeud == 0:
+								proportion_message_prioritaire = 0
+							else:
+								proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_message_a_envoyer)
+						placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
+
+				# # # # # # # # # # # # #
+				# POLITIQUE SANS PRIORITE
+				# # # # # # # # # # # # #
+				else:
+					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MIN:		#Le noeud peut emettre un message
+						proportion_message_prioritaire = 0
+						if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
+							nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
+						else:												#on vide le noeud
+							nb_message_a_envoyer = noeud.nb_messages_initaux
+						""" On enleve les messages du noeud """
+						messages = []
 						for k in range(0, nb_message_a_envoyer):
-							messages.append( noeud.messages_prioritaires.popleft() )
-						noeud.nb_messages_prioritaires -= nb_message_a_envoyer
-						proportion_message_prioritaire = 1
-
-					else:													#On envoie tous les prioritaires et le reste en best effort
-						k = 0
-						for k in range(0, nb_messages_prioritaire_noeud):
-							messages.append( noeud.messages_prioritaires.popleft() )
-						k = 0
-						for k in range(0, nb_message_a_envoyer - nb_messages_prioritaire_noeud):
 							messages.append( noeud.messages_initiaux.popleft() )
-						noeud.nb_messages_prioritaires -= nb_messages_prioritaire_noeud
-						noeud.nb_messages_initaux -= (nb_message_a_envoyer - nb_messages_prioritaire_noeud)
-						if nb_messages_prioritaire_noeud == 0:
-							proportion_message_prioritaire = 0
-						else:
-							proportion_message_prioritaire = nb_messages_prioritaire_noeud / float(nb_message_a_envoyer)
+						noeud.nb_messages_initaux -= nb_message_a_envoyer
+						placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
 
-				elif controleur.politique == POLITIQUE_SANS_PRIORITE:	#Politique sans priorité
-					proportion_message_prioritaire = 0
-					if nb_message_noeud >= LIMITE_NOMBRE_MESSAGE_MAX:	#On envoi un max de message
-						nb_message_a_envoyer = LIMITE_NOMBRE_MESSAGE_MAX
-					else:												#on vide le noeud
-						nb_message_a_envoyer = noeud.nb_messages_initaux
-					""" On enleve les messages du noeud """
-					messages = []
-					for k in range(0, nb_message_a_envoyer):
-						messages.append( noeud.messages_initiaux.popleft() )
-
-					noeud.nb_messages_initaux -= nb_message_a_envoyer
-				print("Noeud ", noeud.couleur_noeud, "placer message")
-				placer_message( slot.indice_noeud_ecriture, messages, proportion_message_prioritaire )
 			noeud.update_file_noeud_graphique()
+
 
 ##	Envoie les messages dans l'anneau à partir d'un scénario de fichier.
 #	@return le nombre de tic à attendre avant de finir la rotation, -1 si ce temps d'attente n'est pas encore déterminé.
