@@ -123,8 +123,8 @@ class PaquetMessageGraphique:
 
 	##	Constructeur
 	#	@param self : L'objet en train d'être construit.
-	#	@param depart_x : la coordonée x ou placé le paquet.
-	#	@param depart_y : la coordonée y ou placé le paquet.
+	#	@param depart_x : la coordonée x ou placer le paquet.
+	#	@param depart_y : la coordonée y ou placer le paquet.
 	#	@param couleur1 : la couleur des messages prioritaires.
 	#	@param couleur2 : la couleur des messages best effort.
 	#	@param proportion_message_prioritaire : la proportion des messages prioritaires dans le paquet.
@@ -161,7 +161,7 @@ class PaquetMessageGraphique:
 
 
 
-##	Créer une fenetre Tkinter avec son titre.
+##	Créer une fenêtre Tkinter avec son titre.
 #	@return La fenêtre Tkinter créée.
 def creer_fenetre():
 	fenetre = Tk()
@@ -173,17 +173,17 @@ def creer_fenetre():
 
 	return fenetre
 
-##	Créer un canvas avec une croix au centre et le place dans la fenetre.
-#	@param fenetre : La fenetre Tkinter ou le canvas sera ajouté.
+##	Créer un canvas avec une croix au centre et le place dans la fenêtre.
+#	@param fenetre : La fenêtre Tkinter ou le canvas sera ajouté.
 #	@return Le canvas créé.
 def creer_canvas(fenetre):
-	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#ffffff')
+	canvas = Canvas(fenetre, width=LARGEUR_CANVAS, height=HAUTEUR_CANVAS, background='#ffffff')
 	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=NOMBRE_COLONNE_CANVAS)
 
 	return canvas
 
-##	Met à jour les labels en haut à gauche du canvas affichant le tic actuel de la simulation et la chage du réseau.
-#	param tic_actuel : le tic actuel de la simulation en cours.
+##	Met à jour les labels en haut à gauche du canvas affichant le TIC actuel de la simulation et la charge du réseau.
+#	param tic_actuel : le TIC actuel de la simulation en cours.
 def update_labels_globaux(tic_actuel):
 	global LABEL_HORLOGE
 	global LABEL_CHARGE
@@ -204,10 +204,10 @@ def update_labels_globaux(tic_actuel):
 		controleur.canvas.delete(LABEL_CHARGE)
 	LABEL_CHARGE = controleur.canvas.create_text(75, 30, text = "Charge actuelle : "+str(charge)+"%.")
 
-##	Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant :
-#	En indice 0 les slots du modele
+##	Place sur le canvas donné en paramètre les slots et renvoie un tableau contenant :
+#	En indice 0 les slots du modèle.
 #	En indice 1 les slots de la vue.
-#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param fenetre : La fenêtre sur laquelle se situe le canvas passé en paramètre.
 #	@param canvas : Le canvas sur lequel on place les slots graphiques.
 #	@param nb_slot : Le nombre de slot à placer.
 #	@return En indice 0 les slots du modèle, en indice 1 les slots de la vue.
@@ -216,8 +216,8 @@ def placer_slots(fenetre, canvas, nb_slot):
 	slots_modele = [ None ] * nb_slot
 
 	#Le point du milieu
-	milieu_x = COTE_CANVAS/2
-	milieu_y = COTE_CANVAS/2
+	milieu_x = LARGEUR_CANVAS/2
+	milieu_y = HAUTEUR_CANVAS/2
 	for i in range(1, nb_slot+1):
 		val_cos = cos(2*i*pi/nb_slot)
 		val_sin = sin(2*i*pi/nb_slot)
@@ -231,15 +231,15 @@ def placer_slots(fenetre, canvas, nb_slot):
 
 
 ##	Place sur la toile les noeuds et renvoie un tableau contenant :
-#	En indice 0 les noeuds du modele.
+#	En indice 0 les noeuds du modèle.
 #	En indice 1 les noeuds de la vue.
 #	En indice 2 les slots du modèle.
-#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param fenetre : La fenêtre sur laquelle se situe le canvas passé en paramètre.
 #	@param canvas : Le canvas sur lequel on place les slots graphiques.
 #	@param nb_noeud : Le nombre de noeud à placer.
 #	@param nb_slot : Le nombre de slot déjà placé.
-#	@param slots_modele : Les slots du modele
-#	@param slots_vue : Les slots de la vue
+#	@param slots_modele : Les slots du modèle.
+#	@param slots_vue : Les slots de la vue.
 #	@return En indice 0 les noeuds du modèle, en indice 1 les noeuds de la vue, en indice 2 les slots du modèle.
 def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, politique):
 	global TEXTS_NOEUDS
@@ -267,8 +267,8 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 		canvas.itemconfig(slots_vue[indice_slot_accessible-1], outline=couleur)
 
 		""" Calcule de la position du noeud """
-		milieu_x = COTE_CANVAS/2
-		milieu_y = COTE_CANVAS/2
+		milieu_x = LARGEUR_CANVAS/2
+		milieu_y = HAUTEUR_CANVAS/2
 
 		""" Calcule de l'abscisse du noeud en fonction de la position du slot """
 		x1 = milieu_x + slots_modele [ indice_slot_accessible ].val_cos * DISTANCE_NOEUD
@@ -309,10 +309,10 @@ def placer_noeuds(fenetre, canvas, nb_noeud, nb_slot, slots_modele, slots_vue, p
 
 
 ##	Place un message à un point de départ et le fait se déplacer jusqu'a un point d'arrivé.
-#	@param fenetre : La fenetre sur laquelle se situe le canvas passé en paramètre.
+#	@param fenetre : La fenêtre sur laquelle se situe le canvas passé en paramètre.
 #	@param canvas : Le canvas sur lequel on place le message.
 #	@param depart : Les coordonnees de départ du message.
-#	@param arrive : Les coordonnees d'arrivée du message.
+#	@param arrive : Les coordonnees d'arrivées du message.
 #	@param couleur_message : La couleur du message.
 #	@return L'id du message créé.
 
@@ -339,13 +339,13 @@ def placer_message_graphique(canvas, depart, arrive, couleur_messages_prioritair
 
 	return objet
 
-##	place le panel gauche de la fenetre contenant les boutons:
+##	Place le panel gauche de la fenêtre contenant les boutons :
 #	- Start.
 #	- Stop.
 #	- Restart.
 #	- Augmenter vitesse.
 #	- Diminuer vitesse.
-#	@param fenetre : La fenetre sur laquelle on place le panel.
+#	@param fenetre : La fenêtre sur laquelle on place le panel.
 def placer_panel_gauche(fenetre):
 	play = Image.open("../images/play.png")
 	IMAGES.append( ImageTk.PhotoImage(play) )
@@ -386,15 +386,15 @@ def placer_panel_gauche(fenetre):
 	bouton_aide.grid(row=NOMBRE_LIGNE_CANVAS + 8, sticky="W")
 
 
-##	Place le panel droit affichant les informations courantes ainsi que moyens de modifier les valeurs suivantes:
-#	- Le nombre de slot utilisé.
+##	Place le panel droit affichant les informations courantes ainsi des zones de saisie pour :
+#	- Le nombre de Slot utilisé.
 #	- Le nombre de Noeud présent.
 #	- Le lambda actuellement utilisé.
 #	- le lambda burst actuellement utilisé.
 #	- Et la limite minimal des noeuds pour evoyer un message.
 #	Le panel contient aussi un bouton de validation des données.
-#	Si aucunes données n'est saisi pour un champs, la valeur de la configuration précèdente est consérvée.
-#	@param fenetre : La fenetre sur laquelle on place le panel gauche.
+#	Si aucunes données n'est saisies pour un champs, la valeur de la configuration précèdente est consérvée.
+#	@param fenetre : La fenêtre sur laquelle on place le panel gauche.
 def placer_panel_droit(fenetre):
 	nombre_slot = len( controleur.slots_modele )
 	nombre_noeud = len( controleur.noeuds_modele )
@@ -578,7 +578,7 @@ def changer_politique():
 
 
 ##	Met a jour le label du panel bas affichant le TIC en millisecondes.
-#	@param fenetre : La fenetre sur laquelle on se situe le label que l'on souhaite modifier.
+#	@param fenetre : La fenêtre sur laquelle on se situe le label que l'on souhaite modifier.
 #	@param ligne : La ligne ou se situe le label par rapport au panel bas.
 #	@param colonne : La colonne ou se situe le label par rapport au panel bas.
 def update_label_TIC(fenetre, ligne, colonne):
@@ -594,7 +594,7 @@ def update_label_TIC(fenetre, ligne, colonne):
 	LABEL_TIC = Label(fenetre, text = message)
 	LABEL_TIC.grid(row=ligne, column=colonne, sticky='W', padx=(15, 15))
 
-
+##	Affiche un message d'aide sur la simulation.
 def afficher_aide():
 	message = "Cette fenêtre a pour but de fournir une petite explication des points pouvant parraitre peu claire sur l'interface graphique de la simulation."
 	message += "\n\nLors d'une politique d'envoi prioritaire des messages, chaque noeud dispose de deux labels différents. "
@@ -657,12 +657,12 @@ def deplacer_vers(canvas, objet, arrivee_x, arrivee_y):
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
 
-##	Fait sortir graphiquement un mssage du canvas.
+##	Fait sortir graphiquement un message du canvas.
 #	@param canvas : Le canvas sur lequel se situe le message que l'on souhaite sortir.
 #	@param message : Le message que l'on souhaite sortir.
 def sortir_message_graphique(canvas, message):
-	""" L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas """
 
+	""" L'appelle à la méthode sleep permet de laisser le temps à Tkinter de mettre à jour le canvas """
 	time.sleep( float(TIC) / float(1000) )
 
 	if not STATHAM_MODE:
@@ -672,20 +672,20 @@ def sortir_message_graphique(canvas, message):
 	y = int(canvas.coords(message)[1])
 
 	""" Mise en place des directions pour les abscisses et les ordonnées """
-	if x > COTE_CANVAS/2:
+	if x > HAUTEUR_CANVAS/2:
 		direction_x = 1
-		objectif_x = COTE_CANVAS
-	elif x < COTE_CANVAS/2:
+		objectif_x = HAUTEUR_CANVAS
+	elif x < HAUTEUR_CANVAS/2:
 		direction_x = -1
 		objectif_x = 0
 	else:
 		direction_x = 0
 		objectif_x = x
 
-	if y > COTE_CANVAS/2 :
+	if y > HAUTEUR_CANVAS/2 :
 		direction_y = 1
-		objectif_y = COTE_CANVAS
-	elif y < COTE_CANVAS/2:
+		objectif_y = HAUTEUR_CANVAS
+	elif y < HAUTEUR_CANVAS/2:
 		direction_y = -1
 		objectif_y = 0
 	else:
@@ -705,7 +705,7 @@ def sortir_message_graphique(canvas, message):
 		time.sleep(VITESSE_LATENCE_MESSAGE)
 
 		""" Si un bord du canvas est atteint on supprime le message du canvas """
-		if x == 0 or x == COTE_CANVAS or y == 0 or y == COTE_CANVAS:
+		if x == 0 or x == HAUTEUR_CANVAS or y == 0 or y == HAUTEUR_CANVAS:
 			canvas.delete(paquet.sous_rectangle1)
 			canvas.delete(paquet.sous_rectangle2)
 			canvas.delete(message)
@@ -714,13 +714,13 @@ def sortir_message_graphique(canvas, message):
 
 # # # # # # # # # # # # # # # #		M O D E L E		# # # # # # # # # # # # # # # #
 
-##	Représente un noeud dans le système, un noeuds peux stocker des messages.
+##	Représente un noeud dans le système, un noeud peut stocker des messages.
 class Noeud:
 
 	##	Constructeur d'un noeud.
 	#	@param self : L'objet de la classe.
 	#	@param indice_slot_lecture : L'indice du slot en lecture.
-	#	@param indice_slot_ecriture : L'indice du slot en ecriture.
+	#	@param indice_slot_ecriture : L'indice du slot en écriture.
 	#	@param couleur_noeud : La couleur graphique du noeud.
 	#	@param couleur_noeud_claire : Une couleur plus claire pour les messages prioritaires
 	#	@param couleur_noeud_foncee : Une couleur plus foncée pour les messages prioritaires
@@ -745,7 +745,7 @@ class Noeud:
 		self.cartes = [0] * NB_CARTE
 
 
-	##	renvoie l'équalité entres deux noeuds.
+	##	Renvoie l'équalité entres deux noeuds.
 	#	@param self : Le premier noeud.
 	#	@param autre_noeud : Le second noeud.
 	#	@return True si les noeuds sont les mêmes, False sinon.
@@ -858,7 +858,7 @@ class Slot:
 			return "Je peux accèder au noeud : "+str(self.indice_noeud_accessible)+" Je possede un message"
 
 
-##	Représente un paquet de message curculant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
+##	Représente un paquet de message circulant dans l'anneau : contient à la fois les coordonnées graphiques du messages, l'indice du noeud auquel il appartient,
 #	l'id du paquet le représentant graphiquement ainsi que la taille du paquet.
 #	Il contient aussi un tableau contenant les messages du paquet.
 class PaquetMessage:
@@ -939,8 +939,8 @@ def loi_de_poisson_naif(u, lamb):
 #	@param u : Le paramètre u de la loi de poisson.
 #	@param lamb : Le parametre lambda de la loi de poisson.
 def loi_de_poisson_opti(u, lamb):
-	""" Initialisation des variables """
 
+	""" Initialisation des variables """
 	maxi = TAILLE_UTILISEE_TABLEAU_POISSON
 	maxF = TABLEAU_POISSON[ maxi -1]
 	maxP = maxF
@@ -991,13 +991,13 @@ class Controleur:
 	#	@param fenetre : La fenêtre Tkinter de la simulation.
 	#	@param canvas : Le canvas de la simulation.
 	#	@param slots_vue : Les slots de la vue de la simulation.
-	#	@param slots_modele : Les slost du modèle de la simulation.
+	#	@param slots_modele : Les slots du modèle de la simulation.
 	#	@param noeuds_vue : Les noeuds de la vue de la simulation.
 	#	@param noeuds_modele : Les noeuds du modèle de la simulation.
 	#	@param nb_noeud : Le nombre de noeud de la simulation.
 	#	@param nb_slot : Le nombre de slot de la simulation.
-	#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou vie une lecture de fichier.
-	#	@param politique : Un entier indiquant si le type d'envoi de message se fait vie une priorité ou non.
+	#	@param lire_fichier : Un booléen indiquant s'il la simulation se fait de manière probabiliste ou via une lecture de fichier.
+	#	@param politique : Un entier indiquant le type de politique d'envoi.
 	def __init__(self, fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique):
 		self.fenetre = fenetre
 		self.canvas = canvas
@@ -1038,7 +1038,7 @@ def callback_click_noeud(event):
 		afficher_dialogue_noeud( controleur.noeuds_modele[i], etat_continuer )
 
 
-##	Fonction callback d'un clique sur le texte d'un noeud.
+##	Fonction callback d'un click sur le texte d'un noeud.
 #	@param event : L'événement qui déclenche le callback.
 def callback_click_texte(event):
 	etat_continuer = controleur.continuer	#L'état de l'anneau
@@ -1106,7 +1106,7 @@ def callback_validation_configuration(event):
 
 
 ##	Callback au bouton demandant un reset de l'application.
-#	Ici on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisé pour la précédente configuration.
+#	Ici, on supprime le canvas et on en crée un nouveau. Les paramètres sont ceux utilisés pour la précédente configuration.
 def reset():
 	global controleur
 	global tache
@@ -1125,7 +1125,7 @@ def reset():
 	controleur.fenetre.after(TIC, initialisation(fenetre, controleur.nb_noeud_anneau, controleur.nb_slot_anneau, controleur.lire_fichier, controleur.politique) )
 
 
-##	Commence la rotaion. Méthode appeler lors d'un clique sur le bouton de commencement.
+##	Commence la rotation. Méthode appelée lors d'un click sur le bouton de commencement.
 def commencer_rotation():
 	global controleur
 	global tache
@@ -1134,7 +1134,7 @@ def commencer_rotation():
 		controleur.continuer = True
 
 
-## Arrête la rotaion. Méthode appeler lors d'un clique sur le bouton de fin.
+## Arrête la rotation. Méthode appelée lors d'un click sur le bouton de fin.
 def arreter_rotation():
 
 	global controleur
@@ -1412,7 +1412,7 @@ def rotation_message():
 
 
 ##	Fait entrer dans l'anneau des messages.
-#	Ici les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
+#	Ici, les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
 def entrer_message():
 	global controleur
 	Q = 100
@@ -1423,7 +1423,7 @@ def entrer_message():
 			# # # # # # # # # # # # #
 			# RECEPTION DES MESSAGES PAR LE NOEUD
 			# # # # # # # # # # # # #
-			""" Envoi de mesage par une antenne """
+			""" Envoi de message par une antenne """
 			if slot.indice_noeud_ecriture != INDICE_DATA_CENTER:
 				for j in range (0, NB_ANTENNE):
 					if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[j]:		#C'est la periode du noeud, il reçoit un message de ses antennes
@@ -1547,7 +1547,7 @@ def entrer_message():
 
 
 ##	Envoie les messages dans l'anneau à partir d'un scénario de fichier.
-#	@return le nombre de tic à attendre avant de finir la rotation, -1 si ce temps d'attente n'est pas encore déterminé.
+#	@return Le nombre de tic à attendre avant de finir la rotation, -1 si ce temps d'attente n'est pas encore déterminé.
 def entrer_message_via_fichier():
 	global controleur
 
@@ -1558,7 +1558,7 @@ def entrer_message_via_fichier():
 			if tic_actuel == int(noeud.tics_sorties[0]):
 				noeud.tics_sorties.pop(0)
 				message = [0] * LIMITE_NOMBRE_MESSAGE_MAX
-				placer_message(i, message, 1)
+				placer_message(i, message, 0)
 
 	for noeud in controleur.noeuds_modele:
 		if len(noeud.tics_sorties) > 0:
@@ -1566,7 +1566,7 @@ def entrer_message_via_fichier():
 	return len(controleur.slots_modele)
 
 
-##	Fait sortir du système un mesage.
+##	Fait sortir du système un message.
 def sortir_message():
 	global controleur
 
@@ -1603,8 +1603,8 @@ def decaler_messages():
 def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel):
 	global controleur
 
-	milieu_x = COTE_CANVAS/2
-	milieu_y = COTE_CANVAS/2
+	milieu_x = HAUTEUR_CANVAS/2
+	milieu_y = HAUTEUR_CANVAS/2
 
 	destination_x = milieu_x + cos(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
 	destination_y = milieu_y - sin(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
@@ -1634,15 +1634,13 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 		controleur.slots_modele[indice_slot].paquet_message = paquet_message
 
 
-##	calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message
+##	Calculer le temps de latence entre chaque mouvement de pixel lors d'un déplacement de message.
 #	Le calcul prend en compte la distance à parcourir entre chaque déplacement.
 def calculer_vitesse():
-	""" Coefficent multiplant le nombre maximum de pixel afin de s'assurer que les threads ont
-		suffisament de temps pour finir de bouger les messages """
 	matela_securite = 100
 
-	milieu_x = COTE_CANVAS/2
-	milieu_y = COTE_CANVAS/2
+	milieu_x = HAUTEUR_CANVAS/2
+	milieu_y = HAUTEUR_CANVAS/2
 
 	""" Ici on choisi deux slots voisins et on calcul la distance entre ces deux slots """
 	x1 = milieu_x + cos(0/controleur.nb_slot_anneau) * DISTANCE_SLOT
@@ -1666,7 +1664,7 @@ def calculer_vitesse():
 
 
 ##	Met en place le canvas.
-#	@param fenetre : La fenetre sur laquelle on place le canvas.
+#	@param fenetre : La fenêtre sur laquelle on place le canvas.
 #	@param nb_noeud : Le nombre de noeud à initialiser.
 #	@param lire_fichier : Un booléen indiquant si la simulation se fait via une lecture de fichier ou non.
 def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique):
@@ -1798,16 +1796,18 @@ hauteur_ecran = fenetre.winfo_screenheight()
 print ("Hauteur écran : ", hauteur_ecran)
 if hauteur_ecran > 800:
 	print("Supérieur à 800, on fixe le max")
-	COTE_CANVAS = 800
+	LARGEUR_CANVAS = 800
+	HAUTEUR_CANVAS = 800
 else:
 	print("Inferieur à 800, on prend la hauteur totale")
-	COTE_CANVAS = hauteur_ecran - 150
+	HAUTEUR_CANVAS = hauteur_ecran - 150
+	LARGEUR_CANVAS = hauteur_ecran - 50
 
-DISTANCE_SLOT = COTE_CANVAS/2.5			#La distance d'un slot par rapport à l'axe central du canvas
+DISTANCE_SLOT = HAUTEUR_CANVAS/2.5			#La distance d'un slot par rapport à l'axe central du canvas
 DISTANCE_NOEUD = DISTANCE_SLOT + 40		#La distance d'un noeud par rapport à l'axe central du canvas
 
-LONGUEUR_BOUTON = COTE_CANVAS/31
-LONGUEUR_ENTRY = COTE_CANVAS/60
+LONGUEUR_BOUTON = HAUTEUR_CANVAS/31
+LONGUEUR_ENTRY = HAUTEUR_CANVAS/60
 
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
