@@ -45,14 +45,15 @@ COTE_MESSAGE = 5
 NOMBRE_LIGNE_CANVAS = 50
 NOMBRE_COLONNE_CANVAS = 3
 
-CLE_ENTRY_SLOT = 1				#La clé de l'entry du slot pour le dictionnaire des entrys
-CLE_ENTRY_NOEUD = 2					#La clé de l'entry du noeud pour le dictionnaire des entrys
-CLE_ENTRY_LAMBDA = 3				#La clé de l'entry du lambda pour le dictionnaire des entrys
-CLE_ENTRY_LAMBDA_BURST = 4			#La clé de l'entry du lambda burst pour le dictionnaire des entrys
-CLE_ENTRY_LIMITE_MESSAGE = 5		#La clé de l'entry de la limite minimal du nombre de message
-CLE_ENTRY_NB_ANTENNE = 6			#La clé de l'entry du nombre d'antenne par noeud
-CLE_ENTRY_TAILLE_MESSAGE_BE = 7		#La clé de l'entry de la taille d'un message best effort
-CLE_ENTRY_NB_MESSAGE_REQUETE = 8	#La clé de l'entry du nombre de message par requete C-RAN
+CLE_ENTRY_SLOT = 1					#La clé de l'entry du slot pour le dictionnaire des entrys.
+CLE_ENTRY_NOEUD = 2					#La clé de l'entry du noeud pour le dictionnaire des entrys.
+CLE_ENTRY_LAMBDA = 3				#La clé de l'entry du lambda pour le dictionnaire des entrys.
+CLE_ENTRY_LAMBDA_BURST = 4			#La clé de l'entry du lambda burst pour le dictionnaire des entrys.
+CLE_ENTRY_LIMITE_MESSAGE = 5		#La clé de l'entry de la limite minimal du nombre de message.
+CLE_ENTRY_NB_ANTENNE = 6			#La clé de l'entry du nombre d'antenne par noeud.
+CLE_ENTRY_TAILLE_MESSAGE_BE = 7		#La clé de l'entry de la taille d'un message best effort.
+CLE_ENTRY_NB_MESSAGE_REQUETE = 8	#La clé de l'entry du nombre de message par requete C-RAN.
+CLE_ENTRY_PERIODE_REQUETE = 9		#La clé de l'entry indiquant la période de reception des requêtes.
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -62,15 +63,20 @@ tache = None
 global LABEL_TIC
 LABEL_TIC = None
 
+global LABEL_HORLOGE
+LABEL_HORLOGE = None
+
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
 
 global DICT_TEXTES_NOEUDS
 DICT_TEXTES_NOEUDS = {}
 
-PERIODE_MESSAGE_ANTENNE = 100
+global PERIODE_MESSAGE_ANTENNE
+PERIODE_MESSAGE_ANTENNE = 1000
+
 global NB_ANTENNE
-NB_ANTENNE = 1
+NB_ANTENNE = 10
 
 global TAILLE_MESSAGE_BE
 TAILLE_MESSAGE_BE = 5
@@ -165,14 +171,15 @@ def creer_fenetre():
 #	@return Le canvas créé.
 def creer_canvas(fenetre):
 	canvas = Canvas(fenetre, width=COTE_CANVAS, height=COTE_CANVAS, background='#ffffff')
-
-	#Création de la croix au centre du canvas
-	canvas.create_line(COTE_CANVAS/2, 0, COTE_CANVAS/2, COTE_CANVAS, fill="White")
-	canvas.create_line(0, COTE_CANVAS/2, COTE_CANVAS, COTE_CANVAS/2, fill="White")
-
 	canvas.grid(row=0, column=1, rowspan=NOMBRE_LIGNE_CANVAS, columnspan=NOMBRE_COLONNE_CANVAS)
 
 	return canvas
+
+def update_label_horloge(tic_actuel):
+	global LABEL_HORLOGE
+	if LABEL_HORLOGE != None:
+		controleur.canvas.delete(LABEL_HORLOGE)
+	LABEL_HORLOGE = controleur.canvas.create_text(50, 10, text = "TIC actuel : "+str(tic_actuel)+".")
 
 ##	Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant :
 #	En indice 0 les slots du modele
@@ -382,6 +389,7 @@ def placer_panel_droit(fenetre):
 	label_nb_antenne = Label(fenetre, text = "Nombre d'antennes par noeud : "+str(NB_ANTENNE) )
 	label_taille_message_BE = Label(fenetre, text = "Taille d'un message Best effort : "+str(TAILLE_MESSAGE_BE) )
 	label_nb_message_requete = Label(fenetre, text = "Nombre de messages d'une requête : "+str(NB_MESSAGE_CRAN) )
+	label_periode_requete = Label(fenetre, text = "Période avant l'envoi d'une requête : "+str(PERIODE_MESSAGE_ANTENNE) )
 
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot :")
@@ -392,6 +400,7 @@ def placer_panel_droit(fenetre):
 	label_nouveau_nb_antenne = Label(fenetre, text = "Nouveau nombre d'antennes par noeud :")
 	label_nouvelle_taille_message_BE = Label(fenetre, text = "Nouvelle taille d'un message Best effort :")
 	label_nouveau_nb_message_requete = Label(fenetre, text = "Nouveau nombre de messages d'une requête :")
+	label_nouvelle_periode_requete = Label(fenetre, text = "Nouvelle période avant l'envoi d'une requête :")
 
 	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
@@ -402,6 +411,7 @@ def placer_panel_droit(fenetre):
 	entry_nb_antenne = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_taille_message_BE = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_nb_message_requete = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_periode_requete = Entry(fenetre, width=LONGUEUR_ENTRY)
 
 	""" Ajout d'un event """
 	entry_slot.bind("<Key>", callback_validation_configuration)
@@ -412,6 +422,7 @@ def placer_panel_droit(fenetre):
 	entry_nb_antenne.bind("<Key>", callback_validation_configuration)
 	entry_taille_message_BE.bind("<Key>", callback_validation_configuration)
 	entry_nb_message_requete.bind("<Key>", callback_validation_configuration)
+	entry_periode_requete.bind("<Key>", callback_validation_configuration)
 
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
@@ -421,6 +432,7 @@ def placer_panel_droit(fenetre):
 	controleur.entrys[CLE_ENTRY_NB_ANTENNE] = entry_nb_antenne
 	controleur.entrys[CLE_ENTRY_TAILLE_MESSAGE_BE] = entry_taille_message_BE
 	controleur.entrys[CLE_ENTRY_NB_MESSAGE_REQUETE] = entry_nb_message_requete
+	controleur.entrys[CLE_ENTRY_PERIODE_REQUETE] = entry_periode_requete
 
 
 	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
@@ -455,7 +467,11 @@ def placer_panel_droit(fenetre):
 	label_nouveau_nb_message_requete.grid(row=20, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_nb_message_requete.grid(row=20, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
 
-	update_label_TIC(fenetre, 22, NOMBRE_COLONNE_CANVAS+1)
+	label_periode_requete.grid(row=22, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouvelle_periode_requete.grid(row=24, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	entry_periode_requete.grid(row=24, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	update_label_TIC(fenetre, 26, NOMBRE_COLONNE_CANVAS+1)
 
 	if controleur.politique == POLITIQUE_PRIORITAIRE:
 		resultat = "Priorité aux C-RAN"
@@ -464,33 +480,32 @@ def placer_panel_droit(fenetre):
 	else:
 		resultat = "Aucune priorité"
 	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
-	label_politique_actuel.grid(row=24, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
+	label_politique_actuel.grid(row=28, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
 
 	""" les boutons """
 	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White")
-	bouton_politique.grid(row=26, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
+	bouton_politique.grid(row=30, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
 
 	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White")
-	bouton_explorer.grid(row=26, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
+	bouton_explorer.grid(row=30, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
 
 	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
-	bouton_reset.grid(row=27, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
+	bouton_reset.grid(row=31, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
 
 ##	Alterne le couleur de fond d'un noeud avec sa couleur de message prioritaire
 #	@param iteration : Le nombre de fois ou l'on souhaite effectuer l'alternance de couleur.
 #	@param noeud_graphique : L'objet graphique sur lequelle nous effecturons les changements de couleurs.
 #	@param noeud_modele : Le noeud dans notre modèle.
 def changer_couleur(iteration, noeud_graphique, noeud_modele):
-	nb_interation =  3
+	nb_interation =  3	#Le nombre de changement de couleur que l'on effectue
 	for i in range(0, nb_interation):
 		couleur_actuelle = controleur.canvas.itemcget(noeud_graphique, "fill")
-		print("Couleur actuelle du noeud : ", couleur_actuelle)
 		if couleur_actuelle == noeud_modele.couleur_noeud:
 			nouvelle_couleur = noeud_modele.couleur_noeud_claire
 		else:
 			nouvelle_couleur = noeud_modele.couleur_noeud
 		controleur.canvas.itemconfigure(noeud_graphique, fill=nouvelle_couleur)
-		time.sleep(0.2)
+		time.sleep(0.2)		#On fait une pause le temps que l'utilisateur puisse apercevoir le changement de couleur.
 
 	controleur.canvas.itemconfigure(noeud_graphique, fill=noeud_modele.couleur_noeud)
 
@@ -689,10 +704,6 @@ class Noeud:
 		self.couleur_noeud_foncee = couleur_noeud_foncee
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debuts_periodes = [0] * nb_antenne
-		for i in range(0, nb_antenne):
-			self.debuts_periodes[i] = int(random.uniform(1, 10))		#Le décalage selon lequel l'antenne envoi une requête au noeud
-		print("Debuts periode du noeud ", couleur_noeud, " : ", self.debuts_periodes)
-
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
 		self.messages_prioritaires = deque()
 		self.attente_max = 0		#Le temps d'attente maximal dans le noeud
@@ -778,6 +789,14 @@ class Noeud:
 		for message in self.messages_initiaux:
 			self.attente_totale += 1
 
+##	Applique une périod d'envoi de requête pour chaque antenne présent dans l'anneau
+def initialiser_periode_antennes():
+	global controleur
+
+	for i in range(0, controleur.nb_noeud_anneau):
+		for j in range(0, controleur.noeuds_modele[i].nb_antenne):
+			controleur.noeuds_modele[i].debuts_periodes[j] = int(random.uniform(1, PERIODE_MESSAGE_ANTENNE))		#Le décalage selon lequel l'antenne envoi une requête au noeud
+		print("Debuts periode du noeud ", controleur.noeuds_modele[i].couleur_noeud, " : ", controleur.noeuds_modele[i].debuts_periodes)
 
 ##	Repprésente un slot dans l'anneau, il a un id qui lui est propres ainsi qu'un paquet de message et un indice vers le noeud qui lui accède.
 class Slot:
@@ -1021,15 +1040,15 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 		else:
 			message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
 	else:
-		message = "Ce noeud n'a encore reçu aucun message.\n"
+		message = "\nCe noeud n'a encore reçu aucun message."
 
 	if noeud.nb_antenne == 0:
-		message += "Ce noeud est relié à des BBU."
+		message += "\nCe noeud est relié à des BBU."
 	else:
-		message += "TICs de réception de requête C-RAN : ["
+		message += "\nTICs de réception de requête C-RAN : ["
 		for k in range(0, noeud.nb_antenne):
 			if k == noeud.nb_antenne-1:
-				message += str(noeud.debuts_periodes[k])+"]\n"
+				message += str(noeud.debuts_periodes[k])+"]."
 			else:
 				message += str(noeud.debuts_periodes[k])+", "
 	titre = str(noeud)
@@ -1125,11 +1144,16 @@ def modifier_configuration():
 	global NB_ANTENNE
 	global TAILLE_MESSAGE_BE
 	global NB_MESSAGE_CRAN
+	global PERIODE_MESSAGE_ANTENNE
 
 	tmp_noeud = controleur.nb_noeud_anneau
 	tmp_slot = controleur.nb_slot_anneau
 	tmp_lambda = LAMBDA_PETIT
 	tmp_limite_message = LIMITE_NOMBRE_MESSAGE_MIN
+	tmp_nb_antenne = NB_ANTENNE
+	tmp_taille_BE = TAILLE_MESSAGE_BE
+	tmp_nb_cran = NB_MESSAGE_CRAN
+	tmp_periode_requete = PERIODE_MESSAGE_ANTENNE
 	nb_champ_vide = 0
 
 	erreur = False
@@ -1142,6 +1166,7 @@ def modifier_configuration():
 	valeur_nb_antenne = controleur.entrys[ CLE_ENTRY_NB_ANTENNE ].get()
 	valeur_taille_message_BE = controleur.entrys[ CLE_ENTRY_TAILLE_MESSAGE_BE ].get()
 	valeur_nb_message_requete = controleur.entrys[ CLE_ENTRY_NB_MESSAGE_REQUETE ].get()
+	valeur_periode_requete = controleur.entrys[ CLE_ENTRY_PERIODE_REQUETE ].get()
 
 	""" Recupération de la valeur du noeud """
 	if valeur_noeud != "":
@@ -1248,11 +1273,27 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 
+	""" Récupération de la période avant l'envoi de requête """
+	if valeur_periode_requete != "":
+		valeur_periode_requete = int(valeur_periode_requete)
+		if valeur_periode_requete <= 0:
+			message = "La période doit etre positive."
+			tkMessageBox.showerror("Erreur nombre de message par requête !", message)
+			erreur = True
+		else:
+			PERIODE_MESSAGE_ANTENNE = valeur_periode_requete
+	else:
+		nb_champ_vide += 1
+
 	if erreur or nb_champ_vide == len(controleur.entrys):
 		controleur.nb_noeud_anneau = tmp_noeud
 		controleur.nb_slot_anneau = tmp_slot
 		LAMBDA_PETIT = tmp_lambda
 		LIMITE_NOMBRE_MESSAGE_MIN = tmp_limite_message
+		NB_ANTENNE = tmp_nb_antenne
+		PERIODE_MESSAGE_ANTENNE = tmp_periode_requete
+		TAILLE_MESSAGE_BE = tmp_taille_BE
+		NB_MESSAGE_CRAN = tmp_nb_cran
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		controleur.lire_fichier = False
 		reset()
@@ -1602,6 +1643,8 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique):
 	slots_modele = noeuds[2]
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique)
+	initialiser_periode_antennes()
+	update_label_horloge(0)
 
 	if lire_fichier:
 		fichier = open(chemin_fichier, 'r')
@@ -1631,7 +1674,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		print("TIC : ", controleur.nb_tic)
+		update_label_horloge(controleur.nb_tic)
 
 		rotation_message()
 
