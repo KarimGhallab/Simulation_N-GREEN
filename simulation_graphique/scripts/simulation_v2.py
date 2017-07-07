@@ -341,14 +341,14 @@ def placer_panel_gauche(fenetre):
 	replay = Image.open("../images/vitesse_up.png")
 	IMAGES.append( ImageTk.PhotoImage(replay) )
 	bouton_reset = Button(fenetre, text ="UP", command = augmenter_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
-	bouton_reset.grid(row=7)
+	bouton_reset.grid(row=6)
 	label_restart = Label(fenetre, text="Modifier vitesse")
-	label_restart.grid(row=8)
+	label_restart.grid(row=7)
 
 	vitesse_down = Image.open("../images/vitesse_down.png")
 	IMAGES.append( ImageTk.PhotoImage(vitesse_down) )
 	bouton_down = Button(fenetre, text ="DOWN", command = diminuer_vitesse, image = IMAGES[ len(IMAGES) -1 ], bg="White", activebackground="#E8E8E8")
-	bouton_down.grid(row=9)
+	bouton_down.grid(row=8)
 
 	aide = Image.open("../images/help.png")
 	IMAGES.append( ImageTk.PhotoImage(aide) )
@@ -671,7 +671,7 @@ class Noeud:
 		self.nb_antenne = nb_antenne	#Indique le nombre d'antenne auquel est lié le noeud
 		self.debuts_periodes = [0] * nb_antenne
 		for i in range(0, nb_antenne):
-			self.debuts_periodes[i] = int(random.uniform(0, 10))		#Le décalage selon lequel l'antenne envoi une requête au noeud
+			self.debuts_periodes[i] = int(random.uniform(1, 10))		#Le décalage selon lequel l'antenne envoi une requête au noeud
 		print("Debuts periode du noeud ", couleur_noeud, " : ", self.debuts_periodes)
 
 		self.messages_initiaux = deque()		#File FIFO contenant les TIC d'arrivé des messages
@@ -1103,6 +1103,9 @@ def modifier_configuration():
 	global LAMBDA_PETIT
 	global LAMBDA_GRAND
 	global LIMITE_NOMBRE_MESSAGE_MIN
+	global NB_ANTENNE
+	global TAILLE_MESSAGE_BE
+	global NB_MESSAGE_CRAN
 
 	tmp_noeud = controleur.nb_noeud_anneau
 	tmp_slot = controleur.nb_slot_anneau
@@ -1117,6 +1120,9 @@ def modifier_configuration():
 	valeur_lambda = controleur.entrys[ CLE_ENTRY_LAMBDA ].get()
 	valeur_lambda_burst = controleur.entrys[ CLE_ENTRY_LAMBDA_BURST ].get()
 	valeur_limite_message = controleur.entrys[ CLE_ENTRY_LIMITE_MESSAGE ].get()
+	valeur_nb_antenne = controleur.entrys[ CLE_ENTRY_NB_ANTENNE ].get()
+	valeur_taille_message_BE = controleur.entrys[ CLE_ENTRY_TAILLE_MESSAGE_BE ].get()
+	valeur_nb_message_requete = controleur.entrys[ CLE_ENTRY_NB_MESSAGE_REQUETE ].get()
 
 	""" Recupération de la valeur du noeud """
 	if valeur_noeud != "":
@@ -1175,14 +1181,51 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 
+	""" Récupération du nouveau seuil de message """
 	if valeur_limite_message != "":
 		valeur_limite_message = int(valeur_limite_message)
-		if valeur_lambda_burst <= 0 or valeur_limite_message > LIMITE_NOMBRE_MESSAGE_MAX:
-			message = "Le nombre de message minimum doit être positif est inférieur à la limite maximum (ici 80)."
-			tkMessageBox.showerror("Erreur Limite di nombre de message minimum !", message)
+		if valeur_limite_message <= 0 or valeur_limite_message > LIMITE_NOMBRE_MESSAGE_MAX:
+			message = "Le nombre de message minimum doit être positif est inférieur à la limite maximum (ici "+str(LIMITE_NOMBRE_MESSAGE_MAX)+")."
+			tkMessageBox.showerror("Erreur limite du nombre de message minimum !", message)
 			erreur = True
 		else:
 			LIMITE_NOMBRE_MESSAGE_MIN = valeur_limite_message
+	else:
+		nb_champ_vide += 1
+
+	""" Récupération du nombre d'antenne par noeud """
+	if valeur_nb_antenne != "":
+		valeur_nb_antenne = int(valeur_nb_antenne)
+		if valeur_nb_antenne < 0:
+			message = "Le nombre de message minimum doit être positif"
+			tkMessageBox.showerror("Erreur nombre d'antenne par noeud !", message)
+			erreur = True
+		else:
+			NB_ANTENNE = valeur_nb_antenne
+	else:
+		nb_champ_vide += 1
+
+	""" Récupération de la taille d'un message best effort """
+	if valeur_taille_message_BE != "":
+		valeur_taille_message_BE = int(valeur_taille_message_BE)
+		if valeur_taille_message_BE <= 0:
+			message = "La taille d'un message best effort doit etre supérieur à zéro."
+			tkMessageBox.showerror("Erreur taille d'un message best effort !", message)
+			erreur = True
+		else:
+			TAILLE_MESSAGE_BE = valeur_taille_message_BE
+	else:
+		nb_champ_vide += 1
+
+	""" Récupération du nombre de message par requête """
+	if valeur_nb_message_requete != "":
+		valeur_nb_message_requete = int(valeur_nb_message_requete)
+		if valeur_nb_message_requete < 0:
+			message = "Une requête ne peut contenir un nombre négatif de messages."
+			tkMessageBox.showerror("Erreur nombre de message par requête !", message)
+			erreur = True
+		else:
+			NB_MESSAGE_CRAN = valeur_nb_message_requete
 	else:
 		nb_champ_vide += 1
 
@@ -1209,10 +1252,6 @@ def placer_message(indice_noeud, messages, proportion_message_prioritaire):
 
 	noeud_modele = controleur.noeuds_modele[ indice_noeud ]
 	indice_slot = controleur.noeuds_modele[ indice_noeud ].indice_slot_ecriture
-
-	#print("Taille ", len(messages))
-	#print("Proportion ", proportion_message_prioritaire)
-	#print("le noeud ", noeud_modele.couleur_noeud, " envoi ", len(messages) * proportion_message_prioritaire, "messages C-RANs")
 
 	""" Récupération des valeurs """
 	canvas = controleur.canvas
@@ -1421,14 +1460,9 @@ def sortir_message():
 			slot.paquet_message = None
 		#Ici on gére le cas ou des messages prioritaires passent devant le BBU
 		elif (controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE) and (paquet_message and slot.indice_noeud_lecture != None and slot.indice_noeud_lecture == INDICE_DATA_CENTER):
-			print("Taille ", paquet_message.taille)
-			print("Proportion ", paquet_message.proportion_message_prioritaire)
 			nb_messages_prioritaires = int(paquet_message.taille * paquet_message.proportion_message_prioritaire)
-			print("Nb mesage prioritaires : ", nb_messages_prioritaires)
 
-			print("J'ajoute des message dans le noeud ", controleur.noeuds_modele[INDICE_DATA_CENTER].couleur_noeud)
 			for k in range(0, nb_messages_prioritaires):
-				print(k)
 				controleur.noeuds_modele[INDICE_DATA_CENTER].ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
 			controleur.noeuds_modele[INDICE_DATA_CENTER].update_file_noeud_graphique()
 
