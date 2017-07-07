@@ -54,6 +54,7 @@ CLE_ENTRY_NB_ANTENNE = 6			#La clé de l'entry du nombre d'antenne par noeud.
 CLE_ENTRY_TAILLE_MESSAGE_BE = 7		#La clé de l'entry de la taille d'un message best effort.
 CLE_ENTRY_NB_MESSAGE_REQUETE = 8	#La clé de l'entry du nombre de message par requete C-RAN.
 CLE_ENTRY_PERIODE_REQUETE = 9		#La clé de l'entry indiquant la période de reception des requêtes.
+CLE_ENTRY_NB_CARTE = 10				#La clé de l'entry indiquant le nombre de carte par noeud.
 
 TIC = 600	#Temps d'attente entre chaque mouvement de l'anneau, envoi de message etc
 
@@ -78,6 +79,9 @@ PERIODE_MESSAGE_ANTENNE = 1000
 global NB_ANTENNE
 NB_ANTENNE = 10
 
+global NB_CARTE
+NB_CARTE = 2
+
 global TAILLE_MESSAGE_BE
 TAILLE_MESSAGE_BE = 5
 
@@ -87,10 +91,10 @@ NB_MESSAGE_CRAN = 500
 """ Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.05
 global LAMBDA_PETIT
-LAMBDA_PETIT = 9
+LAMBDA_PETIT = 7
 
 global LAMBDA_GRAND
-LAMBDA_GRAND = 147
+LAMBDA_GRAND = 27
 
 LIMITE_NOMBRE_MESSAGE_MAX = 1000
 
@@ -710,6 +714,7 @@ class Noeud:
 		self.nb_message_total = 0
 		self.attente_totale = 0
 		self.tics_sorties = []
+		self.cartes = [0] * NB_CARTE
 
 
 	##	renvoie l'équalité entres deux noeuds.
@@ -789,7 +794,7 @@ class Noeud:
 		for message in self.messages_initiaux:
 			self.attente_totale += 1
 
-##	Applique une périod d'envoi de requête pour chaque antenne présent dans l'anneau
+##	Applique une période d'envoi de requête pour chaque antenne présente dans l'anneau
 def initialiser_periode_antennes():
 	global controleur
 
@@ -1042,6 +1047,7 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 	else:
 		message = "\nCe noeud n'a encore reçu aucun message."
 
+	""" Affichage des periodes des antennes """
 	if noeud.nb_antenne == 0:
 		message += "\nCe noeud est relié à des BBU."
 	else:
@@ -1051,6 +1057,12 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 				message += str(noeud.debuts_periodes[k])+"]."
 			else:
 				message += str(noeud.debuts_periodes[k])+", "
+
+	""" Affichage des buffer des cartes """
+	message += "\nBuffer du/des carte(s) du noeud : "
+	for k in range(0, NB_CARTE):
+		message += "\nCarte numéro "+str(k+1)+" : "+str(noeud.cartes[k])
+
 	titre = str(noeud)
 
 	""" Si l'anneau était en marche, on reprend le mouvement une fois que l'utilisateur a cliqué sur le bouton de la boite de dîalogue """
@@ -1359,7 +1371,7 @@ def rotation_message():
 #	Ici les arrivées de messages sont gérées par l'hyper exponentielle et des files d'attentes.
 def entrer_message():
 	global controleur
-
+	Q = 100
 	for i in range (0, controleur.nb_slot_anneau):		#Parcours des slots de l'anneau
 		slot = controleur.slots_modele[i]
 		if slot.indice_noeud_ecriture != None:	#Le slot est un slot d'ecriture
@@ -1373,11 +1385,16 @@ def entrer_message():
 					if controleur.nb_tic % PERIODE_MESSAGE_ANTENNE == noeud.debuts_periodes[j]:		#C'est la periode du noeud, il reçoit un message de ses antennes
 						for k in range(0, NB_MESSAGE_CRAN):
 							noeud.ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
-			nb_messages_best_effort = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
-
-			""" On ajoute au noeud le tic d'arrivé des messages """
-			for j in range(0, nb_messages_best_effort):
-				noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
+			""" Génération des messages pour chaque carte du noeud """
+			for j in range (0, NB_CARTE):
+				nb_messages_best_effort = hyper_expo()	#Le nombre de message Best Effort reçu est géré par l'hyper exponentielle
+				if nb_messages_best_effort + noeud.cartes[j] < Q:	#La carte peut envoyer tous ses messages
+					for k in range(0, nb_messages_best_effort + noeud.cartes[j]):
+						noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
+				else:
+					for k in range(0, Q):
+						noeud.ajouter_messages_initiaux( MessageN(controleur.nb_tic) )
+					noeud.cartes[j] = (nb_messages_best_effort + noeud.cartes[j]) - Q
 
 			if controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE:
 				nb_message_noeud = noeud.nb_messages_prioritaires + noeud.nb_messages_initaux

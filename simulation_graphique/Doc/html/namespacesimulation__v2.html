@@ -164,7 +164,7 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>afficher_aide</b> ()</
 <tr class="separator:aa0824a8248280be3f51f828fe9615ca9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae59327246ea4a384cc3f6936278290f7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae59327246ea4a384cc3f6936278290f7"></a>
 def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#ae59327246ea4a384cc3f6936278290f7">initialiser_periode_antennes</a> ()</td></tr>
-<tr class="memdesc:ae59327246ea4a384cc3f6936278290f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applique une périod d'envoi de requête pour chaque antenne présent dans l'anneau. <br /></td></tr>
+<tr class="memdesc:ae59327246ea4a384cc3f6936278290f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applique une période d'envoi de requête pour chaque antenne présente dans l'anneau. <br /></td></tr>
 <tr class="separator:ae59327246ea4a384cc3f6936278290f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acf49d37976869c0729e29284bd86c1d6"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#acf49d37976869c0729e29284bd86c1d6">effectuer_tirage</a> (probabilite)</td></tr>
 <tr class="memdesc:acf49d37976869c0729e29284bd86c1d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Effectue un tirage et renvoie True ou False si la variable tirée est contenu dans la probabilité passée en paramètre.  <a href="#acf49d37976869c0729e29284bd86c1d6">More...</a><br /></td></tr>
@@ -304,6 +304,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>CLE_ENTRY_NB_MESSAGE_R
 <tr class="memitem:a65bc93eb41fbfd368405d2eb64a1d1ce"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a65bc93eb41fbfd368405d2eb64a1d1ce"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>CLE_ENTRY_PERIODE_REQUETE</b> = 9</td></tr>
 <tr class="separator:a65bc93eb41fbfd368405d2eb64a1d1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0af6dc9dfe2012927f388f11110d7c31"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0af6dc9dfe2012927f388f11110d7c31"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>CLE_ENTRY_NB_CARTE</b> = 10</td></tr>
+<tr class="separator:a0af6dc9dfe2012927f388f11110d7c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4002c61e47cf53fbbec5d18be20169d5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4002c61e47cf53fbbec5d18be20169d5"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TIC</b> = 600</td></tr>
 <tr class="separator:a4002c61e47cf53fbbec5d18be20169d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -328,6 +331,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>PERIODE_MESSAGE_ANTENN
 <tr class="memitem:a31e43778f2ad61b6430a43903135a0c9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31e43778f2ad61b6430a43903135a0c9"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>NB_ANTENNE</b> = 10</td></tr>
 <tr class="separator:a31e43778f2ad61b6430a43903135a0c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a8cfc26af5cf660a6deaa56ddcb13e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae0a8cfc26af5cf660a6deaa56ddcb13e"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>NB_CARTE</b> = 2</td></tr>
+<tr class="separator:ae0a8cfc26af5cf660a6deaa56ddcb13e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af57cfed112962e37bea71069b907d7e8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af57cfed112962e37bea71069b907d7e8"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>TAILLE_MESSAGE_BE</b> = 5</td></tr>
 <tr class="separator:af57cfed112962e37bea71069b907d7e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,10 +344,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>NB_MESSAGE_CRAN</b> = 
 float&#160;</td><td class="memItemRight" valign="bottom"><b>PROBABILITE_BURST</b> = 0.05</td></tr>
 <tr class="separator:a8b7a889f8d469d7e64b97ea31511f63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec87de677b9332768e2d6dee04ed0831"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aec87de677b9332768e2d6dee04ed0831"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_PETIT</b> = 9</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_PETIT</b> = 7</td></tr>
 <tr class="separator:aec87de677b9332768e2d6dee04ed0831"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3a9de833bac5c685b15b0fa28601147"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab3a9de833bac5c685b15b0fa28601147"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_GRAND</b> = 147</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>LAMBDA_GRAND</b> = 27</td></tr>
 <tr class="separator:ab3a9de833bac5c685b15b0fa28601147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8acf1290518b6024f92b00dd57cdcc12"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8acf1290518b6024f92b00dd57cdcc12"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>LIMITE_NOMBRE_MESSAGE_MAX</b> = 1000</td></tr>
