@@ -36,7 +36,7 @@ COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
 COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
 COTE_SLOT = 7		#La hauteur/largeur d'un slot
-COTE_NOEUD = COTE_SLOT + 10		#La hauteur/largeur d'un noeud
+COTE_NOEUD = COTE_SLOT + 20		#La hauteur/largeur d'un noeud
 
 global VITESSE_LATENCE_MESSAGE
 VITESSE_LATENCE_MESSAGE = 0.002		#Le temps d'attente en seconde entre chaque déplacement de message dans la canvas
@@ -475,6 +475,25 @@ def placer_panel_droit(fenetre):
 
 	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
 	bouton_reset.grid(row=27, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
+
+##	Alterne le couleur de fond d'un noeud avec sa couleur de message prioritaire
+#	@param iteration : Le nombre de fois ou l'on souhaite effectuer l'alternance de couleur.
+#	@param noeud_graphique : L'objet graphique sur lequelle nous effecturons les changements de couleurs.
+#	@param noeud_modele : Le noeud dans notre modèle.
+def changer_couleur(iteration, noeud_graphique, noeud_modele):
+	nb_interation =  3
+	for i in range(0, nb_interation):
+		couleur_actuelle = controleur.canvas.itemcget(noeud_graphique, "fill")
+		print("Couleur actuelle du noeud : ", couleur_actuelle)
+		if couleur_actuelle == noeud_modele.couleur_noeud:
+			nouvelle_couleur = noeud_modele.couleur_noeud_claire
+		else:
+			nouvelle_couleur = noeud_modele.couleur_noeud
+		controleur.canvas.itemconfigure(noeud_graphique, fill=nouvelle_couleur)
+		time.sleep(0.2)
+
+	controleur.canvas.itemconfigure(noeud_graphique, fill=noeud_modele.couleur_noeud)
+
 
 ##	Fonction callback ouvrant un fichier selectionné depuis un explorateur.
 #	Le fichier ouvert doit être un fichier de configuration au format csv.
@@ -1461,10 +1480,12 @@ def sortir_message():
 		#Ici on gére le cas ou des messages prioritaires passent devant le BBU
 		elif (controleur.politique == POLITIQUE_PRIORITAIRE or controleur.politique == POLITIQUE_PRIORITE_ABSOLUE) and (paquet_message and slot.indice_noeud_lecture != None and slot.indice_noeud_lecture == INDICE_DATA_CENTER):
 			nb_messages_prioritaires = int(paquet_message.taille * paquet_message.proportion_message_prioritaire)
-
-			for k in range(0, nb_messages_prioritaires):
-				controleur.noeuds_modele[INDICE_DATA_CENTER].ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
-			controleur.noeuds_modele[INDICE_DATA_CENTER].update_file_noeud_graphique()
+			if nb_messages_prioritaires > 0:
+				for k in range(0, nb_messages_prioritaires):
+					controleur.noeuds_modele[INDICE_DATA_CENTER].ajouter_messages_prioritaires( MessageN(controleur.nb_tic) )
+				t = Thread(target=changer_couleur, args=(0, controleur.noeuds_vue[INDICE_DATA_CENTER], controleur.noeuds_modele[INDICE_DATA_CENTER]))
+				t.start()
+				controleur.noeuds_modele[INDICE_DATA_CENTER].update_file_noeud_graphique()
 
 
 ##	Methode appelant une methode récursive qui décale d'un slot les message du système.
@@ -1688,7 +1709,7 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 nb_noeud = 5
-nb_slot = 100
+nb_slot = 25
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, POLITIQUE_PRIORITE_ABSOLUE)
 fenetre.mainloop()
