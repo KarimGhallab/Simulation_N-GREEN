@@ -122,9 +122,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a2bd09bd7465be64ee772a15cfae7bd18"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a2bd09bd7465be64ee772a15cfae7bd18">creer_canvas</a> (fenetre)</td></tr>
 <tr class="memdesc:a2bd09bd7465be64ee772a15cfae7bd18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Créer un canvas avec une croix au centre et le place dans la fenetre.  <a href="#a2bd09bd7465be64ee772a15cfae7bd18">More...</a><br /></td></tr>
 <tr class="separator:a2bd09bd7465be64ee772a15cfae7bd18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4630fb4a8c7202d83695b535cc36d72b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4630fb4a8c7202d83695b535cc36d72b"></a>
-def&#160;</td><td class="memItemRight" valign="bottom"><b>update_label_horloge</b> (tic_actuel)</td></tr>
-<tr class="separator:a4630fb4a8c7202d83695b535cc36d72b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4fdd0e4c6dfa64da9e36f948b504059"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#aa4fdd0e4c6dfa64da9e36f948b504059">update_labels_globaux</a> (tic_actuel)</td></tr>
+<tr class="memdesc:aa4fdd0e4c6dfa64da9e36f948b504059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Met à jour les labels en haut à gauche du canvas affichant le tic actuel de la simulation et la chage du réseau.  <a href="#aa4fdd0e4c6dfa64da9e36f948b504059">More...</a><br /></td></tr>
+<tr class="separator:aa4fdd0e4c6dfa64da9e36f948b504059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a927ae634060620dce624452f942bb618"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacesimulation__v2.html#a927ae634060620dce624452f942bb618">placer_slots</a> (fenetre, canvas, nb_slot)</td></tr>
 <tr class="memdesc:a927ae634060620dce624452f942bb618"><td class="mdescLeft">&#160;</td><td class="mdescRight">Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant : En indice 0 les slots du modele En indice 1 les slots de la vue.  <a href="#a927ae634060620dce624452f942bb618">More...</a><br /></td></tr>
 <tr class="separator:a927ae634060620dce624452f942bb618"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -319,6 +319,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>TIC</b> = 600</td></tr
 <tr class="memitem:a3e12723c47168ed39458b52c2d4761f1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e12723c47168ed39458b52c2d4761f1"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>LABEL_HORLOGE</b> = None</td></tr>
 <tr class="separator:a3e12723c47168ed39458b52c2d4761f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4f92d1a6cd1ba5cb2f08f5e5196fde1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab4f92d1a6cd1ba5cb2f08f5e5196fde1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>LABEL_CHARGE</b> = None</td></tr>
+<tr class="separator:ab4f92d1a6cd1ba5cb2f08f5e5196fde1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76da82fda28df79f14f593863f910e02"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a76da82fda28df79f14f593863f910e02"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>TEXTS_NOEUDS</b> = None</td></tr>
 <tr class="separator:a76da82fda28df79f14f593863f910e02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,7 +416,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>LONGUEUR_ENTRY</b> = C
 int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_noeud</b> = 5</td></tr>
 <tr class="separator:a6332aba737c29709349398f114bb9649"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabed046e23aa163c33d31cb59e6725bc"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aabed046e23aa163c33d31cb59e6725bc"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 100</td></tr>
 <tr class="separator:aabed046e23aa163c33d31cb59e6725bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -1526,6 +1529,25 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nb_slot</b> = 25</td><
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a class="anchor" id="aa4fdd0e4c6dfa64da9e36f948b504059"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def simulation_v2.update_labels_globaux </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>tic_actuel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Met à jour les labels en haut à gauche du canvas affichant le tic actuel de la simulation et la chage du réseau. </p>
+<p>param tic_actuel : le tic actuel de la simulation en cours. </p>
 
 </div>
 </div>

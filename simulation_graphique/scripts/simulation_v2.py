@@ -67,6 +67,9 @@ LABEL_TIC = None
 global LABEL_HORLOGE
 LABEL_HORLOGE = None
 
+global LABEL_CHARGE
+LABEL_CHARGE = None
+
 global TEXTS_NOEUDS
 TEXTS_NOEUDS = None
 
@@ -179,11 +182,27 @@ def creer_canvas(fenetre):
 
 	return canvas
 
-def update_label_horloge(tic_actuel):
+##	Met à jour les labels en haut à gauche du canvas affichant le tic actuel de la simulation et la chage du réseau.
+#	param tic_actuel : le tic actuel de la simulation en cours.
+def update_labels_globaux(tic_actuel):
 	global LABEL_HORLOGE
+	global LABEL_CHARGE
+
+	""" Met à jour le TIC actuel """
 	if LABEL_HORLOGE != None:
 		controleur.canvas.delete(LABEL_HORLOGE)
 	LABEL_HORLOGE = controleur.canvas.create_text(50, 10, text = "TIC actuel : "+str(tic_actuel)+".")
+
+	""" Met à jour le label de la charge du réseau """
+	slots_pris = 0
+	for i in range(0, controleur.nb_slot_anneau):
+		if controleur.slots_modele[i].paquet_message != None:
+			slots_pris += 1
+	charge = (slots_pris/float(controleur.nb_slot_anneau)) * 100
+
+	if LABEL_CHARGE != None:
+		controleur.canvas.delete(LABEL_CHARGE)
+	LABEL_CHARGE = controleur.canvas.create_text(75, 30, text = "Charge actuelle : "+str(charge)+"%.")
 
 ##	Place sur le canvas donnée en paramètre les slots et renvoie un tableau contenant :
 #	En indice 0 les slots du modele
@@ -394,6 +413,7 @@ def placer_panel_droit(fenetre):
 	label_taille_message_BE = Label(fenetre, text = "Taille d'un message Best effort : "+str(TAILLE_MESSAGE_BE) )
 	label_nb_message_requete = Label(fenetre, text = "Nombre de messages d'une requête : "+str(NB_MESSAGE_CRAN) )
 	label_periode_requete = Label(fenetre, text = "Période avant l'envoi d'une requête : "+str(PERIODE_MESSAGE_ANTENNE) )
+	label_nb_carte = Label(fenetre, text = "Nombre de carte par noeud : "+str(NB_CARTE) )
 
 	""" Les labels des entry pour un nouveau nombre de slot/noeud """
 	label_nouveau_slot = Label(fenetre, text = "Nouveau nombre de slot :")
@@ -405,6 +425,7 @@ def placer_panel_droit(fenetre):
 	label_nouvelle_taille_message_BE = Label(fenetre, text = "Nouvelle taille d'un message Best effort :")
 	label_nouveau_nb_message_requete = Label(fenetre, text = "Nouveau nombre de messages d'une requête :")
 	label_nouvelle_periode_requete = Label(fenetre, text = "Nouvelle période avant l'envoi d'une requête :")
+	label_nouveau_nb_carte = Label(fenetre, text = "Nouveau nombre de carte :")
 
 	""" Les entry """
 	entry_slot = Entry(fenetre, width=LONGUEUR_ENTRY)
@@ -416,6 +437,7 @@ def placer_panel_droit(fenetre):
 	entry_taille_message_BE = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_nb_message_requete = Entry(fenetre, width=LONGUEUR_ENTRY)
 	entry_periode_requete = Entry(fenetre, width=LONGUEUR_ENTRY)
+	entry_nb_carte = Entry(fenetre, width=LONGUEUR_ENTRY)
 
 	""" Ajout d'un event """
 	entry_slot.bind("<Key>", callback_validation_configuration)
@@ -427,6 +449,7 @@ def placer_panel_droit(fenetre):
 	entry_taille_message_BE.bind("<Key>", callback_validation_configuration)
 	entry_nb_message_requete.bind("<Key>", callback_validation_configuration)
 	entry_periode_requete.bind("<Key>", callback_validation_configuration)
+	entry_nb_carte.bind("<Key>", callback_validation_configuration)
 
 	controleur.entrys[CLE_ENTRY_SLOT] = entry_slot
 	controleur.entrys[CLE_ENTRY_NOEUD] = entry_noeud
@@ -437,6 +460,7 @@ def placer_panel_droit(fenetre):
 	controleur.entrys[CLE_ENTRY_TAILLE_MESSAGE_BE] = entry_taille_message_BE
 	controleur.entrys[CLE_ENTRY_NB_MESSAGE_REQUETE] = entry_nb_message_requete
 	controleur.entrys[CLE_ENTRY_PERIODE_REQUETE] = entry_periode_requete
+	controleur.entrys[CLE_ENTRY_NB_CARTE] = entry_nb_carte
 
 
 	label_slot_actuel.grid(row=0, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
@@ -475,7 +499,11 @@ def placer_panel_droit(fenetre):
 	label_nouvelle_periode_requete.grid(row=24, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
 	entry_periode_requete.grid(row=24, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
 
-	update_label_TIC(fenetre, 26, NOMBRE_COLONNE_CANVAS+1)
+	label_nb_carte.grid(row=26, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	label_nouveau_nb_carte.grid(row=28, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=(left_padding, 0))
+	entry_nb_carte.grid(row=28, column=NOMBRE_COLONNE_CANVAS+2, sticky="E"+"W", padx=(0, right_padding))
+
+	update_label_TIC(fenetre, 30, NOMBRE_COLONNE_CANVAS+1)
 
 	if controleur.politique == POLITIQUE_PRIORITAIRE:
 		resultat = "Priorité aux C-RAN"
@@ -484,17 +512,17 @@ def placer_panel_droit(fenetre):
 	else:
 		resultat = "Aucune priorité"
 	label_politique_actuel = Label(fenetre, text = "Politique actuelle : "+str(resultat) )
-	label_politique_actuel.grid(row=28, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
+	label_politique_actuel.grid(row=32, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding )
 
 	""" les boutons """
 	bouton_politique = Button(fenetre, text ="Changer de politique", command = changer_politique, bg="#ff9900", fg="White", activebackground="#e68a00", activeforeground="White")
-	bouton_politique.grid(row=30, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
+	bouton_politique.grid(row=34, column=NOMBRE_COLONNE_CANVAS+1, sticky='W', padx=x_padding)
 
 	bouton_explorer = Button(fenetre, text ="Ouvrir un fichier de simulation", command = ouvrir_fichier, bg="#0099ff", fg="White", activebackground="#007acc", activeforeground="White")
-	bouton_explorer.grid(row=30, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
+	bouton_explorer.grid(row=34, column=NOMBRE_COLONNE_CANVAS+2, sticky='E', padx=x_padding)
 
 	bouton_reset = Button(fenetre, text ="Valider nouvelle configuration", command = modifier_configuration, bg="YellowGreen", fg="White", activebackground="#7ba428", activeforeground="White", width=LONGUEUR_BOUTON*2)
-	bouton_reset.grid(row=31, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
+	bouton_reset.grid(row=35, column=NOMBRE_COLONNE_CANVAS+1, sticky="N"+"S"+"E"+"W",columnspan=2, padx=x_padding)
 
 ##	Alterne le couleur de fond d'un noeud avec sa couleur de message prioritaire
 #	@param iteration : Le nombre de fois ou l'on souhaite effectuer l'alternance de couleur.
@@ -1039,8 +1067,8 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 		attente_max = noeud.attente_max
 
 		if attente_moyenne_arrondie > 0 and attente_max > 0:
-			message = "Nombre de message : "+str( noeud.nb_messages_initaux + noeud.nb_messages_prioritaires )
-			message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)
+			message = "Nombre de message : "+str( noeud.nb_messages_initaux + noeud.nb_messages_prioritaires )+"."
+			message += "\nAttente moyenne des messages : "+str(attente_moyenne_arrondie)+"."
 			message += "\nAttente maximale des messages : "+str(attente_max)+"."
 		else:
 			message = "Le noeud n'a pas encore envoyé de message dans l'anneau."
@@ -1061,7 +1089,7 @@ def afficher_dialogue_noeud(noeud, etat_mouvement_anneau):
 	""" Affichage des buffer des cartes """
 	message += "\nBuffer du/des carte(s) du noeud : "
 	for k in range(0, NB_CARTE):
-		message += "\nCarte numéro "+str(k+1)+" : "+str(noeud.cartes[k])
+		message += "\nCarte numéro "+str(k+1)+" : "+str(noeud.cartes[k])+"."
 
 	titre = str(noeud)
 
@@ -1157,6 +1185,7 @@ def modifier_configuration():
 	global TAILLE_MESSAGE_BE
 	global NB_MESSAGE_CRAN
 	global PERIODE_MESSAGE_ANTENNE
+	global NB_CARTE
 
 	tmp_noeud = controleur.nb_noeud_anneau
 	tmp_slot = controleur.nb_slot_anneau
@@ -1166,6 +1195,7 @@ def modifier_configuration():
 	tmp_taille_BE = TAILLE_MESSAGE_BE
 	tmp_nb_cran = NB_MESSAGE_CRAN
 	tmp_periode_requete = PERIODE_MESSAGE_ANTENNE
+	tmp_nb_carte = NB_CARTE
 	nb_champ_vide = 0
 
 	erreur = False
@@ -1179,6 +1209,7 @@ def modifier_configuration():
 	valeur_taille_message_BE = controleur.entrys[ CLE_ENTRY_TAILLE_MESSAGE_BE ].get()
 	valeur_nb_message_requete = controleur.entrys[ CLE_ENTRY_NB_MESSAGE_REQUETE ].get()
 	valeur_periode_requete = controleur.entrys[ CLE_ENTRY_PERIODE_REQUETE ].get()
+	valeur_nb_carte = controleur.entrys[ CLE_ENTRY_NB_CARTE ].get()
 
 	""" Recupération de la valeur du noeud """
 	if valeur_noeud != "":
@@ -1297,6 +1328,18 @@ def modifier_configuration():
 	else:
 		nb_champ_vide += 1
 
+	""" Récupération du nombre d ecarte par noeud """
+	if valeur_nb_carte != "":
+		valeur_nb_carte = int(valeur_nb_carte)
+		if valeur_nb_carte <= 0:
+			message = "Le nombre de carte doit etre positif."
+			tkMessageBox.showerror("Erreur nombre de carte !", message)
+			erreur = True
+		else:
+			NB_CARTE = valeur_nb_carte
+	else:
+		nb_champ_vide += 1
+
 	if erreur or nb_champ_vide == len(controleur.entrys):
 		controleur.nb_noeud_anneau = tmp_noeud
 		controleur.nb_slot_anneau = tmp_slot
@@ -1306,6 +1349,7 @@ def modifier_configuration():
 		PERIODE_MESSAGE_ANTENNE = tmp_periode_requete
 		TAILLE_MESSAGE_BE = tmp_taille_BE
 		NB_MESSAGE_CRAN = tmp_nb_cran
+		NB_CARTE = tmp_nb_carte
 	else:	#Il n'y a aucune erreur, on redéfinit la nouvelle configuration
 		controleur.lire_fichier = False
 		reset()
@@ -1661,7 +1705,7 @@ def initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, politique):
 
 	controleur = Controleur(fenetre, canvas, slots_vue, slots_modele, noeuds_vue, noeuds_modele, nb_noeud, nb_slot, lire_fichier, politique)
 	initialiser_periode_antennes()
-	update_label_horloge(0)
+	update_labels_globaux(0)
 
 	if lire_fichier:
 		fichier = open(chemin_fichier, 'r')
@@ -1691,7 +1735,7 @@ def effectuer_tic():
 
 	if controleur.continuer == True:
 		controleur.nb_tic += 1
-		update_label_horloge(controleur.nb_tic)
+		update_labels_globaux(controleur.nb_tic)
 
 		rotation_message()
 
@@ -1758,9 +1802,8 @@ if hauteur_ecran > 800:
 else:
 	print("Inferieur à 800, on prend la hauteur totale")
 	COTE_CANVAS = hauteur_ecran - 150
-#COTE_CANVAS = 2000
 
-DISTANCE_SLOT = COTE_CANVAS/2.5	#La distance d'un slot par rapport à l'axe central du canvas
+DISTANCE_SLOT = COTE_CANVAS/2.5			#La distance d'un slot par rapport à l'axe central du canvas
 DISTANCE_NOEUD = DISTANCE_SLOT + 40		#La distance d'un noeud par rapport à l'axe central du canvas
 
 LONGUEUR_BOUTON = COTE_CANVAS/31
@@ -1769,7 +1812,7 @@ LONGUEUR_ENTRY = COTE_CANVAS/60
 fenetre.protocol("WM_DELETE_WINDOW", arreter_appli)		#Réagie à la demande d'un utilisateur de quitter l'application via la croix graphique
 
 nb_noeud = 5
-nb_slot = 25
+nb_slot = 100
 
 initialisation(fenetre, nb_noeud, nb_slot, lire_fichier, POLITIQUE_PRIORITE_ABSOLUE)
 fenetre.mainloop()
