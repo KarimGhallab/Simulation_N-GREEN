@@ -35,7 +35,8 @@ COULEURS_MESSAGE.append( ["Lavender", "#eaeafb", "#aaaaee"] )
 COULEURS_MESSAGE.append( ["SandyBrown", "#f8c9a0", "#f08628"] )
 COULEURS_MESSAGE.append( ["Black", "#666666", "#262626"] )
 
-COTE_SLOT = 7		#La hauteur/largeur d'un slot
+DECALLAGE = 30 					# Le décallage du du contenu du canvas par rapport au bord
+COTE_SLOT = 7					#La hauteur/largeur d'un slot
 COTE_NOEUD = COTE_SLOT + 20		#La hauteur/largeur d'un noeud
 
 global VITESSE_LATENCE_MESSAGE
@@ -94,7 +95,7 @@ NB_MESSAGE_CRAN = 500
 """ Les variables pour l'hyper exponentielle """
 PROBABILITE_BURST = 0.05
 global LAMBDA_PETIT
-LAMBDA_PETIT = 7
+LAMBDA_PETIT = 20#7
 
 global LAMBDA_GRAND
 LAMBDA_GRAND = 27
@@ -329,7 +330,6 @@ def placer_message_graphique(canvas, depart, arrive, couleur_messages_prioritair
 
 	""" Le point est placé """
 	if not STATHAM_MODE:
-		#objet = canvas.create_rectangle(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, depart_x+COTE_MESSAGE, depart_y+COTE_MESSAGE, fill=couleur_message)
 		objet = PaquetMessageGraphique(depart_x, depart_y, couleur_messages_prioritaires, couleur_messages_best_effort, proportion_message_prioritaire)
 	else:
 		objet = canvas.create_image(depart_x-COTE_MESSAGE, depart_y-COTE_MESSAGE, image=IMAGE_JASON)
@@ -1606,8 +1606,8 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 	milieu_x = HAUTEUR_CANVAS/2
 	milieu_y = HAUTEUR_CANVAS/2
 
-	destination_x = milieu_x + cos(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
-	destination_y = milieu_y - sin(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT
+	destination_x = milieu_x + (cos(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT) + DECALLAGE/2
+	destination_y = milieu_y - (sin(2*indice_slot*pi/controleur.nb_slot_anneau) * DISTANCE_SLOT)
 
 	msg = controleur.slots_modele[indice_slot].paquet_message
 	if msg != None:
@@ -1616,6 +1616,7 @@ def decaler_messages2(premier_indice, indice_slot, paquet_message, premier_appel
 			t = Thread(target=deplacer_vers, args=( controleur.canvas, msg.id_message_graphique, destination_x, destination_y ))
 			t.start()
 		else:
+			print ("On téléporte le msg")
 			paquet = msg.id_message_graphique
 			paquet.teleporter_paquet(destination_x, destination_y)
 
@@ -1800,8 +1801,8 @@ if hauteur_ecran > 800:
 	HAUTEUR_CANVAS = 800
 else:
 	print("Inferieur à 800, on prend la hauteur totale")
-	HAUTEUR_CANVAS = hauteur_ecran - 150
-	LARGEUR_CANVAS = hauteur_ecran - 50
+	HAUTEUR_CANVAS = hauteur_ecran - 100
+	LARGEUR_CANVAS = HAUTEUR_CANVAS + DECALLAGE
 
 DISTANCE_SLOT = HAUTEUR_CANVAS/2.5			#La distance d'un slot par rapport à l'axe central du canvas
 DISTANCE_NOEUD = DISTANCE_SLOT + 40		#La distance d'un noeud par rapport à l'axe central du canvas
