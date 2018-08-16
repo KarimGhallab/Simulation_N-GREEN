@@ -1,6 +1,6 @@
 # Simulateurs N-GREEN
 
-Ce dépot contient deux projets de simulateur réalisés dans le cadre de mon stage de fin de DUT effectué dans le laboratoire David de l'Université de Versaille Saint-Quentin-en-Yvelines.
+Ce dépôt contient deux projets de simulateur réalisés dans le cadre de mon stage de fin de DUT effectué dans le laboratoire David de l'Université de Versaille Saint-Quentin-en-Yvelines.
 
 ## Simulateur graphique (Python 2.7)
 
@@ -46,4 +46,4 @@ Installer le lecteur PDF evince (Pour afficher les graphiques)
 
 ## Authors
 
-* **Karim Ghallab** (https://github.com/PaulMorgon)
+* **Karim Ghallab** (https://github.com/KarimGhallab)
