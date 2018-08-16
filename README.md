@@ -52,5 +52,5 @@ Installer le lecteur PDF evince (Pour afficher les graphiques)
 
 Un grand remerciment à Mael et Yann pour m'avoir guider pendant tous le long de ce stage !
 
-* **Yann-Strozecki** (https://github.com/yann-strozecki)
 * **Mael Guiraud** (https://github.com/Mael-Guiraud)
+* **Yann-Strozecki** (https://github.com/yann-strozecki)
