@@ -44,6 +44,13 @@ install.packages('ggplot2')
 
 Installer le lecteur PDF evince (Pour afficher les graphiques)
 
-## Authors
+## Auteurs
 
 * **Karim Ghallab** (https://github.com/KarimGhallab)
+
+## Remerciments
+
+Un grand remerciment à Mael et Yann pour m'avoir guider pendant tous le long de ce stage !
+
+* ** Yann-Strozecki ** (https://github.com/yann-strozecki)
+* **Mael Guiraud** (https://github.com/Mael-Guiraud)
